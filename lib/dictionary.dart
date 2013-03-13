@@ -1,4 +1,4 @@
-part of tilebasedwordsearch;
+library dictionary;
 
 class Dictionary {
   final Map words = new Map();

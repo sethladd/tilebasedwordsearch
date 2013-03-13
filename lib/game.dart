@@ -1,4 +1,7 @@
-part of tilebasedwordsearch;
+library game;
+
+import 'package:tilebasedwordsearch/dictionary.dart';
+import 'package:tilebasedwordsearch/board.dart';
 
 @observable
 class Game {
