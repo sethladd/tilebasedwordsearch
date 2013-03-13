@@ -9,9 +9,11 @@ class Game {
   int score = 0;
   Dictionary dictionary;
   List<String> words = <String>[];
-  Board board = new Board();
+  Board board;
   
-  Game(this.dictionary);
+  Game(this.dictionary) {
+    board = new Board(this);
+  }
   
   bool attemptWord(String word) {
     if (_wordIsValid(word)) {
