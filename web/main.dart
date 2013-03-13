@@ -15,7 +15,7 @@ void initialize() {
 }
 
 void startNewGame() {
-  game = new Game();
+  game = new Game(dictionary);
 }
 
 bool f = true;
@@ -46,7 +46,7 @@ main() {
   _gameLoop.onRender = gameRender;
   _gameLoop.onTouchStart = gameTouchStart;
   _gameLoop.onTouchEnd = gameTouchEnd;
-  assetManager.loadPack('game', 'assets.pack')
+  assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
       .then((_) => _gameLoop.start());
 }

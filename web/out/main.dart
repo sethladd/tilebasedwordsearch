@@ -28,7 +28,7 @@ void initialize() {
 }
 
 void startNewGame() {
-  game = new Game();
+  game = new Game(dictionary);
 }
 
 bool f = true;
@@ -44,12 +44,22 @@ void gameRender(GameLoop gameLoop) {
   // Paint here.
 }
 
+void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
+  print('Start ${touch.id}');
+}
+
+void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
+  print('End ${touch.id}');
+}
+
 main() {
   _canvasElement = query('#frontBuffer');
   _gameLoop = new GameLoop(_canvasElement);
   _gameLoop.onUpdate = gameUpdate;
   _gameLoop.onRender = gameRender;
-  assetManager.loadPack('game', 'assets.pack')
+  _gameLoop.onTouchStart = gameTouchStart;
+  _gameLoop.onTouchEnd = gameTouchEnd;
+  assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
       .then((_) => _gameLoop.start());
 }
