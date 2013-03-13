@@ -1,10 +1,16 @@
 import 'dart:html';
 import 'package:game_loop/game_loop.dart';
 import 'package:asset_pack/asset_pack.dart';
+import 'package:tilebasedwordsearch/dictionary.dart';
 
 CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
+Dictionary dictionary;
+
+void setupGame() {
+  dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
+}
 
 bool f = true;
 void gameUpdate(GameLoop gameLoop) {
@@ -24,5 +30,7 @@ main() {
   _gameLoop = new GameLoop(_canvasElement);
   _gameLoop.onUpdate = gameUpdate;
   _gameLoop.onRender = gameRender;
-  assetManager.loadPack('game', 'assets.pack').then((_) => _gameLoop.start());
+  assetManager.loadPack('game', 'assets.pack')
+      .then((_) => setupGame())
+      .then((_) => _gameLoop.start());
 }
