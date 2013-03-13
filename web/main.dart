@@ -8,7 +8,9 @@ CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
-Game game;
+@observable Game game;
+
+@observable bool ready = false;
 
 void initialize() {
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
@@ -18,13 +20,14 @@ void startNewGame() {
   game = new Game(dictionary);
 }
 
-bool f = true;
 void gameUpdate(GameLoop gameLoop) {
   // game.tick(gameLoop.dt);
 }
 
 void gameRender(GameLoop gameLoop) {
   // Paint here.
+  
+  // get game.board
 }
 
 void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {

@@ -1,10 +1,12 @@
 library game;
 
-import 'dictionary.dart';
-import 'board.dart';
+import 'package:web_ui/web_ui.dart';
+import 'package:tilebasedwordsearch/dictionary.dart';
+import 'package:tilebasedwordsearch/board.dart';
 
+@observable
 class Game {
-  int score;
+  int score = 0;
   Dictionary dictionary;
   List<String> words = <String>[];
   Board board = new Board();
