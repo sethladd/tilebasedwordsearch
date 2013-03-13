@@ -2,26 +2,32 @@ part of tilebasedwordsearch;
 
 class GameClock {
   static const int DEFAULT_GAME_LENGTH = 10;
-  static const Duration oneSecond = const Duration(seconds:1);
-  static const Duration defaultGameLength = const Duration(seconds:DEFAULT_GAME_LENGTH);
+  final game_loop.GameLoop gameLoop;
+
+  bool shouldPause = false;
+  int gameLength = DEFAULT_GAME_LENGTH;
+  game_loop.Timer timer;    // Will be an instance of game_loop's Timer class
   
   @observable
   int secondsRemaining = DEFAULT_GAME_LENGTH;
   
-  Timer timer;
-  Duration gameLength = defaultGameLength;
+  GameClock(game_loop.GameLoop this.gameLoop, {this.gameLength:DEFAULT_GAME_LENGTH}) {
+    if (gameLength != null) {
+      secondsRemaining = gameLength;
+    }
+  }
   
-  GameClock({this.gameLength});
+  tick(game_loop.Timer _) {
+    secondsRemaining--;
+    print(secondsRemaining);
+    if (!shouldPause && (secondsRemaining > 0)) {
+      gameLoop.addTimer(tick, 1.0); // 1 second timer
+    }
+  }
   
-  // XXX: Use DateTime and single Timer fires to correct for imprecise timer firing?
-  start() {
-    timer = new Timer.repeating(oneSecond, (_) {
-      secondsRemaining -= 1;
-      if (secondsRemaining <= 0) {
-        timer.cancel();
-      }
-      print(secondsRemaining);
-    });
+  start(Timer _) {
+    shouldPause = false;
+    gameLoop.addTimer(tick, 1.0);   // 1 second timer
   }
   
   stop() {
@@ -29,22 +35,15 @@ class GameClock {
   }
   
   pause() {
-    timer.cancel();
+    shouldPause = true;
   }
   
   restart() {
-    start();
+    shouldPause = false;
+    tick(null);
   }
   
   addTime(int numSeconds) {
     secondsRemaining += numSeconds;
   }
-}
-
-main() {
-  var clock = new GameClock();
-  clock.start();
-  print(clock.secondsRemaining);
-  clock.addTime(5);
-  print(clock.secondsRemaining);
 }
