@@ -1,13 +1,16 @@
 import 'dart:html';
+import 'dart:math';
 import 'package:game_loop/game_loop.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:tilebasedwordsearch/dictionary.dart';
 import 'package:tilebasedwordsearch/game.dart';
+import 'package:tilebasedwordsearch/board_view.dart';
 
 CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
+BoardView _boardView;
 @observable Game game;
 
 @observable bool ready = false;
@@ -25,9 +28,7 @@ void gameUpdate(GameLoop gameLoop) {
 }
 
 void gameRender(GameLoop gameLoop) {
-  // Paint here.
-  
-  // get game.board
+  _boardView.render();
 }
 
 void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
@@ -44,6 +45,7 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
 main() {
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
+  _boardView = new BoardView(_canvasElement);
   _gameLoop = new GameLoop(_canvasElement);
   // Don't lock the pointer on a click.
   _gameLoop.pointerLock.lockOnClick = false;
