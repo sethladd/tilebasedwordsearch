@@ -1,7 +1,4 @@
-library board;
-
-import 'package:tilebasedwordsearch/game.dart';
-import 'dart:math';
+part of tilebasedwordsearch;
 
 class Board {
   Game game;

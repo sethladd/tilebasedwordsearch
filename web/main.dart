@@ -2,9 +2,7 @@ import 'dart:html';
 import 'dart:math';
 import 'package:game_loop/game_loop.dart';
 import 'package:asset_pack/asset_pack.dart';
-import 'package:tilebasedwordsearch/dictionary.dart';
-import 'package:tilebasedwordsearch/game.dart';
-import 'package:tilebasedwordsearch/board_view.dart';
+import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 
 CanvasElement _canvasElement;
 GameLoop _gameLoop;

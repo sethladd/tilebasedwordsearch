@@ -1,5 +1,4 @@
-library game_clock;
-import 'dart:async';
+part of tilebasedwordsearch;
 
 class GameClock {
   static const int DEFAULT_GAME_LENGTH = 10;
