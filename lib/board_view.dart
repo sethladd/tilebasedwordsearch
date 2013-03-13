@@ -1,3 +1,6 @@
+library board_view;
+
+import 'dart:html';
 import 'dart:math';
 
 class TileCoord {
