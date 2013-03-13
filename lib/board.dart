@@ -12,6 +12,8 @@ class Board {
   
   List<List<String>> grid = new List.generate(4, (_) => new List<String>(4));
   
+  List currentSelection = new List();
+  
   Board() {
     _assignCharsToTiles();
   }
@@ -29,7 +31,7 @@ class Board {
   }
 }
 
-// TODO: don't make this a top level function for now
+// TODO: don't make this a top level function.
 bool validPath(position1, position2) {
   bool validPath = true;
   
