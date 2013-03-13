@@ -28,7 +28,7 @@ void initialize() {
 }
 
 void startNewGame() {
-  game = new Game();
+  game = new Game(dictionary);
 }
 
 bool f = true;

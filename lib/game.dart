@@ -1,9 +1,18 @@
 library game;
 
+import 'dictionary.dart';
+
 class Game {
   int score;
+  Dictionary dictionary;
   
-  bool attemptWord(String chars) {
-    
+  Game(this.dictionary);
+  
+  bool attemptWord(String word) {
+    if (_wordIsValid(word)) {
+      score += word.length;
+    }
   }
+  
+  bool _wordIsValid(String word) => dictionary.hasWord(word);
 }
