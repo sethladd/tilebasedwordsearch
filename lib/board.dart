@@ -1,8 +1,10 @@
 library board;
 
+import 'package:tilebasedwordsearch/game.dart';
 import 'dart:math';
 
 class Board {
+  Game game;
   static const DIMENSIONS = 4;
   static const List<String> LETTERS = const ['A', 'B', 'C', 'D', 'E', 'F',
                                              'G', 'H', 'I', 'J', 'I', 'J',
@@ -14,7 +16,7 @@ class Board {
   
   List currentSelection = new List();
   
-  Board() {
+  Board(this.game) {
     _assignCharsToTiles();
   }
   
