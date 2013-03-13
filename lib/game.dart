@@ -1,11 +1,13 @@
 library game;
 
 import 'dictionary.dart';
+import 'board.dart';
 
 class Game {
   int score;
   Dictionary dictionary;
   List<String> words = <String>[];
+  Board board = new Board();
   
   Game(this.dictionary);
   

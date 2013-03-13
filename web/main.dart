@@ -22,11 +22,7 @@ void startNewGame() {
 
 bool f = true;
 void gameUpdate(GameLoop gameLoop) {
-  // Game logic goes here.
-  if (f) {
-    print(assetManager['game.dictionary']);
-    f = false;
-  }
+  // game.tick(gameLoop.dt);
 }
 
 class TileCoord {
