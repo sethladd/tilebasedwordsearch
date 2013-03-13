@@ -1,0 +1,9 @@
+name: tilebasedwordsearch
+description: GAME
+version: 0.1.0
+author: Dart DevRel
+homepage: https://github.com/johnmccutchan/tilebasedwordsearch
+dependencies:
+  unittest: any
+  game_loop:
+    git: https://github.com/johnmccutchan/game_loop.git
