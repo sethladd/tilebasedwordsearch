@@ -49,7 +49,7 @@ main() {
   _gameLoop = new GameLoop(_canvasElement);
   _gameLoop.onUpdate = gameUpdate;
   _gameLoop.onRender = gameRender;
-  assetManager.loadPack('game', 'assets.pack')
+  assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
       .then((_) => _gameLoop.start());
 }
