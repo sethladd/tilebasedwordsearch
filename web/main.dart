@@ -21,7 +21,6 @@ void startNewGame() {
   game = new Game(dictionary);
 }
 
-bool f = true;
 void gameUpdate(GameLoop gameLoop) {
   // game.tick(gameLoop.dt);
 }
