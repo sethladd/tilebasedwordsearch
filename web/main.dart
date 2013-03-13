@@ -37,6 +37,9 @@ void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
 
 void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
   print('End ${touch.id}');
+  touch.positions.forEach((position) {
+    print('${position.x}, ${position.y}');
+  });
 }
 
 main() {
