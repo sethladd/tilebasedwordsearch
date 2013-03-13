@@ -10,6 +10,12 @@
     
     <button on-click="startNewGame()">Start Game</button>
     
+    <template if="game != null">
+      <div>
+        Score: {{ game.score }}
+      </div>
+    </template>
+    
     <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
   </body>

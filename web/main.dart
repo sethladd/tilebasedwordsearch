@@ -10,8 +10,10 @@ CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
-Game game;
 BoardView _boardView;
+@observable Game game;
+
+@observable bool ready = false;
 
 void initialize() {
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
