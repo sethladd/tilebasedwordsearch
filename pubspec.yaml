@@ -10,3 +10,4 @@ dependencies:
   asset_pack:
     git: https://github.com/johnmccutchan/asset_pack.git
   browser: any
+  web_ui: any
