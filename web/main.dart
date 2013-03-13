@@ -17,7 +17,7 @@ void initialize() {
 }
 
 void startNewGame() {
-  game = new Game();
+  game = new Game(dictionary);
 }
 
 bool f = true;
@@ -106,13 +106,29 @@ void gameRender(GameLoop gameLoop) {
   _boardView.render();
 }
 
+void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
+  print('Start ${touch.id}');
+}
+
+void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
+  print('End ${touch.id}');
+  touch.positions.forEach((position) {
+    print('${position.x}, ${position.y}');
+  });
+}
+
 main() {
+  print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
   _boardView = new BoardView(_canvasElement);
   _gameLoop = new GameLoop(_canvasElement);
+  // Don't lock the pointer on a click.
+  _gameLoop.pointerLock.lockOnClick = false;
   _gameLoop.onUpdate = gameUpdate;
   _gameLoop.onRender = gameRender;
-  assetManager.loadPack('game', 'assets.pack')
+  _gameLoop.onTouchStart = gameTouchStart;
+  _gameLoop.onTouchEnd = gameTouchEnd;
+  assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
       .then((_) => _gameLoop.start());
 }
