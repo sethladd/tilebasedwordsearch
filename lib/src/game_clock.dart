@@ -1,6 +1,4 @@
-library game_clock;
-
-import 'package:game_loop/game_loop.dart' as game_loop;
+part of tilebasedwordsearch;
 
 class GameClock {
   static const int DEFAULT_GAME_LENGTH = 10;

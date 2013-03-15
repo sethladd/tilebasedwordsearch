@@ -1,7 +1,4 @@
-library board_view;
-
-import 'dart:html';
-import 'dart:math';
+part of tilebasedwordsearch;
 
 class TileCoord {
   num x, y;

@@ -1,9 +1,4 @@
-library game;
-
-import 'dart:math';
-
-import 'package:web_ui/web_ui.dart';
-import 'package:tilebasedwordsearch/dictionary.dart';
+part of tilebasedwordsearch;
 
 @observable
 class Game {

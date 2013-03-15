@@ -11,7 +11,3 @@ dependencies:
     git: https://github.com/johnmccutchan/asset_pack.git
   browser: any
   web_ui: any
-  buildtool:
-    git:
-      url: git://github.com/dart-lang/buildtool.git
-      ref: "m4"
