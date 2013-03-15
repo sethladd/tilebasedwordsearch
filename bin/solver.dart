@@ -17,15 +17,6 @@ solve(int x, int y, [String word = '']) {
     found[newWord] = true;
   }
   
-//  for (var nextMove in nextMoves) {
-//    var nX = x + nextMove[0];
-//    var nY = y + nextMove[1];
-//    if (nX < 0 || nX > 3) continue;
-//    if (nY < 0 || nY > 3) continue;
-//    if (visited[nX][nY]) continue;
-//    solve(nX, nY, newWord);
-//  }
-  
   for (var _x = -1; _x < 2; _x++) {
     var nX = x + _x;
     if (nX < 0 || nX > 3) continue;
@@ -33,7 +24,7 @@ solve(int x, int y, [String word = '']) {
       if (_x == 0 && _y == 0) continue;
       var nY = y + _y;
       if (nY < 0 || nY > 3) continue;
-      if (visited[nX][nY]) continue;
+      if (visited[nX][nY] == true) continue;
       solve(nX, nY, newWord);
     }
   }
