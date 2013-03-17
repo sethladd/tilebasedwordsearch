@@ -17,9 +17,10 @@ main() {
   print(words.length);
   
   var sw = new Stopwatch()..start();
-  Iterable<String> results = findAll(grid, words);
+  List<String> results = findAll(grid, words).toList();
   sw.stop();
   
-  print(results.toList());
+  print(results);
+  print(results.length);
   print('Found in ${sw.elapsedMilliseconds} ms');
 }

@@ -1,10 +1,9 @@
 library solver;
 
 import 'dart:math';
-import 'dart:io';
 
 Map _words;
-List<List> _grid;
+List<List<String>> _grid;
 final List<List> _visited = new List.generate(4, (_) => new List.filled(4, false));
 final Map _found = new Map();
 
