@@ -16,8 +16,10 @@ main() {
       .forEach((line) => words[line] = true);
   print(words.length);
   
+  var solver = new Solver(words, grid);
+  
   var sw = new Stopwatch()..start();
-  List<String> results = findAll(grid, words).toList();
+  List<String> results = solver.findAll().toList();
   sw.stop();
   
   print(results);

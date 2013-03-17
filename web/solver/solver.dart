@@ -21,8 +21,10 @@ main() {
       contents.split("\n").forEach((line) => words[line] = true);
       numWords.text = '${words.length}';
       
+      var solver = new Solver(words, grid);
+      
       var sw = new Stopwatch()..start();
-      List<String> results = findAll(grid, words).toList();
+      List<String> results = solver.findAll().toList();
       sw.stop();
       
       resultsWords.text = '$results';
