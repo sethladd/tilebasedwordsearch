@@ -1,5 +1,5 @@
 import 'dart:html';
-import 'package:tilebasedwordsearch/solver.dart';
+import '../../lib/solver.dart';
 
 main() {
   var numWords = query('#num-words');
@@ -16,7 +16,7 @@ main() {
   
   Map words = new Map();
   
-  HttpRequest.getString("assets/dictionary.txt")
+  HttpRequest.getString("../assets/dictionary.txt")
     .then((contents) {
       contents.split("\n").forEach((line) => words[line] = true);
       numWords.text = '${words.length}';

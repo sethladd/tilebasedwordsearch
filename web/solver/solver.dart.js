@@ -1958,13 +1958,99 @@ $$.EV={"":"Tp;a,b",
 call$0:function(){return this.a[this.b]()}}
 I.$finishClasses($$,$,null)
 $$=null
+$.WR=function(a,b,c){var z,y,x,w,v,u,t,s
+if(typeof a!=="number")return $.wM(1,a,b,c)
+if(typeof b!=="number")return $.wM(1,a,b,c)
+z=$.r8()
+if(typeof z!=="string"&&(typeof z!=="object"||z===null||z.constructor!==Array&&!z.$isXj()))return $.wM(2,a,b,c,z)
+if(a!==(a|0))throw $.s(a)
+if(a<0||a>=z.length)throw $.e(a)
+z=z[a]
+if(typeof z!=="object"||z===null||(z.constructor!==Array||!!z.immutable$list)&&!z.$isXj())return $.wM(3,a,b,c,z)
+if(b!==(b|0))throw $.s(b)
+if(b<0||b>=z.length)throw $.e(b)
+z[b]=!0
+z=$.d(c)
+y=$.ar
+if(typeof y!=="string"&&(typeof y!=="object"||y===null||y.constructor!==Array&&!y.$isXj()))return $.wM(4,a,b,0,z,y)
+if(a>=y.length)throw $.e(a)
+y=y[a]
+if(typeof y!=="string"&&(typeof y!=="object"||y===null||y.constructor!==Array&&!y.$isXj()))return $.wM(5,a,b,0,z,y)
+if(b>=y.length)throw $.e(b)
+x=z+$.d(y[b])
+if($.UR.NZ(x)===!0)$.zj($.zQ(),x,!0)
+for(w=-1;w<2;++w){v=a+w
+if(v<0||v>3)continue
+for(z=w===0,u=-1;u<2;++u){if(z&&u===0)continue
+t=b+u
+if(t<0||t>3)continue
+s=$.r8()
+if(typeof s!=="string"&&(typeof s!=="object"||s===null||s.constructor!==Array&&!s.$isXj()))return $.wM(6,a,b,0,$.DAa,s,$.DAa,t,x,z,w,u,v)
+if(v<0||v>=s.length)throw $.e(v)
+s=s[v]
+if(typeof s!=="string"&&(typeof s!=="object"||s===null||s.constructor!==Array&&!s.$isXj()))return $.wM(7,a,b,0,$.DAa,s,$.DAa,t,x,z,w,u,v)
+if(t<0||t>=s.length)throw $.e(t)
+s=s[t]
+if(typeof s!=="boolean")return $.wM(8,a,b,0,$.DAa,s,$.DAa,t,x,z,w,u,v)
+if(s)continue
+$.WR(v,t,x)}}z=$.r8()
+if(typeof z!=="string"&&(typeof z!=="object"||z===null||z.constructor!==Array&&!z.$isXj()))return $.wM(9,a,b,0,z)
+if(a>=z.length)throw $.e(a)
+z=z[a]
+if(typeof z!=="object"||z===null||(z.constructor!==Array||!!z.immutable$list)&&!z.$isXj())return $.wM(10,0,b,0,z)
+if(b>=z.length)throw $.e(b)
+z[b]=!1}
+$.wM=function(a,b,c,d,e,f,g,h,i,j,k,l,m){switch(a){case 0:case 1:a=0
+e=$.r8()
+case 2:a=0
+e=$.lU(e,b)
+case 3:a=0
+$.zj(e,c,!0)
+e=$.d(d)
+f=$.ar
+case 4:a=0
+f=$.lU(f,b)
+case 5:a=0
+i=e+$.d($.lU(f,c))
+if($.UR.NZ(i)===!0)$.zj($.zQ(),i,!0)
+e=$.Wx(b)
+g=$.Wx(c)
+k=-1
+default:L0:while(!0)switch(a){case 0:if(!(k<2))break L0
+default:c$0:{switch(a){case 0:m=e.g(b,k)
+j=$.Wx(m)
+if(j.C(m,0)===!0||j.D(m,3)===!0)break c$0
+j=k===0
+l=-1
+default:L1:while(!0)switch(a){case 0:if(!(l<2))break L1
+default:c$1:{switch(a){case 0:if(j&&l===0)break c$1
+h=g.g(c,l)
+f=$.Wx(h)
+if(f.C(h,0)===!0||f.D(h,3)===!0)break c$1
+f=$.r8()
+case 6:a=0
+f=$.lU(f,m)
+case 7:a=0
+f=$.lU(f,h)
+case 8:a=0
+if($.OP(f,!0)===!0)break c$1
+$.WR(m,h,i)}}++l}}}++k}e=$.r8()
+case 9:a=0
+e=$.lU(e,b)
+case 10:a=0
+$.zj(e,c,!1)}}
+$.KY=function(a,b){var z,y
+$.ar=a
+$.UR=b
+for(z=0;z<4;++z)for(y=0;y<4;++y)$.WR(z,y,"")
+return $.zQ().gvc()}
 $.E2=function(){var z,y,x,w,v
 z=document.Ja("#num-words")
 y=document.Ja("#results-words")
 x=document.Ja("#results-length")
 w=document.Ja("#time")
 v=$.FK()
-$.Kn("assets/dictionary.txt",null,null).ml(new $.iw(z,y,x,w,$.U9,v)).OA(new $.xV())}
+$.Kn("../assets/dictionary.txt",null,null).ml(new $.iw(z,y,x,w,$.U9,v)).OA(new $.xV())}
 $.Zi=function(a,b,c,d,e){var z,y,x,w,v
 if(typeof a!=="object"||a===null||a.constructor!==Array&&!a.$isXj())return $.lC(1,a,b,c,d,e)
 if(typeof c!=="object"||c===null||(c.constructor!==Array||!!c.immutable$list)&&!c.$isXj())return $.lC(1,a,b,c,d,e)
@@ -2513,92 +2599,6 @@ $.yB=function(a){return new $.W9(a,a.gB(a),-1,null)}
 $.at=function(){return $.Ty()}
 $.WP=function(){if($.Dz==null)$.Dz=$.at()
 return $.Dz}
-$.WR=function(a,b,c){var z,y,x,w,v,u,t,s
-if(typeof a!=="number")return $.wM(1,a,b,c)
-if(typeof b!=="number")return $.wM(1,a,b,c)
-z=$.r8()
-if(typeof z!=="string"&&(typeof z!=="object"||z===null||z.constructor!==Array&&!z.$isXj()))return $.wM(2,a,b,c,z)
-if(a!==(a|0))throw $.s(a)
-if(a<0||a>=z.length)throw $.e(a)
-z=z[a]
-if(typeof z!=="object"||z===null||(z.constructor!==Array||!!z.immutable$list)&&!z.$isXj())return $.wM(3,a,b,c,z)
-if(b!==(b|0))throw $.s(b)
-if(b<0||b>=z.length)throw $.e(b)
-z[b]=!0
-z=$.d(c)
-y=$.ar
-if(typeof y!=="string"&&(typeof y!=="object"||y===null||y.constructor!==Array&&!y.$isXj()))return $.wM(4,a,b,0,z,y)
-if(a>=y.length)throw $.e(a)
-y=y[a]
-if(typeof y!=="string"&&(typeof y!=="object"||y===null||y.constructor!==Array&&!y.$isXj()))return $.wM(5,a,b,0,z,y)
-if(b>=y.length)throw $.e(b)
-x=z+$.d(y[b])
-if($.UR.NZ(x)===!0)$.zj($.zQ(),x,!0)
-for(w=-1;w<2;++w){v=a+w
-if(v<0||v>3)continue
-for(z=w===0,u=-1;u<2;++u){if(z&&u===0)continue
-t=b+u
-if(t<0||t>3)continue
-s=$.r8()
-if(typeof s!=="string"&&(typeof s!=="object"||s===null||s.constructor!==Array&&!s.$isXj()))return $.wM(6,a,b,0,$.DAa,s,$.DAa,t,x,z,w,u,v)
-if(v<0||v>=s.length)throw $.e(v)
-s=s[v]
-if(typeof s!=="string"&&(typeof s!=="object"||s===null||s.constructor!==Array&&!s.$isXj()))return $.wM(7,a,b,0,$.DAa,s,$.DAa,t,x,z,w,u,v)
-if(t<0||t>=s.length)throw $.e(t)
-s=s[t]
-if(typeof s!=="boolean")return $.wM(8,a,b,0,$.DAa,s,$.DAa,t,x,z,w,u,v)
-if(s)continue
-$.WR(v,t,x)}}z=$.r8()
-if(typeof z!=="string"&&(typeof z!=="object"||z===null||z.constructor!==Array&&!z.$isXj()))return $.wM(9,a,b,0,z)
-if(a>=z.length)throw $.e(a)
-z=z[a]
-if(typeof z!=="object"||z===null||(z.constructor!==Array||!!z.immutable$list)&&!z.$isXj())return $.wM(10,0,b,0,z)
-if(b>=z.length)throw $.e(b)
-z[b]=!1}
-$.wM=function(a,b,c,d,e,f,g,h,i,j,k,l,m){switch(a){case 0:case 1:a=0
-e=$.r8()
-case 2:a=0
-e=$.lU(e,b)
-case 3:a=0
-$.zj(e,c,!0)
-e=$.d(d)
-f=$.ar
-case 4:a=0
-f=$.lU(f,b)
-case 5:a=0
-i=e+$.d($.lU(f,c))
-if($.UR.NZ(i)===!0)$.zj($.zQ(),i,!0)
-e=$.Wx(b)
-g=$.Wx(c)
-k=-1
-default:L0:while(!0)switch(a){case 0:if(!(k<2))break L0
-default:c$0:{switch(a){case 0:m=e.g(b,k)
-j=$.Wx(m)
-if(j.C(m,0)===!0||j.D(m,3)===!0)break c$0
-j=k===0
-l=-1
-default:L1:while(!0)switch(a){case 0:if(!(l<2))break L1
-default:c$1:{switch(a){case 0:if(j&&l===0)break c$1
-h=g.g(c,l)
-f=$.Wx(h)
-if(f.C(h,0)===!0||f.D(h,3)===!0)break c$1
-f=$.r8()
-case 6:a=0
-f=$.lU(f,m)
-case 7:a=0
-f=$.lU(f,h)
-case 8:a=0
-if($.OP(f,!0)===!0)break c$1
-$.WR(m,h,i)}}++l}}}++k}e=$.r8()
-case 9:a=0
-e=$.lU(e,b)
-case 10:a=0
-$.zj(e,c,!1)}}
-$.KY=function(a,b){var z,y
-$.ar=a
-$.UR=b
-for(z=0;z<4;++z)for(y=0;y<4;++y)$.WR(z,y,"")
-return $.zQ().gvc()}
 $.Mg.call$2=$.Mg
 $.Mg.$name="Mg"
 $.b.call$1=$.b
@@ -2661,12 +2661,12 @@ $.U12=I.makeConstantList(["A","B","C","D"])
 $.Z9=new $.Fk("error")
 $.U9=I.makeConstantList([$.U12,$.U7,$.U10,$.U11])
 $.U9u=new $.V2()
+$.UR=null
+$.ar=null
 $.Dz=null
 $.b9=1
 $.XO=0
 $.XK=null
-$.UR=null
-$.ar=null
 $.AF=function(a,b){if(typeof a=="number"&&typeof b=="number")return(a|b)>>>0
 return $.Wx(a).Ag(a,b)}
 $.B5=function(a){return $.dD(a).gl0(a)}
@@ -2732,14 +2732,14 @@ if(typeof a=="function")return $.uN.prototype
 if(typeof a=="boolean")return $.cx.prototype
 if(a.constructor==Array)return $.Q.prototype
 return a}
+I.$lazy($,"_visited","zV","r8",function(){return $.dH(4,new $.SK(),!0)})
+I.$lazy($,"_found","Dh","zQ",function(){return $.B()})
 I.$lazy($,"globalThis","DX","jk",function(){return $.VD()})
 I.$lazy($,"globalWindow","cO","C5",function(){return $.jk().window})
 I.$lazy($,"globalWorker","u9","vy",function(){return $.jk().Worker})
 I.$lazy($,"globalPostMessageDefined","Wd","Iz",function(){return $.jk().postMessage !== (void 0)})
 I.$lazy($,"thisScript","Kb","Rs",function(){return $.Td()})
 I.$lazy($,"_runCallbacks","U8","Sa",function(){return[]})
-I.$lazy($,"_visited","zV","r8",function(){return $.dH(4,new $.SK(),!0)})
-I.$lazy($,"_found","Dh","zQ",function(){return $.B()})
 var $=null
 I = I.$finishIsolateConstructor(I)
 var $=new I()
