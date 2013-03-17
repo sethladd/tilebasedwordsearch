@@ -9,14 +9,16 @@ main() {
     const ['M', 'N', 'O', 'P']
   ];
   
-  Map words = new Map();
+  Trie words = new Trie();
   Directory pwd = new File(new Options().script).directorySync();
   new File('${pwd.path}/../web/assets/dictionary.txt')
       .readAsLinesSync()
-      .forEach((line) => words[line] = true);
-  print(words.length);
+      .forEach((line) => words[line] = line);
+  //print(words.length);
   
   var solver = new Solver(words, grid);
+  
+  print("Starting search");
   
   var sw = new Stopwatch()..start();
   List<String> results = solver.findAll().toList();
