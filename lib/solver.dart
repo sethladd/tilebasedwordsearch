@@ -6,7 +6,7 @@ class Solver {
   final Map _words;
   final List<List<String>> _grid;
   final List<List> _visited = new List.generate(4, (_) => new List.filled(4, false));
-  final Map _found = new Map();
+  final List _found = new List();
   
   Solver(this._words, this._grid);
   
@@ -16,7 +16,7 @@ class Solver {
     final newWord = '${word}${_grid[x][y]}';
     
     if (_words.containsKey(newWord)) {
-      _found[newWord] = true;
+      _found.add(newWord);
     }
     
     for (var _x = -1; _x < 2; _x++) {
@@ -41,7 +41,7 @@ class Solver {
       }
     }
     
-    return _found.keys;
+    return _found;
   }
 }
 

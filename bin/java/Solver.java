@@ -6,23 +6,23 @@ public class Solver {
     private Map<String, Boolean> words;
     private String[][] grid;
     private boolean[][] visited;
-    private Map<String, Boolean> found;
+    private List<String> found;
 
     Solver(String[][] grid, Map<String, Boolean> words) {
         this.grid = grid;
         this.words = words;
         this.visited = new boolean[4][4];
-        this.found = new HashMap<String, Boolean>();
+        this.found = new ArrayList<String>();
     }
     
-    public Set<String> findAll() {
+    public List<String> findAll() {
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
                 solve(x, y, "");
             }
         }
         
-        return found.keySet();
+        return found;
     }
     
     private void solve(int x, int y, String word) {
@@ -31,7 +31,7 @@ public class Solver {
         String newWord = word + grid[x][y];
         
         if (words.containsKey(newWord)) {
-          found.put(newWord, true);
+          found.add(newWord);
         }
         
         for (int _x = -1; _x < 2; _x++) {

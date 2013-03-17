@@ -2,7 +2,7 @@ function Solver(grid, words) {
 	this._words = words;
 	this._grid = grid;
 	this._visited = [[false, false, false, false], [false, false, false, false], [false, false, false, false], [false, false, false, false]];
-	this._found = {};
+	this._found = [];
 }
 
 Solver.prototype._solve = function(x, y, word) {
@@ -11,7 +11,7 @@ Solver.prototype._solve = function(x, y, word) {
 	  var newWord = word + this._grid[x][y];
 	  
 	  if (newWord in this._words) {
-	    this._found[newWord] = true;
+	    this._found.push(newWord);
 	  }
 	  
 	  for (var _x = -1; _x < 2; _x++) {

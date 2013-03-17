@@ -11,3 +11,4 @@ dependencies:
     git: https://github.com/johnmccutchan/asset_pack.git
   browser: any
   web_ui: any
+  benchmark_harness: any
