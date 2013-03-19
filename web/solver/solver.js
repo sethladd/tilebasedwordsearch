@@ -1,3 +1,46 @@
+function Trie() {
+	this.value = null;
+	this.map = {};
+}
+
+Trie.prototype.nodeFor = function(character) {
+	return map[character.charAt(0)];
+}
+
+Trie.prototype.get = function(key) {
+	var node = this;
+    for (var i = 0; i < key.length; i++) {
+      var char = key.charAt(i);
+
+      node = node.map[char];
+      if (node == null) {
+        return null;
+      }
+    }
+    return node.value;
+}
+
+/**
+ * character is a String
+ */
+Trie.prototype.nodeFor = function(character) {
+	return this.map[character.charAt(0)];
+}
+
+Trie.prototype.set = function(key, value) {
+    var node = this;
+    for (var i = 0; i < key.length; i++) {
+      var char = key.charAt(i);
+
+      var current = node;
+      node = node.map[char];
+      if (node == null) {
+        current.map[char] = node = new Trie();
+      }
+    }
+    node.value = value;
+}
+
 function Solver(grid, words) {
 	this._words = words;
 	this._grid = grid;
@@ -5,38 +48,43 @@ function Solver(grid, words) {
 	this._found = [];
 }
 
-Solver.prototype._solve = function(x, y, word) {
-	  this._visited[x][y] = true;
-	  
-	  var newWord = word + this._grid[x][y];
-	  
-	  if (newWord in this._words) {
-	    this._found.push(newWord);
-	  }
-	  
-	  for (var _x = -1; _x < 2; _x++) {
-	    var nX = x + _x;
-	    if (nX < 0 || nX > 3) continue;
-	    for (var _y = -1; _y < 2; _y++) {
-	      if (_x == 0 && _y == 0) continue;
-	      var nY = y + _y;
-	      if (nY < 0 || nY > 3) continue;
-	      if (this._visited[nX][nY] == true) continue;
-	      this._solve(nX, nY, newWord);
-	    }
-	  }
-	  
-	  this._visited[x][y] = false;
+/**
+ * inProgress is a Trie
+ */
+Solver.prototype._solve = function(x, y, inProgress) {
+	var nextStep = inProgress.nodeFor(this._grid[x][y]);
+	
+	if (nextStep != null && nextStep != undefined) {
+		if (nextStep.value != null) {
+			this._found.push(nextStep.value);
+		}
+		
+		this._visited[x][y] = true;
+		
+		for (var _x = -1; _x < 2; _x++) {
+		    var nX = x + _x;
+		    if (nX < 0 || nX > 3) continue;
+		    for (var _y = -1; _y < 2; _y++) {
+		      if (_x == 0 && _y == 0) continue;
+		      var nY = y + _y;
+		      if (nY < 0 || nY > 3) continue;
+		      if (this._visited[nX][nY] == true) continue;
+		      this._solve(nX, nY, nextStep);
+		    }
+	 	}
+		
+		this._visited[x][y] = false;
+	}
 }
 
 Solver.prototype.findAll = function() {
-	  for (var x = 0; x < 4; x++) {
-	    for (var y = 0; y < 4; y++) {
-	      this._solve(x, y, '');
-	    }
-	  }
+	for (var x = 0; x < 4; x++) {
+		for (var y = 0; y < 4; y++) {
+			this._solve(x, y, this._words);
+    	}
+	}
 	  
-	  return Object.keys(this._found);
+	return this._found;
 }
 
 function main() {
@@ -52,7 +100,7 @@ function main() {
     ['M', 'N', 'O', 'P']
   ];
   
-  var words = {};
+  var words = new Trie();
   
   var request = new XMLHttpRequest();
   request.onreadystatechange = function() {
@@ -62,10 +110,8 @@ function main() {
 	  	  
 	  	  var text = request.responseText;
 	  	  text.split("\n").forEach(function(line) {
-	  	  	words[line] = true;
+	  	  	words.set(line, line);
 	  	  });
-	  	  
-	  	  numWords.innerHTML = Object.keys(words).length;
 	  	  
 	  	  var solver = new Solver(grid, words);
 	  	  
