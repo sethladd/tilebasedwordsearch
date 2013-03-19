@@ -15,6 +15,14 @@ main() {
     const ['M', 'N', 'O', 'P']
   ];
   
+  // HIGH SCORING BOARD
+//  const List<List<String>> grid = const [
+//const ['S', 'E', 'R', 'S'],
+//const ['P', 'A', 'T', 'G'],
+//const ['L', 'I', 'N', 'E',],
+//const ['S', 'E', 'R', 'S']                                       
+//];
+  
   Trie words = new Trie();
   
   HttpRequest.getString("../assets/dictionary.txt")
