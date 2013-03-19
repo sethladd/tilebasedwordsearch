@@ -88,6 +88,7 @@ Solver.prototype.findAll = function() {
 }
 
 function main() {
+  var timeToParseFiles = document.getElementById('time-to-parse-file');
   var numWords = document.getElementById('num-words');
   var resultsWords = document.getElementById('results-words');
   var resultsLength = document.getElementById('results-length');
@@ -109,21 +110,26 @@ function main() {
 	  	  console.log('received file');
 	  	  
 	  	  var text = request.responseText;
+	  	  var start = window.performance.now();
 	  	  text.split("\n").forEach(function(line) {
 	  	  	words.set(line, line);
 	  	  });
+	  	  var stop = window.performance.now();
+	  	  
+	  	  var readFilesTime = stop - start;
 	  	  
 	  	  var solver = new Solver(grid, words);
 	  	  
-	  	  var start = new Date();
+	  	  start = window.performance.now();
 	  	  var results = solver.findAll();
-	  	  var stop = new Date();
+	  	  stop = window.performance.now();
 	  	  
 	  	  var elapsed = stop - start;
 	  	  
+	  	  timeToParseFiles.innerHTML = readFilesTime;
 	  	  resultsWords.innerHTML = results;
 	      resultsLength.innerHTML = results.length;
-	      time.innerHTML = 'Found in ' + elapsed + ' ms';
+	      time.innerHTML = 'Found in ' + elapsed;
 	  } else {
 	      console.log('error');
 	  }
