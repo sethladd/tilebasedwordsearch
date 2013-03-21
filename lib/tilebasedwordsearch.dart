@@ -5,6 +5,7 @@ import 'dart:html';
 import 'dart:async';
 import 'package:game_loop/game_loop.dart' as game_loop;
 import 'package:asset_pack/asset_pack.dart';
+import 'package:web_ui/web_ui.dart';
 
 part 'src/board_view.dart';
 part 'src/game.dart';
