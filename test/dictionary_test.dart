@@ -1,5 +1,5 @@
 import 'package:unittest/unittest.dart';
-import 'package:tilebasedwordsearch/dictionary.dart';
+import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 
 main() {
   var dict = new Dictionary.fromFile("AA\nBB\nCC");
