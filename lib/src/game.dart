@@ -4,28 +4,36 @@ part of tilebasedwordsearch;
 class Game {
   
   static const DIMENSIONS = 4;
-  static const List<String> LETTERS = const ['A', 'B', 'C', 'D', 'E', 'F',
-                                             'G', 'H', 'I', 'J', 'I', 'J',
-                                             'K', 'L', 'M', 'N', 'O', 'P', 
-                                             'QU', 'R', 'S', 'T', 'U', 'V',
-                                             'W', 'X', 'Y', 'Z'];
+  static Map<String, num> LETTERS =  {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 
+                                  'F': 4, 'G': 2, 'H': 4, 'I': 1, 'J': 8,
+                                   'K': 5, 'L': 1, 'M': 3, 'N': 1, 'O': 1, 'P': 3, 
+                                   'QU': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4,
+                                   'W': 4, 'X': 8, 'Y': 4, 'Z': 10};
   
-  List<List<String>> grid = new List.generate(4, (_) => new List<String>(4));
+  var grid = new List.generate(4, (_) => new List<String>(4));
+  
   int score = 0;
   Dictionary dictionary;
   List<String> words = <String>[];
-  GameClock gameClock;
+
+  CanvasElement canvas;
+
+  BoardView board;
   
-  Game(this.dictionary, this.gameClock) {
+  Completer whenDone = new Completer();
+  
+  Game(this.dictionary, this.canvas) {
     _assignCharsToTiles();
-    gameClock.start();
+    board = new BoardView(this, canvas);
   }
   
   void _assignCharsToTiles() {
     Random random = new Random();
     for (var i = 0; i < DIMENSIONS; i++) {
       for (var j = 0; j < DIMENSIONS; j++) {
-        this.grid[i][j] = LETTERS[random.nextInt(LETTERS.length)];
+        var keys = LETTERS.keys.toList();
+        var char = keys[random.nextInt(LETTERS.length)];
+        this.grid[i][j] = char;
       }
     }
   }
@@ -74,6 +82,10 @@ class Game {
   
   int scoreForWord(String word) {
     return word.length;
+  }
+  
+  Future get done {
+    return whenDone.future;
   }
   
   bool _wordIsValid(String word) => dictionary.hasWord(word);
