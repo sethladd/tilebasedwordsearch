@@ -35,7 +35,7 @@ void initialize() {
 }
 
 void startNewGame() {
-  game = new Game(dictionary, _canvasElement);
+  game = new Game(dictionary, _canvasElement, _gameLoop);
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
   });
@@ -102,5 +102,5 @@ main() {
       .then((_) => initialize())
       .then((_) => _gameLoop.start());
 
-//  startNewGame();
+  startNewGame();
 }

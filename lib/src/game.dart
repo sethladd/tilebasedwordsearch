@@ -23,10 +23,10 @@ class Game {
   
   Completer whenDone = new Completer();
   
-  Game(this.dictionary, this.canvas) {
+  Game(this.dictionary, this.canvas, gameLoop) {
     _assignCharsToTiles();
     board = new BoardView(this, canvas);
-    gameClock = new GameClock(new game_loop.GameLoop(canvas));
+    gameClock = new GameClock(gameLoop);
     gameClock.start();
   }
   

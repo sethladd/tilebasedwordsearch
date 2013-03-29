@@ -1,15 +1,15 @@
 part of tilebasedwordsearch;
 
 class GameClock {
-  static const int DEFAULT_GAME_LENGTH = 10;
+  static const int DEFAULT_GAME_LENGTH = 120;
   final game_loop.GameLoop gameLoop;
 
   bool shouldPause = false;
   int gameLength = DEFAULT_GAME_LENGTH;
-  game_loop.Timer timer;    // Will be an instance of game_loop's Timer class
+  game_loop.GameLoopTimer timer;
   
   @observable
-  String timeRemaining = "loads o' time";
+  String timeRemaining = "Not yet started";
   
   int secondsRemaining = DEFAULT_GAME_LENGTH;
   
@@ -17,13 +17,28 @@ class GameClock {
     if (gameLength != null) {
       secondsRemaining = gameLength;
     }
-//    timeRemaining = secondsRemaining.toString();
+    timeRemaining = formatTime(secondsRemaining);
+  }
+  
+  String formatTime(int seconds) {
+    if (seconds < 0) return 'Out of time!';
+    
+    int m = seconds ~/ 60;
+    int s = seconds % 60;
+    
+    String minuteString = "";
+    String secondString = "";
+
+    if (m > 0) {
+      minuteString = '${m.toString()}:';
+    }
+    secondString = (s <= 9) ? '0$s' : '$s';
+    return '$minuteString$secondString';
   }
   
   tick(game_loop.GameLoopTimer _) {
     secondsRemaining--;
-    timeRemaining = secondsRemaining.toString();
-    print('Time remaining: $timeRemaining ($secondsRemaining)');
+    timeRemaining = formatTime(secondsRemaining);
     if (!shouldPause && (secondsRemaining > 0)) {
       gameLoop.addTimer(tick, 1.0); // 1 second timer
     }
