@@ -48,7 +48,7 @@ Future initialize() {
 }
 
 void startNewGame() {
-  game = new Game(dictionary, _canvasElement, _gameLoop);
+  game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
     highScores.add(game.score);

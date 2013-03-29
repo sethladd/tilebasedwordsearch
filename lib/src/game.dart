@@ -47,13 +47,7 @@ class Game {
     }
     return selected;
   }
-<<<<<<< HEAD
-
-  Game(this.dictionary, this.canvas, this.letterAtlas) {
-=======
-  
-  Game(this.dictionary, this.canvas, gameLoop) {
->>>>>>> d8aec67df29c2edb4605ecdbe11d98e149402481
+  Game(this.dictionary, this.canvas, gameLoop, this.letterAtlas) {
     _assignCharsToPositions();
     board = new BoardView(this, canvas);
     gameClock = new GameClock(gameLoop);
