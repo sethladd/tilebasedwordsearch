@@ -80,7 +80,7 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
 }
 
 main() {
-  router.addHandler(highScoresUrl, () => showHighScores = true);
+  router.addHandler(highScoresUrl, (_) => showHighScores = true);
   
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
