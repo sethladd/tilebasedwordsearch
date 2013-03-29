@@ -14,11 +14,14 @@ class BoardView {
 
   CanvasElement canvas;
 
+  // Reference to the main game object.
+  Game game;
+
   // TODO: Set these.
   String defaultColor;
   String selectedColor;
 
-  BoardView(CanvasElement this.canvas) {
+  BoardView(Game this.game, CanvasElement this.canvas) {
     init();
   }
 

@@ -11,7 +11,6 @@ CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
-BoardView _boardView;
 final Store highScores = new IndexedDbStore('tbwg', 'highScores');
 @observable Game game;
 
@@ -22,7 +21,7 @@ void initialize() {
 }
 
 void startNewGame() {
-  game = new Game(dictionary);
+  game = new Game(dictionary, _canvasElement);
   game.done.then((_) {
     highScores.save(game.score, new DateTime().toString());
   });
@@ -33,7 +32,9 @@ void gameUpdate(GameLoop gameLoop) {
 }
 
 void gameRender(GameLoop gameLoop) {
-  _boardView.render();
+  if (game != null) {
+    game.board.render();
+  }
 }
 
 void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
@@ -50,7 +51,6 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
 main() {
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
-  _boardView = new BoardView(_canvasElement);
   _gameLoop = new GameLoop(_canvasElement);
   // Don't lock the pointer on a click.
   _gameLoop.pointerLock.lockOnClick = false;

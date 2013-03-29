@@ -14,11 +14,16 @@ class Game {
   int score = 0;
   Dictionary dictionary;
   List<String> words = <String>[];
+
+  CanvasElement canvas;
+
+  BoardView board;
   
   Completer whenDone = new Completer();
   
-  Game(this.dictionary) {
+  Game(this.dictionary, this.canvas) {
     _assignCharsToTiles();
+    board = new BoardView(this, canvas);
   }
   
   void _assignCharsToTiles() {
