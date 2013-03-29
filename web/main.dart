@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:math';
+import 'dart:async';
 import 'package:game_loop/game_loop.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
@@ -13,6 +14,7 @@ GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 final Store highScoresStore = new IndexedDbStore('tbwg', 'highScores');
+final List<int> highScores = toObservable([]);
 @observable Game game;
 
 final Router router = new Router();
@@ -30,14 +32,16 @@ void drawCircle(int x, int y) {
   context.fill();
 }
 
-void initialize() {
+Future initialize() {
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
+  return highScoresStore.open();
 }
 
 void startNewGame() {
   game = new Game(dictionary, _canvasElement, _gameLoop);
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
+    highScores.add(game.score);
   });
 }
 
@@ -79,16 +83,20 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
   }
 }
 
-void displayHighScores() {
-  highScoresStore.all().toList().then(() {
-
+Future loadHighScores() {
+  return highScoresStore.all().toList().then((scores) {
+    highScores.addAll(scores);
   });
 }
 
 main() {
-  router.addHandler(highScoresUrl, (_) => showHighScores = true);
+  router
+    ..addHandler(highScoresUrl, (_) => showHighScores = true)
+    ..listen();
+  
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
+
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
   _gameLoop = new GameLoop(_canvasElement);
@@ -100,6 +108,7 @@ main() {
   _gameLoop.onTouchEnd = gameTouchEnd;
   assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
+      .then((_) => loadHighScores())
       .then((_) => _gameLoop.start());
 
   startNewGame();
