@@ -75,12 +75,14 @@ class BoardView {
 
   void render() {
     var c = canvas.context2d;
+    // Clear canvas.
+    c.clearRect(0, 0, WIDTH, HEIGHT);
+
     for (int i = 0; i < letterTiles.length; i++) {
       letterTiles[i].drawOutline(canvas);
     }
 
-    // Clear canvas.
-    c.clearRect(0, 0, WIDTH, HEIGHT);
+    return;
 
     // Loop through the tiles and draw each one.
     for (int i = 0; i < NUM_TILES; i++) { // each row
