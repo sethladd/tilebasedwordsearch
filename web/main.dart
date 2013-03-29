@@ -24,6 +24,8 @@ final UrlPattern highScoresUrl = new UrlPattern(r'/high-scores');
 @observable bool ready = false;
 @observable bool showHighScores = false;
 
+bool paused = false;
+
 void drawCircle(int x, int y) {
   var context = _canvasElement.getContext('2d');
   context.beginPath();
@@ -43,6 +45,19 @@ void startNewGame() {
     highScoresStore.save(game.score, new DateTime.now().toString());
     highScores.add(game.score);
   });
+}
+
+void togglePause() {
+  var button = query('#pause-button');
+  
+  if (!paused) {
+    game.gameClock.pause();
+    button.text = "Resume";
+  } else {
+    game.gameClock.restart();
+    button.text = "Pause";
+  }
+  paused = !paused;
 }
 
 void gameUpdate(GameLoop gameLoop) {
