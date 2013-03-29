@@ -18,7 +18,17 @@
     </template>
     
     <template if="showHighScores">
-      
+      <h2>High Scores</h2>
+      <template if="highScores.length > 0">
+        <ul>
+          <template iterate="score in highScores">
+            <li>{{ score }}</li>
+          </template>
+        </ul>
+      </template>
+      <template if="highScores.length <= 0">
+        No high scores yet.
+      </template>
     </template>
     
     <script type="application/dart" src="main.dart"></script>
