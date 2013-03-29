@@ -27,7 +27,7 @@ final UrlPattern highScoresUrl = new UrlPattern(r'/high-scores');
 bool paused = false;
 
 void drawCircle(int x, int y) {
-  var context = _canvasElement.getContext('2d');
+  var context = _canvasElement.context2d;
   context.beginPath();
   context.arc(x, y, 20.0, 0, 2 * PI);
   context.fillStyle = 'green';
