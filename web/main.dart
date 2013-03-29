@@ -12,7 +12,7 @@ CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
-final Store highScores = new IndexedDbStore('tbwg', 'highScores');
+final Store highScoresStore = new IndexedDbStore('tbwg', 'highScores');
 @observable Game game;
 
 final Router router = new Router();
@@ -37,7 +37,7 @@ void initialize() {
 void startNewGame() {
   game = new Game(dictionary, _canvasElement);
   game.done.then((_) {
-    highScores.save(game.score, new DateTime.now().toString());
+    highScoresStore.save(game.score, new DateTime.now().toString());
   });
 }
 
@@ -79,9 +79,15 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
   }
 }
 
+void displayHighScores() {
+  highScoresStore.all().toList().then(() {
+    
+  });
+}
+
 main() {
   router.addHandler(highScoresUrl, (_) => showHighScores = true);
-  
+
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
   _gameLoop = new GameLoop(_canvasElement);
@@ -94,4 +100,6 @@ main() {
   assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
       .then((_) => _gameLoop.start());
+
+  startNewGame();
 }
