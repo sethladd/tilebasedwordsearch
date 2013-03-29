@@ -9,11 +9,14 @@ class GameClock {
   game_loop.Timer timer;    // Will be an instance of game_loop's Timer class
   
   @observable
+  String timeRemaining = "loads o' time";
+  
   int secondsRemaining = DEFAULT_GAME_LENGTH;
   
   GameClock(game_loop.GameLoop this.gameLoop, {this.gameLength:DEFAULT_GAME_LENGTH}) {
     if (gameLength != null) {
       secondsRemaining = gameLength;
+//      timeRemaining = secondsRemaining.toString();
     }
   }
   
