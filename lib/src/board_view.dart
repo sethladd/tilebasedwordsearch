@@ -16,11 +16,15 @@ class BoardView {
   RectangleTransform canvasTransform;
   CanvasElement canvas;
   final List<RectangleTransform> letterTiles = new List<RectangleTransform>();
+
+  // Reference to the main game object.
+  final Game game;
+
   // TODO: Set these.
   String defaultColor;
   String selectedColor;
 
-  BoardView(CanvasElement this.canvas) {
+  BoardView(Game this.game, CanvasElement this.canvas) {
     letterTiles.length = 16;
     init();
   }
@@ -93,7 +97,7 @@ class BoardView {
         c.font = '${(tileSize).floor() / 3 * 2}px sans-serif';
         c.textBaseline = 'middle';
 
-        var text = '$i';
+        var text = game.grid[i][j];
         var width = c.measureText(text).width.clamp(0, tileSize);
 
         var textOffset = (tileSize - width) / 2;
@@ -104,13 +108,11 @@ class BoardView {
         c.fillStyle = '#000';
         c.font = '10px sans-serif';
         c.textBaseline = 'middle';
-        text = '1';
+        text = Game.LETTERS[game.grid[i][j]].toString();
         width = c.measureText(text).width;
 
         c.fillText(text, coord.x + tileSize - width - /* padding */ 3, coord.y + /* half font size */ 5 + /* padding */ 3);
       }
     }
-
-
   }
 }

@@ -9,11 +9,16 @@
     <canvas id="frontBuffer"></canvas>
     
     <button on-click="startNewGame()">Start Game</button>
+    <a href="/high-scores">View High Scores</a>
     
     <template if="game != null">
       <div>
         Score: {{ game.score }}
       </div>
+    </template>
+    
+    <template if="showHighScores">
+      
     </template>
     
     <script type="application/dart" src="main.dart"></script>
