@@ -67,6 +67,8 @@ class Game {
   // There is no checking that the word has been previously picked or not.
   // All this does is check if every move in a path is legal.
   bool completePathIsValid(path) {
+    if (path.length != path.toSet().length) return false;
+    
     var valid = true;
     for (var i = 0; i < path.length - 1; i++) {
       if (!validMove(path[i], path[i + 1])) {
