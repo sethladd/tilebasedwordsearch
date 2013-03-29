@@ -1,7 +1,7 @@
 part of tilebasedwordsearch;
 
 class GameClock {
-  static const int DEFAULT_GAME_LENGTH = 120;
+  static const int DEFAULT_GAME_LENGTH = 70;
   final game_loop.GameLoop gameLoop;
 
   bool shouldPause = false;
@@ -21,7 +21,7 @@ class GameClock {
   }
   
   String formatTime(int seconds) {
-    if (seconds < 0) return 'Out of time!';
+    if (seconds <= 0) return 'OUT OF TIME!!!!';
     
     int m = seconds ~/ 60;
     int s = seconds % 60;
@@ -31,16 +31,20 @@ class GameClock {
 
     if (m > 0) {
       minuteString = '${m.toString()}:';
+      secondString = (s <= 9) ? '0$s' : '$s';
+    } else {
+      secondString = s.toString();
     }
-    secondString = (s <= 9) ? '0$s' : '$s';
     return '$minuteString$secondString';
   }
   
   tick(game_loop.GameLoopTimer _) {
-    secondsRemaining--;
-    timeRemaining = formatTime(secondsRemaining);
-    if (!shouldPause && (secondsRemaining > 0)) {
-      gameLoop.addTimer(tick, 1.0); // 1 second timer
+    if (!shouldPause) {
+      secondsRemaining--;
+      timeRemaining = formatTime(secondsRemaining);
+      if (secondsRemaining > 0) {
+        gameLoop.addTimer(tick, 1.0); // 1 second timer
+      }
     }
   }
   
