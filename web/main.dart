@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:game_loop/game_loop.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
+import 'package:lawndart/lawndart.dart';
 
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 
@@ -11,6 +12,7 @@ GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 BoardView _boardView;
+final Store highScores = new IndexedDbStore('tbwg', 'highScores');
 @observable Game game;
 
 @observable bool ready = false;
@@ -29,6 +31,9 @@ void initialize() {
 
 void startNewGame() {
   game = new Game(dictionary);
+  game.done.then((_) {
+    highScores.save(game.score, new DateTime().toString());
+  });
 }
 
 void gameUpdate(GameLoop gameLoop) {

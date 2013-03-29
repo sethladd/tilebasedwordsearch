@@ -51,13 +51,16 @@ class BoardView {
     // Loop through the tiles and draw each one.
     for (int i = 0; i < 4; i++) { // each row
       for (int j = 0; j < 4; j++) { // each column
-        c.fillStyle = '#f00';
 
         var coord = getTileCoord(i, j);
+
+        // Draw tile background.
+        c.fillStyle = '#f00';
         c.fillRect(coord.x, coord.y, tileSize, tileSize);
 
+        // Draw large letter.
         c.fillStyle = '#000';
-        c.font = '${(tileSize).floor()}px/${(tileSize).floor()} sans-serif';
+        c.font = '${(tileSize).floor() / 3 * 2}px sans-serif';
         c.textBaseline = 'middle';
 
         var text = '$i';
@@ -66,6 +69,15 @@ class BoardView {
         var textOffset = (tileSize - width) / 2;
 
         c.fillText(text, coord.x + textOffset, coord.y + tileSize * 0.5);
+
+        // Draw points.
+        c.fillStyle = '#000';
+        c.font = '10px sans-serif';
+        c.textBaseline = 'middle';
+        text = '1';
+        width = c.measureText(text).width;
+
+        c.fillText(text, coord.x + tileSize - width - /* padding */ 3, coord.y + /* half font size */ 5 + /* padding */ 3);
       }
     }
 
