@@ -18,6 +18,7 @@ class Game {
 
   CanvasElement canvas;
 
+  GameClock gameClock;
   BoardView board;
   
   Completer whenDone = new Completer();
@@ -25,6 +26,8 @@ class Game {
   Game(this.dictionary, this.canvas) {
     _assignCharsToTiles();
     board = new BoardView(this, canvas);
+    gameClock = new GameClock(new game_loop.GameLoop(canvas));
+    gameClock.start();
   }
   
   void _assignCharsToTiles() {

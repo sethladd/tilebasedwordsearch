@@ -100,4 +100,6 @@ main() {
   assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
       .then((_) => _gameLoop.start());
+
+  startNewGame();
 }

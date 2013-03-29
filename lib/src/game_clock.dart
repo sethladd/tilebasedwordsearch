@@ -17,12 +17,12 @@ class GameClock {
     }
   }
   
-  tick(game_loop.Timer _) {
+  tick(game_loop.GameLoopTimer _) {
     secondsRemaining--;
     print(secondsRemaining);
-    if (!shouldPause && (secondsRemaining > 0)) {
-      gameLoop.addTimer(tick, 1.0); // 1 second timer
-    }
+//    if (!shouldPause && (secondsRemaining > 0)) {
+//      gameLoop.addTimer(tick, 1.0); // 1 second timer
+//    }
   }
   
   start() {
