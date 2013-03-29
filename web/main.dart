@@ -12,6 +12,7 @@ CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
+ImageAtlas letterAtlas;
 final Store highScoresStore = new IndexedDbStore('tbwg', 'highScores');
 @observable Game game;
 
@@ -32,10 +33,15 @@ void drawCircle(int x, int y) {
 
 void initialize() {
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
+  var letterTileImage = assetManager['game.tile-letters'];
+  letterAtlas = new ImageAtlas(letterTileImage);
+  final int offset = 11;
+  final int letterWidth = 40;
+  letterAtlas.addElement('a', offset, offset, letterWidth, letterWidth);
 }
 
 void startNewGame() {
-  game = new Game(dictionary, _canvasElement);
+  game = new Game(dictionary, _canvasElement, letterAtlas);
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
   });
@@ -100,7 +106,6 @@ main() {
   _gameLoop.onTouchEnd = gameTouchEnd;
   assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
-      .then((_) => _gameLoop.start());
-
-  startNewGame();
+      .then((_) => _gameLoop.start())
+      .then((_) => startNewGame());
 }
