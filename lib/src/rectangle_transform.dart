@@ -17,6 +17,12 @@ class RectangleTransform {
   /// Construct a [RectangleTransform] from raw coordinates.
   RectangleTransform.raw(this.left, this.top, this.width, this.height);
 
+  /// Draw the rectangle outline in element.
+  void drawOutline(CanvasElement element) {
+    var context = element.getContext('2d');
+    context.strokeRect(left, top, width, height);
+  }
+
   /// Bottom.
   int get bottom => top + height;
   /// Right.

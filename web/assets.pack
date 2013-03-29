@@ -1,1 +1,44 @@
-{"dictionary":{"loadArguments":{},"name":"dictionary","url":"/dictionary.txt","type":"text","importArguments":{}}}
+{
+  "dictionary": {
+    "loadArguments":{},
+    "name":"dictionary",
+    "url":"/dictionary.txt",
+    "type":"text",
+    "importArguments":{}
+  },
+  "tile-alpha-sans": {
+    "loadArguments":{},
+    "name":"tile-alpha-sans",
+    "url":"/imgs/tile-alpha-sans.png",
+    "type":"image",
+    "importArguments":{}
+  },
+  "space": {
+    "loadArguments":{},
+    "name":"space",
+    "url":"/imgs/space.png",
+    "type":"image",
+    "importArguments":{}
+  },
+  "tile-highlight": {
+    "loadArguments":{},
+    "name":"tile-highlight",
+    "url":"/imgs/tile-highlight.png",
+    "type":"image",
+    "importArguments":{}
+  },
+  "tile-theme-wood": {
+    "loadArguments":{},
+    "name":"tile-theme-wood",
+    "url":"/imgs/tile-theme-wood.png",
+    "type":"image",
+    "importArguments":{}
+  },
+  "tile-value": {
+    "loadArguments":{},
+    "name":"tile-value",
+    "url":"/imgs/tile-value.png",
+    "type":"image",
+    "importArguments":{}
+  }
+}
