@@ -3,3 +3,4 @@ pubspec.lock
 .buildlog
 out
 .settings
+.DS_Store

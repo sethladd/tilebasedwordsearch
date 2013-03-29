@@ -56,7 +56,7 @@ class BoardView {
   }
 
   RectangleTransform getTileRectangle(int row, int column) {
-
+    return letterTiles[tileIndex(row, column)];
   }
 
   TileCoord getTileCoord(int row, int column) {

@@ -81,13 +81,14 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
 
 void displayHighScores() {
   highScoresStore.all().toList().then(() {
-    
+
   });
 }
 
 main() {
   router.addHandler(highScoresUrl, (_) => showHighScores = true);
-
+  assetManager.loaders['image'] = new ImageLoader();
+  assetManager.importers['image'] = new NoopImporter();
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
   _gameLoop = new GameLoop(_canvasElement);
