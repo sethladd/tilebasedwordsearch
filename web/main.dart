@@ -12,7 +12,6 @@ CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
-BoardView _boardView;
 final Store highScores = new IndexedDbStore('tbwg', 'highScores');
 @observable Game game;
 
@@ -23,34 +22,61 @@ final UrlPattern highScoresUrl = new UrlPattern(r'/high-scores');
 @observable bool ready = false;
 @observable bool showHighScores = false;
 
+void drawCircle(int x, int y) {
+  var context = _canvasElement.getContext('2d');
+  context.beginPath();
+  context.arc(x, y, 20.0, 0, 2 * PI);
+  context.fillStyle = 'green';
+  context.fill();
+}
+
 void initialize() {
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
 }
 
 void startNewGame() {
-  game = new Game(dictionary);
+  game = new Game(dictionary, _canvasElement);
   game.done.then((_) {
     highScores.save(game.score, new DateTime.now().toString());
   });
 }
 
 void gameUpdate(GameLoop gameLoop) {
+  //_boardView.update(currentTouch);
   // game.tick(gameLoop.dt);
 }
 
 void gameRender(GameLoop gameLoop) {
-  _boardView.render();
+  if (game != null) {
+    game.board.render();
+  }
+  if (currentTouch == null) {
+    return;
+  }
+  var transform = new RectangleTransform(_canvasElement);
+  currentTouch.positions.forEach((position) {
+    int x = position.x;
+    int y = position.y;
+    if (transform.contains(x, y)) {
+      int rx = transform.transformX(x);
+      int ry = transform.transformY(y);
+      drawCircle(rx, ry);
+    }
+  });
 }
 
+GameLoopTouch currentTouch;
+
 void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
-  print('Start ${touch.id}');
+  if (currentTouch == null) {
+    currentTouch = touch;
+  }
 }
 
 void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
-  print('End ${touch.id}');
-  touch.positions.forEach((position) {
-    print('${position.x}, ${position.y}');
-  });
+  if (touch == currentTouch) {
+    currentTouch = null;
+  }
 }
 
 main() {
@@ -58,7 +84,6 @@ main() {
   
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
-  _boardView = new BoardView(_canvasElement);
   _gameLoop = new GameLoop(_canvasElement);
   // Don't lock the pointer on a click.
   _gameLoop.pointerLock.lockOnClick = false;
