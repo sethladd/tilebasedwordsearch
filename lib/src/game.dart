@@ -15,9 +15,16 @@ class Game {
   int score = 0;
   Dictionary dictionary;
   List<String> words = <String>[];
+
+  CanvasElement canvas;
+
+  BoardView board;
   
-  Game(this.dictionary) {
+  Completer whenDone = new Completer();
+  
+  Game(this.dictionary, this.canvas) {
     _assignCharsToTiles();
+    board = new BoardView(this, canvas);
   }
   
   void _assignCharsToTiles() {
@@ -75,6 +82,10 @@ class Game {
   
   int scoreForWord(String word) {
     return word.length;
+  }
+  
+  Future get done {
+    return whenDone.future;
   }
   
   bool _wordIsValid(String word) => dictionary.hasWord(word);
