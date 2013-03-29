@@ -14,6 +14,8 @@ class Game {
   Dictionary dictionary;
   List<String> words = <String>[];
   
+  Completer whenDone = new Completer();
+  
   Game(this.dictionary) {
     _assignCharsToTiles();
   }
@@ -58,6 +60,10 @@ class Game {
   
   int scoreForWord(String word) {
     return word.length;
+  }
+  
+  Future get done {
+    return whenDone.future;
   }
   
   bool _wordIsValid(String word) => dictionary.hasWord(word);
