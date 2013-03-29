@@ -14,9 +14,11 @@ class Game {
   int score = 0;
   Dictionary dictionary;
   List<String> words = <String>[];
+  GameClock gameClock;
   
-  Game(this.dictionary) {
+  Game(this.dictionary, this.gameClock) {
     _assignCharsToTiles();
+    gameClock.start();
   }
   
   void _assignCharsToTiles() {

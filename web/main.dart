@@ -20,7 +20,7 @@ void initialize() {
 }
 
 void startNewGame() {
-  game = new Game(dictionary);
+  game = new Game(dictionary, new GameClock(_gameLoop));
 }
 
 void gameUpdate(GameLoop gameLoop) {
