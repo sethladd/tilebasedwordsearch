@@ -22,7 +22,15 @@ class Game {
   BoardView board;
   Completer whenDone = new Completer();
   
-  void clearselectedPositions() {
+  String get currentWord {
+    StringBuffer sb = new StringBuffer();
+    for (var i = 0; i < selectedPositions.length; i++) {
+       sb.write(grid[i].first);      
+    }
+    return sb.toString();
+  }
+  
+  void clearSelectedPositions() {
     selectedPositions = [];
   }
   
@@ -34,7 +42,7 @@ class Game {
     return false;
   }
   
-  bool isPositionselected(position) {
+  bool isPositionSelected(position) {
     bool selected = false;
     for (var i = 0; i < selectedPositions.length; i++) {
       if (selectedPositions[i].first == position.first && 
@@ -63,6 +71,7 @@ class Game {
       }
     }
   }
+ 
   
   // There is no checking that the word has been previously picked or not.
   // All this does is check if every move in a path is legal.
