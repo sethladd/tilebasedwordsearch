@@ -78,8 +78,17 @@ class BoardView {
     // Clear canvas.
     c.clearRect(0, 0, WIDTH, HEIGHT);
 
+
     for (int i = 0; i < letterTiles.length; i++) {
+      int x = letterTiles[i].left;
+      int y = letterTiles[i].top;
       letterTiles[i].drawOutline(canvas);
+      if (i % 2 == 0) {
+        game.letterAtlas.draw('a', c, x, y);
+      } else {
+        game.letterAtlas.draw('~n', c, x, y);
+      }
+
     }
 
     return;

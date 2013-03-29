@@ -13,6 +13,7 @@ CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
+ImageAtlas letterAtlas;
 final Store highScoresStore = new IndexedDbStore('tbwg', 'highScores');
 final List<int> highScores = toObservable([]);
 @observable Game game;
@@ -36,11 +37,18 @@ void drawCircle(int x, int y) {
 
 Future initialize() {
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
+  var letterTileImage = assetManager['game.tile-letters'];
+  letterAtlas = new ImageAtlas(letterTileImage);
+  final int offset = 11;
+  final int letterWidth = 40;
+  letterAtlas.addElement('a', offset, offset, letterWidth, letterWidth);
+  letterAtlas.addElement('~n', 148, 148, letterWidth, letterWidth);
   return highScoresStore.open();
+
 }
 
 void startNewGame() {
-  game = new Game(dictionary, _canvasElement, _gameLoop);
+  game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
     highScores.add(game.score);
@@ -49,7 +57,7 @@ void startNewGame() {
 
 void togglePause() {
   var button = query('#pause-button');
-  
+
   if (!paused) {
     game.gameClock.pause();
     button.text = "Resume";
@@ -108,7 +116,7 @@ main() {
   router
     ..addHandler(highScoresUrl, (_) => showHighScores = true)
     ..listen();
-  
+
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
 
@@ -124,7 +132,6 @@ main() {
   assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
       .then((_) => loadHighScores())
-      .then((_) => _gameLoop.start());
-
-  startNewGame();
+      .then((_) => _gameLoop.start())
+      .then((_) => startNewGame());
 }

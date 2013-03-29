@@ -6,9 +6,9 @@
     "type":"text",
     "importArguments":{}
   },
-  "tile-alpha-sans": {
+  "tile-letters": {
     "loadArguments":{},
-    "name":"tile-alpha-sans",
+    "name":"tile-letters",
     "url":"/imgs/tile-alpha-sans.png",
     "type":"image",
     "importArguments":{}

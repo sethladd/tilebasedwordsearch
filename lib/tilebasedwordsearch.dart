@@ -12,3 +12,4 @@ part 'src/game.dart';
 part 'src/game_clock.dart';
 part 'src/dictionary.dart';
 part 'src/rectangle_transform.dart';
+part 'src/image_atlas.dart';
