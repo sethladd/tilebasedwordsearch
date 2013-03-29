@@ -16,16 +16,17 @@ class GameClock {
   GameClock(game_loop.GameLoop this.gameLoop, {this.gameLength:DEFAULT_GAME_LENGTH}) {
     if (gameLength != null) {
       secondsRemaining = gameLength;
-//      timeRemaining = secondsRemaining.toString();
     }
+//    timeRemaining = secondsRemaining.toString();
   }
   
   tick(game_loop.GameLoopTimer _) {
     secondsRemaining--;
-    print(secondsRemaining);
-//    if (!shouldPause && (secondsRemaining > 0)) {
-//      gameLoop.addTimer(tick, 1.0); // 1 second timer
-//    }
+    timeRemaining = secondsRemaining.toString();
+    print('Time remaining: $timeRemaining ($secondsRemaining)');
+    if (!shouldPause && (secondsRemaining > 0)) {
+      gameLoop.addTimer(tick, 1.0); // 1 second timer
+    }
   }
   
   start() {

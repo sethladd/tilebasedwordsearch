@@ -101,5 +101,5 @@ main() {
       .then((_) => initialize())
       .then((_) => _gameLoop.start());
 
-  startNewGame();
+//  startNewGame();
 }
