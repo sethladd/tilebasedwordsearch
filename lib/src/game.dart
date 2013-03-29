@@ -9,6 +9,7 @@ class Game {
                                              'K', 'L', 'M', 'N', 'O', 'P', 
                                              'QU', 'R', 'S', 'T', 'U', 'V',
                                              'W', 'X', 'Y', 'Z'];
+  
   List<List<String>> grid = new List.generate(4, (_) => new List<String>(4));
   int score = 0;
   Dictionary dictionary;
@@ -27,18 +28,31 @@ class Game {
     }
   }
   
-  bool validPath(position1, position2) {
-    bool validPath = true;
+  // There is no checking that the word has been previously picked or not.
+  // All this does is check if every move in a path is legal.
+  bool completePathIsValid(path) {
+    var valid = true;
+    for (var i = 0; i < path.length - 1; i++) {
+      if (!validMove(path[i], path[i + 1])) {
+        valid = false;
+      }
+    }
+    return valid;
+  }
+  
+  // Checks if move from position1 or position2 is legal.
+  bool validMove(position1, position2) {
+    bool valid = true;
     
     if (!_vertical(position1, position2) && 
         !_horizontal(position1, position2) &&
         !_diagonal(position1, position2)) {
-      validPath = false;
+      valid = false;
     }
-    return validPath;
+    return valid;
   }
 
-// Args are GameLoopTouchPosition(s).
+  // Args are GameLoopTouchPosition(s).
   bool _vertical(position1, position2) => position1.x == position2.x;
 
   bool _horizontal(position1, position2) => position1.y == position2.y;
