@@ -38,6 +38,7 @@ void initialize() {
   final int offset = 11;
   final int letterWidth = 40;
   letterAtlas.addElement('a', offset, offset, letterWidth, letterWidth);
+  letterAtlas.addElement('~n', 148, 148, letterWidth, letterWidth);
 }
 
 void startNewGame() {
