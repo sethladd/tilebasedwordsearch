@@ -94,6 +94,9 @@ main() {
     ..addHandler(highScoresUrl, (_) => showHighScores = true)
     ..listen();
   
+  assetManager.loaders['image'] = new ImageLoader();
+  assetManager.importers['image'] = new NoopImporter();
+
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
   _gameLoop = new GameLoop(_canvasElement);
@@ -107,4 +110,6 @@ main() {
       .then((_) => initialize())
       .then((_) => loadHighScores())
       .then((_) => _gameLoop.start());
+
+  startNewGame();
 }

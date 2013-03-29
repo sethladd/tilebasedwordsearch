@@ -4,30 +4,56 @@ part of tilebasedwordsearch;
 class Game {
   
   static const DIMENSIONS = 4;
-  static Map<String, num> LETTERS =  {'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 
-                                  'F': 4, 'G': 2, 'H': 4, 'I': 1, 'J': 8,
-                                   'K': 5, 'L': 1, 'M': 3, 'N': 1, 'O': 1, 'P': 3, 
-                                   'QU': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4,
-                                   'W': 4, 'X': 8, 'Y': 4, 'Z': 10};
-  
-  var grid = new List.generate(4, (_) => new List<String>(4));
-  
+  static const Map<String, num> LETTERS =  const {
+    'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 
+    'F': 4, 'G': 2, 'H': 4, 'I': 1, 'J': 8,
+    'K': 5, 'L': 1, 'M': 3, 'N': 1, 'O': 1,
+    'P': 3, 'QU': 10, 'R': 1, 'S': 1, 'T': 1, 
+    'U': 1, 'V': 4,'W': 4, 'X': 8, 'Y': 4, 'Z': 10};
+
+  var grid = new List.generate(4, (_) => new List<String>(4)); 
+  List selectedPositions = [];
   int score = 0;
   Dictionary dictionary;
   List<String> words = <String>[];
-
   CanvasElement canvas;
 
+  GameClock gameClock;
   BoardView board;
-  
   Completer whenDone = new Completer();
   
-  Game(this.dictionary, this.canvas) {
-    _assignCharsToTiles();
-    board = new BoardView(this, canvas);
+  void clearselectedPositions() {
+    selectedPositions = [];
   }
   
-  void _assignCharsToTiles() {
+  bool addToselectedPositions(position) {
+    if (selectedPositions.isEmpty || this.validMove(selectedPositions.last, position)) {
+      selectedPositions.add(position);
+      return true;
+    }
+    return false;
+  }
+  
+  bool isPositionselected(position) {
+    bool selected = false;
+    for (var i = 0; i < selectedPositions.length; i++) {
+      if (selectedPositions[i].first == position.first && 
+          selectedPositions[i].last == position.last) {
+        selected = true;
+        break;
+      }
+    }
+    return selected;
+  }
+  
+  Game(this.dictionary, this.canvas) {
+    _assignCharsToPositions();
+    board = new BoardView(this, canvas);
+    gameClock = new GameClock(new game_loop.GameLoop(canvas));
+    gameClock.start();
+  }
+  
+  void _assignCharsToPositions() {
     Random random = new Random();
     for (var i = 0; i < DIMENSIONS; i++) {
       for (var j = 0; j < DIMENSIONS; j++) {
@@ -41,6 +67,8 @@ class Game {
   // There is no checking that the word has been previously picked or not.
   // All this does is check if every move in a path is legal.
   bool completePathIsValid(path) {
+    if (path.length != path.toSet().length) return false;
+    
     var valid = true;
     for (var i = 0; i < path.length - 1; i++) {
       if (!validMove(path[i], path[i + 1])) {
