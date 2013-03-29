@@ -8,20 +8,34 @@
   <body>
     <canvas id="frontBuffer"></canvas>
     
-    <button on-click="startNewGame()">Start Game</button>
-    <a href="/high-scores">View High Scores</a>
+    <div>
+      <button on-click="startNewGame()">Start Game</button>
+      <button id="pause-button" on-click="togglePause()">Pause</button>
+    </div>
     
     <template if="game != null">
       <div>
         Score: {{ game.score }}
       </div>
       <div>
-        Time remaining: {{ game.gameClock.secondsRemaining }}
+        Time remaining: {{ game.gameClock.timeRemaining }}
       </div>
     </template>
     
+    <a href="/high-scores">View High Scores</a>
+    
     <template if="showHighScores">
-      
+      <h2>High Scores</h2>
+      <template if="highScores.length > 0">
+        <ul>
+          <template iterate="score in highScores">
+            <li>{{ score }}</li>
+          </template>
+        </ul>
+      </template>
+      <template if="highScores.length <= 0">
+        No high scores yet.
+      </template>
     </template>
     
     <script type="application/dart" src="main.dart"></script>

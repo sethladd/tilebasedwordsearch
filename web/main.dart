@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:math';
+import 'dart:async';
 import 'package:game_loop/game_loop.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
@@ -14,6 +15,7 @@ AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 ImageAtlas letterAtlas;
 final Store highScoresStore = new IndexedDbStore('tbwg', 'highScores');
+final List<int> highScores = toObservable([]);
 @observable Game game;
 
 final Router router = new Router();
@@ -23,15 +25,17 @@ final UrlPattern highScoresUrl = new UrlPattern(r'/high-scores');
 @observable bool ready = false;
 @observable bool showHighScores = false;
 
+bool paused = false;
+
 void drawCircle(int x, int y) {
-  var context = _canvasElement.getContext('2d');
+  var context = _canvasElement.context2d;
   context.beginPath();
   context.arc(x, y, 20.0, 0, 2 * PI);
   context.fillStyle = 'green';
   context.fill();
 }
 
-void initialize() {
+Future initialize() {
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
   var letterTileImage = assetManager['game.tile-letters'];
   letterAtlas = new ImageAtlas(letterTileImage);
@@ -39,13 +43,29 @@ void initialize() {
   final int letterWidth = 40;
   letterAtlas.addElement('a', offset, offset, letterWidth, letterWidth);
   letterAtlas.addElement('~n', 148, 148, letterWidth, letterWidth);
+  return highScoresStore.open();
+
 }
 
 void startNewGame() {
-  game = new Game(dictionary, _canvasElement, letterAtlas);
+  game = new Game(dictionary, _canvasElement, _gameLoop);
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
+    highScores.add(game.score);
   });
+}
+
+void togglePause() {
+  var button = query('#pause-button');
+
+  if (!paused) {
+    game.gameClock.pause();
+    button.text = "Resume";
+  } else {
+    game.gameClock.restart();
+    button.text = "Pause";
+  }
+  paused = !paused;
 }
 
 void gameUpdate(GameLoop gameLoop) {
@@ -86,16 +106,20 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
   }
 }
 
-void displayHighScores() {
-  highScoresStore.all().toList().then(() {
-
+Future loadHighScores() {
+  return highScoresStore.all().toList().then((scores) {
+    highScores.addAll(scores);
   });
 }
 
 main() {
-  router.addHandler(highScoresUrl, (_) => showHighScores = true);
+  router
+    ..addHandler(highScoresUrl, (_) => showHighScores = true)
+    ..listen();
+
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
+
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
   _gameLoop = new GameLoop(_canvasElement);
@@ -107,6 +131,7 @@ main() {
   _gameLoop.onTouchEnd = gameTouchEnd;
   assetManager.loadPack('game', '../assets.pack')
       .then((_) => initialize())
+      .then((_) => loadHighScores())
       .then((_) => _gameLoop.start())
       .then((_) => startNewGame());
 }
