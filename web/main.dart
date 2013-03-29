@@ -75,7 +75,6 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
 main() {
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
-
   _boardView = new BoardView(_canvasElement);
   _gameLoop = new GameLoop(_canvasElement);
   // Don't lock the pointer on a click.

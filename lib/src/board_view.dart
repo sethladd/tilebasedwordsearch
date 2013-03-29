@@ -6,19 +6,22 @@ class TileCoord {
 }
 
 class BoardView {
-  int WIDTH = 320;
-  int HEIGHT = 320;
+  final int WIDTH = 320;
+  final int HEIGHT = 320;
+  final int NUM_TILES = 4;
 
   num tileSize;
   num gapSize;
 
+  RectangleTransform canvasTransform;
   CanvasElement canvas;
-
+  final List<RectangleTransform> letterTiles = new List<RectangleTransform>();
   // TODO: Set these.
   String defaultColor;
   String selectedColor;
 
   BoardView(CanvasElement this.canvas) {
+    letterTiles.length = 16;
     init();
   }
 
@@ -27,8 +30,28 @@ class BoardView {
     canvas.height = HEIGHT;
 
     var constraint = min(WIDTH, HEIGHT);
+
     tileSize = constraint / 4.75;
     gapSize = tileSize * 0.25;
+
+    // Loop through the tiles and draw each one.
+    for (int i = 0; i < NUM_TILES; i++) {
+      for (int j = 0; j < NUM_TILES; j++) {
+        num x = (i * (tileSize + gapSize)).toInt();
+        num y = (j * (tileSize + gapSize)).toInt();
+        num width = tileSize.toInt();
+        num height = tileSize.toInt();
+        letterTiles[tileIndex(i, j)] =
+            new RectangleTransform.raw(x, y, width, height);
+      }
+    }
+  }
+
+  int tileIndex(int row, int column) {
+    return row*4+column;
+  }
+
+  RectangleTransform getTileRectangle(int row, int column) {
 
   }
 
@@ -42,15 +65,22 @@ class BoardView {
     // TODO.
   }
 
+  void update(game_loop.GameLoopTouch touch) {
+
+  }
+
   void render() {
     var c = canvas.context2d;
+    for (int i = 0; i < letterTiles.length; i++) {
+      letterTiles[i].drawOutline(canvas);
+    }
 
     // Clear canvas.
     c.clearRect(0, 0, WIDTH, HEIGHT);
 
     // Loop through the tiles and draw each one.
-    for (int i = 0; i < 4; i++) { // each row
-      for (int j = 0; j < 4; j++) { // each column
+    for (int i = 0; i < NUM_TILES; i++) { // each row
+      for (int j = 0; j < NUM_TILES; j++) { // each column
 
         var coord = getTileCoord(i, j);
 
