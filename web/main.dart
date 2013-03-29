@@ -12,7 +12,7 @@ CanvasElement _canvasElement;
 GameLoop _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
-final Store highScores = new IndexedDbStore('tbwg', 'highScores');
+final Store highScoresStore = new IndexedDbStore('tbwg', 'highScores');
 @observable Game game;
 
 final Router router = new Router();
@@ -37,7 +37,7 @@ void initialize() {
 void startNewGame() {
   game = new Game(dictionary, _canvasElement);
   game.done.then((_) {
-    highScores.save(game.score, new DateTime.now().toString());
+    highScoresStore.save(game.score, new DateTime.now().toString());
   });
 }
 
@@ -77,6 +77,12 @@ void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
   if (touch == currentTouch) {
     currentTouch = null;
   }
+}
+
+void displayHighScores() {
+  highScoresStore.all().toList().then(() {
+    
+  });
 }
 
 main() {
