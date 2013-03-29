@@ -69,7 +69,7 @@ class BoardView {
     // TODO.
   }
 
-  void update(game_loop.GameLoopTouch touch) {
+  void update(GameLoopTouch touch) {
 
   }
 

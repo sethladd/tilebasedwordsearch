@@ -3,7 +3,7 @@ library tilebasedwordsearch;
 import 'dart:math';
 import 'dart:html';
 import 'dart:async';
-import 'package:game_loop/game_loop.dart' as game_loop;
+import 'package:game_loop/game_loop.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
 

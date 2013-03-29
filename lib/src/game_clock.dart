@@ -2,18 +2,18 @@ part of tilebasedwordsearch;
 
 class GameClock {
   static const int DEFAULT_GAME_LENGTH = 70;
-  final game_loop.GameLoop gameLoop;
+  final GameLoop gameLoop;
 
   bool shouldPause = false;
   int gameLength = DEFAULT_GAME_LENGTH;
-  game_loop.GameLoopTimer timer;
+  GameLoopTimer timer;
   
   @observable
   String timeRemaining = "Not yet started";
   
   int secondsRemaining = DEFAULT_GAME_LENGTH;
   
-  GameClock(game_loop.GameLoop this.gameLoop, {this.gameLength:DEFAULT_GAME_LENGTH}) {
+  GameClock(GameLoop this.gameLoop, {this.gameLength:DEFAULT_GAME_LENGTH}) {
     if (gameLength != null) {
       secondsRemaining = gameLength;
     }
@@ -38,7 +38,7 @@ class GameClock {
     return '$minuteString$secondString';
   }
   
-  tick(game_loop.GameLoopTimer _) {
+  tick(GameLoopTimer _) {
     if (!shouldPause) {
       secondsRemaining--;
       timeRemaining = formatTime(secondsRemaining);
