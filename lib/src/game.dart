@@ -65,9 +65,13 @@ class Game {
  
   bool attemptWord(String word) {
     if (_wordIsValid(word)) {
-      score += word.length;
+      score += scoreForWord(word);
       words.add(word);
     }
+  }
+  
+  int scoreForWord(String word) {
+    return word.length;
   }
   
   bool _wordIsValid(String word) => dictionary.hasWord(word);

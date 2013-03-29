@@ -12,3 +12,4 @@ dependencies:
   browser: any
   web_ui: any
   benchmark_harness: any
+  lawndart: any
