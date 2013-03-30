@@ -25,12 +25,8 @@ class Game {
   Completer whenDone = new Completer();
   
   String get currentWord {
-    StringBuffer sb = new StringBuffer();
-    for (var i = 0; i < selectedPositions.length; i++) {
-       sb.write(grid[i].first);      
-    }
-    return sb.toString();
-  }
+    return selectedPositions.join('');
+ }
   
   void clearSelectedPositions() {
     selectedPositions = [];
