@@ -23,7 +23,6 @@ class Game {
 
   GameClock gameClock;
   BoardView board;
-  Completer whenDone = new Completer();
 
   String get currentWord {
     return selectedPositions.join('');
@@ -33,7 +32,7 @@ class Game {
     selectedPositions = [];
   }
 
-  bool addToselectedPositions(position) {
+  bool addToSelectedPositions(position) {
     if (selectedPositions.isEmpty || this.validMove(selectedPositions.last, position)) {
       selectedPositions.add(position);
       return true;
@@ -52,6 +51,7 @@ class Game {
     }
     return selected;
   }
+  
   Game(this.dictionary, this.canvas, gameLoop, this.letterAtlas) {
     _assignCharsToPositions();
     board = new BoardView(this, canvas);
@@ -124,7 +124,7 @@ class Game {
   }
 
   Future get done {
-    return whenDone.future;
+    return gameClock.allDone.future;
   }
 
   bool _wordIsValid(String word) => dictionary.hasWord(word);
