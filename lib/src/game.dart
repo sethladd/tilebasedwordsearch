@@ -110,9 +110,9 @@ class Game {
     if (words.contains(word)) {
       return false;
     }
-    
     if (_wordIsValid(word)) {
       score += scoreForWord(word);
+      print('score = $score');
       words.add(word);
       return true;
     }
@@ -120,7 +120,9 @@ class Game {
   }
 
   int scoreForWord(String word) {
-    return word.length;
+    List<int> scores = word.split('').map(
+        (char) => Game.LETTERS[char]).toList();
+    return scores.reduce((value, element) => value + element);
   }
 
   Future get done {
