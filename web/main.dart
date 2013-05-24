@@ -10,7 +10,7 @@ import 'package:route/client.dart';
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 
 CanvasElement _canvasElement;
-GameLoop _gameLoop;
+GameLoopHtml _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 ImageAtlas letterAtlas;
@@ -113,23 +113,25 @@ Future loadHighScores() {
 }
 
 main() {
+  /*
   router
     ..addHandler(highScoresUrl, (_) => showHighScores = true)
     ..listen();
+  */
 
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
 
   print('Touch events supported? ${TouchEvent.supported}');
   _canvasElement = query('#frontBuffer');
-  _gameLoop = new GameLoop(_canvasElement);
+  _gameLoop = new GameLoopHtml(_canvasElement);
   // Don't lock the pointer on a click.
   _gameLoop.pointerLock.lockOnClick = false;
   _gameLoop.onUpdate = gameUpdate;
   _gameLoop.onRender = gameRender;
   _gameLoop.onTouchStart = gameTouchStart;
   _gameLoop.onTouchEnd = gameTouchEnd;
-  assetManager.loadPack('game', '../assets.pack')
+  assetManager.loadPack('game', '../assets/_.pack')
       .then((_) => initialize())
       .then((_) => loadHighScores())
       .then((_) => _gameLoop.start())
