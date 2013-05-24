@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <element name="high-scores" extends="div" constructor="HighScores">
+      <template>
+        <h2>High Scores</h2>
+        <template if="highScores.length > 0">
+          <ul>
+            <template iterate="score in highScores">
+              <li>{{ score }}</li>
+            </template>
+          </ul>
+        </template>
+        <template if="highScores.length <= 0">
+          No high scores yet.
+        </template>
+      </template>
+      <script type="application/dart" src="high_scores.dart"></script>
+    </element>
+  </body>
+</html>
