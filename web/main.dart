@@ -1,38 +1,22 @@
 import 'dart:html';
-import 'dart:math';
 import 'dart:async';
-import 'package:game_loop/game_loop_html.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
 import 'package:lawndart/lawndart.dart';
 
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 
-CanvasElement _canvasElement;
-GameLoopHtml _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 ImageAtlas letterAtlas;
 final Store highScoresStore = new Store('tbwg', 'highScores');
 final List<int> highScores = toObservable([]);
-@observable Game game;
 
-@observable bool ready = false;
-@observable bool showHighScores = false;
-
-bool paused = false;
-
-void drawCircle(int x, int y) {
-  var context = _canvasElement.context2d;
-  context.beginPath();
-  context.arc(x, y, 20.0, 0, 2 * PI);
-  context.fillStyle = 'green';
-  context.fill();
-}
+@observable String currentPanel = 'main';
 
 Future initialize() {
   if (assetManager['game.dictionary'] == null) {
-    throw(new StateError('Can\'t play without a dictionary.'));
+    throw new StateError('Can\'t play without a dictionary.');
   }
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
 
@@ -62,71 +46,6 @@ Future initialize() {
 
 }
 
-void startNewGame() {
-  game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
-  (query('#start-game-button') as ButtonElement).disabled = true;
-  game.gameClock.start();
-  game.done.then((_) {
-    highScoresStore.save(game.score, new DateTime.now().toString());
-    highScores.add(game.score);
-    (query('#start-game-button') as ButtonElement).disabled = false;
-  });
-}
-
-void togglePause() {
-  var button = query('#pause-button');
-
-  if (!paused) {
-    game.gameClock.pause();
-    button.text = "Resume";
-  } else {
-    game.gameClock.restart();
-    button.text = "Pause";
-  }
-  paused = !paused;
-}
-
-void gameUpdate(GameLoopHtml gameLoop) {
-  game.board.update(currentTouch);
-}
-
-void gameRender(GameLoopHtml gameLoop) {
-  if (game != null) {
-    game.board.render();
-  }
-  if (currentTouch == null) {
-    return;
-  }
-  var transform = new RectangleTransform(_canvasElement);
-  currentTouch.positions.forEach((position) {
-    int x = position.x;
-    int y = position.y;
-    if (transform.contains(x, y)) {
-      int rx = transform.transformX(x);
-      int ry = transform.transformY(y);
-      drawCircle(rx, ry);
-    }
-  });
-}
-
-GameLoopTouch currentTouch;
-
-void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
-  if (currentTouch == null) {
-    currentTouch = touch;
-  }
-}
-
-void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
-  if (touch == currentTouch) {
-    currentTouch = null;
-    String word = game.board.selectedLetters;
-    if (game.attemptWord(word)) {
-      print('Found word $word');
-    }
-  }
-}
-
 Future loadHighScores() {
   return highScoresStore.all().toList().then((scores) {
     highScores.addAll(scores);
@@ -138,21 +57,8 @@ main() {
   assetManager.importers['image'] = new NoopImporter();
 
   print('Touch events supported? ${TouchEvent.supported}');
-  _canvasElement = query('#frontBuffer');
-  _gameLoop = new GameLoopHtml(_canvasElement);
-  // Don't lock the pointer on a click.
-  _gameLoop.pointerLock.lockOnClick = false;
-  _gameLoop.onUpdate = gameUpdate;
-  _gameLoop.onRender = gameRender;
-  _gameLoop.onTouchStart = gameTouchStart;
-  _gameLoop.onTouchEnd = gameTouchEnd;
+
   assetManager.loadPack('game', '../assets/_.pack')
       .then((_) => initialize())
-      .then((_) => loadHighScores())
-      .then((_) => _gameLoop.start())
-      .then((_) {
-        (query('#start-game-button') as ButtonElement).disabled = false;
-        (query('#pause-button') as ButtonElement).disabled = false;
-      })
-      .then((_) => startNewGame()); // Auto start the game
+      .then((_) => loadHighScores());
 }

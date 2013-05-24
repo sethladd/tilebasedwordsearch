@@ -5,28 +5,27 @@
     <meta charset="utf-8">
     <title>Tile based word forming entertainment</title>
     <link rel="import" href="packages/tilebasedwordsearch/components/high_scores_component.html">
+    <link rel="import" href="packages/tilebasedwordsearch/components/main_panel.html">
+    <link rel="import" href="packages/tilebasedwordsearch/components/new_game_panel.html">
+    <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
   </head>
   <body>
-    <canvas id="frontBuffer"></canvas>
-
-    <div>
-      <button id="start-game-button" on-click="startNewGame()" disabled>Start Game</button>
-      <button id="pause-button" on-click="togglePause()" disabled>Pause</button>
-    </div>
-
-    <template if="game != null">
-      <div>
-        Score: {{ game.score }}
-      </div>
-      <div>
-        Time remaining: {{ game.gameClock.timeRemaining }}
-      </div>
+    <template if="currentPanel == 'main'">
+      <div is="main-panel"></div>
+    </template>
+    
+    <template id="currentPanel == 'game'">
+      <div is="game-panel"
+           dictionary="{{dictionary}}"
+           letter-atlas="{{letterAtlas}}"></div>
+    </template>
+    
+    <template id="currentPanel == 'newGame'">
+      Placeholder for New Game
     </template>
 
-    <a href="/high-scores">Show high scores</a>
-
-    <template if="showHighScores">
-      <high-scores high-scores="{{highScores}}"></high-scores>
+    <template if="currentPanel == 'highScores'">
+      <div is="high-scores" high-scores="{{highScores}}"></div>
     </template>
 
     <script type="application/dart" src="main.dart"></script>

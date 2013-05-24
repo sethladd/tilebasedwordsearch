@@ -8,17 +8,14 @@
           <canvas id="frontBuffer"></canvas>
 
           <div>
-            <button id="pause-button" on-click="togglePause()" disabled>Pause</button>
+            <button on-click="togglePause($event)" disabled>Pause</button>
           </div>
-
-          <template if="game != null">
-            <div>
-              Score: {{ game.score }}
-            </div>
-            <div>
-              Time remaining: {{ game.gameClock.timeRemaining }}
-            </div>
-          </template>
+          <div>
+            Score: {{ game.score }}
+          </div>
+          <div>
+            Time remaining: {{ game.gameClock.timeRemaining }}
+          </div>
       </template>
       <script type="application/dart" src="game_panel.dart"></script>
     </element>
