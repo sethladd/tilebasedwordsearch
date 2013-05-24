@@ -97,6 +97,9 @@ class BoardView {
     // Clear canvas.
     c.clearRect(0, 0, WIDTH, HEIGHT);
 
+    const int X_OFFSET = 5;
+    const int Y_OFFSET = 60;
+    
     for (int i = 0; i < letterTiles.length; i++) {
       int x = letterTiles[i].left;
       int y = letterTiles[i].top;
@@ -106,7 +109,9 @@ class BoardView {
         c.strokeStyle = '#000000';
       }
       letterTiles[i].drawOutline(canvas);
-      game.letterAtlas.draw(game.grid[i ~/ NUM_TILES][i % NUM_TILES], c, x, y);
+      var elementName = game.grid[i ~/ NUM_TILES][i % NUM_TILES];
+      game.letterAtlas.draw(elementName, c, x, y);
+      c.fillText(Game.LETTERS[elementName].toString(), x + X_OFFSET, y + Y_OFFSET);
     }
 
     return;

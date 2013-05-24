@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <element name="new-game-panel" extends="div" constructor="NewGamePanel">
+      <template>
+        <h2>New Game Panel</h2>
+        <div>
+          <button id="start-game-button" on-click="startNewGame()" disabled>Start Game</button>
+        </div>
+        <div>
+          <ul>
+            <li>Player 1</li>
+            <li>Player 2</li>
+            <li>Player 3</li>
+          </ul>
+        </div>
+      </template>
+      <script type="application/dart" src="new_game_panel.dart"></script>
+    </element>
+  </body>
+</html>
