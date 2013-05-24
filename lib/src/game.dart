@@ -23,11 +23,11 @@ class Game {
   GameClock gameClock;
   BoardView board;
   Completer whenDone = new Completer();
-  
+
   String get currentWord {
     return selectedPositions.join('');
  }
-  
+
   void clearSelectedPositions() {
     selectedPositions = [];
   }
@@ -39,7 +39,7 @@ class Game {
     }
     return false;
   }
-  
+
   bool isPositionSelected(position) {
     bool selected = false;
     for (var i = 0; i < selectedPositions.length; i++) {
@@ -55,7 +55,6 @@ class Game {
     _assignCharsToPositions();
     board = new BoardView(this, canvas);
     gameClock = new GameClock(gameLoop);
-    gameClock.start();
   }
 
   void _assignCharsToPositions() {

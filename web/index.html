@@ -8,12 +8,12 @@
   </head>
   <body>
     <canvas id="frontBuffer"></canvas>
-    
+
     <div>
-      <button on-click="startNewGame()">Start Game</button>
-      <button id="pause-button" on-click="togglePause()">Pause</button>
+      <button id="start-game-button" on-click="startNewGame()" disabled>Start Game</button>
+      <button id="pause-button" on-click="togglePause()" disabled>Pause</button>
     </div>
-    
+
     <template if="game != null">
       <div>
         Score: {{ game.score }}
@@ -22,13 +22,11 @@
         Time remaining: {{ game.gameClock.timeRemaining }}
       </div>
     </template>
-    
-    <button on-click="showHighScores = true">Show high scores</button>
-    
+
     <template if="showHighScores">
       <high-scores high-scores="{{highScores}}"></high-scores>
     </template>
-    
+
     <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
   </body>

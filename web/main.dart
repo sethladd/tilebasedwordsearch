@@ -57,9 +57,12 @@ Future initialize() {
 
 void startNewGame() {
   game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
+  (query('#start-game-button') as ButtonElement).disabled = true;
+  game.gameClock.start();
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
     highScores.add(game.score);
+    (query('#start-game-button') as ButtonElement).disabled = false;
   });
 }
 
@@ -143,5 +146,8 @@ main() {
       .then((_) => initialize())
       .then((_) => loadHighScores())
       .then((_) => _gameLoop.start())
-      .then((_) => startNewGame());
+      .then((_) {
+        (query('#start-game-button') as ButtonElement).disabled = false;
+        (query('#pause-button') as ButtonElement).disabled = false;
+      });
 }
