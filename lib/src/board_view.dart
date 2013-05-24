@@ -16,6 +16,8 @@ class BoardView {
   RectangleTransform canvasTransform;
   CanvasElement canvas;
   final List<RectangleTransform> letterTiles = new List<RectangleTransform>();
+  final Set<int> selectedTiles = new Set<int>();
+  String selectedLetters = '';
 
   // Reference to the main game object.
   final Game game;
@@ -69,8 +71,32 @@ class BoardView {
     // TODO.
   }
 
-  void update(GameLoopTouch touch) {
 
+  void update(GameLoopTouch touch) {
+    if (touch != null) {
+      int selectedIndex = 0;
+      for (int i = 0; i < NUM_TILES; i++) {
+        for (int j = 0; j < NUM_TILES; j++) {
+          var transform = getTileRectangle(i, j);
+          for (var position in touch.positions) {
+            if (transform.contains(position.x, position.y)) {
+              int index = tileIndex(i,j);
+              if (selectedTiles.contains(index) == false) {
+                selectedTiles.add(tileIndex(i, j));
+                selectedLetters = '$selectedLetters${game.grid[i][j]}';
+              }
+            }
+          }
+        }
+      }
+    } else {
+      selectedTiles.clear();
+      selectedLetters = '';
+    }
+    if (selectedTiles.length > 0) {
+      print(selectedTiles);
+      print(selectedLetters);
+    }
   }
 
   void render() {
@@ -78,11 +104,21 @@ class BoardView {
     // Clear canvas.
     c.clearRect(0, 0, WIDTH, HEIGHT);
 
+    const int X_OFFSET = 5;
+    const int Y_OFFSET = 60;
+
     for (int i = 0; i < letterTiles.length; i++) {
       int x = letterTiles[i].left;
       int y = letterTiles[i].top;
+      if (selectedTiles.contains(i)) {
+        c.strokeStyle = '#ff0000';
+      } else {
+        c.strokeStyle = '#000000';
+      }
       letterTiles[i].drawOutline(canvas);
-      game.letterAtlas.draw(game.grid[i ~/ NUM_TILES][i % NUM_TILES], c, x, y);
+      var elementName = game.grid[i ~/ NUM_TILES][i % NUM_TILES];
+      game.letterAtlas.draw(elementName, c, x, y);
+      c.fillText(Game.LETTERS[elementName].toString(), x + X_OFFSET, y + Y_OFFSET);
     }
 
     return;

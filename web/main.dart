@@ -40,12 +40,12 @@ Future initialize() {
     throw(new StateError('Can\'t play without a dictionary.'));
   }
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
-  
+
   var letterTileImage = assetManager['game.tile-letters'];
   if (letterTileImage == null) {
     throw(new StateError('Can\'t play without tile images.'));
   }
-  
+
   letterAtlas = new ImageAtlas(letterTileImage);
   final int letterRow = 5;
   final int lettersPerRow = 6;
@@ -91,12 +91,11 @@ void togglePause() {
   paused = !paused;
 }
 
-void gameUpdate(GameLoop gameLoop) {
-  //_boardView.update(currentTouch);
-  // game.tick(gameLoop.dt);
+void gameUpdate(GameLoopHtml gameLoop) {
+  game.board.update(currentTouch);
 }
 
-void gameRender(GameLoop gameLoop) {
+void gameRender(GameLoopHtml gameLoop) {
   if (game != null) {
     game.board.render();
   }
@@ -126,6 +125,10 @@ void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
 void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
   if (touch == currentTouch) {
     currentTouch = null;
+    String word = game.board.selectedLetters;
+    if (game.attemptWord(word)) {
+      print('Found word $word');
+    }
   }
 }
 
@@ -161,5 +164,6 @@ main() {
       .then((_) {
         (query('#start-game-button') as ButtonElement).disabled = false;
         (query('#pause-button') as ButtonElement).disabled = false;
-      });
+      })
+      .then((_) => startNewGame()); // Auto start the game
 }
