@@ -23,6 +23,8 @@
       </div>
     </template>
 
+    <button on-click="showHighScores = true">Show high scores</button>
+
     <template if="showHighScores">
       <high-scores high-scores="{{highScores}}"></high-scores>
     </template>
