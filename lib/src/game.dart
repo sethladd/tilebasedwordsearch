@@ -3,6 +3,7 @@ part of tilebasedwordsearch;
 @observable
 class Game {
   final TileSet tileSet = new TileSet();
+
   static const DIMENSIONS = 4;
   static const Map<String, num> LETTERS =  const {
     'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1,
@@ -15,14 +16,13 @@ class Game {
   List selectedPositions = [];
   int score = 0;
   final Dictionary dictionary;
-  List<String> words = <String>[];
+  Set<String> words = new Set<String>();
 
   final CanvasElement canvas;
   final ImageAtlas letterAtlas;
 
   GameClock gameClock;
   BoardView board;
-  Completer whenDone = new Completer();
 
   String get currentWord {
     return selectedPositions.join('');
@@ -32,7 +32,7 @@ class Game {
     selectedPositions = [];
   }
 
-  bool addToselectedPositions(position) {
+  bool addToSelectedPositions(position) {
     if (selectedPositions.isEmpty || this.validMove(selectedPositions.last, position)) {
       selectedPositions.add(position);
       return true;
@@ -51,10 +51,15 @@ class Game {
     }
     return selected;
   }
+  
   Game(this.dictionary, this.canvas, gameLoop, this.letterAtlas) {
     _assignCharsToPositions();
     board = new BoardView(this, canvas);
     gameClock = new GameClock(gameLoop);
+  }
+  
+  void stop() {
+    gameClock.stop();
   }
 
   void _assignCharsToPositions() {
@@ -105,8 +110,12 @@ class Game {
   }
 
   bool attemptWord(String word) {
+    if (words.contains(word)) {
+      return false;
+    }
     if (_wordIsValid(word)) {
       score += scoreForWord(word);
+      print('score = $score');
       words.add(word);
       return true;
     }
@@ -114,11 +123,13 @@ class Game {
   }
 
   int scoreForWord(String word) {
-    return word.length;
+    List<int> scores = word.split('').map(
+        (char) => Game.LETTERS[char]).toList();
+    return scores.reduce((value, element) => value + element);
   }
 
   Future get done {
-    return whenDone.future;
+    return gameClock.allDone.future;
   }
 
   bool _wordIsValid(String word) => dictionary.hasWord(word);

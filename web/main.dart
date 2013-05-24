@@ -5,7 +5,6 @@ import 'package:game_loop/game_loop_html.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
 import 'package:lawndart/lawndart.dart';
-import 'package:route/client.dart';
 
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 
@@ -14,13 +13,9 @@ GameLoopHtml _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 ImageAtlas letterAtlas;
-final Store highScoresStore = new IndexedDbStore('tbwg', 'highScores');
+final Store highScoresStore = new Store('tbwg', 'highScores');
 final List<int> highScores = toObservable([]);
 @observable Game game;
-
-final Router router = new Router();
-final UrlPattern gameUrl = new UrlPattern(r'/game');
-final UrlPattern highScoresUrl = new UrlPattern(r'/high-scores');
 
 @observable bool ready = false;
 @observable bool showHighScores = false;
@@ -70,12 +65,28 @@ Future initialize() {
 void startNewGame() {
   game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
   (query('#start-game-button') as ButtonElement).disabled = true;
+  (query('#end-game-button') as ButtonElement).disabled = false;
+  (query('#pause-button') as ButtonElement).disabled = false;
   game.gameClock.start();
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
     highScores.add(game.score);
     (query('#start-game-button') as ButtonElement).disabled = false;
+    (query('#end-game-button') as ButtonElement).disabled = true;
+    (query('#pause-button') as ButtonElement).disabled = true;
   });
+}
+
+void endGame() {
+  // XXX: should confirm first
+  game.stop();
+  
+  // XXX: should factor out all the button enabling/disabling code.
+  (query('#start-game-button') as ButtonElement).disabled = false;
+  (query('#end-game-button') as ButtonElement).disabled = true;
+  (query('#pause-button') as ButtonElement).disabled = true;
+  
+  print('GAME ENDED');
 }
 
 void togglePause() {
@@ -139,12 +150,6 @@ Future loadHighScores() {
 }
 
 main() {
-  /*
-  router
-    ..addHandler(highScoresUrl, (_) => showHighScores = true)
-    ..listen();
-  */
-
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
 
