@@ -6,7 +6,6 @@ class GameClock {
 
   bool shouldPause = false;
   int gameLength = DEFAULT_GAME_LENGTH;
-  GameLoopTimer timer;
   
   @observable
   String timeRemaining = "Not yet started";
@@ -54,7 +53,7 @@ class GameClock {
   }
   
   stop() {
-    timer.cancel();
+    //TODO: stop it
   }
   
   pause() {
