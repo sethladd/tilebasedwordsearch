@@ -2,7 +2,7 @@ part of tilebasedwordsearch;
 
 @observable
 class Game {
-
+  final TileSet tileSet = new TileSet();
   static const DIMENSIONS = 4;
   static const Map<String, num> LETTERS =  const {
     'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1,
@@ -58,12 +58,11 @@ class Game {
   }
 
   void _assignCharsToPositions() {
-    Random random = new Random();
+    int gameId = new Random().nextInt(1000000);
+    List<String> selectedLetters = tileSet.getTilesForGame(gameId);
     for (var i = 0; i < DIMENSIONS; i++) {
       for (var j = 0; j < DIMENSIONS; j++) {
-        var keys = LETTERS.keys.toList();
-        var char = keys[random.nextInt(LETTERS.length)];
-        this.grid[i][j] = char;
+        this.grid[i][j] = selectedLetters[i*DIMENSIONS+j];
       }
     }
   }
