@@ -17,6 +17,7 @@ class BoardView {
   CanvasElement canvas;
   final List<RectangleTransform> letterTiles = new List<RectangleTransform>();
   final Set<int> selectedTiles = new Set<int>();
+  String selectedLetters = '';
 
   // Reference to the main game object.
   final Game game;
@@ -79,16 +80,22 @@ class BoardView {
           var transform = getTileRectangle(i, j);
           for (var position in touch.positions) {
             if (transform.contains(position.x, position.y)) {
-              selectedTiles.add(tileIndex(i, j));
+              int index = tileIndex(i,j);
+              if (selectedTiles.contains(index) == false) {
+                selectedTiles.add(tileIndex(i, j));
+                selectedLetters = '$selectedLetters${game.grid[i][j]}';
+              }
             }
           }
         }
       }
     } else {
       selectedTiles.clear();
+      selectedLetters = '';
     }
     if (selectedTiles.length > 0) {
       print(selectedTiles);
+      print(selectedLetters);
     }
   }
 
@@ -99,7 +106,7 @@ class BoardView {
 
     const int X_OFFSET = 5;
     const int Y_OFFSET = 60;
-    
+
     for (int i = 0; i < letterTiles.length; i++) {
       int x = letterTiles[i].left;
       int y = letterTiles[i].top;
