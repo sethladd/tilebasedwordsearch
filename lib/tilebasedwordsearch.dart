@@ -14,3 +14,4 @@ part 'src/dictionary.dart';
 part 'src/rectangle_transform.dart';
 part 'src/image_atlas.dart';
 part 'src/game_score.dart';
+part 'src/tile_set.dart';

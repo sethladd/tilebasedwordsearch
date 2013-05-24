@@ -2,19 +2,15 @@ import 'dart:html';
 import 'dart:async';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
-import 'package:lawndart/lawndart.dart';
-
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 ImageAtlas letterAtlas;
-final Store highScoresStore = new Store('tbwg', 'highScores');
-final List<int> highScores = toObservable([]);
 
 @observable String currentPanel = 'main';
 
-Future initialize() {
+void initialize() {
   if (assetManager['game.dictionary'] == null) {
     throw new StateError('Can\'t play without a dictionary.');
   }
@@ -42,14 +38,6 @@ Future initialize() {
       letterAtlas.addElement(letters[index], x, y, letterWidth, letterWidth);
     }
   }
-  return highScoresStore.open();
-
-}
-
-Future loadHighScores() {
-  return highScoresStore.all().toList().then((scores) {
-    highScores.addAll(scores);
-  });
 }
 
 main() {
@@ -59,6 +47,5 @@ main() {
   print('Touch events supported? ${TouchEvent.supported}');
 
   assetManager.loadPack('game', '../assets/_.pack')
-      .then((_) => initialize())
-      .then((_) => loadHighScores());
+      .then((_) => initialize());
 }

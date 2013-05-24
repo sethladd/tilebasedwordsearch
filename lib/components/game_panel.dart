@@ -18,9 +18,13 @@ class GamePanel extends WebComponent {
   GameLoopTouch currentTouch;
   bool paused = false;
   CanvasElement _canvasElement;
+  ButtonElement _pauseButton;
+  ButtonElement _endButton;
   
   @override
   inserted() {
+    _pauseButton = query('#pause');
+    _endButton = query('#end');
     _canvasElement = query('#frontBuffer');
     _gameLoop = new GameLoopHtml(_canvasElement);
     // Don't lock the pointer on a click.
@@ -33,23 +37,34 @@ class GamePanel extends WebComponent {
   
   void startNewGame() {
     game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
-    (query('#start-game-button') as ButtonElement).disabled = true;
     game.gameClock.start();
     game.done.then((_) {
-      (query('#start-game-button') as ButtonElement).disabled = false;
+      disableButtons();
     });
     _gameLoop.start();
   }
 
-  void togglePause(event) {
-    var button = event.target;
+  void disableButtons() {
+    _endButton.disabled = true;
+    _pauseButton.disabled = true;
+  }
+  
+  void endGame() {
+    // XXX: should confirm first
+    game.stop();
+    
+    disableButtons();
+    
+    print('GAME ENDED');
+  }
 
+  void togglePause() {
     if (!paused) {
       game.gameClock.pause();
-      button.text = "Resume";
+      _pauseButton.text = "Resume";
     } else {
       game.gameClock.restart();
-      button.text = "Pause";
+      _pauseButton.text = "Pause";
     }
     paused = !paused;
   }

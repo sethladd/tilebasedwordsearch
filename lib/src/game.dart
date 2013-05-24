@@ -2,8 +2,8 @@ part of tilebasedwordsearch;
 
 @observable
 class Game {
+  final TileSet tileSet = new TileSet();
 
-  
   static const DIMENSIONS = 4;
   static const Map<String, num> LETTERS =  const {
     'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1,
@@ -57,14 +57,17 @@ class Game {
     board = new BoardView(this, canvas);
     gameClock = new GameClock(gameLoop);
   }
+  
+  void stop() {
+    gameClock.stop();
+  }
 
   void _assignCharsToPositions() {
-    Random random = new Random();
+    int gameId = new Random().nextInt(1000000);
+    List<String> selectedLetters = tileSet.getTilesForGame(gameId);
     for (var i = 0; i < DIMENSIONS; i++) {
       for (var j = 0; j < DIMENSIONS; j++) {
-        var keys = LETTERS.keys.toList();
-        var char = keys[random.nextInt(LETTERS.length)];
-        this.grid[i][j] = char;
+        this.grid[i][j] = selectedLetters[i*DIMENSIONS+j];
       }
     }
   }
@@ -110,9 +113,9 @@ class Game {
     if (words.contains(word)) {
       return false;
     }
-    
     if (_wordIsValid(word)) {
       score += scoreForWord(word);
+      print('score = $score');
       words.add(word);
       return true;
     }
@@ -120,7 +123,9 @@ class Game {
   }
 
   int scoreForWord(String word) {
-    return word.length;
+    List<int> scores = word.split('').map(
+        (char) => Game.LETTERS[char]).toList();
+    return scores.reduce((value, element) => value + element);
   }
 
   Future get done {

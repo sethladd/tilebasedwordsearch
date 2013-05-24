@@ -8,7 +8,8 @@
           <canvas id="frontBuffer"></canvas>
 
           <div>
-            <button on-click="togglePause($event)" disabled>Pause</button>
+            <button id="pause" on-click="togglePause()" disabled>Pause</button>
+            <button id="end" on-click="endGame()" disabled>End game</button>
           </div>
           <div>
             Score: {{ game.score }}
