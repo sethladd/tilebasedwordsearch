@@ -1,11 +1,12 @@
 part of tilebasedwordsearch;
 
 class GameClock {
-  static const int DEFAULT_GAME_LENGTH = 70;
+  static const int DEFAULT_GAME_LENGTH = 70; // # of seconds in a game
   final GameLoop gameLoop;
 
   bool shouldPause = false;
   int gameLength = DEFAULT_GAME_LENGTH;
+  Completer allDone = new Completer();
   
   @observable
   String timeRemaining = "Not yet started";
@@ -43,6 +44,9 @@ class GameClock {
       timeRemaining = formatTime(secondsRemaining);
       if (secondsRemaining > 0) {
         gameLoop.addTimer(tick, 1.0); // 1 second timer
+      } else {
+        allDone.complete(true);
+        print('DONE!');
       }
     }
   }
