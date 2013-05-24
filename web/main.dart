@@ -36,8 +36,16 @@ void drawCircle(int x, int y) {
 }
 
 Future initialize() {
+  if (assetManager['game.dictionary'] == null) {
+    throw(new StateError('Can\'t play without a dictionary.'));
+  }
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
+  
   var letterTileImage = assetManager['game.tile-letters'];
+  if (letterTileImage == null) {
+    throw(new StateError('Can\'t play without tile images.'));
+  }
+  
   letterAtlas = new ImageAtlas(letterTileImage);
   final int offset = 11;
   final int letterWidth = 40;
