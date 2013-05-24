@@ -47,19 +47,34 @@ Future initialize() {
   }
   
   letterAtlas = new ImageAtlas(letterTileImage);
-  final int offset = 11;
-  final int letterWidth = 40;
-  letterAtlas.addElement('a', offset, offset, letterWidth, letterWidth);
-  letterAtlas.addElement('~n', 148, 148, letterWidth, letterWidth);
+  final int letterRow = 5;
+  final int lettersPerRow = 6;
+  final int letterWidth = 70;
+  List<String> letters = [ 'A', 'B', 'C', 'D', 'E', 'F',
+                           'G', 'H', 'I', 'J', 'K', 'L',
+                           'M', 'N', '~N', 'O', 'P', 'Q',
+                           'QU', 'R', 'rr', 'S', 'T', 'U',
+                           'V', 'W', 'X', 'Y', 'Z', ' '];
+  for (int i = 0; i < letterRow; i++) {
+    for (int j = 0; j < lettersPerRow; j++) {
+      int index = (i * lettersPerRow) + j;
+      int x = j * letterWidth;
+      int y = i * letterWidth;
+      letterAtlas.addElement(letters[index], x, y, letterWidth, letterWidth);
+    }
+  }
   return highScoresStore.open();
 
 }
 
 void startNewGame() {
   game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
+  (query('#start-game-button') as ButtonElement).disabled = true;
+  game.gameClock.start();
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
     highScores.add(game.score);
+    (query('#start-game-button') as ButtonElement).disabled = false;
   });
 }
 
@@ -143,5 +158,8 @@ main() {
       .then((_) => initialize())
       .then((_) => loadHighScores())
       .then((_) => _gameLoop.start())
-      .then((_) => startNewGame());
+      .then((_) {
+        (query('#start-game-button') as ButtonElement).disabled = false;
+        (query('#pause-button') as ButtonElement).disabled = false;
+      });
 }
