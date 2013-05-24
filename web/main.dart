@@ -39,10 +39,22 @@ Future initialize() {
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
   var letterTileImage = assetManager['game.tile-letters'];
   letterAtlas = new ImageAtlas(letterTileImage);
-  final int offset = 11;
-  final int letterWidth = 40;
-  letterAtlas.addElement('a', offset, offset, letterWidth, letterWidth);
-  letterAtlas.addElement('~n', 148, 148, letterWidth, letterWidth);
+  final int letterRow = 5;
+  final int lettersPerRow = 6;
+  final int letterWidth = 70;
+  List<String> letters = [ 'A', 'B', 'C', 'D', 'E', 'F',
+                           'G', 'H', 'I', 'J', 'K', 'L',
+                           'M', 'N', '~N', 'O', 'P', 'Q',
+                           'QU', 'R', 'rr', 'S', 'T', 'U',
+                           'V', 'W', 'X', 'Y', 'Z', ' '];
+  for (int i = 0; i < letterRow; i++) {
+    for (int j = 0; j < lettersPerRow; j++) {
+      int index = (i * lettersPerRow) + j;
+      int x = j * letterWidth;
+      int y = i * letterWidth;
+      letterAtlas.addElement(letters[index], x, y, letterWidth, letterWidth);
+    }
+  }
   return highScoresStore.open();
 
 }

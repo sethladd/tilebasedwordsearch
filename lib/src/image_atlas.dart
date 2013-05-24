@@ -22,7 +22,7 @@ class ImageAtlas {
             int y) {
     var atlasElement = elements[atlasElementName];
     if (atlasElement == null) {
-      print('no atlas');
+      print('no atlas for $atlasElementName');
       return;
     }
     Rect destRect = new Rect(x, y, atlasElement.rect.width,
