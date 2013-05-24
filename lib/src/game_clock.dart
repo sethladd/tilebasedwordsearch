@@ -9,7 +9,7 @@ class GameClock {
   Completer allDone = new Completer();
   
   @observable
-  String timeRemaining = 'Not yet started';
+  String timeRemaining = "Not yet started";
   
   int secondsRemaining = DEFAULT_GAME_LENGTH;
   
@@ -21,7 +21,7 @@ class GameClock {
   }
   
   String formatTime(int seconds) {
-    if (seconds <= 0) return 'OUT OF TIME!!!!'; // XXX ok for stop() case?
+    if (seconds <= 0) return 'OUT OF TIME!!!!';
     
     int m = seconds ~/ 60;
     int s = seconds % 60;
@@ -57,10 +57,7 @@ class GameClock {
   }
   
   stop() {
-    shouldPause = true;
-    secondsRemaining == 0;
-    timeRemaining = 'GAME OVER!';
-    allDone.complete(true);
+    //TODO: stop it
   }
   
   pause() {

@@ -57,10 +57,6 @@ class Game {
     board = new BoardView(this, canvas);
     gameClock = new GameClock(gameLoop);
   }
-  
-  void stop() {
-    gameClock.stop();
-  }
 
   void _assignCharsToPositions() {
     Random random = new Random();
