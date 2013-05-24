@@ -36,8 +36,16 @@ void drawCircle(int x, int y) {
 }
 
 Future initialize() {
+  if (assetManager['game.dictionary'] == null) {
+    throw(new StateError('Can\'t play without a dictionary.'));
+  }
   dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
+  
   var letterTileImage = assetManager['game.tile-letters'];
+  if (letterTileImage == null) {
+    throw(new StateError('Can\'t play without tile images.'));
+  }
+  
   letterAtlas = new ImageAtlas(letterTileImage);
   final int letterRow = 5;
   final int lettersPerRow = 6;
@@ -61,9 +69,12 @@ Future initialize() {
 
 void startNewGame() {
   game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
+  (query('#start-game-button') as ButtonElement).disabled = true;
+  game.gameClock.start();
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
     highScores.add(game.score);
+    (query('#start-game-button') as ButtonElement).disabled = false;
   });
 }
 
@@ -147,5 +158,8 @@ main() {
       .then((_) => initialize())
       .then((_) => loadHighScores())
       .then((_) => _gameLoop.start())
-      .then((_) => startNewGame());
+      .then((_) {
+        (query('#start-game-button') as ButtonElement).disabled = false;
+        (query('#pause-button') as ButtonElement).disabled = false;
+      });
 }

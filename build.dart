@@ -9,4 +9,3 @@ void main() {
       .then((_) => Process.run('cp', ['-R', 'web/assets', 'web/out']))
       .then((_) => print('All done'));
 }
-
