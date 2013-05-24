@@ -1,7 +1,7 @@
 import 'dart:html';
 import 'dart:math';
 import 'dart:async';
-import 'package:game_loop/game_loop.dart';
+import 'package:game_loop/game_loop_html.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
 import 'package:lawndart/lawndart.dart';
