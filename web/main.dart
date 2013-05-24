@@ -14,7 +14,7 @@ GameLoopHtml _gameLoop;
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 ImageAtlas letterAtlas;
-final Store highScoresStore = new IndexedDbStore('tbwg', 'highScores');
+final Store highScoresStore = new Store('tbwg', 'highScores');
 final List<int> highScores = toObservable([]);
 @observable Game game;
 
