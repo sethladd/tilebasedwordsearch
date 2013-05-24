@@ -16,6 +16,7 @@ class BoardView {
   RectangleTransform canvasTransform;
   CanvasElement canvas;
   final List<RectangleTransform> letterTiles = new List<RectangleTransform>();
+  final Set<int> selectedTiles = new Set<int>();
 
   // Reference to the main game object.
   final Game game;
@@ -69,8 +70,26 @@ class BoardView {
     // TODO.
   }
 
-  void update(GameLoopTouch touch) {
 
+  void update(GameLoopTouch touch) {
+    if (touch != null) {
+      int selectedIndex = 0;
+      for (int i = 0; i < NUM_TILES; i++) {
+        for (int j = 0; j < NUM_TILES; j++) {
+          var transform = getTileRectangle(i, j);
+          for (var position in touch.positions) {
+            if (transform.contains(position.x, position.y)) {
+              selectedTiles.add(tileIndex(i, j));
+            }
+          }
+        }
+      }
+    } else {
+      selectedTiles.clear();
+    }
+    if (selectedTiles.length > 0) {
+      print(selectedTiles);
+    }
   }
 
   void render() {
@@ -81,6 +100,11 @@ class BoardView {
     for (int i = 0; i < letterTiles.length; i++) {
       int x = letterTiles[i].left;
       int y = letterTiles[i].top;
+      if (selectedTiles.contains(i)) {
+        c.strokeStyle = '#ff0000';
+      } else {
+        c.strokeStyle = '#000000';
+      }
       letterTiles[i].drawOutline(canvas);
       game.letterAtlas.draw(game.grid[i ~/ NUM_TILES][i % NUM_TILES], c, x, y);
     }
