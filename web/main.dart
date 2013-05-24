@@ -65,12 +65,28 @@ Future initialize() {
 void startNewGame() {
   game = new Game(dictionary, _canvasElement, _gameLoop, letterAtlas);
   (query('#start-game-button') as ButtonElement).disabled = true;
+  (query('#end-game-button') as ButtonElement).disabled = false;
+  (query('#pause-button') as ButtonElement).disabled = false;
   game.gameClock.start();
   game.done.then((_) {
     highScoresStore.save(game.score, new DateTime.now().toString());
     highScores.add(game.score);
     (query('#start-game-button') as ButtonElement).disabled = false;
+    (query('#end-game-button') as ButtonElement).disabled = true;
+    (query('#pause-button') as ButtonElement).disabled = true;
   });
+}
+
+void endGame() {
+  // XXX: should confirm first
+  game.stop();
+  
+  // XXX: should factor out all the button enabling/disabling code.
+  (query('#start-game-button') as ButtonElement).disabled = false;
+  (query('#end-game-button') as ButtonElement).disabled = true;
+  (query('#pause-button') as ButtonElement).disabled = true;
+  
+  print('GAME ENDED');
 }
 
 void togglePause() {
