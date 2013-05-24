@@ -5,7 +5,6 @@ import 'package:game_loop/game_loop_html.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
 import 'package:lawndart/lawndart.dart';
-import 'package:route/client.dart';
 
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 
@@ -17,10 +16,6 @@ ImageAtlas letterAtlas;
 final Store highScoresStore = new Store('tbwg', 'highScores');
 final List<int> highScores = toObservable([]);
 @observable Game game;
-
-final Router router = new Router();
-final UrlPattern gameUrl = new UrlPattern(r'/game');
-final UrlPattern highScoresUrl = new UrlPattern(r'/high-scores');
 
 @observable bool ready = false;
 @observable bool showHighScores = false;
@@ -139,12 +134,6 @@ Future loadHighScores() {
 }
 
 main() {
-  /*
-  router
-    ..addHandler(highScoresUrl, (_) => showHighScores = true)
-    ..listen();
-  */
-
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
 
