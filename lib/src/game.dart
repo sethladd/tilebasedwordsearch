@@ -3,6 +3,7 @@ part of tilebasedwordsearch;
 @observable
 class Game {
 
+  
   static const DIMENSIONS = 4;
   static const Map<String, num> LETTERS =  const {
     'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1,
@@ -15,7 +16,7 @@ class Game {
   List selectedPositions = [];
   int score = 0;
   final Dictionary dictionary;
-  List<String> words = <String>[];
+  Set<String> words = new Set<String>();
 
   final CanvasElement canvas;
   final ImageAtlas letterAtlas;
@@ -106,6 +107,10 @@ class Game {
   }
 
   bool attemptWord(String word) {
+    if (words.contains(word)) {
+      return false;
+    }
+    
     if (_wordIsValid(word)) {
       score += scoreForWord(word);
       words.add(word);
