@@ -109,7 +109,9 @@ class Game {
     if (_wordIsValid(word)) {
       score += scoreForWord(word);
       words.add(word);
+      return true;
     }
+    return false;
   }
 
   int scoreForWord(String word) {

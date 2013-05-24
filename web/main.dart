@@ -125,6 +125,10 @@ void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
 void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
   if (touch == currentTouch) {
     currentTouch = null;
+    String word = game.board.selectedLetters;
+    if (game.attemptWord(word)) {
+      print('Found word $word');
+    }
   }
 }
 
