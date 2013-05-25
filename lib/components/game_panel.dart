@@ -33,6 +33,10 @@ class GamePanel extends WebComponent {
     _gameLoop.onRender = gameRender;
     _gameLoop.onTouchStart = gameTouchStart;
     _gameLoop.onTouchEnd = gameTouchEnd;
+    
+    enableButtons();
+    
+    startNewGame();
   }
   
   void startNewGame() {
@@ -42,6 +46,11 @@ class GamePanel extends WebComponent {
       disableButtons();
     });
     _gameLoop.start();
+  }
+  
+  void enableButtons() {
+    _endButton.disabled = false;
+    _pauseButton.disabled = false;
   }
 
   void disableButtons() {
