@@ -11,12 +11,14 @@
             <button id="pause" on-click="togglePause()" disabled>Pause</button>
             <button id="end" on-click="endGame()" disabled>End game</button>
           </div>
+          <template if="game != null">
           <div>
             Score: {{ game.score }}
           </div>
           <div>
             Time remaining: {{ game.gameClock.timeRemaining }}
           </div>
+          </template>
       </template>
       <script type="application/dart" src="game_panel.dart"></script>
     </element>
