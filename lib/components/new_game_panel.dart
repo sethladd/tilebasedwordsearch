@@ -1,4 +1,5 @@
 import 'package:web_ui/web_ui.dart';
+import 'package:tilebasedwordsearch/tilebasedwordsearch.dart' as app;
 
 // New Game Panel is the view when user has clicked new game from Main Panel
 // Includes:

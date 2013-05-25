@@ -5,9 +5,8 @@
     <element name="main-panel" extends="div" constructor="MainPanel">
       <template>
         <h2>Main Panel</h2>
-        <button id="start-game-button" on-click="startNewGame()" disabled>Start Game</button>
-        <button on-click="currentPanel = 'highScores'">Show high scores</button>
-        <button on-click="currentPanel = 'newGame'">New game</button>
+        <button on-click="app.currentPanel = 'highScores'">Show high scores</button>
+        <button on-click="app.currentPanel = 'newGame'">New game</button>
       </template>
       <script type="application/dart" src="main_panel.dart"></script>
     </element>

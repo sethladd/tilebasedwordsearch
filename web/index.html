@@ -10,22 +10,22 @@
     <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
   </head>
   <body>
-    <template if="currentPanel == 'main'">
+    <template if="app.currentPanel == 'main'">
       <div is="main-panel"></div>
     </template>
     
-    <template id="currentPanel == 'game'">
+    <template if="app.currentPanel == 'game'">
       <div is="game-panel"
-           dictionary="{{dictionary}}"
-           letter-atlas="{{letterAtlas}}"></div>
+           dictionary="{{app.dictionary}}"
+           letter-atlas="{{app.letterAtlas}}"></div>
     </template>
     
-    <template id="currentPanel == 'newGame'">
-      Placeholder for New Game
+    <template if="app.currentPanel == 'newGame'">
+      <div is="new-game-panel"></div>
     </template>
 
-    <template if="currentPanel == 'highScores'">
-      <div is="high-scores" high-scores="{{highScores}}"></div>
+    <template if="app.currentPanel == 'highScores'">
+      <div is="high-scores-panel"></div>
     </template>
 
     <script type="application/dart" src="main.dart"></script>
