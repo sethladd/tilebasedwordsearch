@@ -26,7 +26,7 @@ main() {
     const ['I', 'J', 'K', 'L'],
     const ['M', 'N', 'O', 'P']
   ];
-  final Directory pwd = new File(new Options().script).directorySync();
+  final Directory pwd = new File(new Options().script).directory;
   final String path = '${pwd.path}/../web/assets/dictionary.txt';
 
   // Warmup.

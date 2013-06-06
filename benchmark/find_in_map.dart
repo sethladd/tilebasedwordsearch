@@ -43,7 +43,7 @@ main() {
   List<String> lines = [];
   Map words = new Map();
   
-  Directory pwd = new File(new Options().script).directorySync();
+  Directory pwd = new File(new Options().script).directory;
   lines = new File('${pwd.path}/../web/assets/dictionary.txt')
   .readAsLinesSync();
   

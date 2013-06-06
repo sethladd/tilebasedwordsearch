@@ -10,7 +10,7 @@ main() {
   ];
   
   Trie words = new Trie();
-  Directory pwd = new File(new Options().script).directorySync();
+  Directory pwd = new File(new Options().script).directory;
   new File('${pwd.path}/../web/assets/dictionary.txt')
       .readAsLinesSync()
       .forEach((line) => words[line] = line);
