@@ -11,22 +11,21 @@ class Board {
   
   List selectedPositions = [];
   int multiplier = 1;
-  final int wordBonusTile;
+  int wordBonusTile;
 
   // TODO: create a Turn to keep the score
   int score = 0;
   final Dictionary dictionary;
-  
-  
+
   GameClock gameClock;
-  
+
   Board(this.dictionary, gameLoop) {
     _assignCharsToPositions();
     gameClock = new GameClock(gameLoop);
   }
-  
+
   Board.fromJson(Map json) {
-    
+
   }
 
   Map toJson() {
@@ -65,7 +64,7 @@ class Board {
     }
     return selected;
   }
-  
+
   void stop() {
     gameClock.stop();
   }

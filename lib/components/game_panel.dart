@@ -28,7 +28,6 @@ class GamePanel extends WebComponent {
     _endButton = query('#end');
     _canvasElement = query('#frontBuffer');
     _gameLoop = new GameLoopHtml(_canvasElement);
-    boardView = new BoardView(board, _canvasElement);
     // Don't lock the pointer on a click.
     _gameLoop.pointerLock.lockOnClick = false;
     _gameLoop.onUpdate = gameUpdate;
@@ -48,6 +47,7 @@ class GamePanel extends WebComponent {
 
   void startNewGame() {
     board = new Board(dictionary, _gameLoop);
+    boardView = new BoardView(board, _canvasElement);
     board.gameClock.start();
     board.done.then((_) {
       disableButtons();
@@ -68,7 +68,6 @@ class GamePanel extends WebComponent {
   void endGame() {
     // XXX: should confirm first
     board.stop();
-
     disableButtons();
 
     print('GAME ENDED');

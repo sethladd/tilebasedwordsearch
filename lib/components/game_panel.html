@@ -11,13 +11,13 @@
           <button id="pause" on-click="togglePause()" disabled>Pause</button>
           <button id="end" on-click="endGame()" disabled>End game</button>
         </div>
-          
-        <template if="game != null">
+
+        <template if="board != null">
           <div>
-            Score: {{ game.score }}
+            Score: {{ board.score }}
           </div>
           <div>
-            Time remaining: {{ game.gameClock.timeRemaining }}
+            Time remaining: {{ board.gameClock.timeRemaining }}
           </div>
         </template>
       </template>
