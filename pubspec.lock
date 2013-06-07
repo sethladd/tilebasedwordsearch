@@ -24,6 +24,10 @@ packages:
     description: browser
     source: hosted
     version: "0.5.13"
+  crypto:
+    description: crypto
+    source: hosted
+    version: "0.5.13"
   csslib:
     description: csslib
     source: hosted
@@ -35,6 +39,10 @@ packages:
       url: "https://github.com/johnmccutchan/game_loop.git"
     source: git
     version: "0.9.0"
+  hart:
+    description: hart
+    source: hosted
+    version: "0.0.5"
   html5lib:
     description: html5lib
     source: hosted
@@ -55,10 +63,18 @@ packages:
     description: pathos
     source: hosted
     version: "0.5.13"
+  postgresql:
+    description: postgresql
+    source: hosted
+    version: "0.2.7"
   source_maps:
     description: source_maps
     source: hosted
     version: "0.5.13"
+  start:
+    description: start
+    source: hosted
+    version: "0.0.6"
   unittest:
     description: unittest
     source: hosted

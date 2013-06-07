@@ -13,3 +13,5 @@ dependencies:
   web_ui: any
   benchmark_harness: any
   lawndart: any
+  postgresql: any
+  start: any
