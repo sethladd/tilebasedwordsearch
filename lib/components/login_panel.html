@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <element name="login-panel" extends="div" constructor="LoginPanel">
+      <template>
+        <h2>Login Panel</h2>
+        <div id="gConnect">
+          <button class="g-signin"
+                  data-scope="https://www.googleapis.com/auth/games https://www.googleapis.com/auth/appstate"
+                  data-clientId="250963735330.apps.googleusercontent.com"
+                  data-callback="onSignInCallback"
+                  data-cookiepolicy="single_host_origin"></button>
+        </div>
+      </template>
+      <script type="application/dart" src="login_panel.dart"></script>
+    </element>
+  </body>
+</html>
+
