@@ -6,6 +6,9 @@ import 'dart:async';
 import 'package:game_loop/game_loop_html.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
+import "package:google_plus_v1_api/plus_v1_api_browser.dart";
+import "package:google_oauth2_client/google_oauth2_browser.dart";
+import "package:google_games_v1_api/games_v1_api_browser.dart";
 
 part 'src/board_view.dart';
 part 'src/game.dart';
@@ -15,12 +18,15 @@ part 'src/rectangle_transform.dart';
 part 'src/image_atlas.dart';
 part 'src/game_score.dart';
 part 'src/tile_set.dart';
+part 'src/player.dart';
+part 'src/score_board.dart';
 
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 ImageAtlas letterAtlas;
+Player player;
 
-@observable String currentPanel = 'main';
+@observable String currentPanel = 'login';
 
 void parseAssets() {
   if (assetManager['game.dictionary'] == null) {
@@ -53,6 +59,12 @@ void parseAssets() {
 }
 
 Future initialize() {
+  player = new Player();
+
+  // Add players scoreboard/leaderboard from game play services
+  player.scoreBoards.add(new ScoreBoard("CgkIoubq9KYHEAIQAQ", ScoreType.HIGH_SCORE));
+  player.scoreBoards.add(new ScoreBoard("CgkIoubq9KYHEAIQAg", ScoreType.MOST_NUMBER_OF_WORDS));
+
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
 

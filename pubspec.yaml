@@ -13,6 +13,8 @@ dependencies:
   web_ui: any
   benchmark_harness: any
   lawndart: any
+  postgresql: any
+  start: any
   google_plus_v1_api: any
   google_games_v1_api:
     git: git://github.com/financeCoding/dart_games_v1_api_client.git

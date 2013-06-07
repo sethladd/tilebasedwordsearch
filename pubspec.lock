@@ -69,6 +69,10 @@ packages:
     description: google_plus_v1_api
     source: hosted
     version: "0.1.7"
+  hart:
+    description: hart
+    source: hosted
+    version: "0.0.5"
   hop:
     description: hop
     source: hosted
@@ -105,10 +109,18 @@ packages:
     description: pathos
     source: hosted
     version: "0.5.13"
+  postgresql:
+    description: postgresql
+    source: hosted
+    version: "0.2.7"
   source_maps:
     description: source_maps
     source: hosted
     version: "0.5.13"
+  start:
+    description: start
+    source: hosted
+    version: "0.0.6"
   unittest:
     description: unittest
     source: hosted
