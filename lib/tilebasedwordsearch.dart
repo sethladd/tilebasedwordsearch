@@ -20,6 +20,7 @@ part 'src/game_score.dart';
 part 'src/tile_set.dart';
 part 'src/player.dart';
 part 'src/score_board.dart';
+part 'src/achievement.dart';
 
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
