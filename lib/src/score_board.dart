@@ -4,8 +4,8 @@ part of tilebasedwordsearch;
  *
  */
 class ScoreBoard {
-  String leaderBoardId;
-  ScoreType scoreType;
+  final String leaderBoardId;
+  final ScoreType scoreType;
 
   ScoreBoard(this.leaderBoardId, this.scoreType);
 
