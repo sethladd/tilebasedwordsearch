@@ -27,7 +27,7 @@ Dictionary dictionary;
 ImageAtlas letterAtlas;
 Player player;
 
-@observable String currentPanel = 'login';
+@observable String currentPanel = 'main';
 
 void parseAssets() {
   if (assetManager['game.dictionary'] == null) {
