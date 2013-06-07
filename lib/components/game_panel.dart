@@ -21,18 +21,14 @@ class GamePanel extends WebComponent {
   CanvasElement _canvasElement;
   ButtonElement _pauseButton;
   ButtonElement _endButton;
-  
+
   @override
-  created() {
+  inserted() {
     _pauseButton = query('#pause');
     _endButton = query('#end');
     _canvasElement = query('#frontBuffer');
     _gameLoop = new GameLoopHtml(_canvasElement);
     boardView = new BoardView(board, _canvasElement);
-  }
-
-  @override
-  inserted() {
     // Don't lock the pointer on a click.
     _gameLoop.pointerLock.lockOnClick = false;
     _gameLoop.onUpdate = gameUpdate;
