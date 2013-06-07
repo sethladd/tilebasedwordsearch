@@ -20,13 +20,13 @@ class BoardView {
   String selectedLetters = '';
 
   // Reference to the main game object.
-  final Game game;
+  final Board game;
 
   // TODO: Set these.
   String defaultColor;
   String selectedColor;
 
-  BoardView(Game this.game, CanvasElement this.canvas) {
+  BoardView(this.game, this.canvas) {
     letterTiles.length = 16;
     init();
   }
@@ -53,6 +53,18 @@ class BoardView {
     }
   }
 
+  void selectSearchString(String searchString) {
+    Set<List<int>> paths = new Set<List<int>>();
+    selectedTiles.clear();
+    if (game.stringInGrid(searchString, paths)) {
+      paths.forEach((path) {
+        for (int i = 0; i < path.length; i++) {
+          selectedTiles.add(path[i]);
+        }
+      });
+    }
+  }
+  
   int tileIndex(int row, int column) {
     return row*4+column;
   }
@@ -118,7 +130,7 @@ class BoardView {
       letterTiles[i].drawOutline(canvas);
       var elementName = game.grid[i ~/ NUM_TILES][i % NUM_TILES];
       game.letterAtlas.draw(elementName, c, x, y);
-      c.fillText(Game.LETTERS[elementName].toString(), x + X_OFFSET, y + Y_OFFSET);
+      c.fillText(Board.LETTERS[elementName].toString(), x + X_OFFSET, y + Y_OFFSET);
     }
 
     return;
@@ -149,7 +161,7 @@ class BoardView {
         c.fillStyle = '#000';
         c.font = '10px sans-serif';
         c.textBaseline = 'middle';
-        text = Game.LETTERS[game.grid[i][j]].toString();
+        text = Board.LETTERS[game.grid[i][j]].toString();
         width = c.measureText(text).width;
 
         c.fillText(text, coord.x + tileSize - width - /* padding */ 3, coord.y + /* half font size */ 5 + /* padding */ 3);
