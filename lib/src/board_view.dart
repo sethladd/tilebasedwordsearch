@@ -112,7 +112,7 @@ class BoardView {
   }
 
   void render() {
-    var c = canvas.context2d;
+    var c = canvas.context2D;
     // Clear canvas.
     c.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -129,7 +129,7 @@ class BoardView {
       }
       letterTiles[i].drawOutline(canvas);
       var elementName = game.grid[i ~/ NUM_TILES][i % NUM_TILES];
-      game.letterAtlas.draw(elementName, c, x, y);
+      letterAtlas.draw(elementName, c, x, y);
       c.fillText(TileSet.LETTER_SCORES[elementName].toString(), x + X_OFFSET, y + Y_OFFSET);
     }
 

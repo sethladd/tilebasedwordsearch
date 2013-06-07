@@ -17,11 +17,8 @@ class Board {
   Set<String> words = new Set<String>();
   
   GameClock gameClock;
-
-  final CanvasElement canvas;
-  final ImageAtlas letterAtlas;
   
-  Board(this.dictionary, gameLoop, this.letterAtlas) {
+  Board(this.dictionary, gameLoop) {
     _assignCharsToPositions();
     gameClock = new GameClock(gameLoop);
   }
