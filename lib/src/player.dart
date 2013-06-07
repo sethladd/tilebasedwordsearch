@@ -27,4 +27,12 @@ class Player {
     print("Player is signed out");
     currentPanel = 'login';
   }
+
+  Future<List<Person>> friends() {
+    var paramsObject = {'orderBy' : 'alphabetical',
+                        'maxResults': 20};
+    return plusclient.people.list('me', 'visible', orderBy: 'alphabetical',
+        maxResults: 20).then((PeopleFeed pf) => pf.items);
+
+  }
 }
