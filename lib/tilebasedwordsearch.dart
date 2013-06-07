@@ -20,6 +20,7 @@ part 'src/game_score.dart';
 part 'src/tile_set.dart';
 part 'src/player.dart';
 part 'src/score_board.dart';
+part 'src/achievement.dart';
 
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
@@ -64,6 +65,12 @@ Future initialize() {
   // Add players scoreboard/leaderboard from game play services
   player.scoreBoards.add(new ScoreBoard("CgkIoubq9KYHEAIQAQ", ScoreType.HIGH_SCORE));
   player.scoreBoards.add(new ScoreBoard("CgkIoubq9KYHEAIQAg", ScoreType.MOST_NUMBER_OF_WORDS));
+
+  // Adding achievement that can be achieved
+  player.achievement.add(new Achievement("CgkIoubq9KYHEAIQBA", AchievementType.SEVEN_LETTER_WORD));
+  player.achievement.add(new Achievement("CgkIoubq9KYHEAIQBQ", AchievementType.EIGHT_LETTER_WORD));
+  player.achievement.add(new Achievement("CgkIoubq9KYHEAIQBg", AchievementType.NINE_LETTER_WORD));
+  player.achievement.add(new Achievement("CgkIoubq9KYHEAIQBw", AchievementType.TEN_LETTER_WORD));
 
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();

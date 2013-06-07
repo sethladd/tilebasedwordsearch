@@ -22,11 +22,15 @@ class Player {
   // Collection of score boards on Play Services.
   List<ScoreBoard> scoreBoards;
 
+  // Collection of achievements on Play Services.
+  List<Achievement> achievement;
+
   Player() {
     authenticationContext = new SimpleOAuth2(null);
     plusclient = new Plus(authenticationContext);
     gamesclient = new Games(authenticationContext);
     scoreBoards = new List<ScoreBoard>();
+    achievement = new List<Achievement>();
   }
 
   void signedIn(SimpleOAuth2 authenticationContext) {
@@ -51,6 +55,12 @@ class Player {
     scoreBoards
     .where((ScoreBoard sb) => sb.scoreType == scoreType)
     .forEach((ScoreBoard sb) => sb.submitScore(this, score));
+  }
+
+  List<Future<AchievementIncrementResponse>> submitAchievement(AchievementType achievementType, int score) {
+    achievement
+    .where((Achievement ac) => ac.achievementType == achievementType)
+    .map((Achievement ac) => ac.submitAchievment(this, score)).toList();
   }
 
 }
