@@ -1,13 +1,15 @@
 library hello_static;
 
 import "package:start/start.dart";
-import 'package:postgresql/postgresql.dart';
+import 'package:tilebasedwordsearch/persistable.dart' as db;
+
 import 'dart:io';
 
-Connection db;
-
 void main() {
-  var port = int.parse(Platform.environment['PORT'], onError: (_) => 8080);
+  var port = Platform.environment['PORT'] != null ?
+      int.parse(Platform.environment['PORT'], onError: (_) => 8080) :
+      8080;
+  
   var dbUrl;
   if (Platform.environment['DATABASE_URL'] != null) {
     dbUrl = Platform.environment['DATABASE_URL'];
@@ -16,24 +18,40 @@ void main() {
     dbUrl = 'postgres://$user:@localhost:5432/$user';
   }
   
-  connect(dbUrl)
-  .then((conn) => db = conn)
+  db.init(dbUrl)
   .then((_) {
     print('DB connected, now starting up web server');
     return start(public: 'web', host: '0.0.0.0', port: port).then((app) {
       print('HTTP server started');
-      app.get('/games/:id', getGame);
-      //app.get('/games/mine', myGames);
+      app.get('/games/:id').listen(getGame);
+      app.post('/games').listen(createGame);
     });
   })
   .catchError((e) => print("error: $e"));
 }
 
-getGame(Request req, Response res) {
+getGame(Request req) {
   var id = req.params['id'];
-  db.query('SELECT * FROM games WHERE id = @id', {'id': id}).first.then((game) {
-    res.json(game);
+  db.load(id, 'game').then((Map row) {
+    if (row == null) {
+      req.response.status(HttpStatus.NOT_FOUND);
+      req.response.close();
+    } else {
+      req.response.json(row);
+    }
   });
+}
+
+createGame(Request req) {
+  HttpBodyHandler.processRequest(req.input)
+    .then((HttpBody body) {
+      
+    })
+    .catchError((e) {
+      req.response
+          ..status(500)
+          ..close();
+    });
 }
 
 //createCat(Request req, Response res) {

@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS cats (
+CREATE TABLE IF NOT EXISTS games (
   id SERIAL,
-  name VARCHAR(255)
+  board VARCHAR(255),
+  last_played TIMESTAMP
 );

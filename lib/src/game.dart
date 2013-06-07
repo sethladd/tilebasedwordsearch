@@ -2,7 +2,6 @@ part of tilebasedwordsearch;
 
 @observable
 class Game {
-  final TileSet tileSet = new TileSet();
 
   static const DIMENSIONS = 4;
   static const Map<String, num> LETTERS =  const {
@@ -12,21 +11,32 @@ class Game {
     'P': 3, 'QU': 10, 'R': 1, 'S': 1, 'T': 1,
     'U': 1, 'V': 4,'W': 4, 'X': 8, 'Y': 4, 'Z': 10};
 
-  var grid = new List.generate(4, (_) => new List<String>(4));
+  List<String> grid = new List.generate(4, (_) => new List<String>(4));
   List selectedPositions = [];
   int score = 0;
   final Dictionary dictionary;
   Set<String> words = new Set<String>();
+  
+  GameClock gameClock;
 
   final CanvasElement canvas;
   final ImageAtlas letterAtlas;
+  
+  Game(this.dictionary, gameLoop, this.letterAtlas) {
+    _assignCharsToPositions();
+    gameClock = new GameClock(gameLoop);
+  }
+  
+  Game.fromJson(Map json) {
+    
+  }
 
-  GameClock gameClock;
-  BoardView board;
+  Map toJson() {
+  }
 
   String get currentWord {
     return selectedPositions.join('');
- }
+  }
 
   void clearSelectedPositions() {
     selectedPositions = [];
@@ -52,19 +62,13 @@ class Game {
     return selected;
   }
   
-  Game(this.dictionary, this.canvas, gameLoop, this.letterAtlas) {
-    _assignCharsToPositions();
-    board = new BoardView(this, canvas);
-    gameClock = new GameClock(gameLoop);
-  }
-  
   void stop() {
     gameClock.stop();
   }
 
   void _assignCharsToPositions() {
     int gameId = new Random().nextInt(1000000);
-    List<String> selectedLetters = tileSet.getTilesForGame(gameId);
+    List<String> selectedLetters = TileSet.getTilesForGame(gameId);
     for (var i = 0; i < DIMENSIONS; i++) {
       for (var j = 0; j < DIMENSIONS; j++) {
         this.grid[i][j] = selectedLetters[i*DIMENSIONS+j];
