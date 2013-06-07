@@ -4,22 +4,27 @@
   <head>
     <meta charset="utf-8">
     <title>Tile based word forming entertainment</title>
+    <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/high_scores_component.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/main_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/new_game_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
   </head>
   <body>
+    <template if="app.currentPanel == 'login'">
+      <div is="login-panel"></div>
+    </template>
+
     <template if="app.currentPanel == 'main'">
       <div is="main-panel"></div>
     </template>
-    
+
     <template if="app.currentPanel == 'game'">
       <div is="game-panel"
            dictionary="{{app.dictionary}}"
            letter-atlas="{{app.letterAtlas}}"></div>
     </template>
-    
+
     <template if="app.currentPanel == 'newGame'">
       <div is="new-game-panel"></div>
     </template>
