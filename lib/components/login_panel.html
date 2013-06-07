@@ -5,13 +5,16 @@
     <element name="login-panel" extends="div" constructor="LoginPanel">
       <template>
         <h2>Login Panel</h2>
-        <div id="gConnect">
+        <div id="google-connect">
           <button class="g-signin"
                   data-scope="https://www.googleapis.com/auth/games https://www.googleapis.com/auth/appstate"
                   data-clientId="250963735330.apps.googleusercontent.com"
                   data-callback="onSignInCallback"
                   data-cookiepolicy="single_host_origin"></button>
         </div>
+        <div id="auth-disconnect" style="display:none">
+          <button id="disconnect" on-click="disconnect($event)">Disconnect your Google account from this app</button>
+        <div>
       </template>
       <script type="application/dart" src="login_panel.dart"></script>
     </element>

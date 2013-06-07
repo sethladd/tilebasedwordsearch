@@ -12,7 +12,11 @@
   </head>
   <body>
     <template if="app.currentPanel == 'login'">
-      <div is="login-panel"></div>
+      <div is="login-panel"
+        authentication-context="{{app.player.authenticationContext}}"
+        sign-in-callback="{{app.player.signedIn}}"
+        sign-out-callback="{{app.player.signedOut}}"
+        ></div>
     </template>
 
     <template if="app.currentPanel == 'main'">
