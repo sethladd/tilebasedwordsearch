@@ -51,7 +51,7 @@ class GamePanel extends WebComponent {
   }
 
   void startNewGame() {
-    board = new Board(dictionary, _gameLoop, letterAtlas);
+    board = new Board(dictionary, _gameLoop);
     board.gameClock.start();
     board.done.then((_) {
       disableButtons();
@@ -90,7 +90,7 @@ class GamePanel extends WebComponent {
   }
 
   void drawCircle(int x, int y) {
-    var context = _canvasElement.context2d;
+    var context = _canvasElement.context2D;
     context.beginPath();
     context.arc(x, y, 20.0, 0, 2 * PI);
     context.fillStyle = 'green';

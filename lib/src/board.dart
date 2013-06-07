@@ -6,15 +6,17 @@ class Board {
   static const DIMENSIONS = 4;
 
   List<List<String>> grid = new List.generate(4, (_) => new List<String>(4));
-  List selectedPositions = [];
-
-  int multiplier = 1;
+  Set<String> words = new Set<String>();
   final List<int> letterBonusTiles = new List<int>(3);
+  
+  List selectedPositions = [];
+  int multiplier = 1;
   final int wordBonusTile;
 
+  // TODO: create a Turn to keep the score
   int score = 0;
   final Dictionary dictionary;
-  Set<String> words = new Set<String>();
+  
   
   GameClock gameClock;
   
@@ -28,6 +30,12 @@ class Board {
   }
 
   Map toJson() {
+    return {
+      'timeRemaining': gameClock.secondsRemaining,
+      'grid': grid,
+      'words': words,
+      'letterBonusTiles': letterBonusTiles
+    };
   }
 
   String get currentWord {
