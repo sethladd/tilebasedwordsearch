@@ -20,9 +20,11 @@ class Player {
     plusclient.makeAuthRequests = true;
     gamesclient.makeAuthRequests = true;
     print("Player is signed in");
+    currentPanel = 'main';
   }
 
   void signedOut() {
     print("Player is signed out");
+    currentPanel = 'login';
   }
 }
