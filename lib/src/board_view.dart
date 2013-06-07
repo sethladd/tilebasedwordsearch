@@ -130,7 +130,7 @@ class BoardView {
       letterTiles[i].drawOutline(canvas);
       var elementName = game.grid[i ~/ NUM_TILES][i % NUM_TILES];
       game.letterAtlas.draw(elementName, c, x, y);
-      c.fillText(Board.LETTERS[elementName].toString(), x + X_OFFSET, y + Y_OFFSET);
+      c.fillText(TileSet.LETTER_SCORES[elementName].toString(), x + X_OFFSET, y + Y_OFFSET);
     }
 
     return;
@@ -161,7 +161,7 @@ class BoardView {
         c.fillStyle = '#000';
         c.font = '10px sans-serif';
         c.textBaseline = 'middle';
-        text = Board.LETTERS[game.grid[i][j]].toString();
+        text = TileSet.LETTER_SCORES[game.grid[i][j]].toString();
         width = c.measureText(text).width;
 
         c.fillText(text, coord.x + tileSize - width - /* padding */ 3, coord.y + /* half font size */ 5 + /* padding */ 3);
