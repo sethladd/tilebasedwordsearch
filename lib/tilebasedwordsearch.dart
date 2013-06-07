@@ -19,6 +19,7 @@ part 'src/image_atlas.dart';
 part 'src/game_score.dart';
 part 'src/tile_set.dart';
 part 'src/player.dart';
+part 'src/score_board.dart';
 
 AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
@@ -59,6 +60,11 @@ void parseAssets() {
 
 Future initialize() {
   player = new Player();
+
+  // Add players scoreboard/leaderboard from game play services
+  player.scoreBoards.add(new ScoreBoard("CgkIoubq9KYHEAIQAQ", ScoreType.HIGH_SCORE));
+  player.scoreBoards.add(new ScoreBoard("CgkIoubq9KYHEAIQAg", ScoreType.MOST_NUMBER_OF_WORDS));
+
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
 
