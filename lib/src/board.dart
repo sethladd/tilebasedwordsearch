@@ -10,21 +10,21 @@ class Board {
 
   int multiplier = 1;
   final List<int> letterBonusTiles = new List<int>(3);
-  final int wordBonusTile;
+  int wordBonusTile;
 
   int score = 0;
   final Dictionary dictionary;
   Set<String> words = new Set<String>();
-  
+
   GameClock gameClock;
-  
+
   Board(this.dictionary, gameLoop) {
     _assignCharsToPositions();
     gameClock = new GameClock(gameLoop);
   }
-  
+
   Board.fromJson(Map json) {
-    
+
   }
 
   Map toJson() {
@@ -57,7 +57,7 @@ class Board {
     }
     return selected;
   }
-  
+
   void stop() {
     gameClock.stop();
   }
