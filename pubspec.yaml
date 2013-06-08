@@ -21,3 +21,4 @@ dependencies:
   google_appstate_v1_api:
     git: git://github.com/financeCoding/dart_appstate_v1_api_client.git
   logging: any
+  crypto: any
