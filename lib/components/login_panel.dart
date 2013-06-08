@@ -14,7 +14,7 @@ class LoginPanel extends WebComponent {
   SimpleOAuth2 authenticationContext;
 
   _onSignInCallback(Map authResult) {
-    print(authResult);
+    print("authRequest = ${authResult}");
 
     if (authResult["access_token"] != null) {
       query("#google-connect").style.display = "none";
