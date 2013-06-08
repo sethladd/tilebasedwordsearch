@@ -26,7 +26,7 @@ class LoginPanel extends WebComponent {
 
       // Notify
       if (signInCallback != null) {
-        signInCallback(authenticationContext);
+        signInCallback(authenticationContext, authResult);
       }
     } else if (authResult["error"] != null) {
       print("There was an error: ${authResult["error"]}");

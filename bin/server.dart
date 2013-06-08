@@ -15,8 +15,8 @@ import "package:html5lib/dom.dart";
 import "package:html5lib/dom_parsing.dart";
 
 // Needs to be the same one used on the client side.
-final String CLIENT_ID = "";
-final String CLIENT_SECRET = "";
+final String CLIENT_ID = "250963735330.apps.googleusercontent.com";
+final String CLIENT_SECRET = "u-Bk_3yhNjC6YCg7-yG6XeoL";
 
 final String TOKENINFO_URL = "https://www.googleapis.com/oauth2/v1/tokeninfo";
 final String TOKEN_ENDPOINT = 'https://accounts.google.com/o/oauth2/token';
@@ -24,8 +24,9 @@ final String TOKEN_REVOKE_ENDPOINT = 'https://accounts.google.com/o/oauth2/revok
 
 final Random random = new Random();
 final Logger serverLogger = new Logger("server");
+final String INDEX_HTML = "./web/out/index.html";
+
 Fukiya fukiya;
-final String INDEX_HTML = "./web/index.html";
 
 void main() {
   _setupLogger();
@@ -47,28 +48,52 @@ void main() {
   db.init(dbUrl)
   .then((_) {
     serverLogger.fine('DB connected, now starting up web server');
-//    return start(public: 'web', host: '0.0.0.0', port: port).then((app) {
-//      serverLogger.fine('HTTP server started');
-//      app.get('/games/:id').listen(getGame);
-//      app.post('/games').listen(createGame);
-//      // /index.html hanlders
-//      app.get('/').listen(getIndex);
-//      app.get('/index').listen(getIndex);
-//      app.get('/index.html').listen(getIndex);
-//    });
+
     fukiya = new Fukiya()
     ..get('/', getIndexHandler)
     ..get('/index.html', getIndexHandler)
     ..get('/index', getIndexHandler)
     ..post('/connect', postConnectDataHandler)
-//    ..get('/people', getPeopleHandler)
-//    ..post('/disconnect', postDisconnectHandler)
-    ..staticFiles('./web')
+    ..post('/disconnect', postDisconnectHandler)
+    ..get('/games/:id', getGameHandler)
+    ..post('/games', createGameHandler)
+    ..staticFiles('./web/out')
     ..use(new FukiyaJsonParser())
     ..listen('0.0.0.0', 3333);
-
   })
   .catchError((e) => serverLogger.fine("error: $e"));
+}
+
+/**
+ * Revoke current user's token and reset their session.
+ */
+void postDisconnectHandler(FukiyaContext context) {
+  serverLogger.fine("postDisconnectHandler");
+  serverLogger.fine("context.request.session = ${context.request.session}");
+
+  String tokenData = context.request.session.containsKey("access_token") ?
+      context.request.session["access_token"] : null;
+
+  if (tokenData == null) {
+    context.response.statusCode = 401;
+    context.send("Current user not connected.");
+    return;
+  }
+
+  final String revokeTokenUrl = "${TOKEN_REVOKE_ENDPOINT}?token=${tokenData}";
+  context.request.session.remove("access_token");
+
+  new http.Client()
+  ..get(revokeTokenUrl).then((http.Response response) {
+    serverLogger.fine("GET ${revokeTokenUrl}");
+    serverLogger.fine("Response = ${response.body}");
+    context.request.session["state_token"] = _createStateToken();
+    Map data = {
+                "state_token": context.request.session["state_token"],
+                "message" : "Successfully disconnected."
+                };
+    context.send(JSON.stringify(data));
+  });
 }
 
 /**
@@ -177,10 +202,13 @@ void postConnectDataHandler(FukiyaContext context) {
   });
 }
 
-//getIndex(Request req) {
-//  serverLogger.fine("getIndex");
-//
-//}
+void getGameHandler(FukiyaContext context) {
+  serverLogger.fine("getGameHandler");
+}
+
+void createGameHandler(FukiyaContext context) {
+  serverLogger.fine("createGameHandler");
+}
 
 //getGame(Request req) {
 //  var id = req.params['id'];
