@@ -59,7 +59,7 @@ void main() {
     ..post('/games', createGameHandler)
     ..staticFiles('./web/out')
     ..use(new FukiyaJsonParser())
-    ..listen('0.0.0.0', 3333);
+    ..listen('0.0.0.0', port);
   })
   .catchError((e) => serverLogger.fine("error: $e"));
 }
