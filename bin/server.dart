@@ -1,11 +1,18 @@
 library hello_static;
 
+import 'package:logging/logging.dart';
 import "package:start/start.dart";
+import 'package:tilebasedwordsearch/shared.dart';
 import 'package:tilebasedwordsearch/persistable.dart' as db;
 
 import 'dart:io';
 
+Logger log = new Logger('server');
+
 void main() {
+
+  log.onRecord.listen((LogRecord r) => print('[${r.level}] [${r.loggerName}] [${r.time}] - ${r.message}'));
+  
   var port = Platform.environment['PORT'] != null ?
       int.parse(Platform.environment['PORT'], onError: (_) => 8080) :
       8080;
@@ -20,55 +27,47 @@ void main() {
   
   db.init(dbUrl)
   .then((_) {
-    print('DB connected, now starting up web server');
+    log.info('DB connected, now starting up web server');
     return start(public: 'web', host: '0.0.0.0', port: port).then((app) {
-      print('HTTP server started');
+      log.info('HTTP server started on port $port');
       app.get('/games/:id').listen(getGame);
       app.post('/games').listen(createGame);
     });
   })
-  .catchError((e) => print("error: $e"));
+  .catchError((e) => log.severe("error: $e"));
 }
 
 getGame(Request req) {
-  var id = req.params['id'];
-  db.load(id, 'game').then((Map row) {
-    if (row == null) {
-      req.response.status(HttpStatus.NOT_FOUND);
-      req.response.close();
+  var id = int.parse(req.params['id']);
+  db.Persistable.load(id, Game).then((Game game) {
+    if (game == null) {
+      req.response
+        ..status(HttpStatus.NOT_FOUND)
+        ..close();
     } else {
-      req.response.json(row);
+      req.response.json(game.toMap());
     }
+  })
+  .catchError((e) {
+    log.severe('Error from getGame: $e');
+    req.response
+      ..status(500)
+      ..close();
   });
 }
 
 createGame(Request req) {
   HttpBodyHandler.processRequest(req.input)
     .then((HttpBody body) {
-      
+      var game = new Game();
+      return game.store().then((_) {
+        req.response.json(game.toMap());
+      });
     })
     .catchError((e) {
+      log.severe('Error from createGame: $e');
       req.response
           ..status(500)
           ..close();
     });
 }
-
-//createCat(Request req, Response res) {
-//  HttpBodyHandler.processRequest(req.input)
-//    .then((HttpBody body) {
-//      return body.body['name'];
-//    })
-//    .then((name) => db.execute('INSERT INTO cats (name) VALUES (@n)', {'n':name}))
-//    .then((_) {
-//      res
-//       ..status(201)
-//       ..close();
-//    })
-//    .catchError((e) {
-//      print("Error with insert: $e");
-//      res
-//        ..status(500)
-//        ..close();
-//    });
-//}

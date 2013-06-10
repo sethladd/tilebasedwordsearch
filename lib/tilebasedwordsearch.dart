@@ -3,6 +3,7 @@ library tilebasedwordsearch;
 import 'dart:math';
 import 'dart:html';
 import 'dart:async';
+import 'package:tilebasedwordsearch/shared.dart';
 import 'package:game_loop/game_loop_html.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
@@ -37,7 +38,7 @@ void parseAssets() {
 
   var letterTileImage = assetManager['game.tile-letters'];
   if (letterTileImage == null) {
-    throw(new StateError('Can\'t play without tile images.'));
+    throw new StateError("Can\'t play without tile images.");
   }
 
   letterAtlas = new ImageAtlas(letterTileImage);

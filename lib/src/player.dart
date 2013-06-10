@@ -9,6 +9,7 @@ class ScoreType {
   const ScoreType._(this.value);
 }
 
+// XXX: What is the ID that I can use in the database?
 class Player {
   // Simple Authentication class that takes the token from the Sign-in button
   SimpleOAuth2 authenticationContext;
