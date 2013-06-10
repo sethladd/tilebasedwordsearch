@@ -3,7 +3,19 @@ CREATE TABLE IF NOT EXISTS game (
   board1 VARCHAR(255),
   board2 VARCHAR(255),
   board3 VARCHAR(255),
-  player1Score INT,
-  player2Score INT,
-  lastPlayed TIMESTAMP
+  p1_score INT,
+  p2_score INT,
+  p1_b1_score INT,
+  p1_b2_score INT,
+  p1_b3_score INT,
+  p2_b1_score INT,
+  p2_b2_score INT,
+  p2_b3_score INT,
+  p1_b1_words TEXT,
+  p1_b2_words TEXT,
+  p1_b3_words TEXT,
+  p2_b1_words TEXT,
+  p2_b2_words TEXT,
+  p2_b3_words TEXT,
+  last_played TIMESTAMP
 );

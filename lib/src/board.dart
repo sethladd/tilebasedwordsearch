@@ -24,19 +24,6 @@ class Board {
     gameClock = new GameClock(gameLoop);
   }
 
-  Board.fromJson(Map json) {
-
-  }
-
-  Map toJson() {
-    return {
-      'timeRemaining': gameClock.secondsRemaining,
-      'grid': grid,
-      'words': words,
-      'letterBonusTiles': letterBonusTiles
-    };
-  }
-
   String get currentWord {
     return selectedPositions.join('');
   }
@@ -115,8 +102,6 @@ class Board {
         (position1.y - position2.x).abs()) &&
         !(position1.x == position2.x && position1.x == position2.x);
   }
-
-
 
   List<String> convertStringToTileString(String str) {
     List<String> tileString = [];
@@ -218,9 +203,10 @@ class Board {
   }
 
   int scoreForWord(String word) {
-    List<int> scores = convertStringToTileString(word).map(
-        (char) => TileSet.LETTER_SCORES[char]).toList();
-    return scores.reduce((value, element) => value + element);
+    return convertStringToTileString(word)
+        .map((char) => TileSet.LETTER_SCORES[char])
+        .toList()
+        .reduce((value, element) => value + element);
   }
 
   Future get done {

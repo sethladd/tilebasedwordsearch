@@ -6,12 +6,15 @@ import 'package:tilebasedwordsearch/shared.dart';
 import 'package:tilebasedwordsearch/persistable.dart' as db;
 
 import 'dart:io';
+import 'dart:async';
 
 Logger log = new Logger('server');
 
 void main() {
 
-  log.onRecord.listen((LogRecord r) => print('[${r.level}] [${r.loggerName}] [${r.time}] - ${r.message}'));
+  log.onRecord.listen((LogRecord r) {
+    print('[${r.level}] [${r.loggerName}] [${r.time}] - ${r.message}');
+  });
   
   var port = Platform.environment['PORT'] != null ?
       int.parse(Platform.environment['PORT'], onError: (_) => 8080) :
@@ -31,6 +34,7 @@ void main() {
     return start(public: 'web', host: '0.0.0.0', port: port).then((app) {
       log.info('HTTP server started on port $port');
       app.get('/games/:id').listen(getGame);
+      app.post('/games/:id').listen(updateGame);
       app.post('/games').listen(createGame);
     });
   })
@@ -56,12 +60,50 @@ getGame(Request req) {
   });
 }
 
+updateGame(Request req) {
+  log.info('updateGame');
+  Game game;
+  var id = int.parse(req.params['id']);
+  db.Persistable.load(id, Game).then((Game g) {
+    if (g == null) {
+      return new Future.error('NOT FOUND');
+    } else {
+      game = g;
+      return HttpBodyHandler.processRequest(req.input);
+    }
+  })
+  .then((HttpBody body) {
+    var map = body.body as Map;
+    game.update(map);
+    return game.store();
+  })
+  .then((_) {
+    req.response
+      ..status(HttpStatus.OK)
+      ..close();
+  })
+  .catchError((e) {
+    req.response
+      ..status(HttpStatus.NOT_FOUND)
+      ..close();
+  }, test: (e) => e == 'NOT FOUND')
+  .catchError((e) {
+    log.severe('Error updating: $e');
+    req.response
+      ..status(500)
+      ..close();
+  });
+
+}
+
 createGame(Request req) {
   HttpBodyHandler.processRequest(req.input)
     .then((HttpBody body) {
       var game = new Game();
       return game.store().then((_) {
-        req.response.json(game.toMap());
+        req.response
+            ..status(HttpStatus.CREATED)
+            ..close();
       });
     })
     .catchError((e) {
