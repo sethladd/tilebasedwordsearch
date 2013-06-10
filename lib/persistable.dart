@@ -52,54 +52,36 @@ abstract class Persistable {
     var map = toMap();
     List columns = map.keys.toList();
     columns.remove('id'); // TODO: make this better
-    String query;
     
     if (dbId == null) {
       log.info('inserting');
       
-      query = 'INSERT INTO $_tableName (${columns.join(',')}) VALUES '
-              '(${columns.map((c) => '@$c').join(',')})';
-      
-      return _conn.execute('BEGIN')
-          .then((_) {
-            log.info('in txn, executing $query');
-            return _conn.execute(query, map);
-          })
-          .then((_) {
-            log.info('insert sql success');
-            return _conn.query('SELECT max(id) FROM $_tableName').toList();
-          })
-          .then((List rows) {
-            if (rows.isEmpty) {
-              throw 'Did not find max(id)';
-            }
+      var query = 'INSERT INTO $_tableName (${columns.join(',')}) VALUES '
+                  '(${columns.map((c) => '@$c').join(',')})';
+                  
+       return _transaction(() {
+         log.info('in txn, executing $query');
+  
+         return _conn.execute(query, map)
+           .then((_) {
+             log.info('insert sql success');
+             return _conn.query('SELECT max(id) FROM $_tableName').toList();
+           })
+           .then((List rows) {
+             if (rows.isEmpty) {
+               throw 'Did not find max(id)';
+             }
+             log.info('Max ID is ${rows.first[0]}'); // make rows.first['id'] here, and try to debug it
+             _dbId = rows.first[0];
+           });
+       });
 
-            log.info('Max ID is ${rows.first[0]}');
-            _dbId = rows.first[0];
-          })
-          .then((_) => _conn.execute('COMMIT'))
-          .catchError((e) {
-            log.severe('Error with insert: $e');
-            return _conn.execute('ROLLBACK').then((_) => new Future.error(e));
-          });
     } else {
-      query = 'UPDATE $_tableName SET '
-              '${columns.map((c) => '$c = @$c').join(',')} '
-              'WHERE id = @id';
+      var query = 'UPDATE $_tableName SET '
+                  '${columns.map((c) => '$c = @$c').join(',')} '
+                  'WHERE id = @id';
       return _conn.execute(query, map);
     }
-  }
-  
-  Future<int> create() {
-    if (dbId != null) {
-      throw 'Already has as ID of $dbId';
-    }
-    
-    // Tnsert into database, get ID.
-    
-    _dbId = 100;
-    
-    return new Future.value(dbId);
   }
   
   static String _getTableName(Type type) => type.toString().toLowerCase();
@@ -110,6 +92,16 @@ abstract class Persistable {
   
   // This assumes there's no reason for code to change an ID.
   int get dbId => _dbId;
+}
+
+Future _transaction(Future inside()) {
+  return _conn.execute('BEGIN')
+      .then((_) => inside())
+      .then((_) => _conn.execute('COMMIT'))
+      .catchError((e) {
+        log.severe('Error with insert: $e');
+        return _conn.execute('ROLLBACK').then((_) => new Future.error(e));
+      });
 }
 
 Map _rowToMap(row) {
