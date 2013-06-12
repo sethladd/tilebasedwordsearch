@@ -9,6 +9,7 @@ class ScoreType {
   const ScoreType._(this.value);
 }
 
+// XXX: What is the ID that I can use in the database?
 class Player {
   Map _authResult;
 
