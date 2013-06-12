@@ -47,7 +47,7 @@ packages:
   fukiya:
     description: fukiya
     source: hosted
-    version: "0.1.4"
+    version: "0.1.5"
   game_loop:
     description:
       ref: null

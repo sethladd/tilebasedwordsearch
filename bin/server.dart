@@ -52,7 +52,9 @@ void main() {
 
     fukiya = new Fukiya()
     ..get('/', getIndexHandler)
-    ..get('/index.html', getIndexHandler)
+    // This will just catch the static index.html, we dont want that.
+    // Bug reported.
+    // ..get('/index.html', getIndexHandler)
     ..get('/index', getIndexHandler)
     ..post('/connect', postConnectDataHandler)
     ..post('/disconnect', postDisconnectHandler)
@@ -120,6 +122,7 @@ void getIndexHandler(FukiyaContext context) {
         context.response.close();
       }, onError: (error) => serverLogger.fine("error = $error"));
     } else {
+      serverLogger.fine("getIndexHandler exists = $exists");
       context.response.statusCode = 404;
       context.response.close();
     }
