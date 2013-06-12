@@ -28,6 +28,10 @@ class Player {
   // Collection of achievements on Play Services.
   List<Achievement> achievement;
 
+  // The ID of the player which corresponds to the g+ id
+  // and is only available after signedIn has been called.
+  String id;
+
   Player() {
     authenticationContext = new SimpleOAuth2(null);
     plusclient = new Plus(authenticationContext);
@@ -47,7 +51,8 @@ class Player {
 
     plusclient.people.get('me').then((Person person) {
       // Connect to the server with offline token.
-      _connectServer(person.id);
+      id = person.id;
+      _connectServer(id);
     });
 
     currentPanel = 'main';
