@@ -7,6 +7,7 @@ import 'dart:json' as JSON;
 
 import "package:logging/logging.dart";
 import "package:fukiya/fukiya.dart";
+import 'package:tilebasedwordsearch/shared.dart';
 import 'package:tilebasedwordsearch/persistable.dart' as db;
 import "package:google_oauth2_client/google_oauth2_console.dart" as console_auth;
 import 'package:http/http.dart' as http;
@@ -204,10 +205,39 @@ void postConnectDataHandler(FukiyaContext context) {
 
 void getGameHandler(FukiyaContext context) {
   serverLogger.fine("getGameHandler");
+  var id = int.parse(context.params['id']);
+  db.Persistable.load(id, Game).then((Game game) {
+    if (game == null) {
+      context.response
+        ..statusCode = HttpStatus.NOT_FOUND
+        ..close();
+    } else {
+      context.send(JSON.stringify(game.toMap()));
+    }
+  })
+  .catchError((e) {
+    serverLogger.severe('Error from getGame: $e');
+    context.response
+      ..statusCode = 500
+      ..close();
+  });
 }
 
 void createGameHandler(FukiyaContext context) {
   serverLogger.fine("createGameHandler");
+  HttpBodyHandler.processRequest(context.request)
+  .then((HttpBody body) {
+    var game = new Game();
+    return game.store().then((_) {
+      context.send(JSON.stringify(game.toMap()));
+    });
+  })
+  .catchError((e) {
+    serverLogger.severe('Error from createGame: $e');
+      context.response
+        ..statusCode = 500
+        ..close();
+  });
 }
 
 //getGame(Request req) {
