@@ -3,3 +3,4 @@ packages
 out
 .settings
 .DS_Store
+.idea

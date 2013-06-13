@@ -107,6 +107,7 @@ createGame(Request req) {
       });
     })
     .catchError((e) {
+      print(getAttachedStackTrace(e));
       log.severe('Error from createGame: $e');
       req.response
           ..status(500)
