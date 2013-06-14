@@ -12,7 +12,7 @@ div {
 
 #page {
   margin: 1.5em auto;
-  width: 90%; /* assume this is 960px */
+  width: 95%; /* assume this is 960px */
 }
 
 .header {
@@ -41,7 +41,7 @@ div {
 
 .main .grid {
   float: left;
-  width: 49.2%;
+  width: 48%;
   text-align: center;
   -moz-border-radius: .8em;
   border-radius: .8em;
