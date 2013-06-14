@@ -1,0 +1,254 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
+#page {
+  margin: 1.5em auto;
+  width: 90%; /* assume this is 960px */
+}
+
+.header {
+  width: 93.5%;
+  margin: 0 auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  margin-bottom: 1em;
+  /* background:-webkit-linear-gradient(top, rgb(250, 250, 240), rgb(255, 255,
+  255));*/
+  border: .1em solid #ccc;
+}
+
+.header h1 {
+  margin: 0;
+  padding: 2%;
+  font: 40px sans-serif;
+  color: #444;
+}
+
+.main {
+  margin: 0 auto;
+  width: 93.75%;
+  margin-bottom: 1em;
+}
+
+.main .grid {
+  float: left;
+  width: 49.2%;
+  text-align: center;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  border: .1em solid #ccc;
+  margin: 0;
+  margin-right: .21em;
+}
+
+.main .grid .selected-word {
+  font: 24px sans-serif;
+  width: 30%;
+  margin: 2% auto 2% auto;
+  padding: 1% 0%;
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  border: .1em solid #ccc;
+  color: #444;
+}
+
+.main .grid .board {
+  width: 70%; /* 350px */
+  margin: 0 auto;
+}
+
+.main .grid .board img {
+  max-width: 70%;
+}
+
+.main .grid .game-data {
+  width: 45%;
+  margin: 0 auto;
+  padding: .25em 0;
+  border: .1em solid #ccc;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+}
+
+.main .grid .game-data div {
+    display: inline-block;
+    padding: 1%;
+    margin: 1%;
+    text-align: center;
+    color: #444;
+    width: 25%;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    font-weight: bold;
+    font-size: .9em;
+    border: .1em solid #ccc;
+}
+
+.main .words {
+  float: left;
+  width: 24.6%;
+  text-align: center;
+  margin: 0 .2em 0 0;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  border: .1em solid #ccc;
+  padding: .4em 0em;
+}
+
+h2.column-heading {
+  font: normal normal 24px sans-serif;
+  width: auto;
+  margin: 2% auto 2% auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  color: #444;
+}
+
+.main .words ul {
+  list-style: none;
+  width: 80%;
+  padding: 0;
+  margin: 0 auto 1em auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  padding: 1% 0%;
+  border: .1em solid #ccc;
+}
+
+.main .words ul li {
+  margin: 2% auto;
+  padding: 1% 0%;
+  width: 50%;
+  color: #444;
+  font-weight: bold;
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  border: .1em solid #ccc;
+}
+
+.main .words ul li .score {
+  margin-right: .5em;
+  font: italic .9em serif;
+  float:right;
+
+}
+
+.main .social {
+  float: left;
+  width: 24.8%;
+  text-align: center;
+  margin: 0 auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  border: .1em solid #ccc;
+  padding: .3em 0em;
+  text-align: center;
+}
+
+.main .social .your-turn {
+  margin: 0 auto;
+  width:80%;
+  margin: 0 auto;
+  border-radius: .8em;
+  border: .1em solid #ccc;
+}
+
+.main .social .their-turn {
+  margin: 1em auto;
+  width:80%;
+  border-radius: .8em;
+  border: .1em solid #ccc;
+}
+
+.notification {
+  width: 90%;
+  margin: 2% auto;
+  padding: 1% 2%;
+  text-align: left;
+  font-size: .8em;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  color: #444;
+  border: .1em solid #ccc;
+}
+
+.notification .heading {
+  font-size: 1.2em;
+  color: #444;
+}
+
+.notification .time {
+  font: italic .9em serif;
+  color: #444;
+}
+
+.footer {
+  width: 93.75%;
+  margin: 0em auto;
+  text-align: center;
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  color: #444;
+  font: 1.8em serif;
+  border: .05em solid #ccc;
+}
+
+/************ PHONE *************/
+
+@media screen and (max-width: 480px) {
+  #page {
+    margin: 0;
+    width: 100%; /* used to be 90% */
+  }
+
+  .header {
+    display: none;
+  }
+
+  .main {
+    margin: 0 auto;
+    width: 100%%;
+  }
+
+  .main .grid {
+    float: none;
+    width: 95%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 1em;
+  }
+
+  .main .grid .board {
+    width: 100%;
+    margin: 0;
+  }
+
+  .main .grid .board img {
+    width: 90%;
+    max-width: 100%;
+
+  }
+  .main .words {
+    display: none;
+  }
+
+  .main .social {
+    display: none;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+
