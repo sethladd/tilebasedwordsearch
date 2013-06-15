@@ -345,6 +345,7 @@ h2.column-heading {
   }
 
   .main .grid .game-data {
+    width: 75%;
     margin-bottom: .5em;
   }
 
