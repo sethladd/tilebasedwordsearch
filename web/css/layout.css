@@ -1,0 +1,424 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+div {
+  margin: 0;
+  padding: 0;
+}
+
+#page {
+  margin: 1.5em auto;
+  width: 95%; /* assume this is 960px */
+}
+
+.header {
+  width: 93.5%;
+  margin: 0 auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  margin-bottom: 1em;
+  background:-webkit-linear-gradient(top, #eee, #fff);
+}
+
+.header h1 {
+  margin: 0;
+  padding: 1% 0%  1% 1%;
+  font: 40px sans-serif;
+  color: #444;
+}
+
+.main {
+  margin: 0 auto;
+  width: 93.5%;
+  margin-bottom: 1em;
+}
+
+.main .grid {
+  background:-webkit-linear-gradient(top, #eee, #fff);
+  float: left;
+  width: 44%;
+  text-align: center;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  margin: 0;
+  max-height: 50%;
+}
+
+.main .grid .selected-word {
+  font: 24px sans-serif;
+  width: 30%;
+  margin: 2% auto 2% auto;
+  padding: 1% 0%;
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  border: .1em solid #ccc;
+  color: #444;
+}
+
+.main .grid .board {
+  width: 80%; /* 350px */
+  margin: 0 auto;
+}
+
+.main .grid .board img {
+  max-width: 80%;
+}
+
+.main .grid .game-data {
+  width: 45%;
+  margin: 0 auto;
+  padding: .25em 0;
+  border: .1em solid #ccc;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+  background-color: #fff;
+}
+
+.main .grid .game-data div {
+    display: inline-block;
+    padding: 1% 0%;
+    margin: 1% 0%;
+    text-align: center;
+    color: #444;
+    width: 25%;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    font-weight: bold;
+    font-size: .9em;
+    border: .1em solid #ccc;
+}
+
+/* set max vertical height for this */
+.main .words {
+  float: left;
+  width: 25%;
+  text-align: center;
+  margin: 0;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  padding: .4em 0em;
+  background:-webkit-linear-gradient(top, #dfdfdf, #fff);
+  max-height: 50%;
+}
+
+h2.column-heading {
+  font: normal normal 1.5em sans-serif;
+  width: auto;
+  margin: 2% auto 2% auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  color: #222;
+}
+
+.main .words ul {
+  list-style: none;
+  width: 80%;
+  padding: 0;
+  margin: 0 auto 1em auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  padding: .5em 0;
+  border: .1em solid #ccc;
+  background:-webkit-linear-gradient(top, #999, #aaa);
+}
+
+.main .words ul li {
+  margin: 2% auto;
+  width: 75%;
+  color: #555;
+  font: normal bold .9em sans-serif;
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  border: .1em solid #ccc;
+  text-align: left;
+  padding: .15em .3em;
+  background-color: #eee;
+}
+
+.main .words ul li .score {
+  margin-right: 0;
+  font: italic .9em serif;
+  float:right;
+  padding-top: .08em;
+  /* border: .1em solid #ccc; */
+
+}
+
+.main .social {
+  float: left;
+  width: 30%;
+  text-align: center;
+  margin: 0 auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  /* border: .1em solid #ccc; */
+  padding: .3em 0em;
+  text-align: center;
+  background:-webkit-linear-gradient(top, #eee, #efefef);
+}
+
+.main .social .your-turn {
+  width:80%;
+  border-radius: .8em;
+  background:-webkit-linear-gradient(top, #888, #999);
+  margin: 0 auto 1em auto;
+  padding: .1em 0;
+}
+
+.main .social .their-turn {
+  width:80%;
+  border-radius: .8em;
+  background:-webkit-linear-gradient(top, #ddd, #eee);
+  margin: 0 auto;
+  padding: .1em 0;
+}
+
+.notification {
+  width: 90%;
+  text-align: left;
+  font-size: .8em;
+  -moz-border-radius: .6em;
+  border-radius: .6em;
+  margin: .5em auto;
+  padding: .25em .3em;
+}
+
+.notification .heading {
+  font-size: 1.2em;
+}
+
+.notification .time {
+  font: italic .9em serif;
+}
+
+.main .social .your-turn .notification {
+  background:-webkit-linear-gradient(top, #eee, #fff);
+  color: #333;
+}
+
+.main .social .their-turn .notification {
+  color: #fff;
+  background:-webkit-linear-gradient(top, #888, #999);
+}
+
+.footer {
+  width: 93.75%;
+  margin: 0em auto;
+  text-align: center;
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  color: #444;
+  font: 1.2em serif;
+  padding: .5em 0;
+  background:-webkit-linear-gradient(top, #fff, #eee);
+}
+
+.footer p {
+  margin: 0;
+  padding: 0;
+}
+
+/************ TABLET *************/
+
+@media screen and (max-width: 908px) {
+  .header {
+    display: none;
+  }
+
+  .main {
+    margin: 0 auto;
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  .main .grid {
+    width: 60%;
+    margin-bottom: 1em;
+  }
+
+  .main .grid .board {
+    width: 80%;
+  }
+
+  .main .grid .board img {
+    max-width: 80%;
+  }
+
+  .main .grid .game-data {
+    margin-bottom: .5em;
+  }
+
+  .main .words {
+    width: 39%;
+    text-align: center;
+  }
+  .main .words ul {
+    width: 70%;
+    margin: 0 auto 1em auto;
+  }
+
+  h2.column-heading {
+    font: normal normal 1.2em sans-serif;
+    margin: 1% auto;
+  }
+
+  .main .social {
+    clear: both;
+    float: none;
+    width: 100%;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
+
+  .main .social .your-turn {
+    float: left;
+    margin: 0em auto 0em 2%;
+    width: 45%;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
+
+  .main .social .their-turn {
+    float: right;
+    margin: 0em 2% 1em auto;
+    width:45%;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
+
+
+  .notification {
+    clear: both;
+    width: 90%;
+    margin: 2% auto;
+    padding: 1% 0%;
+    text-align: left;
+    font-size: .8em;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
+
+  .notification .heading {
+    float: left;
+    font-size: 1.2em;
+    padding: .02em .5em;
+  }
+
+  .notification .time {
+    float: right;
+    font: italic .9em serif;
+    padding: .02em .5em;
+  }
+
+  .footer {
+    width: 100%;
+    height: 3%;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+    font: .8em serif;
+  }
+}
+
+/*********** Small Tablet **********/
+
+@media screen and (max-width: 768px) {
+
+  .main .grid {
+    margin-bottom: .5em;
+    overflow: hidden;
+  }
+
+  .main .grid .board {
+    width: 90%;
+  }
+
+  .main .grid .board img {
+    max-width: 90%;
+  }
+
+  .main .grid .game-data {
+    width: 75%;
+    margin-bottom: .5em;
+  }
+
+  .main .words{
+    overflow: hidden;
+  }
+
+  .main .words ul {
+    width: 90%;
+    overflow: hidden;
+  }
+  .notification .heading {
+    float: none;
+    font-size: 1.2em;
+    padding: .02em .5em;
+  }
+
+  .notification .time {
+    float: none;
+    font: italic .9em serif;
+    padding: .02em .5em;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+
+/************ PHONE *************/
+
+@media screen and (max-width: 420px) {
+  #page {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .header {
+    display: none;
+  }
+
+  .main {
+    margin: 0 auto;
+    width: 96%;
+  }
+
+  .main .grid {
+    float: none;
+    width: 96%;
+    margin: 0 auto;
+    margin-top: 1em;
+    background-color: #222;
+  }
+
+  .main .grid .board {
+    width: 96%;
+    margin: 0 auto;
+  }
+
+  .main .grid .board img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .main .words {
+    display: none;
+  }
+
+  .main .social {
+    display: none;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+
