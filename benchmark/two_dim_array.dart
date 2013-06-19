@@ -3,7 +3,7 @@ import 'package:benchmark_harness/benchmark_harness.dart';
 
 // Create a new benchmark by extending BenchmarkBase
 class TwoDimArray extends BenchmarkBase {
-  const List<List<String>> grid = const [
+  static const List<List<String>> grid = const [
     const ['A', 'B', 'C', 'D'],
     const ['E', 'F', 'G', 'H'],
     const ['I', 'J', 'K', 'L'],
