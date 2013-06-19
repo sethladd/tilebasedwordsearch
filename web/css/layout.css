@@ -223,6 +223,10 @@ h2.column-heading {
   padding: 0;
 }
 
+.debug {
+  color:pink;
+}
+
 /************ TABLET *************/
 
 @media screen and (max-width: 908px) {
