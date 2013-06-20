@@ -40,6 +40,14 @@ packages:
     description: csslib
     source: hosted
     version: "0.4.7+6"
+  formler:
+    description: formler
+    source: hosted
+    version: "0.0.8"
+  fukiya:
+    description: fukiya
+    source: hosted
+    version: "0.1.5"
   game_loop:
     description:
       ref: null
