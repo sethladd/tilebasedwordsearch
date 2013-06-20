@@ -3,6 +3,8 @@ library tilebasedwordsearch;
 import 'dart:math';
 import 'dart:html';
 import 'dart:async';
+import 'dart:json' as JSON;
+import 'package:logging/logging.dart';
 import 'package:tilebasedwordsearch/shared_html.dart';
 import 'package:game_loop/game_loop_html.dart';
 import 'package:asset_pack/asset_pack.dart';
@@ -27,8 +29,9 @@ AssetManager assetManager = new AssetManager();
 Dictionary dictionary;
 ImageAtlas letterAtlas;
 Player player;
+final Logger clientLogger = new Logger("client");
 
-@observable String currentPanel = 'main';
+@observable String currentPanel = 'login';
 
 void parseAssets() {
   if (assetManager['game.dictionary'] == null) {
@@ -80,4 +83,18 @@ Future initialize() {
 
   return assetManager.loadPack('game', 'assets/_.pack')
       .then((_) => parseAssets());
+}
+
+_setupLogger() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((LogRecord logRecord) {
+    StringBuffer sb = new StringBuffer();
+    sb
+    ..write(logRecord.time.toString())..write(":")
+    ..write(logRecord.loggerName)..write(":")
+    ..write(logRecord.level.name)..write(":")
+    ..write(logRecord.sequenceNumber)..write(": ")
+    ..write(logRecord.message.toString());
+    print(sb.toString());
+  });
 }

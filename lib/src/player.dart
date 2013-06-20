@@ -11,6 +11,8 @@ class ScoreType {
 
 // XXX: What is the ID that I can use in the database?
 class Player {
+  Map _authResult;
+
   // Simple Authentication class that takes the token from the Sign-in button
   SimpleOAuth2 authenticationContext;
 
@@ -26,6 +28,10 @@ class Player {
   // Collection of achievements on Play Services.
   List<Achievement> achievement;
 
+  // The ID of the player which corresponds to the g+ id
+  // and is only available after signedIn has been called.
+  String id;
+
   Player() {
     authenticationContext = new SimpleOAuth2(null);
     plusclient = new Plus(authenticationContext);
@@ -34,11 +40,49 @@ class Player {
     achievement = new List<Achievement>();
   }
 
-  void signedIn(SimpleOAuth2 authenticationContext) {
+  void signedIn(SimpleOAuth2 authenticationContext, [Map authResult]) {
+    if (authResult != null) {
+      _authResult = authResult;
+    }
+
     plusclient.makeAuthRequests = true;
     gamesclient.makeAuthRequests = true;
-    print("Player is signed in");
+    print("Player is signed in client side");
+
+    plusclient.people.get('me').then((Person person) {
+      // Connect to the server with offline token.
+      id = person.id;
+      _connectServer(id);
+    });
+
     currentPanel = 'main';
+  }
+
+  void _connectServer(String gplusId) {
+    clientLogger.fine("gplusId = $gplusId");
+    var stateToken = (query("meta[name='state_token']") as MetaElement).content;
+    String url = "${window.location.href}connect?state_token=${stateToken}&gplus_id=${gplusId}";
+    clientLogger.fine(url);
+    HttpRequest.request(url, method: "POST", sendData: JSON.stringify(_authResult),
+        onProgress: (ProgressEvent e) {
+          clientLogger.fine("ProgressEvent ${e.toString()}");
+        }
+    )
+    .then((HttpRequest request) {
+      clientLogger.fine("connected from POST METHOD");
+      if (request.status == 401) {
+        clientLogger.fine("request.responseText = ${request.responseText}");
+        return;
+      }
+
+//      HttpRequest.getString("${window.location.href}people").then((String data) {
+//        clientLogger.fine("/people = $data");
+//        Map peopleData = JSON.parse(data);
+//        showPeople(peopleData);
+//      });
+    }).catchError((error) {
+      clientLogger.fine("POST $url error ${error.toString()}");
+    });
   }
 
   void signedOut() {

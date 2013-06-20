@@ -14,7 +14,7 @@ class LoginPanel extends WebComponent {
   SimpleOAuth2 authenticationContext;
 
   _onSignInCallback(Map authResult) {
-    print(authResult);
+    print("authRequest = ${authResult}");
 
     if (authResult["access_token"] != null) {
       query("#google-connect").style.display = "none";
@@ -26,7 +26,7 @@ class LoginPanel extends WebComponent {
 
       // Notify
       if (signInCallback != null) {
-        signInCallback(authenticationContext);
+        signInCallback(authenticationContext, authResult);
       }
     } else if (authResult["error"] != null) {
       print("There was an error: ${authResult["error"]}");
