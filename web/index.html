@@ -37,6 +37,61 @@
                dictionary="{{app.dictionary}}"
                letter-atlas="{{app.letterAtlas}}"
                class="grid"></div>
+          <div class="words"> <!-- 200 -->
+            <h2 class='column-heading'>Words</h2>
+            <ul>
+              <li>syzygy<span class='score'>29</span></li>
+              <li>this<span class='score'>12</span></li>
+              <li>that<span class='score'>12</span></li>
+              <li>the<span class='score'>6</span></li>
+              <li>other<span class='score'>14</span></li>
+              <li>pain<span class='score'>15</span></li>
+              <li>pan<span class='score'>11</span></li>
+              <li>pained<span class='score'>22</span></li>
+              <li>end<span class='score'>6</span></li>
+              <li>ends<span class='score'>8</span></li>
+              <li>ended<span class='score'>13</span></li>
+            </ul>
+          </div><!-- end words -->
+          <div class="social"> <!-- 150 -->
+          <h2 class='column-heading'>Notifications</h2>
+          <div class='your-turn'>
+            <div class='notification'>
+              <div class='heading'>jose45 is waiting</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+            <div class='notification'>
+              <div class='heading'>poohbah is waiting</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+            <div class='notification'>
+              <div class='heading'>asdffdsa is waiting</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+          </div>
+          <div class='their-turn'>
+            <div class='notification'>
+              <div class='heading'>Waiting for jose45</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+            <div class='notification'>
+              <div class='heading'>Waiting for poohb</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+            <div class='notification'>
+              <div class='heading'>Waiting for asdsa</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+          </div>
+        </div>
+        <div style='clear: both;'></div>
+
         </template>
 
         <template if="app.currentPanel == 'newGame'">
@@ -51,7 +106,7 @@
       <div class="footer">
         Built with pride using Dart!
       </div>
-  </div>
+    </div>
 
     <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
