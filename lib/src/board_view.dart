@@ -6,8 +6,8 @@ class TileCoord {
 }
 
 class BoardView {
-  final int WIDTH = 640;
-  final int HEIGHT = 480;
+  final int WIDTH = 800;
+  final int HEIGHT = 600;
   final int NUM_TILES = 4;
   CanvasElement canvas;
   String selectedLetters = '';

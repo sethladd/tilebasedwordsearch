@@ -108,7 +108,7 @@ class GamePanel extends WebComponent {
 
   bool keyboardEventInterceptor(DigitalButtonEvent event, bool repeat) {
     if (repeat == true) {
-      print('Repeat');
+      //print('Repeat');
       return true;
     }
     if (event.down == false) {
@@ -119,33 +119,33 @@ class GamePanel extends WebComponent {
       // Space or escape kills the current word search.
       // TODO: Indicate in GUI.
       _keyboardSearchString = '';
-      print('Cleared');
+      //print('Cleared');
       return true;
     }
     if (event.buttonId == Keyboard.ENTER) {
       // Submit.
       board.attemptWord(_keyboardSearchString);
       _keyboardSearchString = '';
-      print('Cleared');
+      //print('Cleared');
       return true;
     }
     String newSearchString = _keyboardSearchString +
                              translateKeyboardButtonId(event.buttonId);
     if (event.buttonId < Keyboard.A || event.buttonId > Keyboard.Z) {
-      print('Invalid character.');
+      //print('Invalid character.');
       return true;
     }
-    print(newSearchString);
-    print(event.buttonId);
+    //print(newSearchString);
+    //print(event.buttonId);
     if (board.stringInGrid(newSearchString, null)) {
-      print('String in grid.');
+      //print('String in grid.');
       _keyboardSearchString = newSearchString;
     } else if (event.buttonId == Keyboard.Q &&
                board.stringInGrid(newSearchString + 'U', null)) {
-      print('Found for QU.');
+      //print('Found for QU.');
       _keyboardSearchString = newSearchString;
     } else {
-      print('Here');
+      //print('Here');
       while (_keyboardSearchString.length > 0) {
         if (_keyboardSearchString[_keyboardSearchString.length-1] == 'Q') {
           _keyboardSearchString =
@@ -155,7 +155,7 @@ class GamePanel extends WebComponent {
         }
       }
     }
-    print(_keyboardSearchString);
+    //print(_keyboardSearchString);
     // Letter.
     return true;
   }
