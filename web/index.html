@@ -2,42 +2,56 @@
 
 <html>
   <head>
+    <title>Word Herd</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="HandheldFriendly" content="true">
-    <title>Tile based word forming entertainment</title>
-    <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
+   <link type='text/css' rel='stylesheet' href='css/layout.css' />
+   <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/high_scores_component.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/main_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/new_game_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
   </head>
   <body>
-    <template if="app.currentPanel == 'login'">
-      <div is="login-panel"
-        authentication-context="{{app.player.authenticationContext}}"
-        sign-in-callback="{{app.player.signedIn}}"
-        sign-out-callback="{{app.player.signedOut}}"
-        ></div>
-    </template>
+    <div id="page"> <!-- 960 -->
+      <div class="header"><!-- 900 -->
+        <h1>Word Herd</h1>
+      </div>
 
-    <template if="app.currentPanel == 'main'">
-      <div is="main-panel"></div>
-    </template>
+      <div class="main">
+        <template if="app.currentPanel == 'login'">
+          <div is="login-panel"
+            authentication-context="{{app.player.authenticationContext}}"
+            sign-in-callback="{{app.player.signedIn}}"
+            sign-out-callback="{{app.player.signedOut}}"
+            ></div>
+        </template>
 
-    <template if="app.currentPanel == 'game'">
-      <div is="game-panel"
-           dictionary="{{app.dictionary}}"
-           letter-atlas="{{app.letterAtlas}}"></div>
-    </template>
+        <template if="app.currentPanel == 'main'">
+          <div is="main-panel"></div>
+        </template>
 
-    <template if="app.currentPanel == 'newGame'">
-      <div is="new-game-panel"></div>
-    </template>
+        <template if="app.currentPanel == 'game'">
+          <div is="game-panel"
+               dictionary="{{app.dictionary}}"
+               letter-atlas="{{app.letterAtlas}}"
+               class="grid"></div>
+        </template>
 
-    <template if="app.currentPanel == 'highScores'">
-      <div is="high-scores-panel"></div>
-    </template>
+        <template if="app.currentPanel == 'newGame'">
+          <div is="new-game-panel"></div>
+        </template>
+
+        <template if="app.currentPanel == 'highScores'">
+          <div is="high-scores-panel"></div>
+        </template>
+      </div>
+
+      <div class="footer">
+        Built with pride using Dart!
+      </div>
+  </div>
 
     <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>

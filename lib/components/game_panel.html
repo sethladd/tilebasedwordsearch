@@ -4,22 +4,32 @@
   <body>
     <element name="game-panel" extends="div" constructor="GamePanel">
       <template>
-        <h2>Game Panel</h2>
-        <canvas id="frontBuffer"></canvas>
+        <label class="selected-word">WORDGOESHERE</label>
+        <canvas id="frontBuffer" class="board"></canvas>
 
+<!--         <div class='game-data'>
+          <div class='time'>1:09</div>
+          <div class='score'>265</div>
+          <div class='pause'>||</div>
+        </div>
+ -->        
+        <div class="game-data">
+          <!--
+          <div>
+            <button id="pause" on-click="togglePause()" disabled>Pause</button>
+            <button id="end" on-click="endGame()" disabled>End game</button>
+          </div> -->
+
+          <template if="board != null">
+            <div class='score'>{{board.score}}</div>
+            <div class='time'>{{board.gameClock.timeRemaining}}</div>
+          </template>
+        </div> <!-- end of game-data class -->
         <div>
-          <button id="pause" on-click="togglePause()" disabled>Pause</button>
+          <button class='pause' id="pause" on-click="togglePause()" disabled>Pause</button>
           <button id="end" on-click="endGame()" disabled>End game</button>
         </div>
 
-        <template if="board != null">
-          <div>
-            Score: {{ board.score }}
-          </div>
-          <div>
-            Time remaining: {{ board.gameClock.timeRemaining }}
-          </div>
-        </template>
       </template>
       <script type="application/dart" src="game_panel.dart"></script>
     </element>
