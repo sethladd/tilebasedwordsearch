@@ -3,7 +3,7 @@ library persistable;
 import 'dart:async';
 import 'dart:mirrors';
 import 'package:logging/logging.dart';
-//import 'package:postgresql/postgresql.dart';  XXX This pulls in dart:io
+import 'package:postgresql/postgresql.dart';  // XXX This pulls in dart:io
 
 Logger log = new Logger('persistable');
 
