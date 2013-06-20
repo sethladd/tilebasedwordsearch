@@ -1,9 +1,9 @@
-library hello_static;
+  library hello_static;
 
 import 'package:logging/logging.dart';
 import "package:start/start.dart";
-import 'package:tilebasedwordsearch/shared.dart';
-import 'package:tilebasedwordsearch/persistable.dart' as db;
+import 'package:tilebasedwordsearch/shared_io.dart';
+import 'package:tilebasedwordsearch/persistable_io.dart' as db;
 
 import 'dart:io';
 import 'dart:async';
@@ -30,6 +30,13 @@ void main() {
   
   db.init(dbUrl)
   .then((_) {
+    var path = new Path(new Options().script).directoryPath.append('..').append('boardgen').append('dense1000.txt');
+    return new File.fromPath(path).readAsString();
+  })
+  .then((String lines) {
+    initBoards(lines);
+  })
+  .then((_) {
     log.info('DB connected, now starting up web server');
     return start(public: 'web', host: '0.0.0.0', port: port).then((app) {
       log.info('HTTP server started on port $port');
@@ -49,7 +56,7 @@ getGame(Request req) {
         ..status(HttpStatus.NOT_FOUND)
         ..close();
     } else {
-      req.response.json(game.toMap());
+      req.response.json(game.toJson());
     }
   })
   .catchError((e) {
@@ -99,7 +106,8 @@ updateGame(Request req) {
 createGame(Request req) {
   HttpBodyHandler.processRequest(req.input)
     .then((HttpBody body) {
-      var game = new Game();
+      var game = new Game()
+        ..board = getRandomBoard().board;
       return game.store().then((_) {
         req.response
             ..status(HttpStatus.CREATED)
@@ -107,8 +115,7 @@ createGame(Request req) {
       });
     })
     .catchError((e) {
-      print(getAttachedStackTrace(e));
-      log.severe('Error from createGame: $e');
+      log.severe('Error from createGame: $e : ${getAttachedStackTrace(e)}');
       req.response
           ..status(500)
           ..close();
