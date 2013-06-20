@@ -29,6 +29,7 @@ final Logger serverLogger = new Logger("server");
 final String INDEX_HTML = "./web/out/index.html";
 
 Fukiya fukiya;
+Boards boards;
 
 void main() {
   _setupLogger();
@@ -52,9 +53,12 @@ void main() {
     var path = new Path(new Options().script).directoryPath.append('..').append('boardgen').append('dense1000.txt');
     serverLogger.fine("boardgen = ${path}");
     return new File.fromPath(path).readAsString();
+  }, onError: (e) {
+    serverLogger.fine('Error connecting to db: $e');
+    return new Future.error(e);
   })
   .then((String lines) {
-    initBoards(lines);
+    boards = new Boards(lines);
   })
   .then((_) {
     serverLogger.fine('DB connected, now starting up web server');
@@ -74,7 +78,7 @@ void main() {
     ..use(new FukiyaJsonParser())
     ..listen('0.0.0.0', port);
   })
-  .catchError((e) => serverLogger.fine("error: $e"));
+  .catchError((e) => serverLogger.fine("error starting up: $e"));
 }
 
 /**
@@ -243,7 +247,7 @@ void createGameHandler(FukiyaContext context) {
   HttpBodyHandler.processRequest(context.request)
   .then((HttpBody body) {
     var game = new Game()
-      ..board = getRandomBoard().board;
+      ..board = boards.getRandomBoard().board;
     return game.store().then((_) {
       context.response
         ..statusCode = 201
@@ -296,7 +300,7 @@ void updateGameHandler(FukiyaContext context) {
 /**
  * Logger configuration.
  */
-_setupLogger() {
+void _setupLogger() {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord logRecord) {
     StringBuffer sb = new StringBuffer();

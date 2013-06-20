@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:meta/meta.dart';
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 import 'package:game_loop/game_loop_html.dart';
+import 'package:tilebasedwordsearch/shared_html.dart';
 import 'dart:math';
 
 // The view of game in play
@@ -12,8 +13,8 @@ import 'dart:math';
 // - Timer
 class GamePanel extends WebComponent {
   Board board;
+  Boards boards;
   BoardView boardView;
-  Dictionary dictionary;
   ImageAtlas letterAtlas;
   GameLoopHtml _gameLoop;
   GameLoopTouch currentTouch;
@@ -46,7 +47,7 @@ class GamePanel extends WebComponent {
   }
 
   void startNewGame() {
-    board = new Board(dictionary, _gameLoop);
+    board = new Board(boards.getRandomBoard(), _gameLoop);
     boardView = new BoardView(board, _canvasElement);
     board.gameClock.start();
     board.done.then((_) {

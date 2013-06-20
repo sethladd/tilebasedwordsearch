@@ -1,11 +1,4 @@
 {
-  "dictionary": {
-    "loadArguments":{},
-    "name":"dictionary",
-    "url":"dictionary.txt",
-    "type":"text",
-    "importArguments":{}
-  },
   "boards": {
     "loadArguments":{},
     "name":"boards",

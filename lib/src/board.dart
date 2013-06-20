@@ -9,17 +9,18 @@ class Board {
   Set<String> words = new Set<String>();
   final List<int> letterBonusTiles = new List<int>(3);
   
+  final BoardAndWords boardAndWords;
+  
   List selectedPositions = [];
   int multiplier = 1;
   int wordBonusTile;
 
   // TODO: create a Turn to keep the score
   int score = 0;
-  final Dictionary dictionary;
 
   GameClock gameClock;
 
-  Board(this.dictionary, gameLoop) {
+  Board(this.boardAndWords, gameLoop) {
     _assignCharsToPositions();
     gameClock = new GameClock(gameLoop);
   }
@@ -58,7 +59,7 @@ class Board {
 
   void _assignCharsToPositions() {
     int gameId = new Random().nextInt(1000000);
-    List<String> selectedLetters = TileSet.getTilesForGame(gameId);
+    List<String> selectedLetters = boardAndWords.board.split('');
     for (var i = 0; i < DIMENSIONS; i++) {
       for (var j = 0; j < DIMENSIONS; j++) {
         this.grid[i][j] = selectedLetters[i*DIMENSIONS+j];
@@ -213,5 +214,5 @@ class Board {
     return gameClock.allDone.future;
   }
 
-  bool _wordIsValid(String word) => dictionary.hasWord(word);
+  bool _wordIsValid(String word) => boardAndWords.hasWord(word);
 }

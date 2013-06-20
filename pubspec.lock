@@ -23,7 +23,7 @@ packages:
   bot:
     description: bot
     source: hosted
-    version: "0.21.0"
+    version: "0.22.0"
   bot_io:
     description: bot_io
     source: hosted
@@ -132,4 +132,4 @@ packages:
   web_ui:
     description: web_ui
     source: hosted
-    version: "0.4.12"
+    version: "0.4.12+1"

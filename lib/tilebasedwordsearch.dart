@@ -16,7 +16,6 @@ import "package:google_games_v1_api/games_v1_api_browser.dart";
 part 'src/board_view.dart';
 part 'src/board.dart';
 part 'src/game_clock.dart';
-part 'src/dictionary.dart';
 part 'src/rectangle_transform.dart';
 part 'src/image_atlas.dart';
 part 'src/game_score.dart';
@@ -26,7 +25,7 @@ part 'src/score_board.dart';
 part 'src/achievement.dart';
 
 AssetManager assetManager = new AssetManager();
-Dictionary dictionary;
+Boards boards;
 ImageAtlas letterAtlas;
 Player player;
 final Logger clientLogger = new Logger("client");
@@ -34,10 +33,13 @@ final Logger clientLogger = new Logger("client");
 @observable String currentPanel = 'login';
 
 void parseAssets() {
-  if (assetManager['game.dictionary'] == null) {
-    throw new StateError("Can't play without a dictionary.");
+  clientLogger.info('start processing assets');
+  
+  if (assetManager['game.boards'] == null) {
+    throw new StateError("Can't play without the boards");
   }
-  dictionary = new Dictionary.fromFile(assetManager['game.dictionary']);
+  
+  boards = new Boards(assetManager['game.boards']);
 
   var letterTileImage = assetManager['game.tile-letters'];
   if (letterTileImage == null) {
@@ -61,9 +63,13 @@ void parseAssets() {
       letterAtlas.addElement(letters[index], x, y, letterWidth, letterWidth);
     }
   }
+  
+  clientLogger.info('Assets loaded and parsed');
 }
 
 Future initialize() {
+  _setupLogger();
+  
   player = new Player();
 
   // Add players scoreboard/leaderboard from game play services
