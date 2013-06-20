@@ -30,15 +30,15 @@ ImageAtlas letterAtlas;
 Player player;
 final Logger clientLogger = new Logger("client");
 
-@observable String currentPanel = 'login';
+@observable String currentPanel = 'main';
 
 void parseAssets() {
   clientLogger.info('start processing assets');
-  
+
   if (assetManager['game.boards'] == null) {
     throw new StateError("Can't play without the boards");
   }
-  
+
   boards = new Boards(assetManager['game.boards']);
 
   var letterTileImage = assetManager['game.tile-letters'];
@@ -63,13 +63,13 @@ void parseAssets() {
       letterAtlas.addElement(letters[index], x, y, letterWidth, letterWidth);
     }
   }
-  
+
   clientLogger.info('Assets loaded and parsed');
 }
 
 Future initialize() {
   _setupLogger();
-  
+
   player = new Player();
 
   // Add players scoreboard/leaderboard from game play services

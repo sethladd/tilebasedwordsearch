@@ -166,12 +166,8 @@ class GamePanel extends WebComponent {
 
 
   void gameUpdate(GameLoopHtml gameLoop) {
-    if (TouchEvent.supported) {
-      // Only support touch on touch enabled devices.
-      boardView.update(currentTouch);
-    } else {
-      gameUpdateKeyboard();
-    }
+    boardView.update(currentTouch);
+    gameUpdateKeyboard();
   }
 
   void gameRender(GameLoopHtml gameLoop) {

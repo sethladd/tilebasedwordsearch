@@ -5,12 +5,11 @@ class Board {
 
   static const DIMENSIONS = 4;
 
-  List<List<String>> grid = new List.generate(4, (_) => new List<String>(4));
   Set<String> words = new Set<String>();
   final List<int> letterBonusTiles = new List<int>(3);
-  
+
   final BoardAndWords boardAndWords;
-  
+
   List selectedPositions = [];
   int multiplier = 1;
   int wordBonusTile;
@@ -21,7 +20,6 @@ class Board {
   GameClock gameClock;
 
   Board(this.boardAndWords, gameLoop) {
-    _assignCharsToPositions();
     gameClock = new GameClock(gameLoop);
   }
 
@@ -29,79 +27,9 @@ class Board {
     return selectedPositions.join('');
   }
 
-  void clearSelectedPositions() {
-    selectedPositions = [];
-  }
-
-  bool addToSelectedPositions(position) {
-    if (selectedPositions.isEmpty || this.validMove(selectedPositions.last, position)) {
-      selectedPositions.add(position);
-      return true;
-    }
-    return false;
-  }
-
-  bool isPositionSelected(position) {
-    bool selected = false;
-    for (var i = 0; i < selectedPositions.length; i++) {
-      if (selectedPositions[i].first == position.first &&
-          selectedPositions[i].last == position.last) {
-        selected = true;
-        break;
-      }
-    }
-    return selected;
-  }
 
   void stop() {
     gameClock.stop();
-  }
-
-  void _assignCharsToPositions() {
-    int gameId = new Random().nextInt(1000000);
-    List<String> selectedLetters = boardAndWords.board.split('');
-    for (var i = 0; i < DIMENSIONS; i++) {
-      for (var j = 0; j < DIMENSIONS; j++) {
-        this.grid[i][j] = selectedLetters[i*DIMENSIONS+j];
-      }
-    }
-  }
-
-  // There is no checking that the word has been previously picked or not.
-  // All this does is check if every move in a path is legal.
-  bool completePathIsValid(path) {
-    if (path.length != path.toSet().length) return false;
-
-    var valid = true;
-    for (var i = 0; i < path.length - 1; i++) {
-      if (!validMove(path[i], path[i + 1])) {
-        valid = false;
-      }
-    }
-    return valid;
-  }
-
-  // Checks if move from position1 or position2 is legal.
-  bool validMove(position1, position2) {
-    bool valid = true;
-
-    if (!_vertical(position1, position2) &&
-        !_horizontal(position1, position2) &&
-        !_diagonal(position1, position2)) {
-      valid = false;
-    }
-    return valid;
-  }
-
-  // Args are GameLoopTouchPosition(s).
-  bool _vertical(position1, position2) => position1.x == position2.x;
-
-  bool _horizontal(position1, position2) => position1.y == position2.y;
-
-  bool _diagonal(position1, position2) {
-    return ((position1.x - position2.y).abs() == 1 &&
-        (position1.y - position2.x).abs()) &&
-        !(position1.x == position2.x && position1.x == position2.x);
   }
 
   List<String> convertStringToTileString(String str) {
@@ -132,7 +60,7 @@ class Board {
     if (visited[i][j] == true) {
       return false;
     }
-    if (grid[i][j] != tiles[index]) {
+    if (boardAndWords.getChar(i,j) != tiles[index]) {
       return false;
     }
     path.add(i*4+j);
