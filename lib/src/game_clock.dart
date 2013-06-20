@@ -21,7 +21,7 @@ class GameClock {
   }
   
   String formatTime(int seconds) {
-    if (seconds <= 0) return 'OUT OF TIME!!!!'; // XXX ok for stop() case?
+    if (seconds <= 0) return '0'; // XXX ok for stop() case?
     
     int m = seconds ~/ 60;
     int s = seconds % 60;

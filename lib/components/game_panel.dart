@@ -51,6 +51,10 @@ class GamePanel extends WebComponent {
     board.gameClock.start();
     board.done.then((_) {
       disableButtons();
+      window.alert('Game over!');
+      //XXX disable input
+      //XXX deliver score
+      //XXX etc.
     });
     _gameLoop.start();
   }
