@@ -7,8 +7,9 @@ import 'dart:json' as JSON;
 
 import "package:logging/logging.dart";
 import "package:fukiya/fukiya.dart";
-import 'package:tilebasedwordsearch/shared.dart';
-import 'package:tilebasedwordsearch/persistable.dart' as db;
+
+import 'package:tilebasedwordsearch/shared_io.dart';
+import 'package:tilebasedwordsearch/persistable_io.dart' as db;
 import "package:google_oauth2_client/google_oauth2_console.dart" as console_auth;
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
@@ -48,6 +49,14 @@ void main() {
 
   db.init(dbUrl)
   .then((_) {
+    var path = new Path(new Options().script).directoryPath.append('..').append('boardgen').append('dense1000.txt');
+    serverLogger.fine("boardgen = ${path}");
+    return new File.fromPath(path).readAsString();
+  })
+  .then((String lines) {
+    initBoards(lines);
+  })
+  .then((_) {
     serverLogger.fine('DB connected, now starting up web server');
 
     fukiya = new Fukiya()
@@ -59,6 +68,7 @@ void main() {
     ..post('/connect', postConnectDataHandler)
     ..post('/disconnect', postDisconnectHandler)
     ..get('/games/:id', getGameHandler)
+    ..post('/games/:id', updateGameHandler)
     ..post('/games', createGameHandler)
     ..staticFiles('./web/out')
     ..use(new FukiyaJsonParser())
@@ -206,6 +216,8 @@ void postConnectDataHandler(FukiyaContext context) {
   });
 }
 
+
+
 void getGameHandler(FukiyaContext context) {
   serverLogger.fine("getGameHandler");
   var id = int.parse(context.params['id']);
@@ -215,7 +227,7 @@ void getGameHandler(FukiyaContext context) {
         ..statusCode = HttpStatus.NOT_FOUND
         ..close();
     } else {
-      context.send(JSON.stringify(game.toMap()));
+      context.send(JSON.stringify(game.toJson()));
     }
   })
   .catchError((e) {
@@ -230,9 +242,12 @@ void createGameHandler(FukiyaContext context) {
   serverLogger.fine("createGameHandler");
   HttpBodyHandler.processRequest(context.request)
   .then((HttpBody body) {
-    var game = new Game();
+    var game = new Game()
+      ..board = getRandomBoard().board;
     return game.store().then((_) {
-      context.send(JSON.stringify(game.toMap()));
+      context.response
+        ..statusCode = 201
+        ..close();
     });
   })
   .catchError((e) {
@@ -243,48 +258,40 @@ void createGameHandler(FukiyaContext context) {
   });
 }
 
-//getGame(Request req) {
-//  var id = req.params['id'];
-//  db.load(id, 'game').then((Map row) {
-//    if (row == null) {
-//      req.response.status(HttpStatus.NOT_FOUND);
-//      req.response.close();
-//    } else {
-//      req.response.json(row);
-//    }
-//  });
-//}
-
-//createGame(Request req) {
-//  HttpBodyHandler.processRequest(req.input)
-//    .then((HttpBody body) {
-//
-//    })
-//    .catchError((e) {
-//      req.response
-//          ..status(500)
-//          ..close();
-//    });
-//}
-
-//createCat(Request req, Response res) {
-//  HttpBodyHandler.processRequest(req.input)
-//    .then((HttpBody body) {
-//      return body.body['name'];
-//    })
-//    .then((name) => db.execute('INSERT INTO cats (name) VALUES (@n)', {'n':name}))
-//    .then((_) {
-//      res
-//       ..status(201)
-//       ..close();
-//    })
-//    .catchError((e) {
-//      print("Error with insert: $e");
-//      res
-//        ..status(500)
-//        ..close();
-//    });
-//}
+void updateGameHandler(FukiyaContext context) {
+  serverLogger.info("updateGame");
+  Game game;
+  var id = int.parse(context.params['id']);
+  db.Persistable.load(id, Game).then((Game g) {
+    if (g == null) {
+      return new Future.error("NOT FOUND");
+    } else {
+      game = g;
+      return HttpBodyHandler.processRequest(context.request);
+    }
+  })
+  .then((HttpBody body) {
+    var map = body.body as Map;
+    game.update(map);
+    return game.store();
+  })
+  .then((_) {
+    context.response
+      ..statusCode = 200
+      ..close();
+  })
+  .catchError((e) {
+    context.response
+      ..statusCode = 404
+      ..close();
+  }, test: (e) => e == 'NOT FOUND')
+  .catchError((e) {
+    serverLogger.severe('Error updating: $e');
+    context.response
+      ..statusCode = 500
+      ..close();
+  });  
+}
 
 /**
  * Logger configuration.

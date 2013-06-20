@@ -2,42 +2,114 @@
 
 <html>
   <head>
+    <title>Word Herd</title>
     <meta charset="utf-8">
-    <title>Tile based word forming entertainment</title>
-    <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="HandheldFriendly" content="true">
+   <link type='text/css' rel='stylesheet' href='css/layout.css' />
+   <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/high_scores_component.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/main_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/new_game_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
   </head>
   <body>
-    <template if="app.currentPanel == 'login'">
-      <div is="login-panel"
-        authentication-context="{{app.player.authenticationContext}}"
-        sign-in-callback="{{app.player.signedIn}}"
-        sign-out-callback="{{app.player.signedOut}}"
-        ></div>
-    </template>
+    <div id="page"> <!-- 960 -->
+      <div class="header"><!-- 900 -->
+        <h1>Word Herd</h1>
+      </div>
 
-    <template if="app.currentPanel == 'main'">
-      <div is="main-panel"></div>
-    </template>
+      <div class="main">
+        <template if="app.currentPanel == 'login'">
+          <div is="login-panel"
+            authentication-context="{{app.player.authenticationContext}}"
+            sign-in-callback="{{app.player.signedIn}}"
+            sign-out-callback="{{app.player.signedOut}}"
+            ></div>
+        </template>
 
-    <template if="app.currentPanel == 'game'">
-      <div is="game-panel"
-           dictionary="{{app.dictionary}}"
-           letter-atlas="{{app.letterAtlas}}"></div>
-    </template>
+        <template if="app.currentPanel == 'main'">
+          <div is="main-panel"></div>
+        </template>
 
-    <template if="app.currentPanel == 'newGame'">
-      <div is="new-game-panel"></div>
-    </template>
+        <template if="app.currentPanel == 'game'">
+          <div is="game-panel"
+               dictionary="{{app.dictionary}}"
+               letter-atlas="{{app.letterAtlas}}"
+               class="grid"></div>
+          <div class="words"> <!-- 200 -->
+            <h2 class='column-heading'>Words</h2>
+            <ul>
+              <li>syzygy<span class='score'>29</span></li>
+              <li>this<span class='score'>12</span></li>
+              <li>that<span class='score'>12</span></li>
+              <li>the<span class='score'>6</span></li>
+              <li>other<span class='score'>14</span></li>
+              <li>pain<span class='score'>15</span></li>
+              <li>pan<span class='score'>11</span></li>
+              <li>pained<span class='score'>22</span></li>
+              <li>end<span class='score'>6</span></li>
+              <li>ends<span class='score'>8</span></li>
+              <li>ended<span class='score'>13</span></li>
+            </ul>
+          </div><!-- end words -->
+          <div class="social"> <!-- 150 -->
+          <h2 class='column-heading'>Notifications</h2>
+          <div class='your-turn'>
+            <div class='notification'>
+              <div class='heading'>jose45 is waiting</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+            <div class='notification'>
+              <div class='heading'>poohbah is waiting</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+            <div class='notification'>
+              <div class='heading'>asdffdsa is waiting</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+          </div>
+          <div class='their-turn'>
+            <div class='notification'>
+              <div class='heading'>Waiting for jose45</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+            <div class='notification'>
+              <div class='heading'>Waiting for poohb</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+            <div class='notification'>
+              <div class='heading'>Waiting for asdsa</div>
+              <div class='time'>4 hours ago</div>
+              <div style='clear: both;'></div>
+            </div>
+          </div>
+        </div>
+        <div style='clear: both;'></div>
 
-    <template if="app.currentPanel == 'highScores'">
-      <div is="high-scores-panel"></div>
-    </template>
+        </template>
+
+        <template if="app.currentPanel == 'newGame'">
+          <div is="new-game-panel"></div>
+        </template>
+
+        <template if="app.currentPanel == 'highScores'">
+          <div is="high-scores-panel"></div>
+        </template>
+      </div>
+
+      <div class="footer">
+        Built with pride using Dart!
+      </div>
+    </div>
 
     <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
+    <script src="packages/browser/interop.js"></script>
   </body>
 </html>

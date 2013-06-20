@@ -1,9 +1,11 @@
 CREATE TABLE IF NOT EXISTS game (
   id SERIAL,
-  board1 VARCHAR(255),
-  board2 VARCHAR(255),
-  board3 VARCHAR(255),
-  player1Score INT,
-  player2Score INT,
-  lastPlayed TIMESTAMP
+  board VARCHAR(255),
+  p1_score INT,
+  p2_score INT,
+  p1_id INT,
+  p2_id INT,
+  p1_words TEXT,
+  p2_words TEXT,
+  last_played TIMESTAMP
 );
