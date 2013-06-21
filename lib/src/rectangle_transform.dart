@@ -33,6 +33,14 @@ class RectangleTransform {
     return left <= x && x <= right && top <= y && y <= bottom;
   }
 
+  bool containsTouch(int x, int y) {
+    int xChop = (width * 0.10).toInt();
+    int yChop = (height * 0.10).toInt();
+
+    return left+xChop <= x && x <= right-xChop &&
+           top+yChop <= y && y <= bottom-yChop;
+  }
+
   /// Transform [x] into the [this] coordinate system.
   int transformX(int x) => x - left;
   /// Transform [y] into the [this] coordinate system.
