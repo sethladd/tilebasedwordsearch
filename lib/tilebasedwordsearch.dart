@@ -29,6 +29,7 @@ part 'src/achievement.dart';
 AssetManager assetManager = new AssetManager();
 Boards boards;
 ImageAtlas letterAtlas;
+ImageAtlas selectedLetterAtlas;
 Player player;
 final Logger clientLogger = new Logger("client");
 
@@ -49,26 +50,32 @@ void parseAssets() {
 
   boards = new Boards(assetManager['game.boards']);
 
-  var letterTileImage = assetManager['game.tile-letters'];
+  var letterTileImage = assetManager['game.tiles'];
   if (letterTileImage == null) {
     throw new StateError("Can\'t play without tile images.");
   }
 
+  int offsetX = 16;
+  int offsetY = 30;
+  int sizeX = 94;
+  int sizeY = 94;
+  int gapX = 5;
+  int gapY = 4;
+
   letterAtlas = new ImageAtlas(letterTileImage);
   final int letterRow = 5;
   final int lettersPerRow = 6;
-  final int letterWidth = 70;
   List<String> letters = [ 'A', 'B', 'C', 'D', 'E', 'F',
                            'G', 'H', 'I', 'J', 'K', 'L',
-                           'M', 'N', '~N', 'O', 'P', 'Q',
-                           'QU', 'R', 'rr', 'S', 'T', 'U',
-                           'V', 'W', 'X', 'Y', 'Z', ' '];
+                           'M', 'N', 'O', 'P', 'QU', 'R',
+                           'S', 'T', 'U', 'V', 'W', 'X',
+                           'Y', 'Z'];
   for (int i = 0; i < letterRow; i++) {
     for (int j = 0; j < lettersPerRow; j++) {
-      int index = (i * lettersPerRow) + j;
-      int x = j * letterWidth;
-      int y = i * letterWidth;
-      letterAtlas.addElement(letters[index], x, y, letterWidth, letterWidth);
+      int index = lettersPerRow * i + j;
+      int x = offsetX + j * (sizeX + gapX);
+      int y = offsetY + i * (sizeY + gapY);
+      letterAtlas.addElement(letters[index], x, y, sizeX, sizeY);
     }
   }
 

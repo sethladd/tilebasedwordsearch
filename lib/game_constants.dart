@@ -1,6 +1,8 @@
 library game_constants;
 
 class GameConstants {
+  static const int TilePixels = 94;
+  static const int TileGap = 6;
   static const int BoardDimension = 4;
   static const Map letterScores = const {
     'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1,

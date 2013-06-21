@@ -6,39 +6,10 @@
     "type":"text",
     "importArguments":{}
   },
-  "tile-letters": {
-    "loadArguments":{},
-    "name":"tile-letters",
-    "url":"imgs/tile-alpha-sans.png",
-    "type":"image",
-    "importArguments":{}
-  },
-  "space": {
-    "loadArguments":{},
-    "name":"space",
-    "url":"imgs/space.png",
-    "type":"image",
-    "importArguments":{}
-  },
-  "tile-highlight": {
-    "loadArguments":{},
-    "name":"tile-highlight",
-    "url":"imgs/tile-highlight.png",
-    "type":"image",
-    "importArguments":{}
-  },
-  "tile-theme-wood": {
-    "loadArguments":{},
-    "name":"tile-theme-wood",
-    "url":"imgs/tile-theme-wood.png",
-    "type":"image",
-    "importArguments":{}
-  },
-  "tile-value": {
-    "loadArguments":{},
-    "name":"tile-value",
-    "url":"imgs/tile-value.png",
-    "type":"image",
-    "importArguments":{}
+  "tiles": {
+  	"loadArguments":{},
+  	"url":"tiles.png",
+  	"type":"image",
+  	"importArguments":{}
   }
 }
