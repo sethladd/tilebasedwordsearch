@@ -2,7 +2,7 @@ part of tilebasedwordsearch;
 
 @observable
 class Board {
-  Set<String> words = new Set<String>();
+  Map<String, int> words = new Map<String, int>();
   final List<int> letterBonusTiles = new List<int>(3);
 
   final BoardConfig config;
@@ -22,13 +22,13 @@ class Board {
   }
 
   bool attemptWord(String word) {
-    if (words.contains(word)) {
+    if (words[word] != null) {
       return false;
     }
     if (_wordIsValid(word)) {
-      score += scoreForWord(word);
-      print('score = $score');
-      words.add(word);
+      int wordScore = scoreForWord(word);
+      score += wordScore;
+      words[word] = wordScore;
       return true;
     }
     return false;
