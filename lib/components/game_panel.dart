@@ -20,6 +20,7 @@ class GamePanel extends WebComponent {
   ButtonElement _endButton;
   Game game;
   DivElement _selectedWord;
+  BodyElement _bodyElement;
 
   @override
   inserted() {
@@ -27,11 +28,12 @@ class GamePanel extends WebComponent {
     _endButton = query('#end');
     _canvasElement = query('#frontBuffer');
     _selectedWord = query('selected-word');
+    _bodyElement = query('body');
     _gameLoop = new GameLoopHtml(_canvasElement);
     _gameClock = new GameClock(_gameLoop);
     // Don't lock the pointer on a click.
     _gameLoop.pointerLock.lockOnClick = false;
-
+    _bodyElement.classes.add('no-scroll');
 
     _gameLoop.onUpdate = gameUpdate;
     _gameLoop.onRender = gameRender;
@@ -46,6 +48,7 @@ class GamePanel extends WebComponent {
   @override
   removed() {
     _gameLoop.keyboard.interceptor = null;
+    _bodyElement.classes.remove('no-scroll');
     _gameLoop.stop();
   }
 
@@ -78,7 +81,7 @@ class GamePanel extends WebComponent {
       currentPanel = 'results';
     }
   }
-  
+
   Future _saveGame() {
     game.board = board.tiles;
     game.timeRemaining = _gameClock.secondsRemaining;
