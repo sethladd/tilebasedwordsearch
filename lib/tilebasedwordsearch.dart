@@ -53,7 +53,8 @@ void parseAssets() {
   boards = new Boards(assetManager['game.boards']);
 
   var letterTileImage = assetManager['game.tiles'];
-  if (letterTileImage == null) {
+  var selectedLetterTileImage = assetManager['game.tiles_highlighted'];
+  if (letterTileImage == null || selectedLetterTileImage == null) {
     throw new StateError("Can\'t play without tile images.");
   }
 
@@ -65,6 +66,7 @@ void parseAssets() {
   int gapY = 4;
 
   letterAtlas = new ImageAtlas(letterTileImage);
+  selectedLetterAtlas = new ImageAtlas(selectedLetterTileImage);
   final int letterRow = 5;
   final int lettersPerRow = 6;
   List<String> letters = [ 'A', 'B', 'C', 'D', 'E', 'F',
@@ -81,6 +83,7 @@ void parseAssets() {
       int x = offsetX + j * (sizeX + gapX);
       int y = offsetY + i * (sizeY + gapY);
       letterAtlas.addElement(letters[index], x, y, sizeX, sizeY);
+      selectedLetterAtlas.addElement(letters[index], x, y, sizeX, sizeY);
     }
   }
 
