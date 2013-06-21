@@ -1,0 +1,21 @@
+{
+  "boards": {
+    "loadArguments":{},
+    "url":"dense1000FINAL.txt",
+    "type":"text",
+    "importArguments":{}
+  },
+  "tiles": {
+  	"loadArguments":{},
+  	"url":"tiles.png",
+  	"type":"image",
+  	"importArguments":{}
+  },
+  "tiles_highlighted": {
+  	"loadArguments":{},
+  	"url":"tiles_highlighted.png",
+  	"type":"image",
+  	"importArguments":{}
+  }
+
+}

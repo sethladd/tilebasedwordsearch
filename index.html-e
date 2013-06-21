@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- This file was auto-generated from web/index.html. -->
+<html><head><style>template { display: none; }</style>
+    <title>Word Herd</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+    <meta name="HandheldFriendly" content="true">
+   <link type="text/css" rel="stylesheet" href="../css/layout.css">
+   
+    
+    
+    
+    
+    
+    
+    
+  </head>
+  <body style="overflow:hidden">
+    <div id="page">
+      <div class="header">
+        <h1>Word Herd</h1>
+      </div>
+
+      <div class="main">
+        <template></template>
+
+        <template></template>
+
+        <template></template>
+
+        <template></template>
+
+        <template></template>
+
+        <template></template>
+      </div>
+
+      <div class="footer">
+        Built with pride using Dart!
+      </div>
+    </div>
+
+    
+    <script src="../packages/browser/dart.js"></script>
+    <script src="../packages/browser/interop.js"></script>
+  
+
+<script type="application/dart" src="index.html_bootstrap.dart"></script></body></html>
