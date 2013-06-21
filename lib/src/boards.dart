@@ -74,16 +74,16 @@ class BoardConfig {
     // DFS.
     bool r = false;
     // Left side.
-    r = r || _findInGridWorker(tiles, index+1, i-1, j-1, visited, path, paths);
-    r = r || _findInGridWorker(tiles, index+1, i-1, j, visited, path, paths);
-    r = r || _findInGridWorker(tiles, index+1, i-1, j+1, visited, path, paths);
+    r = _findInGridWorker(tiles, index+1, i-1, j-1, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i-1, j, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i-1, j+1, visited, path, paths) || r;
     // Right side.
-    r = r || _findInGridWorker(tiles, index+1, i+1, j-1, visited, path, paths);
-    r = r || _findInGridWorker(tiles, index+1, i+1, j, visited, path, paths);
-    r = r || _findInGridWorker(tiles, index+1, i+1, j+1, visited, path, paths);
+    r = _findInGridWorker(tiles, index+1, i+1, j-1, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i+1, j, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i+1, j+1, visited, path, paths) || r;
     // Top and bottom.
-    r = r || _findInGridWorker(tiles, index+1, i, j-1, visited, path, paths);
-    r = r || _findInGridWorker(tiles, index+1, i, j+1, visited, path, paths);
+    r = _findInGridWorker(tiles, index+1, i, j-1, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i, j+1, visited, path, paths) || r;
     visited[i][j] = false;
     path.removeLast();
     return r;
