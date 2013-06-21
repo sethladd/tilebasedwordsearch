@@ -21,7 +21,6 @@ class BoardView {
     init();
   }
 
-
   void init() {
     canvas.width = WIDTH;
     canvas.height = HEIGHT;

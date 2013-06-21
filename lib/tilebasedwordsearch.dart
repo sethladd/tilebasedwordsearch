@@ -73,6 +73,9 @@ void parseAssets() {
   for (int i = 0; i < letterRow; i++) {
     for (int j = 0; j < lettersPerRow; j++) {
       int index = lettersPerRow * i + j;
+      if (index >= letters.length) {
+        break;
+      }
       int x = offsetX + j * (sizeX + gapX);
       int y = offsetY + i * (sizeY + gapY);
       letterAtlas.addElement(letters[index], x, y, sizeX, sizeY);
