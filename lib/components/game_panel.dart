@@ -5,6 +5,7 @@ import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 import 'package:game_loop/game_loop_html.dart';
 import 'package:tilebasedwordsearch/shared_html.dart';
 import 'dart:math';
+import 'dart:async';
 
 class GamePanel extends WebComponent {
   BoardView boardView;
@@ -19,6 +20,7 @@ class GamePanel extends WebComponent {
   CanvasElement _canvasElement;
   ButtonElement _pauseButton;
   ButtonElement _endButton;
+  Game game;
 
   @override
   inserted() {
@@ -53,10 +55,13 @@ class GamePanel extends WebComponent {
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
     _gameClock.start();
     _gameClock.allDone.future.then((_) {
+      _saveGame();
       currentPanel = 'results';
     });
     words.clear();
     score = 0;
+    game = new Game();
+    _saveGame();
     _gameLoop.start();
   }
 
@@ -72,13 +77,23 @@ class GamePanel extends WebComponent {
   void endGame() {
     if (window.confirm('Are you sure you want to end the game?')) {
       _gameClock.stop();
+      _saveGame();
       currentPanel = 'results';
     }
+  }
+  
+  Future _saveGame() {
+    game.timeRemaining = _gameClock.secondsRemaining;
+    game.words = board.words.keys;
+    game.score = board.score;
+    return game.store().catchError(print);
   }
 
   void togglePause() {
     if (!paused) {
       _gameClock.pause();
+      game.timeRemaining = _gameClock.secondsRemaining;
+      _saveGame();
       _pauseButton.text = "Resume";
     } else {
       _gameClock.restart();

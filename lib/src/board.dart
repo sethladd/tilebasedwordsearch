@@ -13,8 +13,7 @@ class Board {
   // TODO: create a Turn to keep the score
   int score = 0;
 
-  Board(this.config) {
-  }
+  Board(this.config);
 
   bool attemptPath(List<int> path) {
     if (path == null) {
