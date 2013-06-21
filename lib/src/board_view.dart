@@ -46,8 +46,22 @@ class BoardView {
     return new TileCoord(x, y);
   }
 
-  double get scaleX => canvas.clientWidth/canvas.width;
-  double get scaleY => canvas.clientHeight/canvas.height;
+  double get scaleX => canvas.width/canvas.clientWidth;
+  double get scaleY => canvas.height/canvas.clientHeight;
+
+  int transformTouchToCanvasX(num v) {
+    Rect canvasRectangle = canvas.getBoundingClientRect();
+    int offsetX = (canvasRectangle.left + document.body.scrollLeft).toInt();
+    int x = ((v - offsetX) * scaleX).toInt();
+    return x;
+  }
+
+  int transformTouchToCanvasY(num v) {
+    Rect canvasRectangle = canvas.getBoundingClientRect();
+    int offsetY = (canvasRectangle.top + document.body.scrollTop).toInt();
+    int y = ((v - offsetY) * scaleY).toInt();
+    return y;
+  }
 
   void render() {
     var c = canvas.context2D;

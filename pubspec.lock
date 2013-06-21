@@ -51,7 +51,7 @@ packages:
   game_loop:
     description:
       ref: null
-      resolved-ref: de0fc5107832fe385deca649440aaaf76001ba1c
+      resolved-ref: f952b28746ea55cc9a2882ace5dbdcca17451d1b
       url: "https://github.com/johnmccutchan/game_loop.git"
     source: git
     version: "0.9.0"
@@ -132,4 +132,4 @@ packages:
   web_ui:
     description: web_ui
     source: hosted
-    version: "0.4.12+1"
+    version: "0.4.12+2"
