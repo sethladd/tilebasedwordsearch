@@ -113,7 +113,7 @@ Future initialize() {
       .then((_) => parseAssets())
       .then((_) => db.init('wordherd', 'wordherd'))
       .then((_) {
-        return db.Persistable.all(Game).toList().then((games) => games.addAll(games));
+        return db.Persistable.all(Game).toList().then((g) => games.addAll(g));
       });
 }
 

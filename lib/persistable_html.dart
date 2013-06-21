@@ -54,6 +54,7 @@ abstract class Persistable {
     var object = instance.reflectee;
     var instanceMirror = reflect(object);
     data.forEach((k, v) {
+      print('$k has $v which is a ${v.runtimeType}');
       if (classMirror.variables.containsKey(new Symbol(k))) {
         instanceMirror.setField(new Symbol(k), v);
       }

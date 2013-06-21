@@ -5,13 +5,17 @@ class Game extends Object with Persistable {
   int score;
   int timeRemaining;
   List<String> words = <String>[];
-  int lastPlayedMillisSinceEpoch;
+  
+  // See bug 11448. This needs to be a double.
+  double lastPlayedMillisSinceEpoch;
   
   Game();
   
-  DateTime get lastPlayed => new DateTime.fromMillisecondsSinceEpoch(lastPlayedMillisSinceEpoch);
+  DateTime get lastPlayed {
+    return new DateTime.fromMillisecondsSinceEpoch(lastPlayedMillisSinceEpoch.toInt());
+  }
   void set lastPlayed(DateTime timestamp) {
-    lastPlayedMillisSinceEpoch = timestamp.millisecondsSinceEpoch;
+    lastPlayedMillisSinceEpoch = timestamp.millisecondsSinceEpoch.toDouble();
   }
   
   Map toJson() {
