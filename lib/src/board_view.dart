@@ -81,4 +81,12 @@ class BoardView {
       atlas.draw(elementName, c, x, y);
     }
   }
+
+  void renderPauseScreen() {
+    var c = canvas.context2D;
+    c.clearRect(0, 0, WIDTH, HEIGHT);
+    c.createLinearGradient(0, 0, WIDTH, HEIGHT);
+    c.fillStyle="#000";
+    c.fillRect(0,0,WIDTH,HEIGHT);
+  }
 }

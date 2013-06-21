@@ -99,7 +99,6 @@ class GamePanel extends WebComponent {
       _gameClock.pause();
       game.timeRemaining = _gameClock.secondsRemaining;
       _saveGame();
-      _canvasElement.classes.add('hidden');
       _pauseButton.text = "Resume";
     } else {
       _gameClock.restart();
@@ -122,6 +121,10 @@ class GamePanel extends WebComponent {
   }
 
   void gameRender(GameLoopHtml gameLoop) {
+    if (paused) {
+      boardView.renderPauseScreen();
+      return;
+    }
     if (boardView != null) {
       boardView.render();
     }
