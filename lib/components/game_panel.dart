@@ -90,7 +90,7 @@ class GamePanel extends WebComponent {
   void drawCircle(int x, int y) {
     var context = _canvasElement.context2D;
     context.beginPath();
-    context.arc(x, y, 20.0, 0, 2 * PI);
+    context.arc(x, y, 5.0, 0, 2 * PI);
     context.fillStyle = 'green';
     context.fill();
   }
@@ -108,13 +108,9 @@ class GamePanel extends WebComponent {
     }
     var transform = new RectangleTransform(_canvasElement);
     currentTouch.positions.forEach((position) {
-      int x = position.x;
-      int y = position.y;
-      if (transform.contains(x, y)) {
-        int rx = transform.transformX(x);
-        int ry = transform.transformY(y);
-        drawCircle(rx, ry);
-      }
+      int x = boardView.transformTouchToCanvasX(position.x);
+      int y = boardView.transformTouchToCanvasY(position.y);
+      drawCircle(x, y);
     });
   }
 
