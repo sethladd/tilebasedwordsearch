@@ -6,13 +6,15 @@
  
   <body>   
     <element name="word-list" extends="div" constructor="WordListComponent">
-      <template if="!app.board.recentWords.empty">
-         <ul>
-           <template repeat="word in app.board.recentWords">
-             <!--getting around no embedded mustaches-->
-             <li>{{word}} <span class="score">{{scoreFor($index)}}</span></li>
-           </template>
-         </ul>
+      <template>
+        <template if="!app.board.recentWords.isEmpty">
+          <ul>
+            <template repeat="word in app.board.recentWords">
+              <!--getting around no embedded mustaches-->
+              <li>{{word}} <span class="score">{{scoreFor($index)}}</span></li>
+            </template>
+          </ul>
+        </template>
       </template>
       <script type="application/dart" src="word_list.dart"></script>
     </element>  </body>
