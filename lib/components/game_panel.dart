@@ -79,10 +79,12 @@ class GamePanel extends WebComponent {
   void togglePause() {
     if (!paused) {
       _gameClock.pause();
+      _canvasElement.classes.add('hidden');
       _pauseButton.text = "Resume";
     } else {
       _gameClock.restart();
       _pauseButton.text = "Pause";
+      _canvasElement.classes.remove('hidden');
     }
     paused = !paused;
   }
