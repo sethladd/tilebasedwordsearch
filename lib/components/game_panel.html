@@ -4,7 +4,14 @@
   <body>
     <element name="game-panel" extends="div" constructor="GamePanel">
       <template>
-        <div class="selected-word"></div>
+        <div class="selected-word">
+          <template if="board.recentWords.isEmpty">
+            <label class="selected-word">last word</label>
+          </template>
+          <template if="!board.recentWords.isEmpty">
+            <label class="selected-word">{{board.recentWords[0]}}</label>
+          </template>
+        </div>
         <canvas id="frontBuffer" class="board"></canvas>
         <div class="game-data">
           <template if="board != null">
