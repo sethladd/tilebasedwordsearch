@@ -14,7 +14,6 @@
     <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/list_games_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_results_panel.html">
-    <link rel="import" href="packages/tilebasedwordsearch/components/pause_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/word_list.html">
   </head>
   <body>
@@ -36,10 +35,6 @@
           <div is="main-panel">
             <div is="list-games"></div>
           </div>
-        </template>
-
-        <template if="app.currentPanel == 'pause'">
-          <div is="pause-panel"></div>
         </template>
 
         <template if="app.currentPanel == 'results'">
