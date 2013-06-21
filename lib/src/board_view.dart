@@ -57,17 +57,14 @@ class BoardView {
     for (int i = 0; i < letterTiles.length; i++) {
       int x = letterTiles[i].left;
       int y = letterTiles[i].top;
+      var atlas = letterAtlas;
       if (selectedTiles.contains(i)) {
-        c.strokeStyle = '#ff0000';
-      } else {
-        c.strokeStyle = '#000000';
+        atlas = selectedLetterAtlas;
       }
-      letterTiles[i].drawOutline(canvas);
-
       var elementName = board.config.getChar(
           GameConstants.rowFromIndex(i),
           GameConstants.columnFromIndex(i));
-      letterAtlas.draw(elementName, c, x, y);
+      atlas.draw(elementName, c, x, y);
     }
   }
 }
