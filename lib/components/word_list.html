@@ -7,7 +7,7 @@
   <body>   
     <element name="word-list" extends="div" constructor="WordListComponent">
       <template>
-        <template if="!app.board.recentWords.empty">
+        <template if="!app.board.recentWords.isEmpty">
           <ul>
             <template repeat="word in app.board.recentWords">
               <!--getting around no embedded mustaches-->
