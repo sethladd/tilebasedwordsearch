@@ -2,7 +2,9 @@ part of tilebasedwordsearch;
 
 @observable
 class Board {
-  Map<String, int> words = new Map<String, int>();
+  static const NumRecentWords = 10;
+  final List<String> recentWords = new List<String>();
+  final Map<String, int> words = new Map<String, int>();
   final List<int> letterBonusTiles = new List<int>(3);
 
   final BoardConfig config;
@@ -28,6 +30,10 @@ class Board {
     if (_wordIsValid(word)) {
       int wordScore = scoreForWord(word);
       score += wordScore;
+      while (recentWords.length >= NumRecentWords) {
+        recentWords.removeAt(0);
+      }
+      recentWords.add(word);
       words[word] = wordScore;
       return true;
     }
