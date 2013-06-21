@@ -6,18 +6,19 @@
       <template>
         <h2>Results</h2>
         <div class="game-data">
-          <div>Score: {{app.score}}</div>
+          <div>Score: {{app.board.score}}</div>
           <div>
             <template if="app.board.words.keys.isEmpty">
               <p>You did not pick any words</p>
             </template>
 
             <template if="!app.board.words.keys.isEmpty">
-              <ul>
-                <template iterate='word, score in board.words'>
-                  <li>{{word}} {{score}}</li>
-                </template>
-              </ul>
+              <h2>You found {{app.board.words.length}} words</h2>
+                <ul>
+                  <li template repeat='key in app.board.words.keys'>
+                    {{key}} {{app.board.words[key]}}
+                  </li>
+                </ul>
             </template>
           </div>
           <button on-click="app.currentPanel='newGame'">Another game</button>
