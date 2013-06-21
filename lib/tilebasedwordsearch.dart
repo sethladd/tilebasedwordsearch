@@ -37,10 +37,12 @@ final Logger clientLogger = new Logger("client");
 // Different panels need access to the board.
 Board board;
 
+// Use this until we fix route and add it back in
+Game game;
+
 @observable String currentPanel = 'main';
 
-@observable List games = toObservable([]);
-
+final List games = toObservable([]);
 
 void parseAssets() {
   clientLogger.info('start processing assets');
@@ -87,6 +89,18 @@ void parseAssets() {
   }
 
   clientLogger.info('Assets loaded and parsed');
+}
+
+resumeGame(Game g) {
+  game = g;
+  board = new Board(boards.getBoardFromString(game.board));
+  currentPanel = 'game';
+}
+
+newGame() {
+  game = new Game();
+  board = new Board(boards.getRandomBoard());
+  currentPanel = 'newGame';
 }
 
 Future initialize() {

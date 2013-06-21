@@ -20,6 +20,11 @@ class Boards {
     var index = _rand.nextInt(boards.length);
     return boards[index];
   }
+  
+  /// Get a [BoardConfig] from a String of letters like FGETRS...
+  BoardConfig getBoardFromString(String tiles) {
+    return boards.firstWhere((b) => b.board == tiles, orElse: () => null);
+  }
 
 }
 
