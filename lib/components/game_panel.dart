@@ -6,11 +6,6 @@ import 'package:game_loop/game_loop_html.dart';
 import 'package:tilebasedwordsearch/shared_html.dart';
 import 'dart:math';
 
-// The view of game in play
-// Includes:
-// - Tiles
-// - Score
-// - Timer
 class GamePanel extends WebComponent {
   Board board;
   Boards boards;
@@ -51,12 +46,10 @@ class GamePanel extends WebComponent {
     boardView = new BoardView(board, _canvasElement);
     board.gameClock.start();
     board.done.then((_) {
-      disableButtons();
-      window.alert('Game over!');
-      //XXX disable input
-      //XXX deliver score
-      //XXX etc.
+      currentPanel = 'results';
     });
+    words.clear();
+    score = 0;
     _gameLoop.start();
   }
 
@@ -64,18 +57,16 @@ class GamePanel extends WebComponent {
     _endButton.disabled = false;
     _pauseButton.disabled = false;
   }
-
   void disableButtons() {
     _endButton.disabled = true;
     _pauseButton.disabled = true;
   }
 
   void endGame() {
-    // XXX: should confirm first
-    board.stop();
-    disableButtons();
-
-    print('GAME ENDED');
+    if (window.confirm('Are you sure you want to end the game?')) {
+      board.stop();
+      currentPanel = 'results';
+    }
   }
 
   void togglePause() {
@@ -108,7 +99,6 @@ class GamePanel extends WebComponent {
 
   bool keyboardEventInterceptor(DigitalButtonEvent event, bool repeat) {
     if (repeat == true) {
-      //print('Repeat');
       return true;
     }
     if (event.down == false) {
@@ -119,33 +109,25 @@ class GamePanel extends WebComponent {
       // Space or escape kills the current word search.
       // TODO: Indicate in GUI.
       _keyboardSearchString = '';
-      //print('Cleared');
       return true;
     }
     if (event.buttonId == Keyboard.ENTER) {
       // Submit.
       board.attemptWord(_keyboardSearchString);
       _keyboardSearchString = '';
-      //print('Cleared');
       return true;
     }
     String newSearchString = _keyboardSearchString +
                              translateKeyboardButtonId(event.buttonId);
     if (event.buttonId < Keyboard.A || event.buttonId > Keyboard.Z) {
-      //print('Invalid character.');
       return true;
     }
-    //print(newSearchString);
-    //print(event.buttonId);
     if (board.stringInGrid(newSearchString, null)) {
-      //print('String in grid.');
       _keyboardSearchString = newSearchString;
     } else if (event.buttonId == Keyboard.Q &&
                board.stringInGrid(newSearchString + 'U', null)) {
-      //print('Found for QU.');
       _keyboardSearchString = newSearchString;
     } else {
-      //print('Here');
       while (_keyboardSearchString.length > 0) {
         if (_keyboardSearchString[_keyboardSearchString.length-1] == 'Q') {
           _keyboardSearchString =
@@ -155,15 +137,11 @@ class GamePanel extends WebComponent {
         }
       }
     }
-    //print(_keyboardSearchString);
-    // Letter.
     return true;
   }
 
-
   void gameUpdateKeyboard() {
   }
-
 
   void gameUpdate(GameLoopHtml gameLoop) {
     boardView.update(currentTouch);
