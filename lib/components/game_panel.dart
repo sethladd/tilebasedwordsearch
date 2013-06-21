@@ -18,12 +18,14 @@ class GamePanel extends WebComponent {
   CanvasElement _canvasElement;
   ButtonElement _pauseButton;
   ButtonElement _endButton;
+  DivElement _selectedWord;
 
   @override
   inserted() {
     _pauseButton = query('#pause');
     _endButton = query('#end');
     _canvasElement = query('#frontBuffer');
+    _selectedWord = query('selected-word');
     _gameLoop = new GameLoopHtml(_canvasElement);
     _gameClock = new GameClock(_gameLoop);
     // Don't lock the pointer on a click.
