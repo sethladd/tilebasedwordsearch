@@ -9,7 +9,6 @@ class BoardView {
   final int WIDTH = 800;
   final int HEIGHT = 600;
   CanvasElement canvas;
-  String selectedLetters = '';
   final Set<int> selectedTiles = new Set<int>();
 
   num tileSize;
@@ -48,26 +47,6 @@ class BoardView {
     }
   }
 
-  void clearSelected() {
-    selectedTiles.clear();
-    selectedLetters = '';
-  }
-
-  void selectSearchString(String searchString) {
-    Set<List<int>> paths = new Set<List<int>>();
-    if (searchString.length == 0) {
-      return;
-    }
-    clearSelected();
-    if (board.config.stringInGrid(searchString, paths)) {
-      paths.forEach((path) {
-        for (int i = 0; i < path.length; i++) {
-          selectedTiles.add(path[i]);
-        }
-      });
-    }
-  }
-
   RectangleTransform getTileRectangle(int row, int column) {
     return letterTiles[GameConstants.rowColumnToIndex(row, column)];
   }
@@ -78,36 +57,8 @@ class BoardView {
     return new TileCoord(x, y);
   }
 
-  void update(GameLoopTouch touch) {
-    double scaleX = canvas.clientWidth/canvas.width;
-    double scaleY = canvas.clientHeight/canvas.height;
-    if (touch != null) {
-      for (var position in touch.positions) {
-        int x = (position.x * scaleX).toInt();
-        int y = (position.y * scaleY).toInt();
-        for (int i = 0; i < GameConstants.BoardDimension; i++) {
-          for (int j = 0; j < GameConstants.BoardDimension; j++) {
-            int index = GameConstants.rowColumnToIndex(i, j);
-            if (selectedTiles.contains(index)) {
-              continue;
-            }
-            var transform = getTileRectangle(i, j);
-            if (transform.contains(x, y)) {
-              print('Adding $index');
-              selectedTiles.add(index);
-              selectedLetters += board.config.getChar(i,j);
-            }
-          }
-        }
-      }
-    } else {
-      clearSelected();
-    }
-    if (selectedTiles.length > 0) {
-      print(selectedTiles);
-      print(selectedLetters);
-    }
-  }
+  double get scaleX => canvas.clientWidth/canvas.width;
+  double get scaleY => canvas.clientHeight/canvas.height;
 
   void render() {
     var c = canvas.context2D;

@@ -6,8 +6,29 @@ class BoardController {
 
   BoardController(this.board, this.view);
 
+  String selectedLetters = '';
   String _keyboardSearchString = '';
   String get keyboardSearchString => _keyboardSearchString;
+
+  void clearSelected() {
+    view.selectedTiles.clear();
+    selectedLetters = '';
+  }
+
+  void selectSearchString(String searchString) {
+    Set<List<int>> paths = new Set<List<int>>();
+    if (searchString.length == 0) {
+      return;
+    }
+    clearSelected();
+    if (board.config.stringInGrid(searchString, paths)) {
+      paths.forEach((path) {
+        for (int i = 0; i < path.length; i++) {
+          view.selectedTiles.add(path[i]);
+        }
+      });
+    }
+  }
 
   String translateKeyboardButtonId(int buttonId) {
     if (buttonId >= Keyboard.A && buttonId <= Keyboard.Z) {
@@ -59,4 +80,30 @@ class BoardController {
     return true;
   }
 
+  void update(GameLoopTouch touch) {
+    double scaleX = view.scaleX;
+    double scaleY = view.scaleY;
+    if (touch != null) {
+      for (var position in touch.positions) {
+        int x = (position.x * scaleX).toInt();
+        int y = (position.y * scaleY).toInt();
+        for (int i = 0; i < GameConstants.BoardDimension; i++) {
+          for (int j = 0; j < GameConstants.BoardDimension; j++) {
+            int index = GameConstants.rowColumnToIndex(i, j);
+            if (view.selectedTiles.contains(index)) {
+              continue;
+            }
+            var transform = view.getTileRectangle(i, j);
+            if (transform.contains(x, y)) {
+              print('Adding $index');
+              view.selectedTiles.add(index);
+              selectedLetters += board.config.getChar(i,j);
+            }
+          }
+        }
+      }
+    } else {
+      clearSelected();
+    }
+  }
 }
