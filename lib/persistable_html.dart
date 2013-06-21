@@ -1,4 +1,4 @@
-library persistable;
+library persistable_html;
 
 import 'dart:async';
 import 'dart:mirrors';
@@ -7,45 +7,33 @@ import 'package:lawndart/lawndart.dart';
 Store _store;
 
 Future init(String dbName, String storeName) {
-  _store = new Store('games', 'games');
+  _store = new Store(dbName, storeName);
   return _store.open();
 }
 
 int _counter = 0;
+final String _idOffset = new DateTime.now().millisecondsSinceEpoch.toString();
 
-abstract class Persistable<T> {
+abstract class Persistable {
   
-  int _dbId;
+  String _dbId;
   
-  static Future load(int id, Type type) {
-    throw new UnimplementedError();
-  }
-  
-  static Future<List> all(Type type) {
-    ClassMirror classMirror = reflectClass(type);
-
-    return _store.all().toList().then((List<Map> data) {
-      return data.map((Map r) {
-        var instance = classMirror.newInstance(const Symbol(''), []);
-        var object = instance.reflectee;
-        object._update(r);
-        return object;
-      });
+  static Future load(String id, Type type) {
+    return _store.getByKey(id).then((Map data) {
+      if (data == null) {
+        return null;
+      } else {
+        var classMirror = reflectClass(type);
+        return _createAndPopulate(classMirror, data);
+      }
     });
   }
   
-  /**
-   * Updates the object. The types of the values must match the
-   * type annotations used on the class, if you want this to run in
-   * checked mode.
-   */
-  void _update(Map attributes) {
-    final mirror = reflect(this);
-    final classMirror = reflectClass(runtimeType);
-    attributes.forEach((k, v) {
-      if (classMirror.variables.containsKey(new Symbol(k))) {
-        mirror.setField(new Symbol(k), v);
-      }
+  static Stream all(Type type) {
+    ClassMirror classMirror = reflectClass(type);
+
+    return _store.all().map((Map data) {
+      return _createAndPopulate(classMirror, data);
     });
   }
   
@@ -57,14 +45,30 @@ abstract class Persistable<T> {
     return _store.removeByKey(dbId);
   }
   
+  static Future clear() {
+    return _store.nuke();
+  }
+  
+  static _createAndPopulate(ClassMirror classMirror, Map data) {
+    var instance = classMirror.newInstance(const Symbol(''), []);
+    var object = instance.reflectee;
+    var instanceMirror = reflect(object);
+    data.forEach((k, v) {
+      print('$k has $v which is a ${v.runtimeType}');
+      if (classMirror.variables.containsKey(new Symbol(k))) {
+        instanceMirror.setField(new Symbol(k), v);
+      }
+    });
+    return object;
+  }
+  
   // This assumes there's no reason for code to change an ID.
   String get dbId {
     if (_dbId == null) {
-      _dbId = _counter++;
+      _dbId = _idOffset + '-' + (_counter++).toString();
     }
-    
-    return _dbId.toString();
+    return _dbId;
   }
   
-  dynamic toJson();
+  Map toJson();
 }

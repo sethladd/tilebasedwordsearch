@@ -51,7 +51,7 @@ packages:
   game_loop:
     description:
       ref: null
-      resolved-ref: f952b28746ea55cc9a2882ace5dbdcca17451d1b
+      resolved-ref: "860d1ca7d9bf165bb6590e0603fa202e7e66108c"
       url: "https://github.com/johnmccutchan/game_loop.git"
     source: git
     version: "0.9.0"

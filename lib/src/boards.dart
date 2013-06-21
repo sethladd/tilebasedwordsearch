@@ -33,6 +33,8 @@ class BoardConfig {
     int index = i * 4 + j;
     return _board[index];
   }
+  
+  String get board => _board;
 
   bool hasWord(String word) => _words.contains(word);
 

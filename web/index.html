@@ -16,7 +16,7 @@
     <link rel="import" href="packages/tilebasedwordsearch/components/game_results_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/word_list.html">
   </head>
-  <body>
+  <body style='overflow:hidden'>
     <div id="page">
       <div class="header">
         <h1>Word Herd</h1>
@@ -33,7 +33,7 @@
 
         <template if="app.currentPanel == 'main'">
           <div is="main-panel">
-            <div is="list-games"></div>
+            <div is="list-games" games="{{app.games}}"></div>
           </div>
         </template>
 

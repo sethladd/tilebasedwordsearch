@@ -5,6 +5,7 @@ import 'dart:html';
 import 'dart:async';
 import 'dart:json' as JSON;
 import 'package:logging/logging.dart';
+import 'package:tilebasedwordsearch/persistable_html.dart' as db;
 import 'package:tilebasedwordsearch/shared_html.dart';
 import 'package:game_loop/game_loop_html.dart';
 import 'package:asset_pack/asset_pack.dart';
@@ -37,6 +38,8 @@ final Logger clientLogger = new Logger("client");
 Board board;
 
 @observable String currentPanel = 'main';
+
+@observable List games = toObservable([]);
 
 
 void parseAssets() {
@@ -107,7 +110,11 @@ Future initialize() {
   print('Touch events supported? ${TouchEvent.supported}');
 
   return assetManager.loadPack('game', 'assets/_.pack')
-      .then((_) => parseAssets());
+      .then((_) => parseAssets())
+      .then((_) => db.init('wordherd', 'wordherd'))
+      .then((_) {
+        return db.Persistable.all(Game).toList().then((g) => games.addAll(g));
+      });
 }
 
 _setupLogger() {
