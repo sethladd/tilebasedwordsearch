@@ -2,7 +2,7 @@ part of shared;
 
 class Boards {
 
-  List<BoardAndWords> boards = new List<BoardAndWords>();
+  List<BoardConfig> boards = new List<BoardConfig>();
   Random _rand = new Random();
 
   Boards(String data) {
@@ -20,7 +20,7 @@ class Boards {
         String board = tiles.toString();
         final List<String> words = line.split(' ');
 
-        boards.add(new BoardAndWords(board, words));
+        boards.add(new BoardConfig(board, words));
 
         tiles.clear();
         words.clear();
@@ -31,22 +31,93 @@ class Boards {
     });
   }
 
-  BoardAndWords getRandomBoard() {
+  BoardConfig getRandomBoard() {
     var index = _rand.nextInt(boards.length);
     return boards[index];
   }
 
 }
 
-class BoardAndWords {
-  final String board;
-  final List<String> words;
+class BoardConfig {
+  final String _board;
+  final List<String> _words;
 
-  BoardAndWords(this.board, this.words);
+  BoardConfig(this._board, this._words);
 
   String getChar(int i, int j) {
     int index = i * 4 + j;
-    return board[index];
+    return _board[index];
   }
-  bool hasWord(String word) => words.contains(word);
+  bool hasWord(String word) => _words.contains(word);
+
+  bool _findInGridWorker(List<String> tiles, int index, int i, int j,
+                         List<List<bool>> visited, List<int> path,
+                         Set<List<int>> paths) {
+    // Do bounds check.
+    if (i < 0 || j < 0 || i >= 4 || j >= 4) {
+      return false;
+    }
+    if (visited[i][j] == true) {
+      return false;
+    }
+    if (getChar(i,j) != tiles[index]) {
+      return false;
+    }
+    path.add(i*4+j);
+    if (tiles.length == index+1) {
+      // Valid.
+      paths.add(new List.from(path));
+      path.removeLast();
+      return true;
+    }
+    visited[i][j] = true;
+    // DFS.
+    bool r = false;
+    // Left side.
+    r = r || _findInGridWorker(tiles, index+1, i-1, j-1, visited, path, paths);
+    r = r || _findInGridWorker(tiles, index+1, i-1, j, visited, path, paths);
+    r = r || _findInGridWorker(tiles, index+1, i-1, j+1, visited, path, paths);
+    // Right side.
+    r = r || _findInGridWorker(tiles, index+1, i+1, j-1, visited, path, paths);
+    r = r || _findInGridWorker(tiles, index+1, i+1, j, visited, path, paths);
+    r = r || _findInGridWorker(tiles, index+1, i+1, j+1, visited, path, paths);
+    // Top and bottom.
+    r = r || _findInGridWorker(tiles, index+1, i, j-1, visited, path, paths);
+    r = r || _findInGridWorker(tiles, index+1, i, j+1, visited, path, paths);
+    visited[i][j] = false;
+    path.removeLast();
+    return r;
+  }
+
+  bool _findInGridAt(int i, int j, List<String> tiles, Set<List<int>> paths) {
+    var visited =
+        new List.generate(GameConstants.BoardDimension,
+                          (_) => new List<bool>(GameConstants.BoardDimension));
+    for (int i = 0; i < GameConstants.BoardDimension; i++) {
+      for (int j = 0; j < GameConstants.BoardDimension; j++) {
+        visited[i][j] = false;
+      }
+    }
+    return _findInGridWorker(tiles, 0, i, j, visited, [], paths);
+  }
+
+  bool stringInGrid(String search, Set<List<int>> paths) {
+    List<String> tileStrings = GameConstants.convertStringToTileList(search);
+    // Not there.
+    if (tileStrings.length == 0) {
+      return false;
+    }
+    if (paths == null) {
+      paths = new Set<List<int>>();
+    }
+    bool r = false;
+    for (int i = 0; i < GameConstants.BoardDimension; i++) {
+      for (int j = 0; j < GameConstants.BoardDimension; j++) {
+        bool v = _findInGridAt(i, j, tileStrings, paths);
+        r = r || v;
+      }
+    }
+    return r;
+  }
+
 }
