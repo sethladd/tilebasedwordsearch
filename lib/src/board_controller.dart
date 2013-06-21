@@ -134,7 +134,7 @@ class BoardController {
               continue;
             }
             var transform = view.getTileRectangle(i, j);
-            if (transform.contains(x, y)) {
+            if (transform.containsTouch(x, y)) {
               view.selectedTiles.add(index);
               if (selectedPath == null) {
                 selectedPath = new List<int>();
