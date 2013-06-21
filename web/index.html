@@ -15,7 +15,7 @@
     <link rel="import" href="packages/tilebasedwordsearch/components/list_games_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_results_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/pause_panel.html">
-
+    <link rel="import" href="packages/tilebasedwordsearch/components/word_list.html">
   </head>
   <body>
     <div id="page">
@@ -52,20 +52,11 @@
                letter-atlas="{{app.letterAtlas}}"
                class="grid"></div>
           <div class="words">
-            <h2 class='column-heading'>Words</h2>
-            <ul>
-              <li>syzygy<span class='score'>29</span></li>
-              <li>this<span class='score'>12</span></li>
-              <li>that<span class='score'>12</span></li>
-              <li>the<span class='score'>6</span></li>
-              <li>other<span class='score'>14</span></li>
-              <li>pain<span class='score'>15</span></li>
-              <li>pan<span class='score'>11</span></li>
-              <li>pained<span class='score'>22</span></li>
-              <li>end<span class='score'>6</span></li>
-              <li>ends<span class='score'>8</span></li>
-              <li>ended<span class='score'>13</span></li>
-            </ul>
+            <h2 class='column-heading'>Recent Words</h2>
+            <template if="!app.board.recentWords.isEmpty">
+              <word-list>
+              </word-list>
+            </template>
           </div><!-- end words -->
           <div class="social"> <!-- 150 -->
           <h2 class='column-heading'>Notifications</h2>

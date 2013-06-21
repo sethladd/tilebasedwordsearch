@@ -99,11 +99,10 @@ class GamePanel extends WebComponent {
 
   void gameUpdate(GameLoopHtml gameLoop) {
     boardController.update(currentTouch);
-    boardController.selectSearchString(boardController.keyboardSearchString);
   }
 
   void gameRender(GameLoopHtml gameLoop) {
-    if (board != null) {
+    if (boardView != null) {
       boardView.render();
     }
     if (currentTouch == null) {
@@ -130,10 +129,8 @@ class GamePanel extends WebComponent {
   void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
     if (touch == currentTouch) {
       currentTouch = null;
-      String word = boardController.selectedLetters;
-      if (board.attemptWord(word)) {
-        print('Found word $word');
-      }
+      List<int> path = boardController.selectedPath;
+      board.attemptPath(path);
     }
   }
 }
