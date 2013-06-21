@@ -12,6 +12,7 @@
     <link rel="import" href="packages/tilebasedwordsearch/components/main_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/new_game_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
+    <link rel="import" href="packages/tilebasedwordsearch/components/list_games_panel.html">
   </head>
   <body>
     <div id="page"> <!-- 960 -->
@@ -29,7 +30,9 @@
         </template>
 
         <template if="app.currentPanel == 'main'">
-          <div is="main-panel"></div>
+          <div is="main-panel">
+            <div is="list-games"></div>
+          </div>
         </template>
 
         <template if="app.currentPanel == 'game'">
