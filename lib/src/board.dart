@@ -3,7 +3,7 @@ part of tilebasedwordsearch;
 @observable
 class Board {
   static const NumRecentWords = 10;
-  final List<String> recentWords = new List<String>();
+  final List<String> recentWords = toObservable(new List<String>());
   final Map<String, int> words = new Map<String, int>();
   final BoardConfig config;
   int scoreMultiplier = 1;

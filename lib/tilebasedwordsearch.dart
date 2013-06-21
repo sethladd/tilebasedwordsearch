@@ -33,12 +33,8 @@ ImageAtlas selectedLetterAtlas;
 Player player;
 final Logger clientLogger = new Logger("client");
 
-// Temporarary: for one person game.
-List<String> words = toObservable(['this', 'that', 'and', 'the', 'other']);
-@observable int score = 0;
-
+// Different panels need access to the board.
 Board board;
-
 
 @observable String currentPanel = 'main';
 

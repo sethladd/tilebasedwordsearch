@@ -9,7 +9,6 @@ import 'dart:math';
 class GamePanel extends WebComponent {
   BoardView boardView;
   BoardController boardController;
-
   Boards boards;
   GameClock _gameClock;
   ImageAtlas letterAtlas;
@@ -19,12 +18,14 @@ class GamePanel extends WebComponent {
   CanvasElement _canvasElement;
   ButtonElement _pauseButton;
   ButtonElement _endButton;
+  DivElement _selectedWord;
 
   @override
   inserted() {
     _pauseButton = query('#pause');
     _endButton = query('#end');
     _canvasElement = query('#frontBuffer');
+    _selectedWord = query('selected-word');
     _gameLoop = new GameLoopHtml(_canvasElement);
     _gameClock = new GameClock(_gameLoop);
     // Don't lock the pointer on a click.
@@ -55,8 +56,6 @@ class GamePanel extends WebComponent {
     _gameClock.allDone.future.then((_) {
       currentPanel = 'results';
     });
-    words.clear();
-    score = 0;
     _gameLoop.start();
   }
 
@@ -79,10 +78,12 @@ class GamePanel extends WebComponent {
   void togglePause() {
     if (!paused) {
       _gameClock.pause();
+      _canvasElement.classes.add('hidden');
       _pauseButton.text = "Resume";
     } else {
       _gameClock.restart();
       _pauseButton.text = "Pause";
+      _canvasElement.classes.remove('hidden');
     }
     paused = !paused;
   }
