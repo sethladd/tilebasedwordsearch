@@ -31,9 +31,9 @@ class Board {
       int wordScore = scoreForWord(word);
       score += wordScore;
       while (recentWords.length >= NumRecentWords) {
-        recentWords.removeAt(0);
+        recentWords.removeLast();
       }
-      recentWords.add(word);
+      recentWords.insert(0, word);
       words[word] = wordScore;
       return true;
     }
