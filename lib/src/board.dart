@@ -5,13 +5,10 @@ class Board {
   static const NumRecentWords = 10;
   final List<String> recentWords = toObservable(new List<String>());
   final Map<String, int> words = new Map<String, int>();
-  final List<int> letterBonusTiles = new List<int>(3);
-
   final BoardConfig config;
-
-  List selectedPositions = [];
-  int multiplier = 1;
-  int wordBonusTile;
+  int scoreMultiplier = 1;
+  final Set<int> letterBonusTileIndexes = new Set<int>();
+  int wordBonusTileIndex = null;
 
   // TODO: create a Turn to keep the score
   int score = 0;
@@ -19,33 +16,78 @@ class Board {
   Board(this.config) {
   }
 
-  String get currentWord {
-    return selectedPositions.join('');
-  }
-
-  bool attemptWord(String word) {
-    if (words[word] != null) {
+  bool attemptPath(List<int> path) {
+    if (path == null) {
+      // Invalid path.
       return false;
     }
-    if (_wordIsValid(word)) {
-      int wordScore = scoreForWord(word);
-      score += wordScore;
-      while (recentWords.length >= NumRecentWords) {
-        recentWords.removeLast();
-      }
-      recentWords.insert(0, word);
-      words[word] = wordScore;
-      return true;
+    String word = config.stringFromPath(path);
+    if (word == '') {
+      // Empty word.
+      return false;
     }
-    return false;
+    if (words[word] != null) {
+      // Duplicate word.
+      return false;
+    }
+    if (!config.hasWord(word)) {
+      // Invalid word.
+      return false;
+    }
+    _acceptPath(path, word);
+    return true;
   }
 
-  int scoreForWord(String word) {
-    return GameConstants.convertStringToTileList(word)
-        .map((char) => GameConstants.letterScores[char])
-        .toList()
-        .reduce((value, element) => value + element);
+  void _acceptPath(List<int> path, String word) {
+    int wordScore = scoreForPath(path);
+    score += wordScore;
+    while (recentWords.length >= NumRecentWords) {
+      recentWords.removeLast();
+    }
+    recentWords.insert(0, word);
+    words[word] = wordScore;
   }
 
-  bool _wordIsValid(String word) => config.hasWord(word);
+  int scoreForPath(List<int> path) {
+    if (path == null || path.length == 0) {
+      return 0;
+    }
+    List<int> scores = new List<int>(path.length);
+    bool wordMultiplier = false;
+    for (int i = 0; i < path.length; i++) {
+      int index = path[i];
+      int row = GameConstants.rowFromIndex(index);
+      int column = GameConstants.columnFromIndex(index);
+      String tileCharacter = config.getChar(row, column);
+      int letterScore = GameConstants.letterScores[tileCharacter];
+      if (letterBonusTileIndexes.contains(index)) {
+        letterScore *= scoreMultiplier;
+      }
+      scores[i] = letterScore;
+    }
+    int score = 0;
+    for (int i = 0; i < scores.length; i++) {
+      score += scores[i];
+    }
+    // Length bonus.
+    if (path.length <= 3) {
+      score += 0;
+    } else if (path.length <= 4) {
+      score += 1;
+    } else if (path.length <= 5) {
+      score += 2;
+    } else if (path.length <= 6) {
+      score += 3;
+    } else if (path.length <= 7) {
+      score += 5;
+    } else {
+      // 8 or more!
+      score += 11;
+    }
+    // Word bonus.
+    if (wordMultiplier) {
+      score *= scoreMultiplier;
+    }
+    return score;
+  }
 }

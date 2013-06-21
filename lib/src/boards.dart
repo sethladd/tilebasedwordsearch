@@ -33,7 +33,7 @@ class BoardConfig {
     int index = i * 4 + j;
     return _board[index];
   }
-  
+
   bool hasWord(String word) => _words.contains(word);
 
   bool _findInGridWorker(List<String> tiles, int index, int i, int j,
@@ -106,4 +106,14 @@ class BoardConfig {
     return r;
   }
 
+  String stringFromPath(List<int> path) {
+    String s = '';
+    for (int i = 0; i < path.length; i++) {
+      int row = GameConstants.rowFromIndex(path[i]);
+      int column = GameConstants.columnFromIndex(path[i]);
+      String ch = getChar(row, column);
+      s += ch;
+    }
+    return s;
+  }
 }
