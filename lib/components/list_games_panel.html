@@ -7,7 +7,13 @@
         <p>Games</p>
         <ul>
           <li template repeat="game in games">
-            {{game.dbId}}
+            <template if="game.done">
+              Score: {{game.score}}, played on {{game.lastPlayed}}
+            </template>
+            <template if="!game.done">
+              <button on-click="resumeGame(game)">Resume</button>
+              {{game.timeRemaining}} seconds left
+            </template>
           </li>
         </ul>
       </template>

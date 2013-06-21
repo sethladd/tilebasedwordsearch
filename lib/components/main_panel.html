@@ -6,7 +6,7 @@
       <template>
         <h2>Main Panel</h2>
         <button on-click="app.currentPanel = 'highScores'">Show high scores</button>
-        <button on-click="app.currentPanel = 'newGame'">New game</button>
+        <button on-click="app.newGame()">New game</button>
         <content></content>
       </template>
       <script type="application/dart" src="main_panel.dart"></script>

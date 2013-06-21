@@ -10,7 +10,6 @@ import 'dart:async';
 class GamePanel extends WebComponent {
   BoardView boardView;
   BoardController boardController;
-  Boards boards;
   GameClock _gameClock;
   ImageAtlas letterAtlas;
   GameLoopHtml _gameLoop;
@@ -51,7 +50,6 @@ class GamePanel extends WebComponent {
   }
 
   void startNewGame() {
-    board = new Board(boards.getRandomBoard());
     boardView = new BoardView(board, _canvasElement);
     boardController = new BoardController(board, boardView);
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
@@ -60,7 +58,6 @@ class GamePanel extends WebComponent {
       _saveGame();
       currentPanel = 'results';
     });
-    game = new Game();
     _saveGame();
     _gameLoop.start();
   }

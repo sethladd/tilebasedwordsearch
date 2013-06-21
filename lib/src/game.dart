@@ -18,6 +18,8 @@ class Game extends Object with Persistable {
     lastPlayedMillisSinceEpoch = timestamp.millisecondsSinceEpoch.toDouble();
   }
   
+  bool get done => timeRemaining <= 0;
+  
   Map toJson() {
     return {
       'board': board,
