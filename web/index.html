@@ -12,10 +12,11 @@
     <link rel="import" href="packages/tilebasedwordsearch/components/main_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/new_game_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
+    <link rel="import" href="packages/tilebasedwordsearch/components/game_results_panel.html">
   </head>
   <body>
-    <div id="page"> <!-- 960 -->
-      <div class="header"><!-- 900 -->
+    <div id="page">
+      <div class="header">
         <h1>Word Herd</h1>
       </div>
 
@@ -32,12 +33,16 @@
           <div is="main-panel"></div>
         </template>
 
+        <template if="app.currentPanel == 'results'">
+          <div is="game-results-panel"></div>
+        </template>
+
         <template if="app.currentPanel == 'game'">
           <div is="game-panel"
                boards="{{app.boards}}"
                letter-atlas="{{app.letterAtlas}}"
                class="grid"></div>
-          <div class="words"> <!-- 200 -->
+          <div class="words">
             <h2 class='column-heading'>Words</h2>
             <ul>
               <li>syzygy<span class='score'>29</span></li>

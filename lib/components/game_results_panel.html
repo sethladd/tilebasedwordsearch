@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <element name="game-results-panel" extends="div" constructor="GameResultsPanel">
+      <template>
+        <h2>Results</h2>
+        <div class="game-data">
+          <div>Score: {{app.score}}</div>
+          <div>
+            <template if="app.words.isEmpty">
+              <p>You did not pick any words</p>
+            </template>
+
+            <template if="!app.words.isEmpty">
+              <ul>
+                <template iterate='word in app.words'>
+                  <li>{{word}}</li>
+                </template>
+              </ul>
+            </template>
+          </div>
+          <button on-click="app.currentPanel='newGame'">Another game</button>
+          <button on-click="app.currentPanel='highScores'">See scores</button>
+          <button on-click="app.currentPanel='main'">Home</button>
+        </div>
+      </template>
+      <script type="application/dart" src="game_results_panel.dart"></script>
+    </element>
+  </body>
+</html>
