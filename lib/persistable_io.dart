@@ -151,6 +151,8 @@ abstract class Persistable {
   
   // This assumes there's no reason for code to change an ID.
   int get dbId => _dbId;
+  
+  dynamic toJson();
 }
 
 Future _transaction(Future inside(), [String logStmt = 'txn']) {

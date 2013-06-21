@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html>
+  <body>   
+    <element name="list-games" extends="div" constructor="ListGamesPanel">
+      <template>
+        <p>Games</p>
+        <ul>
+          <li template repeat="game in games">
+            {{game.dbId}}
+          </li>
+        </ul>
+      </template>
+      <script type="application/dart" src="list_games_panel.dart"></script>
+    </element>
+  </body>
+</html>

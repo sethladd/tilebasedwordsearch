@@ -8,26 +8,11 @@ class Boards {
   Boards(String data) {
     final StringBuffer tiles = new StringBuffer();
 
-    final RegExp boardRow = new RegExp(r'^[A-Z] [A-Z] [A-Z] [A-Z]$');
-    final RegExp scoreRow = new RegExp(r'^[0-9]+ [0-9]+');
-    bool nextLineIsWords = false;
-
     data.split('\n').forEach((String line) {
-      if (boardRow.hasMatch(line.trim())) {
-        var chars = line.split(' ').join('');
-        tiles.write(chars);
-      } else if (nextLineIsWords) {
-        String board = tiles.toString();
-        final List<String> words = line.split(' ');
-
-        boards.add(new BoardConfig(board, words));
-
-        tiles.clear();
-        words.clear();
-        nextLineIsWords = false;
-      } else {
-        nextLineIsWords = true;
-      }
+      if (line.trim().length < 32) return;
+      String letters = line.substring(0, 32).split(' ').join('');
+      List<String> words = line.substring(33).split(' ');
+      boards.add(new BoardConfig(letters, words));
     });
   }
 
@@ -48,6 +33,7 @@ class BoardConfig {
     int index = i * 4 + j;
     return _board[index];
   }
+  
   bool hasWord(String word) => _words.contains(word);
 
   bool _findInGridWorker(List<String> tiles, int index, int i, int j,
