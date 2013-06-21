@@ -11,7 +11,7 @@
               Score: {{game.score}}, played on {{game.lastPlayed}}
             </template>
             <template if="!game.done">
-              <button on-click="resumeGame(game)">Resume</button>
+              <button on-click="app.resumeGame(game)">Resume</button>
               {{game.timeRemaining}} seconds left
             </template>
           </li>

@@ -20,6 +20,8 @@ class Game extends Object with Persistable {
   
   bool get done => timeRemaining <= 0;
   
+  bool get started => timeRemaining != null;
+  
   Map toJson() {
     return {
       'board': board,

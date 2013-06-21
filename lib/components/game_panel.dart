@@ -42,7 +42,7 @@ class GamePanel extends WebComponent {
 
     enableButtons();
 
-    startNewGame();
+    startOrResumeGame();
   }
 
   @override
@@ -52,10 +52,13 @@ class GamePanel extends WebComponent {
     _gameLoop.stop();
   }
 
-  void startNewGame() {
+  void startOrResumeGame() {
     boardView = new BoardView(board, _canvasElement);
     boardController = new BoardController(board, boardView);
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
+    if (!game.started) {
+      _gameClock.secondsRemaining = game.timeRemaining;
+    }
     _gameClock.start();
     _gameClock.allDone.future.then((_) {
       _saveGame();

@@ -91,15 +91,16 @@ void parseAssets() {
   clientLogger.info('Assets loaded and parsed');
 }
 
-resumeGame(Game game) {
-  game = game;
+resumeGame(Game g) {
+  game = g;
+  board = new Board(boards.getBoardFromString(game.board));
   currentPanel = 'game';
 }
 
 newGame() {
-  currentPanel = 'newGame';
   game = new Game();
   board = new Board(boards.getRandomBoard());
+  currentPanel = 'newGame';
 }
 
 Future initialize() {
