@@ -9,7 +9,6 @@ import 'dart:math';
 class GamePanel extends WebComponent {
   BoardView boardView;
   BoardController boardController;
-
   Boards boards;
   GameClock _gameClock;
   ImageAtlas letterAtlas;
@@ -55,8 +54,6 @@ class GamePanel extends WebComponent {
     _gameClock.allDone.future.then((_) {
       currentPanel = 'results';
     });
-    words.clear();
-    score = 0;
     _gameLoop.start();
   }
 
