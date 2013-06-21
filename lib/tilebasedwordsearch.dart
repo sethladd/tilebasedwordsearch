@@ -12,9 +12,11 @@ import 'package:web_ui/web_ui.dart';
 import "package:google_plus_v1_api/plus_v1_api_browser.dart";
 import "package:google_oauth2_client/google_oauth2_browser.dart";
 import "package:google_games_v1_api/games_v1_api_browser.dart";
+import 'package:tilebasedwordsearch/game_constants.dart';
 
 part 'src/board_view.dart';
 part 'src/board.dart';
+part 'src/board_controller.dart';
 part 'src/game_clock.dart';
 part 'src/rectangle_transform.dart';
 part 'src/image_atlas.dart';
