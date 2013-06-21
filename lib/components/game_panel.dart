@@ -7,7 +7,6 @@ import 'package:tilebasedwordsearch/shared_html.dart';
 import 'dart:math';
 
 class GamePanel extends WebComponent {
-  Board board;
   BoardView boardView;
   BoardController boardController;
 

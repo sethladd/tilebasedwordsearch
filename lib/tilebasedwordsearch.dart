@@ -37,6 +37,8 @@ final Logger clientLogger = new Logger("client");
 List<String> words = toObservable(['this', 'that', 'and', 'the', 'other']);
 @observable int score = 0;
 
+Board board;
+
 
 @observable String currentPanel = 'main';
 

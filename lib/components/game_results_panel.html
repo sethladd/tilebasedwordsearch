@@ -8,14 +8,14 @@
         <div class="game-data">
           <div>Score: {{app.score}}</div>
           <div>
-            <template if="app.words.isEmpty">
+            <template if="app.board.words.keys.isEmpty">
               <p>You did not pick any words</p>
             </template>
 
-            <template if="!app.words.isEmpty">
+            <template if="!app.board.words.keys.isEmpty">
               <ul>
-                <template iterate='word in app.words'>
-                  <li>{{word}}</li>
+                <template iterate='word, score in board.words'>
+                  <li>{{word}} {{score}}</li>
                 </template>
               </ul>
             </template>
