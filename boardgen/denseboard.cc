@@ -18,6 +18,8 @@
 #include <functional>
 #include <algorithm>
 #include <set>
+#include <pthread.h>
+#include <unistd.h>
 
 using std::set;
 using std::unordered_set;
@@ -34,6 +36,68 @@ std::uniform_int_distribution<int> directionDistribution(0, 7);
 
 #define N 4
 #define ITERATIONS 100
+#define NUM_BOARDS 1000
+
+#define WORKER_THREADS 8
+pthread_t workers[WORKER_THREADS];
+pthread_mutex_t working_mutex;
+pthread_mutex_t work_mutex[WORKER_THREADS];
+pthread_cond_t work_cond[WORKER_THREADS];
+pthread_mutex_t counter_mutex;
+volatile int counter = WORKER_THREADS;
+
+void* thread_worker_start(void* arg);
+
+void start_workers() {
+  pthread_mutex_init(&counter_mutex, NULL);
+  for (int i = 0; i < WORKER_THREADS; i++) {
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init(&attr);
+    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK);
+    int r = pthread_mutex_init(&work_mutex[i], &attr);
+    assert(r >= 0);
+    r = pthread_cond_init(&work_cond[i], NULL);
+    assert(r >= 0);
+  }
+  for (int i = 0; i < WORKER_THREADS; i++) {
+    int r = pthread_create(&workers[i], NULL, thread_worker_start, &workers[i]);
+    assert(r >= 0);
+  }
+}
+
+void signal_workers() {
+  // Signal the threads
+  pthread_mutex_lock(&counter_mutex);
+  assert(counter == 4);
+  for (int i = 0; i < WORKER_THREADS; i++) {
+    int r = pthread_cond_signal(&work_cond[i]);
+    counter--;
+    assert(r == 0);
+  }
+  pthread_mutex_unlock(&counter_mutex);
+}
+
+void lock_workers() {
+  for (int i = 0; i < WORKER_THREADS; i++) {
+    int r = pthread_mutex_lock(&work_mutex[i]);
+    assert(r == 0);
+  }
+}
+
+void unlock_workers() {
+  for (int i = 0; i < WORKER_THREADS; i++) {
+    int r = pthread_mutex_unlock(&work_mutex[i]);
+    assert(r == 0);
+  }
+}
+
+void stop_workers() {
+  signal_workers();
+  for (int i = 0; i < WORKER_THREADS; i++) {
+    pthread_join(workers[i], NULL);
+  }
+}
+
 
 void buildScore() {
   _score["A"] = 1;
@@ -137,6 +201,17 @@ struct Board {
     }
   }
 
+  bool equal(const Board& other) {
+    for (int i = 0; i < N; i++) {
+      for (int j = 0; j < N; j++) {
+        if (tiles[i][j] != other.tiles[i][j]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   void print() {
     for (int i = 0; i < N; i++) {
       for (int j = 0; j < N; j++) {
@@ -144,7 +219,22 @@ struct Board {
       }
       printf("\n");
     }
-    printf("%d %d\n", maxScore, _usedWords.size());
+    printf("%d %ld\n", maxScore, _usedWords.size());
+    auto it = _usedWords.begin();
+    while (it != _usedWords.end()) {
+      printf("%s ", (*it).c_str());
+      it++;
+    }
+    printf("\n");
+  }
+
+  void printFinal() {
+    for (int i = 0; i < N; i++) {
+      for (int j = 0; j < N; j++) {
+        printf("%c ", tiles[i][j]);
+      }
+    }
+    fprintf(stderr, "%d %ld\n", maxScore, _usedWords.size());
     auto it = _usedWords.begin();
     while (it != _usedWords.end()) {
       printf("%s ", (*it).c_str());
@@ -327,6 +417,84 @@ bool operator>(const Board& a, const Board& b) {
   return a.maxScore > b.maxScore;
 }
 
+std::vector<Board> boards(NUM_BOARDS*2);
+volatile bool finished = false;
+
+void* thread_worker_start(void* arg) {
+  pthread_t* self = reinterpret_cast<pthread_t*>(arg);
+  int id = (int)(self - &workers[0]);
+  fprintf(stderr, "Thread %d started.\n", id);
+  pthread_mutex_t* mutex = &work_mutex[id];
+  pthread_cond_t* monitor = &work_cond[id];
+  pthread_mutex_lock(mutex);
+
+  while (!finished) {
+    while (true) {
+      fprintf(stderr, "%d waiting for signal.\n", id);
+      int r = pthread_cond_wait(monitor, mutex);
+      assert(r >= 0);
+      break;
+    }
+    if (finished) {
+      pthread_mutex_lock(&counter_mutex);
+      counter++;
+      pthread_mutex_unlock(&counter_mutex);
+      fprintf(stderr, "%d signaled and finished.\n", id);
+      break;
+    }
+    fprintf(stderr, "%d signaled and working.\n", id);
+    int boards_per_thread = (NUM_BOARDS / WORKER_THREADS);
+    int src_index = id * boards_per_thread;
+    int dst_index = src_index + NUM_BOARDS;
+    for (int i = 0; i < boards_per_thread; i++) {
+      int tweakType = perturbDistribution(generator);
+      boards[dst_index+i] = boards[src_index+i];
+      boards[dst_index+i].tweak(tweakType, 8);
+      boards[dst_index+i].calculateMaxScore();
+    }
+    pthread_mutex_lock(&counter_mutex);
+    counter++;
+    pthread_mutex_unlock(&counter_mutex);
+  }
+  int r = pthread_mutex_unlock(mutex);
+  assert(r >= 0);
+  return NULL;
+}
+
+void* thread_worker_start1(void* arg) {
+  pthread_t* self = reinterpret_cast<pthread_t*>(arg);
+  int id = (int)(self - &workers[0]);
+  fprintf(stderr, "Thread %d started.\n", id);
+  int boards_per_thread = (NUM_BOARDS / WORKER_THREADS);
+  int src_index = id * boards_per_thread;
+  int dst_index = src_index + NUM_BOARDS;
+  for (int i = 0; i < boards_per_thread; i++) {
+    int tweakType = perturbDistribution(generator);
+    boards[dst_index+i] = boards[src_index+i];
+    boards[dst_index+i].tweak(tweakType, 8);
+    boards[dst_index+i].calculateMaxScore();
+  }
+  pthread_exit(NULL);
+}
+
+void uniqueBoards(std::vector<Board>& boards) {
+  size_t len = boards.size()/2;
+  int dupCount = 0;
+  for (int i = 0; i < len; i++) {
+    for (int j = i+1; j < len; j++) {
+      if (boards[i].equal(boards[j])) {
+        // Generate random new board.
+        boards[i].generateRandom();
+        // Start over and verify we haven't generated a random board
+        // equal to one of our existing boards.
+        j = i+1;
+        dupCount++;
+      }
+    }
+  }
+  fprintf(stderr, "Found %d duplicates.\n", dupCount);
+}
+
 void tweakBoards(std::vector<Board>& boards) {
   int half = (int)boards.size()/2;
   for (int i = 0; i < half; i++) {
@@ -337,8 +505,7 @@ void tweakBoards(std::vector<Board>& boards) {
   }
 }
 
-std::vector<Board> buildTopBoards(int numBoards) {
-  std::vector<Board> boards(numBoards*2);
+void buildTopBoards(int numBoards) {
   auto it = boards.begin();
   // Initial update.
   while (it != boards.end()) {
@@ -348,20 +515,86 @@ std::vector<Board> buildTopBoards(int numBoards) {
   std::sort(boards.begin(), boards.end(), std::greater<Board>());
 
   for (int i = 0; i < ITERATIONS; i++) {
+    fprintf(stderr, "%d/%d\n", i, ITERATIONS);
+    fflush(stderr);
     tweakBoards(boards);
     std::sort(boards.begin(), boards.end(), std::greater<Board>());
   }
   boards.resize(numBoards);
-  return boards;
 }
 
-int main(int argc, const char * argv[]) {
-  buildScore();
-  buildDictionary("/Users/johnmccutchan/dictionary.txt");
-  std::vector<Board> boards = buildTopBoards(100);
+
+void buildTopBoardsParallel(int numBoards) {
   auto it = boards.begin();
+  // Initial update.
   while (it != boards.end()) {
-    it->print();
+    it->calculateMaxScore();
     it++;
   }
+  std::sort(boards.begin(), boards.end(), std::greater<Board>());
+  // All workers are sleeping at condition variable.
+  for (int i = 0; i < ITERATIONS; i++) {
+    signal_workers();
+    while (true) {
+      pthread_mutex_lock(&counter_mutex);
+      if (counter == WORKER_THREADS) {
+        pthread_mutex_unlock(&counter_mutex);
+        break;
+      }
+      pthread_mutex_unlock(&counter_mutex);
+      usleep(1);
+    }
+    fprintf(stderr, "%d/%d\n", i, ITERATIONS);
+    fflush(stderr);
+    // All workers are sleeping at condition variable.
+    std::sort(boards.begin(), boards.end(), std::greater<Board>());
+  }
+  lock_workers();
+  unlock_workers();
+  signal_workers();
+  finished = true;
+  boards.resize(numBoards);
+}
+
+
+void buildTopBoardsParallel1(int numBoards) {
+  auto it = boards.begin();
+  // Initial update.
+  while (it != boards.end()) {
+    it->calculateMaxScore();
+    it++;
+  }
+  std::sort(boards.begin(), boards.end(), std::greater<Board>());
+  for (int i = 0; i < ITERATIONS; i++) {
+    for (int i = 0; i < WORKER_THREADS; i++) {
+      int r = pthread_create(&workers[i], NULL, thread_worker_start1,
+                             &workers[i]);
+      assert(r == 0);
+    }
+    for (int i = 0; i < WORKER_THREADS; i++) {
+      int r = pthread_join(workers[i], NULL);
+      assert(r == 0);
+    }
+    fprintf(stderr, "%d/%d\n", i, ITERATIONS);
+    fflush(stderr);
+    std::sort(boards.begin(), boards.end(), std::greater<Board>());
+    uniqueBoards(boards);
+  }
+  boards.resize(numBoards);
+}
+
+
+int main(int argc, const char * argv[]) {
+  static_assert((NUM_BOARDS % WORKER_THREADS) == 0, "Invalid config.");
+//  start_workers();
+  buildScore();
+  buildDictionary("/Users/johnmccutchan/dictionary.txt");
+  buildTopBoardsParallel1(NUM_BOARDS);
+  auto it = boards.begin();
+  while (it != boards.end()) {
+    it->printFinal();
+    it++;
+  }
+//  stop_workers();
+  fprintf(stderr, "Exiting.\n");
 }

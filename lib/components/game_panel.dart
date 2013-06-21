@@ -6,15 +6,13 @@ import 'package:game_loop/game_loop_html.dart';
 import 'package:tilebasedwordsearch/shared_html.dart';
 import 'dart:math';
 
-// The view of game in play
-// Includes:
-// - Tiles
-// - Score
-// - Timer
 class GamePanel extends WebComponent {
   Board board;
-  Boards boards;
   BoardView boardView;
+  BoardController boardController;
+
+  Boards boards;
+  GameClock _gameClock;
   ImageAtlas letterAtlas;
   GameLoopHtml _gameLoop;
   GameLoopTouch currentTouch;
@@ -29,13 +27,16 @@ class GamePanel extends WebComponent {
     _endButton = query('#end');
     _canvasElement = query('#frontBuffer');
     _gameLoop = new GameLoopHtml(_canvasElement);
+    _gameClock = new GameClock(_gameLoop);
     // Don't lock the pointer on a click.
     _gameLoop.pointerLock.lockOnClick = false;
+
+
     _gameLoop.onUpdate = gameUpdate;
     _gameLoop.onRender = gameRender;
     _gameLoop.onTouchStart = gameTouchStart;
     _gameLoop.onTouchEnd = gameTouchEnd;
-    _gameLoop.keyboard.interceptor = keyboardEventInterceptor;
+
     enableButtons();
 
     startNewGame();
@@ -47,16 +48,16 @@ class GamePanel extends WebComponent {
   }
 
   void startNewGame() {
-    board = new Board(boards.getRandomBoard(), _gameLoop);
+    board = new Board(boards.getRandomBoard());
     boardView = new BoardView(board, _canvasElement);
-    board.gameClock.start();
-    board.done.then((_) {
-      disableButtons();
-      window.alert('Game over!');
-      //XXX disable input
-      //XXX deliver score
-      //XXX etc.
+    boardController = new BoardController(board, boardView);
+    _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
+    _gameClock.start();
+    _gameClock.allDone.future.then((_) {
+      currentPanel = 'results';
     });
+    words.clear();
+    score = 0;
     _gameLoop.start();
   }
 
@@ -64,26 +65,24 @@ class GamePanel extends WebComponent {
     _endButton.disabled = false;
     _pauseButton.disabled = false;
   }
-
   void disableButtons() {
     _endButton.disabled = true;
     _pauseButton.disabled = true;
   }
 
   void endGame() {
-    // XXX: should confirm first
-    board.stop();
-    disableButtons();
-
-    print('GAME ENDED');
+    if (window.confirm('Are you sure you want to end the game?')) {
+      _gameClock.stop();
+      currentPanel = 'results';
+    }
   }
 
   void togglePause() {
     if (!paused) {
-      board.gameClock.pause();
+      _gameClock.pause();
       _pauseButton.text = "Resume";
     } else {
-      board.gameClock.restart();
+      _gameClock.restart();
       _pauseButton.text = "Pause";
     }
     paused = !paused;
@@ -97,85 +96,12 @@ class GamePanel extends WebComponent {
     context.fill();
   }
 
-  String _keyboardSearchString = '';
-
-  String translateKeyboardButtonId(int buttonId) {
-    if (buttonId >= Keyboard.A && buttonId <= Keyboard.Z) {
-      return new String.fromCharCode(buttonId);
-    }
-    return '';
-  }
-
-  bool keyboardEventInterceptor(DigitalButtonEvent event, bool repeat) {
-    if (repeat == true) {
-      print('Repeat');
-      return true;
-    }
-    if (event.down == false) {
-      return true;
-    }
-    if (event.buttonId == Keyboard.ESCAPE ||
-        event.buttonId == Keyboard.SPACE) {
-      // Space or escape kills the current word search.
-      // TODO: Indicate in GUI.
-      _keyboardSearchString = '';
-      print('Cleared');
-      return true;
-    }
-    if (event.buttonId == Keyboard.ENTER) {
-      // Submit.
-      board.attemptWord(_keyboardSearchString);
-      _keyboardSearchString = '';
-      print('Cleared');
-      return true;
-    }
-    String newSearchString = _keyboardSearchString +
-                             translateKeyboardButtonId(event.buttonId);
-    if (event.buttonId < Keyboard.A || event.buttonId > Keyboard.Z) {
-      print('Invalid character.');
-      return true;
-    }
-    print(newSearchString);
-    print(event.buttonId);
-    if (board.stringInGrid(newSearchString, null)) {
-      print('String in grid.');
-      _keyboardSearchString = newSearchString;
-    } else if (event.buttonId == Keyboard.Q &&
-               board.stringInGrid(newSearchString + 'U', null)) {
-      print('Found for QU.');
-      _keyboardSearchString = newSearchString;
-    } else {
-      print('Here');
-      while (_keyboardSearchString.length > 0) {
-        if (_keyboardSearchString[_keyboardSearchString.length-1] == 'Q') {
-          _keyboardSearchString =
-              _keyboardSearchString.substring(0,_keyboardSearchString.length-1);
-        } else {
-          break;
-        }
-      }
-    }
-    print(_keyboardSearchString);
-    // Letter.
-    return true;
-  }
-
-
-  void gameUpdateKeyboard() {
-  }
-
-
   void gameUpdate(GameLoopHtml gameLoop) {
-    if (TouchEvent.supported) {
-      // Only support touch on touch enabled devices.
-      boardView.update(currentTouch);
-    } else {
-      gameUpdateKeyboard();
-    }
+    boardController.update(currentTouch);
+    boardController.selectSearchString(boardController.keyboardSearchString);
   }
 
   void gameRender(GameLoopHtml gameLoop) {
-    boardView.selectSearchString(_keyboardSearchString);
     if (board != null) {
       boardView.render();
     }
@@ -203,7 +129,7 @@ class GamePanel extends WebComponent {
   void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
     if (touch == currentTouch) {
       currentTouch = null;
-      String word = boardView.selectedLetters;
+      String word = boardController.selectedLetters;
       if (board.attemptWord(word)) {
         print('Found word $word');
       }

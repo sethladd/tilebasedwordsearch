@@ -6,23 +6,10 @@
       <template>
         <label class="selected-word">WORDGOESHERE</label>
         <canvas id="frontBuffer" class="board"></canvas>
-
-<!--         <div class='game-data'>
-          <div class='time'>1:09</div>
-          <div class='score'>265</div>
-          <div class='pause'>||</div>
-        </div>
- -->        
         <div class="game-data">
-          <!--
-          <div>
-            <button id="pause" on-click="togglePause()" disabled>Pause</button>
-            <button id="end" on-click="endGame()" disabled>End game</button>
-          </div> -->
-
           <template if="board != null">
             <div class='score'>{{board.score}}</div>
-            <div class='time'>{{board.gameClock.timeRemaining}}</div>
+            <div class='time'>{{_gameClock.timeRemaining}}</div>
           </template>
         </div> <!-- end of game-data class -->
         <div>

@@ -12,9 +12,11 @@ import 'package:web_ui/web_ui.dart';
 import "package:google_plus_v1_api/plus_v1_api_browser.dart";
 import "package:google_oauth2_client/google_oauth2_browser.dart";
 import "package:google_games_v1_api/games_v1_api_browser.dart";
+import 'package:tilebasedwordsearch/game_constants.dart';
 
 part 'src/board_view.dart';
 part 'src/board.dart';
+part 'src/board_controller.dart';
 part 'src/game_clock.dart';
 part 'src/rectangle_transform.dart';
 part 'src/image_atlas.dart';
@@ -30,15 +32,21 @@ ImageAtlas letterAtlas;
 Player player;
 final Logger clientLogger = new Logger("client");
 
-@observable String currentPanel = 'login';
+// Temporarary: for one person game.
+List<String> words = toObservable(['this', 'that', 'and', 'the', 'other']);
+@observable int score = 0;
+
+
+@observable String currentPanel = 'main';
+
 
 void parseAssets() {
   clientLogger.info('start processing assets');
-  
+
   if (assetManager['game.boards'] == null) {
     throw new StateError("Can't play without the boards");
   }
-  
+
   boards = new Boards(assetManager['game.boards']);
 
   var letterTileImage = assetManager['game.tile-letters'];
@@ -63,13 +71,13 @@ void parseAssets() {
       letterAtlas.addElement(letters[index], x, y, letterWidth, letterWidth);
     }
   }
-  
+
   clientLogger.info('Assets loaded and parsed');
 }
 
 Future initialize() {
   _setupLogger();
-  
+
   player = new Player();
 
   // Add players scoreboard/leaderboard from game play services
