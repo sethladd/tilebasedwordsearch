@@ -45,6 +45,7 @@ class GamePanel extends WebComponent {
   @override
   removed() {
     _gameLoop.keyboard.interceptor = null;
+    _gameLoop.stop();
   }
 
   void startNewGame() {
@@ -115,10 +116,14 @@ class GamePanel extends WebComponent {
     });
   }
 
+  int touchCount = 0;
   void gameTouchStart(GameLoop gameLoop, GameLoopTouch touch) {
     if (currentTouch == null) {
       currentTouch = touch;
+    } else {
     }
+    touchCount++;
+    print('Open touches $touchCount');
   }
 
   void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
@@ -126,6 +131,9 @@ class GamePanel extends WebComponent {
       currentTouch = null;
       List<int> path = boardController.selectedPath;
       board.attemptPath(path);
+    } else {
     }
+    touchCount--;
+    print('Open touches $touchCount');
   }
 }
