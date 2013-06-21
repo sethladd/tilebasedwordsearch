@@ -125,8 +125,8 @@ class BoardController {
       clearKeyboardInput();
       clearSelected();
       for (var position in touch.positions) {
-        int x = (position.x * scaleX).toInt();
-        int y = (position.y * scaleY).toInt();
+        int x = view.transformTouchToCanvasX(position.x);
+        int y = view.transformTouchToCanvasY(position.y);
         for (int i = 0; i < GameConstants.BoardDimension; i++) {
           for (int j = 0; j < GameConstants.BoardDimension; j++) {
             int index = GameConstants.rowColumnToIndex(i, j);
@@ -136,6 +136,9 @@ class BoardController {
             var transform = view.getTileRectangle(i, j);
             if (transform.contains(x, y)) {
               view.selectedTiles.add(index);
+              if (selectedPath == null) {
+                selectedPath = new List<int>();
+              }
               selectedPath.add(index);
             }
           }

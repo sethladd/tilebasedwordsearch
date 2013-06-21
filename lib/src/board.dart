@@ -14,6 +14,8 @@ class Board {
   int score = 0;
 
   Board(this.config);
+  
+  String get tiles => config.board;
 
   bool attemptPath(List<int> path) {
     if (path == null) {

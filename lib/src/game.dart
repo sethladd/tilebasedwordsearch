@@ -5,9 +5,14 @@ class Game extends Object with Persistable {
   int score;
   int timeRemaining;
   List<String> words = <String>[];
-  DateTime lastPlayed = new DateTime.now();
+  int lastPlayedMillisSinceEpoch;
   
   Game();
+  
+  DateTime get lastPlayed => new DateTime.fromMillisecondsSinceEpoch(lastPlayedMillisSinceEpoch);
+  void set lastPlayed(DateTime timestamp) {
+    lastPlayedMillisSinceEpoch = timestamp.millisecondsSinceEpoch;
+  }
   
   Map toJson() {
     return {
@@ -15,7 +20,7 @@ class Game extends Object with Persistable {
       'score': score,
       'timeRemaining': timeRemaining,
       'words': words,
-      'lastPlayed': lastPlayed
+      'lastPlayedMillisSinceEpoch': lastPlayedMillisSinceEpoch
     };
   }
 }

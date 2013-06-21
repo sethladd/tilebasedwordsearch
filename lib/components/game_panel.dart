@@ -10,7 +10,6 @@ import 'dart:async';
 class GamePanel extends WebComponent {
   BoardView boardView;
   BoardController boardController;
-
   Boards boards;
   GameClock _gameClock;
   ImageAtlas letterAtlas;
@@ -21,12 +20,14 @@ class GamePanel extends WebComponent {
   ButtonElement _pauseButton;
   ButtonElement _endButton;
   Game game;
+  DivElement _selectedWord;
 
   @override
   inserted() {
     _pauseButton = query('#pause');
     _endButton = query('#end');
     _canvasElement = query('#frontBuffer');
+    _selectedWord = query('selected-word');
     _gameLoop = new GameLoopHtml(_canvasElement);
     _gameClock = new GameClock(_gameLoop);
     // Don't lock the pointer on a click.
@@ -58,8 +59,6 @@ class GamePanel extends WebComponent {
       _saveGame();
       currentPanel = 'results';
     });
-    words.clear();
-    score = 0;
     game = new Game();
     _saveGame();
     _gameLoop.start();
@@ -83,9 +82,11 @@ class GamePanel extends WebComponent {
   }
   
   Future _saveGame() {
+    game.board = board.tiles;
     game.timeRemaining = _gameClock.secondsRemaining;
-    game.words = board.words.keys;
+    game.words = board.words.keys.toList();
     game.score = board.score;
+    game.lastPlayed = new DateTime.now();
     return game.store().catchError(print);
   }
 
@@ -94,10 +95,12 @@ class GamePanel extends WebComponent {
       _gameClock.pause();
       game.timeRemaining = _gameClock.secondsRemaining;
       _saveGame();
+      _canvasElement.classes.add('hidden');
       _pauseButton.text = "Resume";
     } else {
       _gameClock.restart();
       _pauseButton.text = "Pause";
+      _canvasElement.classes.remove('hidden');
     }
     paused = !paused;
   }
@@ -105,7 +108,7 @@ class GamePanel extends WebComponent {
   void drawCircle(int x, int y) {
     var context = _canvasElement.context2D;
     context.beginPath();
-    context.arc(x, y, 20.0, 0, 2 * PI);
+    context.arc(x, y, 5.0, 0, 2 * PI);
     context.fillStyle = 'green';
     context.fill();
   }
@@ -123,13 +126,9 @@ class GamePanel extends WebComponent {
     }
     var transform = new RectangleTransform(_canvasElement);
     currentTouch.positions.forEach((position) {
-      int x = position.x;
-      int y = position.y;
-      if (transform.contains(x, y)) {
-        int rx = transform.transformX(x);
-        int ry = transform.transformY(y);
-        drawCircle(rx, ry);
-      }
+      int x = boardView.transformTouchToCanvasX(position.x);
+      int y = boardView.transformTouchToCanvasY(position.y);
+      drawCircle(x, y);
     });
   }
 
