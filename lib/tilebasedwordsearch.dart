@@ -33,6 +33,7 @@ ImageAtlas letterAtlas;
 ImageAtlas selectedLetterAtlas;
 Player player;
 final Logger clientLogger = new Logger("client");
+final int newGameTimeRemaining = 60*2;
 
 // Different panels need access to the board.
 Board board;
@@ -98,7 +99,8 @@ resumeGame(Game g) {
 }
 
 newGame() {
-  game = new Game();
+  game = new Game()
+    ..timeRemaining = newGameTimeRemaining;
   board = new Board(boards.getRandomBoard());
   currentPanel = 'newGame';
 }

@@ -58,7 +58,7 @@ class GameClock {
   
   stop() {
     shouldPause = true;
-    secondsRemaining == 0;
+    secondsRemaining = 0;
     timeRemaining = 'GAME OVER!';
     allDone.complete(true);
   }
