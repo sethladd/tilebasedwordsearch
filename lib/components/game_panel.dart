@@ -86,7 +86,6 @@ class GamePanel extends WebComponent {
   }
 
   Future _saveGame() {
-    game.board = board.tiles;
     game.timeRemaining = _gameClock.secondsRemaining;
     game.words = board.words.keys.toList();
     game.score = board.score;
