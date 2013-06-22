@@ -8,7 +8,7 @@
     <element name="main-panel" extends="div" constructor="MainPanel">
       <template>
         <h2>Main Panel</h2>
-        <button on-click="app.currentPanel = 'highScores'">Show high scores</button>
+        <button on-click="app.currentPanel = 'highScores'; app.player.refreshHighScoreLeaderboard();">Show high scores</button>
         <button on-click="app.newGame()">New game</button>
         <div is="login-panel"
           authentication-context="{{app.player.authenticationContext}}"
