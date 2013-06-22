@@ -98,7 +98,8 @@ resumeGame(Game g) {
 }
 
 newGame() {
-  game = new Game();
+  game = new Game()
+    ..timeRemaining = GameClock.DEFAULT_GAME_LENGTH;
   board = new Board(boards.getRandomBoard());
   currentPanel = 'newGame';
 }
