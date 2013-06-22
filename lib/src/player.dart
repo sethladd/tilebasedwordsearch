@@ -31,7 +31,10 @@ class Player {
   // The ID of the player which corresponds to the g+ id
   // and is only available after signedIn has been called.
   String id;
-
+  
+  @observable String displayName = "";
+  @observable String imgUrl = "";
+  
   Player() {
     authenticationContext = new SimpleOAuth2(null);
     plusclient = new Plus(authenticationContext);
@@ -52,6 +55,8 @@ class Player {
     plusclient.people.get('me').then((Person person) {
       // Connect to the server with offline token.
       id = person.id;
+      displayName = person.displayName;
+      imgUrl = person.image.url;
       _connectServer(id);
     });
 
@@ -87,7 +92,7 @@ class Player {
 
   void signedOut() {
     print("Player is signed out");
-    currentPanel = 'login';
+    currentPanel = 'main';
   }
 
   Future<List<Person>> friends({String orderBy: 'alphabetical',

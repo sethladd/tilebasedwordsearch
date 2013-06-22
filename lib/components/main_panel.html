@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 
 <html>
+  <head>
+   <link rel="import" href="login_panel.html">
+  </head>
   <body>
     <element name="main-panel" extends="div" constructor="MainPanel">
       <template>
         <h2>Main Panel</h2>
         <button on-click="app.currentPanel = 'highScores'">Show high scores</button>
         <button on-click="app.newGame()">New game</button>
+        <div is="login-panel"
+          authentication-context="{{app.player.authenticationContext}}"
+          sign-in-callback="{{app.player.signedIn}}"
+          sign-out-callback="{{app.player.signedOut}}"
+          ></div>
         <content></content>
       </template>
       <script type="application/dart" src="main_panel.dart"></script>

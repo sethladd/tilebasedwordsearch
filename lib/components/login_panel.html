@@ -4,8 +4,8 @@
   <body>
     <element name="login-panel" extends="div" constructor="LoginPanel">
       <template>
-        <h2>Login Panel</h2>
         <div id="google-connect">
+          <div style='clear: both;'>Sign in to find pardners</div>
           <button class="g-signin"
                   data-scope="https://www.googleapis.com/auth/games https://www.googleapis.com/auth/appstate"
                   data-clientId="250963735330.apps.googleusercontent.com"
@@ -14,7 +14,11 @@
                   data-cookiepolicy="single_host_origin"></button>
         </div>
         <div id="auth-disconnect" style="display:none">
-          <button id="disconnect" on-click="disconnect($event)">Disconnect your Google account from this app</button>
+          <div style='clear: both;'>Welcome {{app.player.displayName}}</div>
+          <img src="{{app.player.imgUrl}}" alt="{{app.player.displayName}}">
+          <div>
+            <button id="disconnect" on-click="disconnect($event)">Disconnect your Google account from this app</button>
+          </div>
         </div>
       </template>
       <script type="application/dart" src="login_panel.dart"></script>
