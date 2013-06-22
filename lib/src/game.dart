@@ -18,7 +18,7 @@ class Game extends Object with Persistable {
     lastPlayedMillisSinceEpoch = timestamp.millisecondsSinceEpoch.toDouble();
   }
   
-  bool get done => timeRemaining <= 0;
+  bool get done => timeRemaining == null || timeRemaining <= 0;
   
   bool get started => timeRemaining != null;
   
