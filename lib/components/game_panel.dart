@@ -56,7 +56,7 @@ class GamePanel extends WebComponent {
     boardView = new BoardView(board, _canvasElement);
     boardController = new BoardController(board, boardView);
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
-    if (!game.started) {
+    if (game.started) {
       _gameClock.secondsRemaining = game.timeRemaining;
     }
     _gameClock.start();
@@ -86,10 +86,13 @@ class GamePanel extends WebComponent {
   }
 
   Future _saveGame() {
+    // TODO move all this into Board ?
     game.timeRemaining = _gameClock.secondsRemaining;
-    game.words = board.words.keys.toList();
+    game.words = board.words;
+    game.recentWords = board.recentWords;
     game.score = board.score;
     game.lastPlayed = new DateTime.now();
+    game.board = board.tiles;
     return game.store().catchError(print);
   }
 
