@@ -121,7 +121,12 @@ class Player {
   void submitScore(ScoreType scoreType, int score) {
     scoreBoards
     .where((ScoreBoard sb) => sb.scoreType == scoreType)
-    .forEach((ScoreBoard sb) => sb.submitScore(this, score));
+    .forEach((ScoreBoard sb) { 
+      sb.submitScore(this, score)
+      .then((PlayerScoreResponse playerScoreResponse) => _playerLogger.fine("playerScoreResponse = $playerScoreResponse"))
+      .catchError((e) => _playerLogger.fine("Not able to submit score: $e"));
+
+    });
   }
 
   List<Future<AchievementIncrementResponse>> submitAchievement(AchievementType achievementType, int score) {
@@ -146,6 +151,6 @@ class Player {
             allTimeHighScores.add(new HighScoreInfo(lbe.player.displayName, lbe.scoreRank, lbe.scoreValue, lbe.timeSpan));
           });
           
-        });
+        }).catchError((e) => _playerLogger.fine("Not able to refresh high scores: $e"));
   }
 }
