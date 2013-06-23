@@ -92,20 +92,21 @@ void parseAssets() {
 }
 
 resumeGame(Game g) {
+  clientLogger.info('Resuming game ${g.dbId}');
   game = g;
-  board = new Board(boards.getBoardFromString(game.board));
+  board = new Board.fromGame(boards.getBoardFromString(game.board), g);
   currentPanel = 'game';
 }
 
 newGame() {
-  game = new Game();
   board = new Board(boards.getRandomBoard());
+  game = new Game()
+    ..timeRemaining = GameClock.DEFAULT_GAME_LENGTH
+    ..board = board.tiles;
   currentPanel = 'newGame';
 }
 
 Future initialize() {
-  _setupLogger();
-
   player = new Player();
 
   // Add players scoreboard/leaderboard from game play services
@@ -129,18 +130,4 @@ Future initialize() {
       .then((_) {
         return db.Persistable.all(Game).toList().then((g) => games.addAll(g));
       });
-}
-
-_setupLogger() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((LogRecord logRecord) {
-    StringBuffer sb = new StringBuffer();
-    sb
-    ..write(logRecord.time.toString())..write(":")
-    ..write(logRecord.loggerName)..write(":")
-    ..write(logRecord.level.name)..write(":")
-    ..write(logRecord.sequenceNumber)..write(": ")
-    ..write(logRecord.message.toString());
-    print(sb.toString());
-  });
 }

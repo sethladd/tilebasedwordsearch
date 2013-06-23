@@ -3,7 +3,11 @@ library persistable_html;
 import 'dart:async';
 import 'dart:mirrors';
 import 'package:lawndart/lawndart.dart';
+import 'package:logging/logging.dart';
 
+final Logger log = new Logger("persistence");
+
+// TODO: one store per type
 Store _store;
 
 Future init(String dbName, String storeName) {
@@ -24,7 +28,7 @@ abstract class Persistable {
         return null;
       } else {
         var classMirror = reflectClass(type);
-        return _createAndPopulate(classMirror, data);
+        return _createAndPopulate(classMirror, id, data);
       }
     });
   }
@@ -33,7 +37,7 @@ abstract class Persistable {
     ClassMirror classMirror = reflectClass(type);
 
     return _store.all().map((Map data) {
-      return _createAndPopulate(classMirror, data);
+      return _createAndPopulate(classMirror, data['dbId'], data);
     });
   }
   
@@ -49,12 +53,13 @@ abstract class Persistable {
     return _store.nuke();
   }
   
-  static _createAndPopulate(ClassMirror classMirror, Map data) {
+  static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
     var instance = classMirror.newInstance(const Symbol(''), []);
     var object = instance.reflectee;
+    object.dbId = id;
     var instanceMirror = reflect(object);
     data.forEach((k, v) {
-      print('$k has $v which is a ${v.runtimeType}');
+      log.fine('$k has $v which is a ${v.runtimeType}');
       if (classMirror.variables.containsKey(new Symbol(k))) {
         instanceMirror.setField(new Symbol(k), v);
       }
@@ -69,6 +74,8 @@ abstract class Persistable {
     }
     return _dbId;
   }
+  
+  void set dbId(String id) { _dbId = id; }
   
   Map toJson();
 }

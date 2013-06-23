@@ -7,13 +7,13 @@
   },
   "tiles": {
   	"loadArguments":{},
-  	"url":"tiles.png",
+  	"url":"Tiles.png",
   	"type":"image",
   	"importArguments":{}
   },
   "tiles_highlighted": {
   	"loadArguments":{},
-  	"url":"tiles_highlighted.png",
+  	"url":"Tiles_highlighted.png",
   	"type":"image",
   	"importArguments":{}
   }

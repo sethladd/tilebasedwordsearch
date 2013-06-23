@@ -4,7 +4,8 @@ class Game extends Object with Persistable {
   String board;
   int score;
   int timeRemaining;
-  List<String> words = <String>[];
+  Map<String, int> words = <String, int>{};
+  List<String> recentWords = <String>[];
   
   // See bug 11448. This needs to be a double.
   double lastPlayedMillisSinceEpoch;
@@ -18,7 +19,7 @@ class Game extends Object with Persistable {
     lastPlayedMillisSinceEpoch = timestamp.millisecondsSinceEpoch.toDouble();
   }
   
-  bool get done => timeRemaining <= 0;
+  bool get done => timeRemaining == null || timeRemaining <= 0;
   
   bool get started => timeRemaining != null;
   
@@ -28,7 +29,9 @@ class Game extends Object with Persistable {
       'score': score,
       'timeRemaining': timeRemaining,
       'words': words,
-      'lastPlayedMillisSinceEpoch': lastPlayedMillisSinceEpoch
+      'lastPlayedMillisSinceEpoch': lastPlayedMillisSinceEpoch,
+      'dbId': dbId,
+      'recentWords': recentWords
     };
   }
 }

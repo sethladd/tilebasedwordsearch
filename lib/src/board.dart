@@ -2,7 +2,8 @@ part of tilebasedwordsearch;
 
 @observable
 class Board {
-  static const NumRecentWords = 10;
+  static const NUM_RECENT_WORDS = 10;
+  // TODO make into linkedlist
   final List<String> recentWords = toObservable(new List<String>());
   final Map<String, int> words = new Map<String, int>();
   final BoardConfig config;
@@ -14,6 +15,12 @@ class Board {
   int score = 0;
 
   Board(this.config);
+  
+  Board.fromGame(this.config, Game game) {
+    score = game.score;
+    words.addAll(game.words);
+    recentWords.addAll(game.recentWords);
+  }
   
   String get tiles => config.board;
 
@@ -42,7 +49,7 @@ class Board {
   void _acceptPath(List<int> path, String word) {
     int wordScore = scoreForPath(path);
     score += wordScore;
-    while (recentWords.length >= NumRecentWords) {
+    while (recentWords.length >= NUM_RECENT_WORDS) {
       recentWords.removeLast();
     }
     recentWords.insert(0, word);

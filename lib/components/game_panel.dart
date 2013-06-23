@@ -1,5 +1,6 @@
 import 'package:web_ui/web_ui.dart';
 import 'dart:html';
+import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart';
 import 'package:game_loop/game_loop_html.dart';
@@ -12,6 +13,7 @@ class GamePanel extends WebComponent {
   BoardController boardController;
   GameClock _gameClock;
   ImageAtlas letterAtlas;
+  Function submitHighScore;
   GameLoopHtml _gameLoop;
   GameLoopTouch currentTouch;
   bool paused = false;
@@ -21,6 +23,7 @@ class GamePanel extends WebComponent {
   Game game;
   DivElement _selectedWord;
   BodyElement _bodyElement;
+  final Logger _gamePanelLogger = new Logger("GamePanel");
 
   @override
   inserted() {
@@ -56,12 +59,18 @@ class GamePanel extends WebComponent {
     boardView = new BoardView(board, _canvasElement);
     boardController = new BoardController(board, boardView);
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
-    if (!game.started) {
+    if (game.started) {
       _gameClock.secondsRemaining = game.timeRemaining;
     }
     _gameClock.start();
     _gameClock.allDone.future.then((_) {
       _saveGame();
+      
+      if (submitHighScore != null) {
+        _gamePanelLogger.fine("submitScore(ScoreType.HIGH_SCORE, ${board.score}");
+        submitHighScore(ScoreType.HIGH_SCORE, board.score);
+      }
+      
       currentPanel = 'results';
     });
     _saveGame();
@@ -86,11 +95,13 @@ class GamePanel extends WebComponent {
   }
 
   Future _saveGame() {
-    game.board = board.tiles;
+    // TODO move all this into Board ?
     game.timeRemaining = _gameClock.secondsRemaining;
-    game.words = board.words.keys.toList();
+    game.words = board.words;
+    game.recentWords = board.recentWords;
     game.score = board.score;
     game.lastPlayed = new DateTime.now();
+    game.board = board.tiles;
     return game.store().catchError(print);
   }
 

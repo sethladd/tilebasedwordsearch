@@ -22,7 +22,7 @@
             </template>
           </div>
           <button on-click="app.currentPanel='newGame'">Another game</button>
-          <button on-click="app.currentPanel='highScores'">See scores</button>
+          <button on-click="app.currentPanel='highScores'; app.player.refreshHighScoreLeaderboard()">See scores</button>
           <button on-click="app.currentPanel='main'">Home</button>
         </div>
       </template>

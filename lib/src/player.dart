@@ -9,8 +9,20 @@ class ScoreType {
   const ScoreType._(this.value);
 }
 
+class HighScoreInfo {
+  String displayName;
+  int scoreRank;
+  int scoreValue;
+  String timeSpan;
+  HighScoreInfo(this.displayName,
+                this.scoreRank,
+                this.scoreValue,
+                this.timeSpan);
+}
+
 // XXX: What is the ID that I can use in the database?
 class Player {
+  final Logger _playerLogger = new Logger("Player"); 
   Map _authResult;
 
   // Simple Authentication class that takes the token from the Sign-in button
@@ -31,7 +43,14 @@ class Player {
   // The ID of the player which corresponds to the g+ id
   // and is only available after signedIn has been called.
   String id;
-
+  
+  @observable String displayName = "";
+  @observable String imgUrl = "";
+  
+  List<HighScoreInfo> allTimeHighScores = toObservable(<HighScoreInfo>[]);
+  
+  @observable bool isConnected = false;
+  
   Player() {
     authenticationContext = new SimpleOAuth2(null);
     plusclient = new Plus(authenticationContext);
@@ -52,6 +71,9 @@ class Player {
     plusclient.people.get('me').then((Person person) {
       // Connect to the server with offline token.
       id = person.id;
+      displayName = person.displayName;
+      imgUrl = person.image.url;
+      isConnected = true;
       _connectServer(id);
     });
 
@@ -87,7 +109,7 @@ class Player {
 
   void signedOut() {
     print("Player is signed out");
-    currentPanel = 'login';
+    currentPanel = 'main';
   }
 
   Future<List<Person>> friends({String orderBy: 'alphabetical',
@@ -108,4 +130,22 @@ class Player {
     .map((Achievement ac) => ac.submitAchievment(this, score)).toList();
   }
 
+  refreshHighScoreLeaderboard() {
+    if (gamesclient == null) return;
+    
+    ScoreBoard highScoreBoard = scoreBoards
+    .singleWhere((ScoreBoard sb) => sb.scoreType == ScoreType.HIGH_SCORE);
+    
+    gamesclient.scores.listWindow(highScoreBoard.leaderBoardId,
+        "PUBLIC", "ALL_TIME", maxResults: 25)
+        .then((LeaderboardScores leaderboardScores) {
+
+          allTimeHighScores.clear();
+          leaderboardScores.items.forEach((LeaderboardEntry lbe) {
+            _playerLogger.fine("${lbe.player.displayName} ${lbe.scoreRank} ${lbe.scoreValue} ${lbe.timeSpan}");
+            allTimeHighScores.add(new HighScoreInfo(lbe.player.displayName, lbe.scoreRank, lbe.scoreValue, lbe.timeSpan));
+          });
+          
+        });
+  }
 }

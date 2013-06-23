@@ -45,6 +45,7 @@
           <div is="game-panel"
                game="{{app.game}}"
                letter-atlas="{{app.letterAtlas}}"
+               submit-high-score="{{app.player.submitScore}}"
                class="grid"></div>
           <div class="words">
             <h2 class='column-heading'>Recent Words</h2>
@@ -99,7 +100,7 @@
         </template>
 
         <template if="app.currentPanel == 'highScores'">
-          <div is="high-scores-panel"></div>
+          <div is="high-scores-panel" high-scores="{{app.player.allTimeHighScores}}"></div>
         </template>
       </div>
 

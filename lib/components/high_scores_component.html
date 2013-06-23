@@ -5,14 +5,14 @@
     <element name="high-scores-panel" extends="div" constructor="HighScoresComponent">
       <template>
         <h2>High Scores</h2>
-        <template if="highScores.length > 0">
+        <template if="highScores != null && highScores.length > 0">
           <ul>
             <template iterate="score in highScores">
-              <li>{{ score }}</li>
+              <li>{{score.displayName}} {{score.scoreValue}} {{score.scoreRank}}</li>
             </template>
           </ul>
         </template>
-        <template if="highScores.length <= 0">
+        <template if="highScores == null && highScores.length <= 0">
           No high scores yet.
         </template>
           <button on-click="app.currentPanel='newGame'">New game</button>
