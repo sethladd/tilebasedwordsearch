@@ -49,6 +49,8 @@ class Player {
   
   List<HighScoreInfo> allTimeHighScores = toObservable(<HighScoreInfo>[]);
   
+  @observable bool isConnected = false;
+  
   Player() {
     authenticationContext = new SimpleOAuth2(null);
     plusclient = new Plus(authenticationContext);
@@ -71,6 +73,7 @@ class Player {
       id = person.id;
       displayName = person.displayName;
       imgUrl = person.image.url;
+      isConnected = true;
       _connectServer(id);
     });
 
