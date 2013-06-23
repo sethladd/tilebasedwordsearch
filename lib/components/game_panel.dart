@@ -25,6 +25,11 @@ class GamePanel extends WebComponent {
   BodyElement _bodyElement;
   final Logger _gamePanelLogger = new Logger("GamePanel");
 
+  StreamSubscription _onTouchStartSubscription;
+  StreamSubscription _onTouchEndSubscription;
+  
+  _preventBubble(Event e) => e.preventDefault();
+  
   @override
   inserted() {
     _pauseButton = query('#pause');
@@ -37,7 +42,11 @@ class GamePanel extends WebComponent {
     // Don't lock the pointer on a click.
     _gameLoop.pointerLock.lockOnClick = false;
     _bodyElement.classes.add('no-scroll');
-
+    
+    // Prevent touch events to escape the canvas element so scrolling does not happen. 
+    _onTouchStartSubscription = _canvasElement.onTouchStart.listen(_preventBubble);
+    _onTouchEndSubscription = _canvasElement.onTouchEnd.listen(_preventBubble);
+    
     _gameLoop.onUpdate = gameUpdate;
     _gameLoop.onRender = gameRender;
     _gameLoop.onTouchStart = gameTouchStart;
@@ -52,6 +61,8 @@ class GamePanel extends WebComponent {
   removed() {
     _gameLoop.keyboard.interceptor = null;
     _bodyElement.classes.remove('no-scroll');
+    _onTouchStartSubscription.cancel();
+    _onTouchEndSubscription.cancel();
     _gameLoop.stop();
   }
 
@@ -67,7 +78,7 @@ class GamePanel extends WebComponent {
       _saveGame();
       
       if (submitHighScore != null) {
-        _gamePanelLogger.fine("submitScore(ScoreType.HIGH_SCORE, ${board.score}");
+        _gamePanelLogger.fine("submitScore(ScoreType.HIGH_SCORE, ${board.score})");
         submitHighScore(ScoreType.HIGH_SCORE, board.score);
       }
       
