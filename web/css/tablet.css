@@ -1,0 +1,148 @@
+@media screen and (max-width: 908px) {
+  .header {
+    display: none;
+  }
+
+  .main {
+    margin: 0 auto;
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  .main .primary {
+    width: 60%;
+    margin-bottom: 1em;
+  }
+
+  .main .primary .board {
+    width: 80%;
+  }
+
+  .main .primary .board img {
+    max-width: 80%;
+  }
+
+  .main .primary .game-data {
+    margin-bottom: .5em;
+  }
+
+  .main .secondary {
+    width: 39%;
+    text-align: center;
+  }
+  .main .secondary ul {
+    width: 70%;
+    margin: 0 auto 1em auto;
+  }
+
+  h2.column-heading {
+    font: normal normal 1.2em sans-serif;
+    margin: 1% auto;
+  }
+
+  .main .tertiary {
+    clear: both;
+    float: none;
+    width: 100%;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
+
+  .main .tertiary .your-turn {
+    float: left;
+    margin: 0em auto 0em 2%;
+    width: 45%;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
+
+  .main .tertiary .their-turn {
+    float: right;
+    margin: 0em 2% 1em auto;
+    width:45%;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
+
+
+  .notification {
+    clear: both;
+    width: 90%;
+    margin: 2% auto;
+    padding: 1% 0%;
+    text-align: left;
+    font-size: .8em;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
+
+  .notification .heading {
+    float: left;
+    font-size: 1.2em;
+    padding: .02em .5em;
+  }
+
+  .notification .time {
+    float: right;
+    font: italic .9em serif;
+    padding: .02em .5em;
+  }
+
+  .footer {
+    width: 100%;
+    height: 3%;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+    font: .8em serif;
+  }
+}
+
+/*********** Small Tablet **********/
+
+@media screen and (max-width: 768px) {
+
+  .main .primary {
+    margin-bottom: .5em;
+    overflow: hidden;
+  }
+
+  .main .primary .board {
+    width: 90%;
+  }
+
+  .main .primary .board img {
+    max-width: 90%;
+  }
+
+  .main .primary .game-data {
+    width: 75%;
+    margin-bottom: .5em;
+  }
+
+  .main .secondary{
+    overflow: hidden;
+  }
+
+  .main .secondary ul {
+    width: 90%;
+    overflow: hidden;
+  }
+  .notification .heading {
+    float: none;
+    font-size: 1.2em;
+    padding: .02em .5em;
+  }
+
+  .notification .time {
+    float: none;
+    font: italic .9em serif;
+    padding: .02em .5em;
+  }
+
+  .footer {
+    display: none;
+  }
+}

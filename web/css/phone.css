@@ -1,0 +1,46 @@
+@media screen and (max-width: 420px) {
+  #page {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .header {
+    display: none;
+  }
+
+  .main {
+    margin: 0 auto;
+    width: 96%;
+  }
+
+  .main .primary {
+    float: none;
+    width: 96%;
+    margin: 0 auto;
+    margin-top: 1em;
+    background-color: #222;
+  }
+
+  .main .primary .board {
+    width: 96%;
+    margin: 0 auto;
+  }
+
+  .main .primary .board img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .main .secondary {
+    display: none;
+  }
+
+  .main .tertiary {
+    display: none;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+
