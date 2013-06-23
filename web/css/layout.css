@@ -44,7 +44,7 @@ div {
   margin-bottom: 1em;
 }
 
-.main .grid {
+.main .primary {
   background:-webkit-linear-gradient(top, #eee, #fff);
   float: left;
   width: 44%;
@@ -55,7 +55,7 @@ div {
   max-height: 50%;
 }
 
-.main .grid .selected-word {
+.main .primary .selected-word {
   font: 24px sans-serif;
   width: 30%;
   margin: 2% auto 2% auto;
@@ -66,16 +66,16 @@ div {
   color: #444;
 }
 
-.main .grid .board {
+.main .primary .board {
   width: 80%; /* 350px */
   margin: 0 auto;
 }
 
-.main .grid .board img {
+.main .primary .board img {
   max-width: 80%;
 }
 
-.main .grid .game-data {
+.main .primary .game-data {
   width: 45%;
   margin: 0 auto;
   padding: .25em 0;
@@ -87,7 +87,7 @@ div {
   background-color: #fff;
 }
 
-.main .grid .game-data div {
+.main .primary .game-data div {
     display: inline-block;
     padding: 1% 0%;
     margin: 1% 0%;
@@ -102,7 +102,7 @@ div {
 }
 
 /* set max vertical height for this */
-.main .words {
+.main .secondary {
   float: left;
   width: 25%;
   text-align: center;
@@ -123,7 +123,7 @@ h2.column-heading {
   color: #222;
 }
 
-.main .words ul {
+.main .secondary ul {
   list-style: none;
   width: 80%;
   padding: 0;
@@ -135,7 +135,7 @@ h2.column-heading {
   background:-webkit-linear-gradient(top, #999, #aaa);
 }
 
-.main .words ul li {
+.main .secondary ul li {
   margin: 2% auto;
   width: 75%;
   color: #555;
@@ -148,7 +148,7 @@ h2.column-heading {
   background-color: #eee;
 }
 
-.main .words ul li .score {
+.main .secondary ul li .score {
   margin-right: 0;
   font: italic .9em serif;
   float:right;
@@ -157,7 +157,7 @@ h2.column-heading {
 
 }
 
-.main .social {
+.main .tertiary {
   float: left;
   width: 30%;
   text-align: center;
@@ -170,7 +170,7 @@ h2.column-heading {
   background:-webkit-linear-gradient(top, #eee, #efefef);
 }
 
-.main .social .your-turn {
+.main .tertiary .your-turn {
   width:80%;
   border-radius: .8em;
   background:-webkit-linear-gradient(top, #888, #999);
@@ -178,7 +178,7 @@ h2.column-heading {
   padding: .1em 0;
 }
 
-.main .social .their-turn {
+.main .tertiary .their-turn {
   width:80%;
   border-radius: .8em;
   background:-webkit-linear-gradient(top, #ddd, #eee);
@@ -204,12 +204,12 @@ h2.column-heading {
   font: italic .9em serif;
 }
 
-.main .social .your-turn .notification {
+.main .tertiary .your-turn .notification {
   background:-webkit-linear-gradient(top, #eee, #fff);
   color: #333;
 }
 
-.main .social .their-turn .notification {
+.main .tertiary .their-turn .notification {
   color: #fff;
   background:-webkit-linear-gradient(top, #888, #999);
 }
@@ -248,28 +248,28 @@ h2.column-heading {
     margin-bottom: 1em;
   }
 
-  .main .grid {
+  .main .primary {
     width: 60%;
     margin-bottom: 1em;
   }
 
-  .main .grid .board {
+  .main .primary .board {
     width: 80%;
   }
 
-  .main .grid .board img {
+  .main .primary .board img {
     max-width: 80%;
   }
 
-  .main .grid .game-data {
+  .main .primary .game-data {
     margin-bottom: .5em;
   }
 
-  .main .words {
+  .main .secondary {
     width: 39%;
     text-align: center;
   }
-  .main .words ul {
+  .main .secondary ul {
     width: 70%;
     margin: 0 auto 1em auto;
   }
@@ -279,7 +279,7 @@ h2.column-heading {
     margin: 1% auto;
   }
 
-  .main .social {
+  .main .tertiary {
     clear: both;
     float: none;
     width: 100%;
@@ -288,7 +288,7 @@ h2.column-heading {
     border: .1em solid #ccc;
   }
 
-  .main .social .your-turn {
+  .main .tertiary .your-turn {
     float: left;
     margin: 0em auto 0em 2%;
     width: 45%;
@@ -296,7 +296,7 @@ h2.column-heading {
     border: .1em solid #ccc;
   }
 
-  .main .social .their-turn {
+  .main .tertiary .their-turn {
     float: right;
     margin: 0em 2% 1em auto;
     width:45%;
@@ -343,29 +343,29 @@ h2.column-heading {
 
 @media screen and (max-width: 768px) {
 
-  .main .grid {
+  .main .primary {
     margin-bottom: .5em;
     overflow: hidden;
   }
 
-  .main .grid .board {
+  .main .primary .board {
     width: 90%;
   }
 
-  .main .grid .board img {
+  .main .primary .board img {
     max-width: 90%;
   }
 
-  .main .grid .game-data {
+  .main .primary .game-data {
     width: 75%;
     margin-bottom: .5em;
   }
 
-  .main .words{
+  .main .secondary{
     overflow: hidden;
   }
 
-  .main .words ul {
+  .main .secondary ul {
     width: 90%;
     overflow: hidden;
   }
@@ -403,7 +403,7 @@ h2.column-heading {
     width: 96%;
   }
 
-  .main .grid {
+  .main .primary {
     float: none;
     width: 96%;
     margin: 0 auto;
@@ -411,21 +411,21 @@ h2.column-heading {
     background-color: #222;
   }
 
-  .main .grid .board {
+  .main .primary .board {
     width: 96%;
     margin: 0 auto;
   }
 
-  .main .grid .board img {
+  .main .primary .board img {
     width: 100%;
     max-width: 100%;
   }
 
-  .main .words {
+  .main .secondary {
     display: none;
   }
 
-  .main .social {
+  .main .tertiary {
     display: none;
   }
 

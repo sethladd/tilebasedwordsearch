@@ -4,15 +4,15 @@ packages:
   analyzer_experimental:
     description: analyzer_experimental
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   args:
     description: args
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   asset_pack:
     description:
       ref: null
-      resolved-ref: "7d4fb50d86a8546e3160ea509bdc17c0edd76ae2"
+      resolved-ref: d4d75f5682adc5ec632dbfa9846f56de068f7624
       url: "https://github.com/johnmccutchan/asset_pack.git"
     source: git
     version: "0.6.0"
@@ -23,7 +23,7 @@ packages:
   bot:
     description: bot
     source: hosted
-    version: "0.22.0"
+    version: "0.21.0"
   bot_io:
     description: bot_io
     source: hosted
@@ -31,11 +31,11 @@ packages:
   browser:
     description: browser
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   crypto:
     description: crypto
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   csslib:
     description: csslib
     source: hosted
@@ -51,7 +51,7 @@ packages:
   game_loop:
     description:
       ref: null
-      resolved-ref: "860d1ca7d9bf165bb6590e0603fa202e7e66108c"
+      resolved-ref: "0884dd5371e431340c4cce5f7dac08a25cb74598"
       url: "https://github.com/johnmccutchan/game_loop.git"
     source: git
     version: "0.9.0"
@@ -88,11 +88,11 @@ packages:
   http:
     description: http
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   js:
     description: js
     source: hosted
-    version: "0.0.22"
+    version: "0.0.23"
   lawndart:
     description: lawndart
     source: hosted
@@ -100,19 +100,19 @@ packages:
   logging:
     description: logging
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   meta:
     description: meta
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   oauth2:
     description: oauth2
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   pathos:
     description: pathos
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   postgresql:
     description: postgresql
     source: hosted
@@ -120,7 +120,7 @@ packages:
   source_maps:
     description: source_maps
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   start:
     description: start
     source: hosted
@@ -128,8 +128,8 @@ packages:
   unittest:
     description: unittest
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   web_ui:
     description: web_ui
     source: hosted
-    version: "0.4.12+2"
+    version: "0.4.11+2"

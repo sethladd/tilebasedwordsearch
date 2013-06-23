@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
     <meta name="HandheldFriendly" content="true">
-   <link type='text/css' rel='stylesheet' href='css/layout.css' />
-   <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
+    <link type='text/css' rel='stylesheet' href='css/layout.css' />
+    <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/high_scores_component.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/main_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/new_game_panel.html">
@@ -18,43 +18,64 @@
   </head>
   <body>
     <div id="page">
+      <!-- ================================================================= -->
       <div class="header">
-        <h1>Word Herd</h1>
+        <h1>[[Needs Word Herd logo]]</h1>
       </div>
 
       <div class="main">
-        <template if="app.currentPanel == 'login'">
-          <div is="login-panel"
-            authentication-context="{{app.player.authenticationContext}}"
-            sign-in-callback="{{app.player.signedIn}}"
-            sign-out-callback="{{app.player.signedOut}}"
-            ></div>
-        </template>
+        <!-- =============================================================== -->
+        <div class="primary">
+          <template if="app.currentPanel == 'login'">
+            <div is="login-panel"
+              authentication-context="{{app.player.authenticationContext}}"
+              sign-in-callback="{{app.player.signedIn}}"
+              sign-out-callback="{{app.player.signedOut}}">
+            </div>
+          </template>
 
-        <template if="app.currentPanel == 'main'">
-          <div is="main-panel">
-            <div is="list-games" games="{{app.games}}"></div>
-          </div>
-        </template>
+          <template if="app.currentPanel == 'main'">
+            <div is="main-panel">
+              <div is="list-games" games="{{app.games}}"></div>
+            </div>
+          </template>
 
-        <template if="app.currentPanel == 'results'">
-          <div is="game-results-panel"></div>
-        </template>
+          <template if="app.currentPanel == 'newGame'">
+            <div is="new-game-panel"></div>
+          </template>
 
-        <template if="app.currentPanel == 'game'">
-          <div is="game-panel"
-               game="{{app.game}}"
-               letter-atlas="{{app.letterAtlas}}"
-               submit-high-score="{{app.player.submitScore}}"
-               class="grid"></div>
-          <div class="words">
-            <h2 class='column-heading'>Recent Words</h2>
-            <template if="!app.board.recentWords.isEmpty">
-              <word-list>
-              </word-list>
-            </template>
-          </div><!-- end words -->
-          <div class="social"> <!-- 150 -->
+          <template if="app.currentPanel == 'highScores'">
+            <div is="high-scores-panel" high-scores="{{app.player.allTimeHighScores}}"></div>
+          </template>
+
+          <template if="app.currentPanel == 'game'">
+            <div is="game-panel"
+                 game="{{app.game}}"
+                 letter-atlas="{{app.letterAtlas}}"
+                 submit-high-score="{{app.player.submitScore}}"
+                 class="primary">
+            </div>
+          </template>
+
+          <template if="app.currentPanel == 'results'">
+            <div is="game-results-panel"></div>
+          </template>
+        </div> <!-- end .primary -->
+
+        <!-- =============================================================== -->
+        <div class="secondary">
+          <template if="app.currentPanel == 'game'">
+            <div class="secondary">
+              <h2 class='column-heading'>Recent Words</h2>
+              <template if="!app.board.recentWords.isEmpty">
+                <word-list></word-list>
+              </template>
+            </div>
+          </template>
+        </div><!-- end .secondary -->
+
+        <!-- =============================================================== -->
+        <div class="tertiary">
           <h2 class='column-heading'>Notifications</h2>
           <div class='your-turn'>
             <div class='notification'>
@@ -89,25 +110,18 @@
               <div class='time'>4 hours ago</div>
               <div style='clear: both;'></div>
             </div>
+            </div>
           </div>
-        </div>
-        <div style='clear: both;'></div>
+          <div style='clear: both;'></div>
+        </div> <!-- end .tertiary -->
+      </div> <!-- end .main -->
 
-        </template>
-
-        <template if="app.currentPanel == 'newGame'">
-          <div is="new-game-panel"></div>
-        </template>
-
-        <template if="app.currentPanel == 'highScores'">
-          <div is="high-scores-panel" high-scores="{{app.player.allTimeHighScores}}"></div>
-        </template>
-      </div>
-
+      <!-- ================================================================= -->
       <div class="footer">
         Built with pride using Dart!
-      </div>
-    </div>
+      </div><!-- end .footer -->
+
+    </div><!-- end #page -->
 
     <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
