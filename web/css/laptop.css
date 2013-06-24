@@ -44,12 +44,15 @@ div {
   margin-bottom: 1em;
 }
 
+
+
 .main .primary {
   background:-webkit-linear-gradient(top, #eee, #fff);
     background-image: url("../assets/SkyAndGrass-background.png");
   background-position: 0 0;
-  float: left;
   width: 44%;
+  margin: 0 auto;
+  float: left;
   text-align: center;
   -moz-border-radius: .8em;
   border-radius: .8em;
