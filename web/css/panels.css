@@ -204,9 +204,10 @@
 .list-games-panel td.status button {
    background-color: green;
    color: white;
-   -moz-border-radius: .8em;
-  border-radius: .8em;
-  border: 1px solid green;
+   -moz-border-radius: .4em;
+  border-radius: .4em;
+  padding: .1em .2em;
+  width: auto;
  }
 
 .list-games-panel td.status .time-remaining {
