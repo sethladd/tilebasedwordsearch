@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 
 <html>
-  <body>   
+  <body>
     <element name="list-games" extends="div" constructor="ListGamesPanel">
       <template>
         <p>Games</p>
-        <ul>
-          <li template repeat="game in games">
-            <template if="game.done">
-              Score: {{game.score}}, played on {{game.lastPlayed}}
-            </template>
-            <template if="!game.done">
-              <button on-click="app.resumeGame(game)">Resume</button>
-              {{game.timeRemaining}} seconds left
-            </template>
-          </li>
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <td>Game</td>
+              <td>Score</td>
+            </tr>
+          </thead>
+
+          <tbody template iterate="game in games.reversed">
+            <tr>
+              <td class="last-played">{{game.lastPlayedFormatted}}</td>
+              <td class="status">
+                <template if="game.done">
+                  <span class="score">{{game.score}}</span>
+                </template>
+                <template if="!game.done">
+                  <button on-click="app.resumeGame(game)">Resume</button>
+                  <div class="time-remaining">{{game.timeRemaining}}'' left</div>
+               </template>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
       </template>
       <script type="application/dart" src="list_games_panel.dart"></script>
     </element>

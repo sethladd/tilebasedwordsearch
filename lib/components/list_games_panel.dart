@@ -6,6 +6,4 @@ import 'package:tilebasedwordsearch/tilebasedwordsearch.dart' as app;
 
 class ListGamesPanel extends WebComponent {
   List<Game> games;
-  
-  
 }

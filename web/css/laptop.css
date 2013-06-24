@@ -234,3 +234,73 @@ h2.column-heading {
 .debug {
   color:pink;
 }
+
+.main-panel {
+
+}
+
+.main-panel h2 {
+  color: blue;
+}
+
+.main-panel button {
+
+}
+
+.main-panel .login-panel {
+
+}
+
+.list-games-panel {
+
+}
+
+.list-games-panel table {
+  margin: 1em auto;
+  width: 95%;
+}
+
+
+.list-games-panel table thead {
+
+}
+
+.list-games-panel td {
+  font: italic 1em serif;
+  padding: .2em .4em;
+  border: 1px solid brown;
+  -moz-border-radius: .2em;
+  border-radius: .2em;
+}
+
+.list-games-panel table thead tr td{
+  background-color: green;
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+  border: 1px solid green;
+}
+
+.list-games-panel td.last-played {
+  font: normal italic 1em serif;
+  color: brown;
+  width: 70%;
+}
+
+.list-games-panel td.status .score {
+    font: bold normal 1.2em sans-serif;
+    width: 28%;
+ }
+
+.list-games-panel td.status button {
+   background-color: green;
+   color: white;
+   -moz-border-radius: .8em;
+  border-radius: .8em;
+  border: 1px solid green;
+ }
+
+.list-games-panel td.status .time-remaining {
+   font: italic .6em sans-serif;
+   color: brown;
+ }

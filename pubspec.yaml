@@ -19,6 +19,7 @@ dependencies:
   google_plus_v1_api: any
   html5lib: any
   http: any
+  intl: any
   lawndart: any
   logging: any
   postgresql: any

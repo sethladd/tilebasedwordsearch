@@ -89,6 +89,10 @@ packages:
     description: http
     source: hosted
     version: "0.5.16"
+  intl:
+    description: intl
+    source: hosted
+    version: "0.5.16"
   js:
     description: js
     source: hosted
