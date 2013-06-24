@@ -15,6 +15,10 @@
     margin-bottom: 1em;
   }
 
+  .main .primary .main-panel {
+    background-position: 50% 8em;
+  }
+
   .main .secondary {
     width: 39%;
     text-align: center;

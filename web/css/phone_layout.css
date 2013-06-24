@@ -18,7 +18,10 @@
     width: 96%;
     margin: 0 auto;
     margin-top: 1em;
-    background-color: #222;
+  }
+
+  .main .primary .main-panel {
+    background-position: 50% 10em;
   }
 
   .main .secondary {

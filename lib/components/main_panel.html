@@ -7,26 +7,28 @@
   <body>
     <element name="main-panel" extends="div" constructor="MainPanel">
       <template>
-        <h2 class="main-heading">Word Herd</h2>
-        <div is="login-panel"
-          authentication-context="{{app.player.authenticationContext}}"
-          sign-in-callback="{{app.player.signedIn}}"
-          sign-out-callback="{{app.player.signedOut}}"
-          class="login-panel">
-        </div>
-        <template if="app.player.isConnected">
-          <div class='buttons'>
-            <div class='high-scores'>
-              <button on-click="app.currentPanel = 'highScores'; app.player.refreshHighScoreLeaderboard();">Show high scores</button>
+        <div class='buttons'>
+          <template if="app.player.isConnected">
+            <div class='new-game-with-pardner'>
+              <button on-click="app.currentPanel = 'highScores'; app.player.refreshHighScoreLeaderboard();">New game (with pardner)</button>
             </div>
-            <div class='new-game'>
-              <button on-click="app.newGame()">New game</button>
-            </div>
-            <div style="clear:both;"></div>
+          </template>
+          <div class='new-game'>
+            <button on-click="app.newGame()">New game (lone)</button>
           </div>
-        </template>
+        </div> <!-- end .buttons -->
+
+        <div class='login'>
+          <div is="login-panel"
+            authentication-context="{{app.player.authenticationContext}}"
+            sign-in-callback="{{app.player.signedIn}}"
+            sign-out-callback="{{app.player.signedOut}}"
+            class="login-panel">
+          </div>
+        </div><!-- end .login -->
         <content></content>
       </template>
+
       <script type="application/dart" src="main_panel.dart"></script>
     </element>
   </body>

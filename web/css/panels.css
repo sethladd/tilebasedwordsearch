@@ -3,40 +3,43 @@
  */
 
 .main-panel {
+  width: 100%;
   margin: 0;
-  padding-bottom: 5em;
-  background-image: url("../assets/SkyAndGrass-background.png");
-}
-
-.main-panel .main-heading {
-  color: rgb(150, 100, 0);
-  font: italic bold 3em sans-serif;
+  padding-top: 2em;
+  padding-bottom: 0em;
+  background-color: rgba(40, 20, 10, .7);
+  background-image: url('../assets/WordHerder.png');
+  background-repeat: no-repeat;
+  background-position: 50% 5em;
+  background-size: 50%;
+  min-height: 480px;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  position: relative;
 }
 
 .main-panel .buttons {
-  width: 90%;
-  margin: 2em auto;
+  width: 50%;
+  margin: 1.2em auto;
 }
 
 .main-panel .buttons button {
+  width: 90%;
   font-size: 1em;
-  padding: .5em 1em;
+  padding: .5em 1em 2em 1em;
   color: white;
 
   -moz-border-radius: .3em;
   border-radius: .3em;
-  border: 0px;
+  border: .2em solid rgb(30, 15, 5);
 }
 
 .main-panel .buttons .new-game button {
-  float:left;
-  background-color: green;
-  border: 0px;
+  background-color: rgba(60, 30, 15, .8);
 }
 
-.main-panel .buttons .high-scores button {
-  background-color: rgb(150, 100, 0);
-  float:right;
+.main-panel .buttons .new-game-with-pardner button {
+  background-color: rgba(150, 90, 30, .6);
 }
 
 /*
@@ -45,9 +48,12 @@
 
 .main-panel .login-panel {
   width: 100%;
-  margin: 1em 0 0 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  bottom: 1em;
+  left: 0;
 }
-
 
 .login-panel .sign-in-message {
   font: italic bold 1.5em sans-serif;
@@ -55,34 +61,35 @@
   margin-bottom: 2em;
 }
 
-.login-panel div.welcome {
-  margin: 1em 0 0 0;
-  padding: 0;
-  width: 90%;
-  margin: 0 auto;
-}
-
-.login-panel div.welcome .message {
-  font: italic normal 1em san-serif;
-  padding: 0;
-  margin: 0;
+.login-panel .welcome {
+  text-align: center;
+  margin: 0 auto 0 5%;
   float: left;
-  color: brown;
+  width: 30%;
 }
 
-.login-panel div.welcome .image {
-  padding: 0;
-  margin: 0;
+.login-panel .sign-out {
+  text-align: center;
+  margin: 0 5% 0 auto;
   float: right;
+  width: 30%;
 }
+
+.login-panel .welcome .message {
+  font: italic normal .8em sans-serif;
+}
+
+.login-panel .welcome .image {
+}
+
 
 .login-panel div button#disconnect {
   color: rgb(60, 30, 10);
   background-color: white;
   margin: 2em 0 0 0;
   padding: .5em .75em;
-  -moz-border-radius: .3em;
-  border-radius: .3em;
+  -moz-border-radius: .6em;
+  border-radius: .6em;
   border: 0px solid black;
   margin-bottom: 1.5em;
 }
