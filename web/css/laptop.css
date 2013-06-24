@@ -104,6 +104,7 @@ div {
 
 /* set max vertical height for this */
 .main .secondary {
+  background-position: 0, 0;
   float: left;
   width: 25%;
   text-align: center;
@@ -112,7 +113,7 @@ div {
   border-radius: .8em;
   padding: .4em 0em;
   background:-webkit-linear-gradient(top, #efdeaa, #fff);
-  /* background-image: url('../assets/SkyAndGrass-background.png'); */
+  background-image: url('../assets/wood_texture_fragment.png');
   max-height: 50%;
 }
 
@@ -134,20 +135,17 @@ h2.column-heading {
   border-radius: .8em;
   padding: .5em 0;
   border: .1em solid #ccc;
-  background:-webkit-linear-gradient(top, #999, #aaa);
 }
 
 .main .secondary ul li {
   margin: 2% auto;
   width: 75%;
-  color: #555;
   font: normal bold .9em sans-serif;
-  -moz-border-radius: .4em;
-  border-radius: .4em;
+  -moz-border-radius: .5em;
+  border-radius: .5em;
   border: .1em solid #ccc;
   text-align: left;
   padding: .15em .3em;
-  background-color: #eee;
 }
 
 .main .secondary ul li .score {
@@ -255,7 +253,7 @@ h2.column-heading {
 
 .main-panel .buttons {
   width: 90%;
-  margin: 0 auto 2em auto;
+  margin: 2em auto;
 }
 
 .main-panel .buttons button {
@@ -330,36 +328,50 @@ h2.column-heading {
 /*
  **** GAME LIST PANEL ****
  */
+
+.list-games-panel h2.main-heading{
+  color: rgb(190, 240, 255);
+  font: italic bold 2em serif;
+  color: rgb(178, 230, 255);
+  background-color: rgba(60, 30, 15, .5);
+  padding: .5em;
+}
+
 .list-games-panel table {
   margin: 1em auto;
   width: 95%;
+  background-color: rgba(180, 120, 60, .25);
 }
 
 .list-games-panel td {
   font: italic 1em serif;
+  margin: 1em 0;
   padding: .2em .4em;
-  border: 1px solid rgb(180, 180, 60);
-  -moz-border-radius: .2em;
-  border-radius: .2em;
+  border: 1px solid rgb(60, 30, 10);
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  background-color: rgba(178, 230, 255, .8);
 }
 
-.list-games-panel table thead tr td{
-  background-color: green;
-  color: white;
+.list-games-panel table thead tr td {
+  background-color: rgb(193, 233, 108);
+  color: rgb(20, 10, 5);
   font-size: 1.2em;
   font-weight: bold;
   border: 1px solid green;
 }
 
+.list-games-panel table thead tr td {
+}
+
 .list-games-panel td.last-played {
-  font: normal italic 1em serif;
-  color: brown;
-  width: 70%;
+  font: italic bold 1.1em serif;
+  color: rgb(60, 30, 15);
 }
 
 .list-games-panel td.status .score {
-    font: bold normal 1.2em sans-serif;
-    width: 28%;
+  font: bold normal 1.2em sans-serif;
+  color: rgb(80, 40, 20);;
  }
 
 .list-games-panel td.status button {
@@ -371,6 +383,6 @@ h2.column-heading {
  }
 
 .list-games-panel td.status .time-remaining {
-  font: italic .6em sans-serif;
-  color: brown;
+  font: italic bold .9em sans-serif;
+  color: rgb(120, 60, 30);
 }
