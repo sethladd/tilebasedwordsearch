@@ -10,7 +10,10 @@
         <div class='buttons'>
           <template if="app.player.isConnected">
             <div class='new-game-with-pardner'>
-              <button on-click="app.currentPanel = 'highScores'; app.player.refreshHighScoreLeaderboard();">New game<br>(with pardner)</button>
+              <button class="primary-button"
+                on-click="app.currentPanel = 'highScores'; app.player.refreshHighScoreLeaderboard();">
+                New game<br>(with pardner)
+              </button>
             </div>
           </template>
           <div class='new-game'>

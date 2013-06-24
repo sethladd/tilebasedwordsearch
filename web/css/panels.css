@@ -23,23 +23,10 @@
   margin: 1.2em auto;
 }
 
-.main-panel .buttons button {
-  width: 90%;
-  font-size: 1em;
-  padding: .5em 1em 2em 1em;
-  color: white;
-
-  -moz-border-radius: .3em;
-  border-radius: .3em;
-  border: .2em solid rgb(30, 15, 5);
-}
-
 .main-panel .buttons .new-game button {
-  background-color: rgba(60, 30, 15, .8);
 }
 
 .main-panel .buttons .new-game-with-pardner button {
-  background-color: rgba(150, 90, 30, .6);
 }
 
 /*
@@ -84,14 +71,6 @@
 
 
 .login-panel div button#disconnect {
-  color: rgb(60, 30, 10);
-  background-color: white;
-  margin: 2em 0 0 0;
-  padding: .5em .75em;
-  -moz-border-radius: .6em;
-  border-radius: .6em;
-  border: 0px solid black;
-  margin-bottom: 1.5em;
 }
 
 /*
