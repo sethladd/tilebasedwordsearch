@@ -6,22 +6,27 @@
       <template>
         <div id="google-connect">
           <template if="!app.player.isConnected">
-            <div style='clear: both;'>Sign in to find pardners</div>
+            <div class='sign-in-message' style='clear: both;'>Sign in to find pardners</div>
             <button class="g-signin"
                     data-scope="https://www.googleapis.com/auth/games https://www.googleapis.com/auth/appstate"
                     data-clientId="250963735330.apps.googleusercontent.com"
                     data-callback="onSignInCallback"
                     data-accesstype="offline"
                     data-cookiepolicy="single_host_origin"></button>
-          </template>          
+          </template>
         </div>
         <template if="app.player.isConnected">
-          <div style='clear: both;'>Welcome {{app.player.displayName}}</div>
-          <img src="{{app.player.imgUrl}}" alt="{{app.player.displayName}}">
+          <div class="welcome">
+            <div class="message" style='clear: both;'>Welcome, {{app.player.displayName}}</div>
+            <div class="image">
+              <img src="{{app.player.imgUrl}}" alt="{{app.player.displayName}}">
+            </div>
+            <div style="clear:both;"></div>
+          </div>
           <div>
             <button id="disconnect" on-click="disconnect($event)">Disconnect your Google account from this app</button>
           </div>
-        </template>  
+        </template>
         <!-- TODO: get rid of this div -->
         <div id="auth-disconnect" style="display:none"></div>
       </template>

@@ -38,7 +38,6 @@
 
           <template if="app.currentPanel == 'main'">
             <div is="main-panel" class="main-panel">
-              <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
             </div>
           </template>
 
@@ -66,6 +65,10 @@
 
         <!-- =============================================================== -->
         <div class="secondary">
+          <template if="app.currentPanel == 'main'">
+            <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
+          </template>
+
           <template if="app.currentPanel == 'game'">
             <div class="secondary">
               <h2 class='column-heading'>Recent Words</h2>

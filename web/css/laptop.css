@@ -46,13 +46,14 @@ div {
 
 .main .primary {
   background:-webkit-linear-gradient(top, #eee, #fff);
+    background-image: url("../assets/SkyAndGrass-background.png");
+  background-position: 0 0;
   float: left;
   width: 44%;
   text-align: center;
   -moz-border-radius: .8em;
   border-radius: .8em;
   margin: 0;
-  max-height: 50%;
 }
 
 .main .primary .selected-word {
@@ -110,7 +111,8 @@ div {
   -moz-border-radius: .8em;
   border-radius: .8em;
   padding: .4em 0em;
-  background:-webkit-linear-gradient(top, #dfdfdf, #fff);
+  background:-webkit-linear-gradient(top, #efdeaa, #fff);
+  /* background-image: url('../assets/SkyAndGrass-background.png'); */
   max-height: 50%;
 }
 
@@ -235,40 +237,108 @@ h2.column-heading {
   color:pink;
 }
 
+
+/*
+ **** MAIN PANEL ****
+ */
+
 .main-panel {
+  margin: 0;
+  padding-bottom: 5em;
+}
+
+.main-panel .main-heading {
+  color: rgb(150, 100, 0);
+  font: italic bold 3em sans-serif;
 
 }
 
-.main-panel h2 {
-  color: blue;
+.main-panel .buttons {
+  width: 90%;
+  margin: 0 auto 2em auto;
 }
 
-.main-panel button {
+.main-panel .buttons button {
+  font-size: 1em;
+  padding: .5em 1em;
+  color: white;
 
+  -moz-border-radius: .3em;
+  border-radius: .3em;
+  border: 0px;
 }
+
+.main-panel .buttons .new-game button {
+  float:left;
+  background-color: green;
+  border: 0px;
+}
+
+.main-panel .buttons .high-scores button {
+  background-color: rgb(150, 100, 0);
+  float:right;
+}
+
+/*
+ **** LOGIN PANEL ****
+ */
 
 .main-panel .login-panel {
-
+  width: 100%;
+  margin: 1em 0 0 0;
 }
 
-.list-games-panel {
 
+.login-panel .sign-in-message {
+  font: italic bold 1.5em sans-serif;
+  color: rgb(120, 60, 30);
+  margin-bottom: 2em;
 }
 
+.login-panel div.welcome {
+  margin: 1em 0 0 0;
+  padding: 0;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.login-panel div.welcome .message {
+  font: italic normal 1em san-serif;
+  padding: 0;
+  margin: 0;
+  float: left;
+  color: brown;
+}
+
+.login-panel div.welcome .image {
+  padding: 0;
+  margin: 0;
+  float: right;
+}
+
+.login-panel div button#disconnect {
+  color: rgb(60, 30, 10);
+  background-color: white;
+  margin: 2em 0 0 0;
+  padding: .5em .75em;
+  -moz-border-radius: .3em;
+  border-radius: .3em;
+  border: 0px solid black;
+  margin-bottom: 1.5em;
+}
+
+/*
+ **** GAME LIST PANEL ****
+ */
 .list-games-panel table {
   margin: 1em auto;
   width: 95%;
 }
 
-
-.list-games-panel table thead {
-
-}
-
 .list-games-panel td {
   font: italic 1em serif;
   padding: .2em .4em;
-  border: 1px solid brown;
+  border: 1px solid rgb(180, 180, 60);
   -moz-border-radius: .2em;
   border-radius: .2em;
 }
@@ -301,6 +371,6 @@ h2.column-heading {
  }
 
 .list-games-panel td.status .time-remaining {
-   font: italic .6em sans-serif;
-   color: brown;
- }
+  font: italic .6em sans-serif;
+  color: brown;
+}
