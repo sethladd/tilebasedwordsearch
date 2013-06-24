@@ -22,12 +22,14 @@
     <div id="page">
       <!-- ================================================================= -->
       <div class="header">
+      <!-- ================================================================= -->
         <h1>[[Needs Word Herd logo]]</h1>
       </div>
 
       <div class="main">
         <!-- =============================================================== -->
         <div class="primary">
+        <!-- =============================================================== -->
           <template if="app.currentPanel == 'login'">
             <div is="login-panel"
               authentication-context="{{app.player.authenticationContext}}"
@@ -65,6 +67,7 @@
 
         <!-- =============================================================== -->
         <div class="secondary">
+        <!-- =============================================================== -->
           <template if="app.currentPanel == 'main'">
             <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
           </template>
@@ -81,6 +84,7 @@
 
         <!-- =============================================================== -->
         <div class="tertiary">
+        <!-- =============================================================== -->
           <h2 class='column-heading'>Notifications</h2>
           <div class='your-turn'>
             <div class='notification'>
@@ -123,6 +127,7 @@
 
       <!-- ================================================================= -->
       <div class="footer">
+      <!-- ================================================================= -->
         Built with pride using Dart!
       </div><!-- end .footer -->
 

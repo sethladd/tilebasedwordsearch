@@ -12,7 +12,7 @@
             </tr>
           </thead>
 
-          <tbody template iterate="game in games.reversed">
+          <tbody template iterate="game in games.sublist(0, 10).reversed">
             <tr>
               <td class="last-played">{{game.lastPlayedFormatted}}</td>
               <td class="status">
