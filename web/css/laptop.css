@@ -45,8 +45,6 @@ div {
 }
 
 .main .primary {
-  background:-webkit-linear-gradient(top, #eee, #fff);
-    background-image: url("../assets/SkyAndGrass-background.png");
   background-size: cover;
   background-position: 0 0;
   width: 60%;
@@ -55,7 +53,6 @@ div {
   text-align: center;
   -moz-border-radius: .8em;
   border-radius: .8em;
-  margin: 0;
 }
 
 .main .primary .selected-word {
@@ -115,7 +112,6 @@ div {
   border-radius: .8em;
   padding: .4em 0em;
   background:-webkit-linear-gradient(top, #efdeaa, #fff);
-  background-image: url('../assets/wood_texture_fragment.png');
 }
 
 h2.column-heading {
