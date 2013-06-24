@@ -151,10 +151,22 @@
  */
 
 .list-games-panel {
-  background-image: url('../assets/wood_texture_fragment.png');
-  background-color: red;
+  background-color: rgba(40, 20, 10, .7);
+  min-height: 480px;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+
 }
 
+.list-games-panel .show-pretty-image {
+  min-height: 480px;
+  background-image: url('../assets/SkyAndGrass-background.png');
+  background-repeat: no-repeat;
+  background-position: 0% 0%;
+  background-size: 100%;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+}
 
 .list-games-panel h2.main-heading{
   color: rgb(190, 240, 255);
@@ -165,7 +177,7 @@
 }
 
 .list-games-panel table {
-  margin: 1em auto;
+  margin: 0 auto;
   width: 95%;
   background-color: rgba(180, 120, 60, .25);
 }

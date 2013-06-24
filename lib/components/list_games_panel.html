@@ -3,7 +3,11 @@
 <html>
   <body>
     <element name="list-games" extends="div" constructor="ListGamesPanel">
-      <template>
+    <template>
+      <template if="!app.player.isConnected">
+         <div class="show-pretty-image"></div>
+      </template>
+      <template if="app.player.isConnected">
         <table>
           <thead>
             <tr>
@@ -28,6 +32,7 @@
 
           </tbody>
         </table>
+      </template>
       </template>
       <script type="application/dart" src="list_games_panel.dart"></script>
     </element>
