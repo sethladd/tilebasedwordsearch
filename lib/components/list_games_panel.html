@@ -5,33 +5,36 @@
     <element name="list-games" extends="div" constructor="ListGamesPanel">
     <template>
       <template if="!app.player.isConnected">
-         <div class="show-pretty-image"></div>
+         <div class="not-connected-styles"></div>
       </template>
+
       <template if="app.player.isConnected">
-        <table>
-          <thead>
-            <tr>
-              <td>Game</td>
-              <td>Score</td>
-            </tr>
-          </thead>
+        <div class="connected-styles">
+          <table>
+            <thead>
+              <tr>
+                <td>Game</td>
+                <td>Score</td>
+              </tr>
+            </thead>
 
-          <tbody template iterate="game in games.reversed">
-            <tr>
-              <td class="last-played">{{game.lastPlayedFormatted}}</td>
-              <td class="status">
-                <template if="game.done">
-                  <span class="score">{{game.score}}</span>
-                </template>
-                <template if="!game.done">
-                  <button on-click="app.resumeGame(game)">Resume</button>
-                  <div class="time-remaining">{{game.timeRemaining}}'' left</div>
-               </template>
-              </td>
-            </tr>
+            <tbody template iterate="game in games.reversed">
+              <tr>
+                <td class="last-played">{{game.lastPlayedFormatted}}</td>
+                <td class="status">
+                  <template if="game.done">
+                    <span class="score">{{game.score}}</span>
+                  </template>
+                  <template if="!game.done">
+                    <button on-click="app.resumeGame(game)">Resume</button>
+                    <div class="time-remaining">{{game.timeRemaining}}'' left</div>
+                 </template>
+                </td>
+              </tr>
 
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </template>
       </template>
       <script type="application/dart" src="list_games_panel.dart"></script>
