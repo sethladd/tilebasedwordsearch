@@ -45,10 +45,6 @@
             </div>
           </template>
 
-          <template if="app.currentPanel == 'newGame'">
-            <div is="new-game-panel"></div>
-          </template>
-
           <template if="app.currentPanel == 'highScores'">
             <div is="high-scores-panel" high-scores="{{app.player.allTimeHighScores}}"></div>
           </template>
