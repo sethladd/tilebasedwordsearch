@@ -17,14 +17,14 @@
         </div>
         <template if="app.player.isConnected">
           <div class="welcome">
-            <div class="message" style='clear: both;'>Welcome, {{app.player.displayName}}</div>
+            <div class="message" style='clear: both;'>Howdy, {{app.player.displayName}}!</div>
             <div class="image">
               <img src="{{app.player.imgUrl}}" alt="{{app.player.displayName}}">
             </div>
             <div style="clear:both;"></div>
           </div>
           <div>
-            <button id="disconnect" on-click="disconnect($event)">Disconnect your Google account from this app</button>
+            <button id="disconnect" on-click="disconnect($event)">Sign out</button>
           </div>
         </template>
         <!-- TODO: get rid of this div -->
