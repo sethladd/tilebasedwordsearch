@@ -42,8 +42,8 @@ class LoginPanel extends WebComponent {
     js.scoped(() {
       // JSONP workaround because the accounts.google.com endpoint doesn't allow CORS
       js.context.myJsonpCallback = new js.Callback.once(([jsonData]) {
-        print("revoke response: $jsonData");
-        query("#auth-disconnect").style.display = "none";
+        query(".welcome").style.display = "none";
+        query("#disconnect").style.display = "none";
         query("#google-connect").style.display = "block";
 
         // disable authenticated requests in the client library
