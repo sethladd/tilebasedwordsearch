@@ -6,12 +6,12 @@
 .main-panel {
   margin: 0;
   padding-bottom: 5em;
+  background-image: url("../assets/SkyAndGrass-background.png");
 }
 
 .main-panel .main-heading {
   color: rgb(150, 100, 0);
   font: italic bold 3em sans-serif;
-
 }
 
 .main-panel .buttons {
@@ -91,6 +91,12 @@
 /*
  **** GAME LIST PANEL ****
  */
+
+.list-games-panel {
+  background-image: url('../assets/wood_texture_fragment.png');
+  background-color: red;
+}
+
 
 .list-games-panel h2.main-heading{
   color: rgb(190, 240, 255);
