@@ -57,7 +57,7 @@
                  game="{{app.game}}"
                  letter-atlas="{{app.letterAtlas}}"
                  submit-high-score="{{app.player.submitScore}}"
-                 class="primary">
+                 class="game-panel">
             </div>
           </template>
 
@@ -77,7 +77,7 @@
             <div class="secondary">
               <h2 class='column-heading'>Recent Words</h2>
               <template if="!app.board.recentWords.isEmpty">
-                <word-list></word-list>
+                <div is="word-list" class="word-list-panel"></div>
               </template>
             </div>
           </template>

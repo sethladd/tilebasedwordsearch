@@ -1,4 +1,3 @@
-
 /*
  **** MAIN PANEL ****
  */
@@ -89,6 +88,58 @@
 }
 
 /*
+ **** GAME PANEL ****
+ */
+
+.game-panel {
+}
+
+.game-panel .selected-word {
+  font: 24px sans-serif;
+  width: 30%;
+  margin: 2% auto 2% auto;
+  padding: 1% 0%;
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  border: .1em solid #ccc;
+  color: #444;
+}
+.game-panel .board {
+  width: 80%; /* 350px */
+  margin: 0 auto;
+}
+
+.game-panel .board img {
+  max-width: 80%;
+}
+
+.game-panel .board .game-data {
+  width: 45%;
+  margin: 0 auto;
+  padding: .25em 0;
+  border: .1em solid #ccc;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+  background-color: #fff;
+}
+
+.game-panel .board .game-data div {
+    display: inline-block;
+    padding: 1% 0%;
+    margin: 1% 0%;
+    text-align: center;
+    color: #444;
+    width: 25%;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    font-weight: bold;
+    font-size: .9em;
+    border: .1em solid #ccc;
+}
+
+/*
  **** GAME LIST PANEL ****
  */
 
@@ -154,4 +205,50 @@
 .list-games-panel td.status .time-remaining {
   font: italic bold .9em sans-serif;
   color: rgb(120, 60, 30);
+}
+
+
+/*
+ **** WORD LIST PANEL ****
+ */
+
+/* TODO: change <h2> so that it is inside the words-list-panel */
+.word-list-panel h2.column-heading {
+  font: normal normal 1.5em sans-serif;
+  width: auto;
+  margin: 2% auto 2% auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  color: #222;
+}
+
+.word-list-panel ul {
+  list-style: none;
+  width: 80%;
+  padding: 0;
+  margin: 0 auto 1em auto;
+  -moz-border-radius: .8em;
+  border-radius: .8em;
+  padding: .5em 0;
+  border: .1em solid #ccc;
+}
+
+.word-list-panel ul li {
+  margin: 2% auto;
+  width: 75%;
+  font: normal bold .9em sans-serif;
+  -moz-border-radius: .5em;
+  border-radius: .5em;
+  border: .1em solid #ccc;
+  text-align: left;
+  padding: .15em .3em;
+}
+
+.word-list-panel ul li .score {
+  margin-right: 0;
+  font: italic .9em serif;
+  float:right;
+  padding-top: .08em;
+  /* border: .1em solid #ccc; */
+
 }

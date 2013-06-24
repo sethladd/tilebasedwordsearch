@@ -21,16 +21,6 @@
     background-color: #222;
   }
 
-  .main .primary .board {
-    width: 96%;
-    margin: 0 auto;
-  }
-
-  .main .primary .board img {
-    width: 100%;
-    max-width: 100%;
-  }
-
   .main .secondary {
     display: none;
   }
