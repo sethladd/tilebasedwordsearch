@@ -44,13 +44,12 @@ div {
   margin-bottom: 1em;
 }
 
-
-
 .main .primary {
   background:-webkit-linear-gradient(top, #eee, #fff);
     background-image: url("../assets/SkyAndGrass-background.png");
+  background-size: cover;
   background-position: 0 0;
-  width: 44%;
+  width: 60%;
   margin: 0 auto;
   float: left;
   text-align: center;
@@ -109,7 +108,7 @@ div {
 .main .secondary {
   background-position: 0, 0;
   float: left;
-  width: 25%;
+  width: 39%;
   text-align: center;
   margin: 0;
   -moz-border-radius: .8em;
@@ -161,8 +160,6 @@ h2.column-heading {
 }
 
 .main .tertiary {
-  float: left;
-  width: 30%;
   text-align: center;
   margin: 0 auto;
   -moz-border-radius: .8em;
@@ -171,51 +168,63 @@ h2.column-heading {
   padding: .3em 0em;
   text-align: center;
   background:-webkit-linear-gradient(top, #eee, #efefef);
+  clear: both;
+  float: none;
+  width: 100%;
 }
 
-.main .tertiary .your-turn {
-  width:80%;
-  border-radius: .8em;
-  background:-webkit-linear-gradient(top, #888, #999);
-  margin: 0 auto 1em auto;
-  padding: .1em 0;
-}
 
-.main .tertiary .their-turn {
-  width:80%;
-  border-radius: .8em;
-  background:-webkit-linear-gradient(top, #ddd, #eee);
-  margin: 0 auto;
-  padding: .1em 0;
-}
+ .main .tertiary .your-turn {
+    float: left;
+    margin: 0em auto 0em 2%;
+    width: 45%;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
 
-.notification {
-  width: 90%;
-  text-align: left;
-  font-size: .8em;
-  -moz-border-radius: .6em;
-  border-radius: .6em;
-  margin: .5em auto;
-  padding: .25em .3em;
-}
+  .main .tertiary .their-turn {
+    float: right;
+    margin: 0em 2% 1em auto;
+    width:45%;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
 
-.notification .heading {
-  font-size: 1.2em;
-}
 
-.notification .time {
-  font: italic .9em serif;
-}
+  .notification {
+    clear: both;
+    width: 90%;
+    margin: 2% auto;
+    padding: 1% 0%;
+    text-align: left;
+    font-size: .8em;
+    -moz-border-radius: .8em;
+    border-radius: .8em;
+    border: .1em solid #ccc;
+  }
 
-.main .tertiary .your-turn .notification {
-  background:-webkit-linear-gradient(top, #eee, #fff);
-  color: #333;
-}
+  .notification .heading {
+    float: left;
+    font-size: 1.2em;
+    padding: .02em .5em;
+  }
 
-.main .tertiary .their-turn .notification {
-  color: #fff;
-  background:-webkit-linear-gradient(top, #888, #999);
-}
+  .notification .time {
+    float: right;
+    font: italic .9em serif;
+    padding: .02em .5em;
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 .footer {
   width: 93.75%;
