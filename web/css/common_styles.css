@@ -1,1 +1,15 @@
-/* COMMON STYLES */
+/* COMMON PANEL STYLES */
+button {
+  width: 90%;
+  font-size: 1em;
+  color: white;
+
+  -moz-border-radius: .3em;
+  border-radius: .3em;
+  border: .2em solid rgb(30, 15, 5);
+  background-color: rgba(60, 30, 15, .8);
+}
+
+button.primary-button {
+  background-color: rgba(150, 90, 30, .6);
+}
