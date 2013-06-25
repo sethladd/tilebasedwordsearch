@@ -12,6 +12,10 @@ html, body {
   font-family: sans-serif;
 }
 
+body {
+  background-color: rgb(240, 230, 200);
+}
+
 div {
   margin: 0;
   padding: 0;
