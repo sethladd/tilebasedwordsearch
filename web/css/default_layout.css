@@ -45,7 +45,6 @@ div {
   text-align: center;
   -moz-border-radius: .8em;
   border-radius: .8em;
-  background-color: silver;
 }
 
 .main .secondary {
@@ -56,7 +55,6 @@ div {
   padding: 0;
   -moz-border-radius: .8em;
   border-radius: .8em;
-  background-color: red;
 }
 
 

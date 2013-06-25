@@ -4,12 +4,16 @@
   <body>
     <element name="list-games" extends="div" constructor="ListGamesPanel">
     <template>
+      <h2>Game List</h2>
       <template if="!app.player.isConnected">
-         <div class="not-connected-styles"></div>
+         <div class="wrapper">
+           <p>Sign in to see blah, blah, and then you can blah, blah. But,
+           if you don't blah, blah, blah....Good luck with that.</p>
+         </div>
       </template>
 
       <template if="app.player.isConnected">
-        <div class="connected-styles">
+        <div class="wrapper">
           <table>
             <thead>
               <tr>

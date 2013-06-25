@@ -78,17 +78,17 @@
  */
 
 .game-panel {
-  background-color: silver;
+  background-color: rgba(40, 20, 10, .7);
+  border-radius: .8em;
 }
 
 .game-panel .selected-word {
   font: 1.5em sans-serif;
   width: 65%;
-  margin: 2% auto 2% auto;
+  margin: 0 auto 2% auto;
   padding: 1% 0%;
   -moz-border-radius: .2em;
   border-radius: .2em;
-  background-color: rgba(60, 30, 15, .8);
   color: rgb(240, 150, 60);
 }
 
@@ -143,7 +143,7 @@
 
 }
 
-.list-games-panel .connected-styles {
+.list-games-panel .wrapper{
   min-height: 480px;
   background-image: url('../assets/wood_texture_fragment.png');
   background-repeat: repeat;
@@ -153,22 +153,22 @@
   border-radius: .8em;
 }
 
-.list-games-panel .not-connected-styles {
-  min-height: 480px;
-  background-image: url('../assets/SkyAndGrass-background.png');
-  background-repeat: no-repeat;
-  background-position: 0% 0%;
-  background-size: 100%;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
+.list-games-panel h2 {
+  font: normal normal 1.5em sans-serif;
+  width: auto;
+  margin: 0 auto;
+  border-top-left-radius: .59em;
+  border-top-right-radius: .59em;
+  padding: .34em 0;
+  background-color: rgba(40, 20, 10, .7);
+  color: white;
 }
 
-.list-games-panel h2.main-heading{
-  color: rgb(190, 240, 255);
-  font: italic bold 2em serif;
-  color: rgb(178, 230, 255);
-  background-color: rgba(60, 30, 15, .5);
-  padding: .5em;
+.list-games-panel .wrapper p {
+  width: 80%;
+  margin: 0 auto;
+  text-align: left;
+  padding-top: 1em;
 }
 
 .list-games-panel table {
@@ -228,7 +228,7 @@
 
 .word-list-panel {
   min-height: 480px;
-  background-color: rgb(240, 160, 100);
+  background-color: rgb(210, 160, 100);
   width: 100%;
   margin: 0;
   padding: 0;
