@@ -181,4 +181,24 @@ class GamePanel extends WebComponent {
     touchCount--;
     print('Open touches $touchCount');
   }
+  
+  String get timeRemaining {
+    int seconds = _gameClock.secondsRemaining;
+    
+    if (seconds <= 0) return 'GAME OVER'; // XXX ok for stop() case?
+    
+    int m = seconds ~/ 60;
+    int s = seconds % 60;
+    
+    String minuteString = "";
+    String secondString = "";
+
+    if (m > 0) {
+      minuteString = '${m.toString()}:';
+      secondString = (s <= 9) ? '0$s' : '$s';
+    } else {
+      secondString = s.toString();
+    }
+    return '$minuteString$secondString';
+  }
 }
