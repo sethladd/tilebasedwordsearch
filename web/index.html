@@ -32,17 +32,6 @@
         <!-- =============================================================== -->
         <div class="primary">
         <!-- =============================================================== -->
-
-          <!--
-            <template if="app.currentPanel == 'login'">
-              <div is="login-panel"
-                authentication-context="{{app.player.authenticationContext}}"
-                sign-in-callback="{{app.player.signedIn}}"
-                sign-out-callback="{{app.player.signedOut}}">
-              </div>
-            </template>
-          -->
-
           <template if="app.currentPanel == 'main'">
             <div is="main-panel" class="main-panel"></div>
           </template>
@@ -74,6 +63,10 @@
 
           <template if="app.currentPanel == 'game'">
              <div is="word-list" class="word-list-panel"></div>
+          </template>
+
+          <template if="app.currentPanel == 'results'">
+            <div is="word-list" class="word-list-panel"></div>
           </template>
         </div><!-- end .secondary -->
 

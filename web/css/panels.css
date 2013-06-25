@@ -7,7 +7,6 @@
   margin: 0;
   padding-top: 2em;
   padding-bottom: 0em;
-  background-color: rgba(40, 20, 10, .7);
   background-image: url('../assets/WordHerder.png');
   background-repeat: no-repeat;
   background-position: 50% 5em;
@@ -79,7 +78,6 @@
  */
 
 .game-panel {
-  background-color: rgba(40, 20, 10, .7);
   border-radius: .8em;
 }
 
@@ -139,7 +137,6 @@
  */
 
 .list-games-panel {
-  background-color: rgb(200, 150, 90);
   min-height: 480px;
   -moz-border-radius: .8em;
   border-radius: .8em;
@@ -233,7 +230,6 @@
 
 .word-list-panel {
   min-height: 480px;
-  background-color: rgb(200, 150, 90);
   width: 100%;
   margin: 0;
   padding: 0;
