@@ -241,6 +241,15 @@
   border-radius: .8em;
 }
 
+.word-list-panel .no-words {
+  background-image: url('../assets/Horse.png');
+  background-position: 50% 70%;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  min-height: 480px;
+
+}
+
 .word-list-panel h2 {
   font: normal normal 1.5em sans-serif;
   width: auto;
