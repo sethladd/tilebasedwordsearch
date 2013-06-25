@@ -18,7 +18,7 @@
     <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/list_games_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_results_panel.html">
-    <link rel="import" href="packages/tilebasedwordsearch/components/word_list.html">
+    <link rel="import" href="packages/tilebasedwordsearch/components/recent_words_panel.html">
   </head>
   <body>
     <div id="page">
@@ -62,11 +62,11 @@
           </template>
 
           <template if="app.currentPanel == 'game'">
-             <div is="word-list" class="word-list-panel"></div>
+             <div is="recent-words" class="recent-words-panel"></div>
           </template>
 
           <template if="app.currentPanel == 'results'">
-            <div is="word-list" class="word-list-panel"></div>
+            <div is="recent-words" class="recent-words-panel"></div>
           </template>
         </div><!-- end .secondary -->
 

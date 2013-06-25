@@ -228,7 +228,7 @@
  **** WORD LIST PANEL ****
  */
 
-.word-list-panel {
+.recent-words-panel {
   min-height: 480px;
   width: 100%;
   margin: 0;
@@ -237,7 +237,7 @@
   border-radius: .8em;
 }
 
-.word-list-panel .no-words {
+.recent-words-panel .no-words {
   background-image: url('../assets/Horse.png');
   background-position: 50% 70%;
   background-repeat: no-repeat;
@@ -246,7 +246,7 @@
 
 }
 
-.word-list-panel h2 {
+.recent-words-panel h2 {
   font: normal normal 1.5em sans-serif;
   width: auto;
   margin: 0 auto;
@@ -257,14 +257,16 @@
   color: white;
 }
 
-.word-list-panel p {
+.recent-words-panel p {
   width: 80%;
   margin: 0 auto;
   text-align: left;
   padding-top: 1em;
 }
 
-.word-list-panel ul {
+
+/*  WORD-SCORE lists */
+ul.words-and-scores {
   list-style: none;
   width: 90%;
   padding: 0;
@@ -272,7 +274,7 @@
   padding: .5em 0;
 }
 
-.word-list-panel ul li {
+ul.words-and-scores li {
   margin: 0 auto;
   width: 90%;
   font: normal bold .9em sans-serif;
@@ -282,12 +284,12 @@
   color: rgb(40, 20, 10);
 }
 
-.word-list-panel ul li .word {
+ul.words-and-scores li .word {
   float: left;
   width: 35%;
 }
 
-.word-list-panel ul li .score {
+ul.words-and-scores li .score {
   width: 55%;
   float: right;
   margin-left: 4%;

@@ -2,7 +2,7 @@
 
 <html>
   <body>
-    <element name="word-list" extends="div" constructor="WordListComponent">
+    <element name="recent-words" extends="div" constructor="RecentWordsPanel">
       <template>
         <template if="app.board.recentWords.isEmpty">
           <div class='no-words'>
@@ -16,7 +16,7 @@
 
         <template if="!app.board.recentWords.isEmpty">
           <h2>Word List</h2>
-          <ul>
+          <ul class='words-and-scores'>
             <template repeat="word in app.board.recentWords">
               <!--getting around no embedded mustaches-->
               <li>
@@ -27,7 +27,7 @@
           </ul>
         </template>
       </template>
-      <script type="application/dart" src="word_list.dart"></script>
+      <script type="application/dart" src="recent_words_panel.dart"></script>
     </element>
   </body>
 </html>

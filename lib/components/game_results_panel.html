@@ -2,7 +2,6 @@
 
 <html>
   <head>
-   <link rel="import" href="word_list.html">
   </head>
   <body>
     <element name="game-results-panel" extends="div" constructor="GameResultsPanel">
@@ -14,10 +13,17 @@
             <template if="app.board.words.keys.isEmpty">
               <p>You did not pick any words</p>
             </template>
+
             <template if="!app.board.words.keys.isEmpty">
-              <div class=''>
-                <div is="word-list" class="word-list-panel"></div>
-              </div>
+              <h2>Word List</h2>
+              <ul class="words-and-scores">
+                <template repeat="key in app.board.words.keys">
+                  <li>
+                    <span class="word">{{key}}</span>
+                    <span class="score">{{app.board.words[key]}}</span>
+                  </li>
+                </template>
+              </ul>
             </template>
           </div>
           <button on-click="app.newGame()">Another game</button>
