@@ -11,16 +11,23 @@ class GameClock {
   @observable
   String timeRemaining = 'Not yet started';
   
-  int secondsRemaining = DEFAULT_GAME_LENGTH;
+  int _secondsRemaining = DEFAULT_GAME_LENGTH;
   
   GameClock(GameLoop this.gameLoop, {this.gameLength:DEFAULT_GAME_LENGTH}) {
     if (gameLength != null) {
       secondsRemaining = gameLength;
     }
-    timeRemaining = formatTime(secondsRemaining);
   }
   
-  String formatTime(int seconds) {
+  void set secondsRemaining(int remaining) {
+    _secondsRemaining = remaining;
+    timeRemaining = _formatTime(_secondsRemaining);
+  }
+  
+  int get secondsRemaining => _secondsRemaining;
+  
+  // TODO: replace with intlx or something from intl
+  String _formatTime(int seconds) {
     if (seconds <= 0) return '0'; // XXX ok for stop() case?
     
     int m = seconds ~/ 60;
@@ -41,7 +48,6 @@ class GameClock {
   tick(GameLoopTimer _) {
     if (!shouldPause) {
       secondsRemaining--;
-      timeRemaining = formatTime(secondsRemaining);
       if (secondsRemaining > 0) {
         gameLoop.addTimer(tick, 1.0); // 1 second timer
       } else {
