@@ -14,20 +14,17 @@
             <template if="app.board.words.keys.isEmpty">
               <p>You did not pick any words</p>
             </template>
-
             <template if="!app.board.words.keys.isEmpty">
-              <h2>You found {{app.board.words.length}} words</h2>
-                <ul>
-                  <li template repeat='key in app.board.words.keys'>
-                    {{key}} {{app.board.words[key]}}
-                  </li>
-                </ul>
+              <div class=''>
+                <div is="word-list" class="word-list-panel"></div>
+              </div>
             </template>
           </div>
           <button on-click="app.newGame()">Another game</button>
           <button on-click="app.currentPanel='highScores'; app.player.refreshHighScoreLeaderboard()">See scores</button>
           <button on-click="app.currentPanel='main'">Home</button>
         </div>
+        <content></content>
       </template>
       <script type="application/dart" src="game_results_panel.dart"></script>
     </element>
