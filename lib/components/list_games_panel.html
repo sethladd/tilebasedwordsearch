@@ -5,14 +5,6 @@
     <element name="list-games" extends="div" constructor="ListGamesPanel">
       <template>
         <h2>Game List</h2>
-        <template if="!app.player.isConnected">
-           <div class="wrapper">
-             <p>Sign in to see blah, blah, and then you can blah, blah. But,
-             if you don't blah, blah, blah....Good luck with that.</p>
-           </div>
-        </template>
-
-        <template if="app.player.isConnected">
           <div class="wrapper">
             <table>
               <thead>
@@ -23,6 +15,7 @@
               </thead>
 
               <tbody template iterate="game in games.reversed">
+                
                 <tr>
                   <td class="last-played">{{game.lastPlayedFormatted}}</td>
                   <td class="status">
@@ -40,7 +33,6 @@
             </table>
           </div>
         </template>
-      </template>
       <script type="application/dart" src="list_games_panel.dart"></script>
     </element>
   </body>
