@@ -1,4 +1,8 @@
 /* COMMON PANEL STYLES */
+body {
+  font-size: 90%;
+}
+
 button {
   width: 90%;
   font-size: 1em;
@@ -12,4 +16,18 @@ button {
 
 button.primary-button {
   background-color: rgba(150, 90, 30, .6);
+}
+
+button:hover {
+  color: rgb(250, 200, 100);
+}
+
+button:disabled {
+  color: rgb(99,99,99);
+  background-color: rgb(140,140,140);
+  border: .2em solid rgb(140,140,140);
+}
+
+.help {
+  font-style: italic;
 }

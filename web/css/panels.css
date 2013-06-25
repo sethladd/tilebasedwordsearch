@@ -42,9 +42,6 @@
 }
 
 .login-panel .sign-in-message {
-  font: italic bold 1.5em sans-serif;
-  color: rgb(120, 60, 30);
-  margin-bottom: 2em;
 }
 
 .login-panel .welcome {
@@ -54,17 +51,24 @@
   width: 30%;
 }
 
+/* Avoid visible button before G+ loads. */
+.g-signin {
+  border:0;
+  padding:0;
+}
+
 .login-panel .sign-out {
   text-align: center;
-  margin: 3% 5% 0 auto;
+  /* margin: 3% 5% 0 auto; */
+  margin: 2em 5% 0 auto;
   float: right;
   width: 30%;
 }
 
 .login-panel .welcome .message {
   font: italic normal .8em sans-serif;
-  color: white;
 }
+  color: white;
 
 .login-panel .welcome .image {
 }

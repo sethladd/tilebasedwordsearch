@@ -7,13 +7,13 @@
         <div id="google-connect">
           <template if="!app.player.isConnected">
 
-            <div class='sign-in-message' style='clear: both;'>Sign in to find pardners</div>
             <button class="g-signin"
               data-scope="https://www.googleapis.com/auth/games https://www.googleapis.com/auth/appstate"
               data-clientId="250963735330.apps.googleusercontent.com"
               data-callback="onSignInCallback"
               data-accesstype="offline"
               data-cookiepolicy="single_host_origin"></button>
+            <div class='sign-in-message' style='clear: both;' class='help'>Sign in to find pardners</div>
           </template>
         </div>
 
