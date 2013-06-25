@@ -4,17 +4,7 @@
   <body>
     <element name="recent-words" extends="div" constructor="RecentWordsPanel">
       <template>
-        <template if="app.board.recentWords.isEmpty">
-          <div class='no-words'>
-            <h2>Word Herd</h2>
-            <p>Play this game and you'll be hooked. And you'll be blah, blah,
-            when you do blah, blah, you'll be so sorry you didn't do blah blah
-            when you had a chance, because doing it is so blah, blah, blah,
-            that most people would jump at the chance to blah it all blah</p>
-          </div>
-        </template>
 
-        <template if="!app.board.recentWords.isEmpty">
           <h2>Word List</h2>
           <ul class='words-and-scores'>
             <template repeat="word in app.board.recentWords">
@@ -26,7 +16,7 @@
               </li>
             </template>
           </ul>
-        </template>
+
       </template>
       <script type="application/dart" src="recent_words_panel.dart"></script>
     </element>
