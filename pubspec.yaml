@@ -13,9 +13,9 @@ dependencies:
   game_loop:
     git: https://github.com/johnmccutchan/game_loop.git
   google_appstate_v1_api:
-    git: git://github.com/financeCoding/dart_appstate_v1_api_client.git
+    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
   google_games_v1_api:
-    git: git://github.com/financeCoding/dart_games_v1_api_client.git
+    git: https://github.com/financeCoding/dart_games_v1_api_client.git
   google_plus_v1_api: any
   html5lib: any
   http: any

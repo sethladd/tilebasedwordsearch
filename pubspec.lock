@@ -59,14 +59,14 @@ packages:
     description:
       ref: null
       resolved-ref: df3b0a93888f36e5b0649b29915ff5e7eb4326f2
-      url: "git://github.com/financeCoding/dart_appstate_v1_api_client.git"
+      url: "https://github.com/financeCoding/dart_appstate_v1_api_client.git"
     source: git
     version: "0.1.0"
   google_games_v1_api:
     description:
       ref: null
       resolved-ref: c6d7146a08e340956501ebf0f4a8c2cd5fbbc355
-      url: "git://github.com/financeCoding/dart_games_v1_api_client.git"
+      url: "https://github.com/financeCoding/dart_games_v1_api_client.git"
     source: git
     version: "0.1.0"
   google_oauth2_client:
