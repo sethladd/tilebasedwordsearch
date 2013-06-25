@@ -335,6 +335,7 @@ ul.words-and-scores li .score {
   background-color: rgb(200, 150, 90);
   border-radius: .8em;
   border: 2px solid rgb(40, 20, 10);
+  min-height: 10em;
 }
 
 .game-results-panel .game-data .main h2 {
@@ -344,11 +345,8 @@ ul.words-and-scores li .score {
 
 .game-results-panel .buttons {
   width: 100%;
-  margin: 0;
   padding: 0;
-  position: absolute;
-  bottom: .5em;
-  left: 0;
+  margin: 1em auto;
 }
 
 .game-results-panel .buttons button {
