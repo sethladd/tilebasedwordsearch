@@ -78,51 +78,57 @@
  */
 
 .game-panel {
+  background-color: silver;
 }
 
 .game-panel .selected-word {
-  font: 24px sans-serif;
-  width: 30%;
+  font: 1.5em sans-serif;
+  width: 65%;
   margin: 2% auto 2% auto;
   padding: 1% 0%;
+  -moz-border-radius: .2em;
+  border-radius: .2em;
+  background-color: rgba(60, 30, 15, .8);
+  color: rgb(240, 150, 60);
+}
+
+.game-panel #frontBuffer {
+  width: 55%;
+}
+
+.game-panel .game-data {
+  width: 80%;
+  margin: 0 auto;
+  padding: .05em 0;
+  border: .2em solid rgb(30, 15, 5);
   -moz-border-radius: .4em;
   border-radius: .4em;
-  border: .1em solid #ccc;
+  margin-top: .5em;
+  margin-bottom: .5em;
+  background-color: rgba(60, 30, 15, .8);
+  color: rgb(240, 150, 60);
+}
+
+.game-panel .game-data div {
+  display: inline-block;
+  padding: 1% 0%;
+  margin: 1% 2%;
+  text-align: center;
   color: #444;
-}
-.game-panel .board {
-  width: 80%; /* 350px */
-  margin: 0 auto;
-}
-
-.game-panel .board img {
-  max-width: 80%;
-}
-
-.game-panel .board .game-data {
-  width: 45%;
-  margin: 0 auto;
-  padding: .25em 0;
-  border: .1em solid #ccc;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
-  margin-top: 1em;
-  margin-bottom: 1.5em;
-  background-color: #fff;
+  width: 40%;
+  -moz-border-radius: .4em;
+  border-radius: .4em;
+  font-weight: bold;
+  font-size: 1.2em;
+  border: .2em solid rgb(30, 15, 5);
+  color: rgb(240, 150, 60);
+  background-color: white;
 }
 
-.game-panel .board .game-data div {
-    display: inline-block;
-    padding: 1% 0%;
-    margin: 1% 0%;
-    text-align: center;
-    color: #444;
-    width: 25%;
-    -moz-border-radius: .8em;
-    border-radius: .8em;
-    font-weight: bold;
-    font-size: .9em;
-    border: .1em solid #ccc;
+.game-panel button {
+  width: 40%;
+  display: inline-block;
+  margin-bottom: 1em;
 }
 
 /*
@@ -220,43 +226,59 @@
  **** WORD LIST PANEL ****
  */
 
-/* TODO: change <h2> so that it is inside the words-list-panel */
-.word-list-panel h2.column-heading {
-  font: normal normal 1.5em sans-serif;
-  width: auto;
-  margin: 2% auto 2% auto;
+.word-list-panel {
+  min-height: 480px;
+  background-color: rgb(240, 160, 100);
+  width: 100%;
+  margin: 0;
+  padding: 0;
   -moz-border-radius: .8em;
   border-radius: .8em;
-  color: #222;
+}
+
+.word-list-panel h2 {
+  font: normal normal 1.5em sans-serif;
+  width: auto;
+  margin: 0 auto;
+  border-top-left-radius: .59em;
+  border-top-right-radius: .59em;
+  padding: .34em 0;
+  background-color: rgba(40, 20, 10, .7);
+  color: white;
+}
+
+.word-list-panel p {
+  width: 80%;
+  margin: 0 auto;
+  text-align: left;
+  padding-top: 1em;
 }
 
 .word-list-panel ul {
   list-style: none;
-  width: 80%;
+  width: 90%;
   padding: 0;
-  margin: 0 auto 1em auto;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
+  margin: 0 auto;
   padding: .5em 0;
-  border: .1em solid #ccc;
 }
 
 .word-list-panel ul li {
-  margin: 2% auto;
-  width: 75%;
+  margin: 0 auto;
+  width: 90%;
   font: normal bold .9em sans-serif;
   -moz-border-radius: .5em;
-  border-radius: .5em;
-  border: .1em solid #ccc;
   text-align: left;
   padding: .15em .3em;
+  color: rgb(40, 20, 10);
+}
+
+.word-list-panel ul li .word {
+  float: left;
+  width: 35%;
 }
 
 .word-list-panel ul li .score {
-  margin-right: 0;
-  font: italic .9em serif;
-  float:right;
-  padding-top: .08em;
-  /* border: .1em solid #ccc; */
-
+  width: 55%;
+  float: right;
+  margin-left: 4%;
 }

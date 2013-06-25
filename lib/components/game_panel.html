@@ -6,10 +6,10 @@
       <template>
         <div class="selected-word">
           <template if="board.recentWords.isEmpty">
-            <label class="selected-word">last word</label>
+            <div>last word</div>
           </template>
           <template if="!board.recentWords.isEmpty">
-            <label class="selected-word">{{board.recentWords[0]}}</label>
+            <div>{{board.recentWords[0]}}</div>
           </template>
         </div>
         <canvas id="frontBuffer" class="board"></canvas>
@@ -19,7 +19,7 @@
             <div class='time'>{{_gameClock.timeRemaining}}</div>
           </template>
         </div> <!-- end of game-data class -->
-        <div>
+        <div class='buttons'>
           <button class='pause' id="pause" on-click="togglePause()" disabled>Pause</button>
           <button id="end" on-click="endGame()" disabled>End game</button>
         </div>

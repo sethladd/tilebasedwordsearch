@@ -19,6 +19,10 @@
     background-position: 50% 8em;
   }
 
+  .main .primary .game-panel #frontBuffer {
+    width: 90%;
+  }
+
   .main .secondary {
     width: 39%;
     text-align: center;
