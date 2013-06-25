@@ -225,7 +225,7 @@
 
 
 /*
- **** WORD LIST PANEL ****
+ **** RECENT WORDS PANEL ****
  */
 
 .recent-words-panel {
@@ -293,4 +293,50 @@ ul.words-and-scores li .score {
   width: 55%;
   float: right;
   margin-left: 4%;
+}
+
+/*
+ **** GAME RESULTS PANEL
+ */
+
+.game-results-panel {
+  border-radius: .8em;
+}
+
+.game-results-panel h2 {
+  margin: 0 auto;
+}
+
+.game-results-panel .panel-heading {
+  font: normal normal 1.5em sans-serif;
+  width: auto;
+  margin: 0 auto;
+  border-top-left-radius: .59em;
+  border-top-right-radius: .59em;
+  padding: .34em 0;
+  background-color: rgba(40, 20, 10, .7);
+  color: white;
+}
+
+.game-results-panel .game-data .final-score {
+  font: normal bold 2em sans-serif;
+  background-color: rgb(200, 150, 90);
+  width: 50%;
+  margin: .5em auto;
+  color: rgb(40, 20, 10);
+  border-radius: .2em;
+  border: 2px solid rgb(40, 20, 10);
+}
+
+
+.game-results-panel .game-data ul {
+  background-color: rgb(200, 150, 90);
+  border-radius: .8em;
+  border: 2px solid rgb(40, 20, 10);
+}
+
+
+.game-results-panel .game-data .main h2{
+  color: white;
+  margin: .25em;
 }

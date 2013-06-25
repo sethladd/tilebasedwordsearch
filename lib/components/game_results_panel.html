@@ -1,36 +1,34 @@
 <!DOCTYPE html>
-
 <html>
-  <head>
-  </head>
   <body>
     <element name="game-results-panel" extends="div" constructor="GameResultsPanel">
       <template>
-        <h2>Results</h2>
+        <h2 class='panel-heading'>Results</h2>
         <div class="game-data">
-          <div>Score: {{app.board.score}}</div>
-          <div>
+          <div class='final-score'>Score: {{app.board.score}}</div>
+          <div class='main'>
+            <h2>Word List</h2>
             <template if="app.board.words.keys.isEmpty">
               <p>You did not pick any words</p>
             </template>
 
             <template if="!app.board.words.keys.isEmpty">
-              <h2>Word List</h2>
               <ul class="words-and-scores">
                 <template repeat="key in app.board.words.keys">
                   <li>
-                    <span class="word">{{key}}</span>
-                    <span class="score">{{app.board.words[key]}}</span>
+                    <div class="word">{{key}}</div>
+                    <div class="score">{{app.board.words[key]}}</div>
+                    <div style='clear:both;'></div>
                   </li>
                 </template>
               </ul>
             </template>
-          </div>
+          </div><!-- end .main -->
+
           <button on-click="app.newGame()">Another game</button>
           <button on-click="app.currentPanel='highScores'; app.player.refreshHighScoreLeaderboard()">See scores</button>
           <button on-click="app.currentPanel='main'">Home</button>
-        </div>
-        <content></content>
+        </div><!-- end .game-data -->
       </template>
       <script type="application/dart" src="game_results_panel.dart"></script>
     </element>

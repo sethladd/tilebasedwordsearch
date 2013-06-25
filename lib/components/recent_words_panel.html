@@ -20,8 +20,9 @@
             <template repeat="word in app.board.recentWords">
               <!--getting around no embedded mustaches-->
               <li>
-                <span class="word">{{word}}</span>
-                <span class="score">{{scoreFor($index)}}</span>
+                <div class="word">{{word}}</div>
+                <div class="score">{{scoreFor($index)}}</div>
+                <div style="clear:both"></div>
               </li>
             </template>
           </ul>
