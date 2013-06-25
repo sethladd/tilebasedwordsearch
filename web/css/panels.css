@@ -301,6 +301,8 @@ ul.words-and-scores li .score {
 
 .game-results-panel {
   border-radius: .8em;
+  position: relative;
+  min-height: 480px;
 }
 
 .game-results-panel h2 {
@@ -335,8 +337,21 @@ ul.words-and-scores li .score {
   border: 2px solid rgb(40, 20, 10);
 }
 
-
-.game-results-panel .game-data .main h2{
+.game-results-panel .game-data .main h2 {
   color: white;
   margin: .25em;
 }
+
+.game-results-panel .buttons {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  bottom: .5em;
+  left: 0;
+}
+
+.game-results-panel .buttons button {
+  margin: .25em auto;
+}
+
