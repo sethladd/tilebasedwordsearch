@@ -18,7 +18,7 @@ class Board {
 
   Board.fromGame(this.config, Game game) {
     score = game.score;
-    // words.addAll(game.words);
+    words.addAll(game.words);
     recentWords.addAll(game.recentWords);
   }
 
