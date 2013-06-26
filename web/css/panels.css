@@ -125,7 +125,7 @@
  */
 
 .list-games-panel {
-  min-height: 480px;
+  height: 480px;
 }
 
 .list-games-panel .wrapper{
@@ -152,6 +152,10 @@
   margin: 0 auto;
   width: 95%;
   padding-top: 1em;
+  background-color: rgb(200, 150, 90);
+  display: block;
+  height: 420px;
+  overflow-y: scroll;
 }
 
 .list-games-panel td {
@@ -160,16 +164,13 @@
   padding: .2em .4em;
 }
 
-.list-games-panel table thead tr td {
+.list-games-panel thead {
   border: 0;
   background-color: rgba(80, 40, 20, .7);
   font-size: 1.2em;
   font-weight: bold;
-  border: 2px solid rgb(40, 20, 10);
   color: white;
-}
-
-.list-games-panel table thead tr td {
+  width: 100%;
 }
 
 .list-games-panel td.last-played {

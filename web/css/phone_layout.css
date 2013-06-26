@@ -4,7 +4,7 @@
     width: 100%;
   }
 
-  button.phone-only {
+  .phone-only {
     display:inline-block;
   }
 
