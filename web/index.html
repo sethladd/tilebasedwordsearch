@@ -76,5 +76,14 @@
     <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
     <script src="packages/browser/interop.js"></script>
+    <script type='text/javascript'>
+      var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.getElementsByTagName('body')[0],
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+      alert(x + ' x ' + y);
+    </script>
   </body>
 </html>
