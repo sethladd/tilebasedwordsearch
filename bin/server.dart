@@ -154,14 +154,18 @@ void postConnectDataHandler(FukiyaContext context) {
         _log.info('No player found for gplusId $userId');
         var p = new Player()..gplus_id = userId;
         p.store().then((_) {
+          print("XXX");
           context.request.session['player_id'] = p.dbId;
           context.send("POST OK");
         })
         .catchError((e) {
+          print("YYY");
           _log.severe('Did not store new person $userId into db: $e');
           context.response.statusCode = 500;
           context.response.close();
         });
+      } else {
+        _log.info('Found the player ${players.first}');
       }
     });
   });
@@ -177,6 +181,7 @@ Future<String> _confirmOauthSignin(FukiyaContext context) {
   if (tokenData != null) {
     context.send("Current user is already connected.");
     completer.complete(context.request.uri.queryParameters["gplus_id"]);
+    return completer.future;
   }
   
   // Check if any of the needed token values are null or mismatched.
@@ -184,6 +189,7 @@ Future<String> _confirmOauthSignin(FukiyaContext context) {
     context.response.statusCode = 401;
     context.send("Invalid state parameter.");
     completer.completeError('Invalid state parameter.');
+    return completer.future;
   }
   
   // Normally the state would be a one-time use token, however in our
