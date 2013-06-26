@@ -9,8 +9,17 @@ class Game extends Object with Persistable {
 
   // See bug 11448. This needs to be a double.
   double lastPlayedMillisSinceEpoch;
-
+  
   Game();
+
+  Game.fromPersistence(String id, Map data) {
+    dbId = id;
+    board = data['board'];
+    score = data['score'];
+    words = data['words'];
+    recentWords = data['recentWords'];
+    lastPlayedMillisSinceEpoch = data['lastPlayedMillisSinceEpoch'];
+  }
 
   DateTime get lastPlayed {
     return new DateTime.fromMillisecondsSinceEpoch(lastPlayedMillisSinceEpoch.toInt());
