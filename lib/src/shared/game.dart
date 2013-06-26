@@ -17,6 +17,7 @@ class Game extends Object with Persistable {
     board = data['board'];
     score = data['score'];
     words = data['words'];
+    timeRemaining = data['timeRemaining'];
     recentWords = data['recentWords'];
     lastPlayedMillisSinceEpoch = data['lastPlayedMillisSinceEpoch'];
   }
