@@ -148,6 +148,11 @@
   padding-top: 1em;
 }
 
+.list-games-empty-help {
+  background-color: rgb(200, 150, 90);
+  height: 440px;
+}
+
 .list-games-panel table {
   margin: 0 auto;
   width: 95%;

@@ -11,6 +11,7 @@ import "package:fukiya/fukiya.dart";
 import 'package:tilebasedwordsearch/shared_io.dart';
 import 'package:tilebasedwordsearch/persistable_io.dart' as db;
 import "package:google_oauth2_client/google_oauth2_console.dart" as console_auth;
+import "package:google_plus_v1_api/plus_v1_api_console.dart";
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import "package:html5lib/dom.dart";
@@ -71,6 +72,7 @@ void main() {
     ..get('/index', getIndexHandler)
     ..post('/connect', postConnectDataHandler)
     ..post('/disconnect', postDisconnectHandler)
+    ..get('/multiplayer_games/new', getNewMultiplayerGame)
     ..staticFiles('./web/out')
     ..use(new FukiyaJsonParser())
     ..listen('0.0.0.0', port);
@@ -142,6 +144,33 @@ void getIndexHandler(FukiyaContext context) {
 }
 
 /**
+ * Returns a list of friends that have also installed the game.
+ */
+void getNewMultiplayerGame(FukiyaContext context) {
+//  int playerId = context.request.session['player_id'].toInt();
+//  db.Persistable.load(playerId, Player).then((Player player) {
+//    
+//  })
+//  .catchError((e) {
+//    _log.warning('Problem loading player $playerId: $e');
+//    context.response.statusCode = 404;
+//    context.response.close();
+//  });
+  String accessToken = context.request.session["access_token"];
+  getAllFriends(accessToken).then((people) {
+    _log.fine('Found friends of current player: $people');
+    context.response.headers.add(HttpHeaders.CONTENT_TYPE, 'application/json');
+    context.response.write(JSON.stringify(people));
+    context.response.close();
+  })
+  .catchError((e) {
+    _log.warning('Problem finding friends: $e');
+    context.response.statusCode = 500;
+    context.response.close();
+  });
+}
+
+/**
  * Upgrade given auth code to token, and store it in the session.
  * POST body of request should be the authorization code.
  * Example URI: /connect?state=...&gplus_id=...
@@ -154,12 +183,10 @@ void postConnectDataHandler(FukiyaContext context) {
         _log.info('No player found for gplusId $userId');
         var p = new Player()..gplus_id = userId;
         p.store().then((_) {
-          print("XXX");
           context.request.session['player_id'] = p.dbId;
           context.send("POST OK");
         })
         .catchError((e) {
-          print("YYY");
           _log.severe('Did not store new person $userId into db: $e');
           context.response.statusCode = 500;
           context.response.close();
@@ -172,7 +199,7 @@ void postConnectDataHandler(FukiyaContext context) {
 }
 
 Future<String> _confirmOauthSignin(FukiyaContext context) {
-  Completer completer = new Completer();
+
   String tokenData = context.request.session["access_token"]; // TODO: handle missing token
   String stateToken = context.request.session["state_token"];
   String queryStateToken = context.request.uri.queryParameters["state_token"];
@@ -180,17 +207,17 @@ Future<String> _confirmOauthSignin(FukiyaContext context) {
   // Check if the token already exists for this session.
   if (tokenData != null) {
     context.send("Current user is already connected.");
-    completer.complete(context.request.uri.queryParameters["gplus_id"]);
-    return completer.future;
+    return new Future.value(context.request.uri.queryParameters["gplus_id"]);
   }
   
   // Check if any of the needed token values are null or mismatched.
   if (stateToken == null || queryStateToken == null || stateToken != queryStateToken) {
     context.response.statusCode = 401;
-    context.send("Invalid state parameter.");
-    completer.completeError('Invalid state parameter.');
-    return completer.future;
+    context.send("Invalid state parameter: $stateToken $queryStateToken");
+    return new Future.error('Invalid state parameter: $stateToken $queryStateToken');
   }
+  
+  Completer completer = new Completer();
   
   // Normally the state would be a one-time use token, however in our
   // simple case, we want a user to be able to connect and disconnect
@@ -277,6 +304,39 @@ String _createStateToken() {
   ..close().forEach((int s) => stateTokenBuffer.write(s.toRadixString(16)));
   String stateToken = stateTokenBuffer.toString();
   return stateToken;
+}
+
+Future<List<Person>> getAllFriends(String accessToken) {
+  
+  List<Person> people = <Person>[];
+  Completer completer = new Completer();
+  
+  consumePeople([String nextToken]) {
+    return getPageOfFriends(accessToken, nextPageToken: nextToken)
+      .then((PeopleFeed feed) {
+        people.addAll(feed.items);
+        if (feed.nextPageToken != null) {
+          return consumePeople(feed.nextPageToken);
+        } else {
+          completer.complete(people);
+        }
+      });
+  }
+  
+  consumePeople().catchError(completer.completeError);
+  
+  return completer.future;
+}
+
+Future<PeopleFeed> getPageOfFriends(String accessToken,
+    {String orderBy: 'best', int maxResults: 100, String nextPageToken}) {
+  SimpleOAuth2 simpleOAuth2 = new SimpleOAuth2()
+      ..credentials = new console_auth.Credentials(accessToken);
+  Plus plusclient = new Plus(simpleOAuth2);
+  plusclient.makeAuthRequests = true;
+  
+  return plusclient.people.list('me', 'visible', orderBy: orderBy,
+      maxResults: maxResults, pageToken: nextPageToken);
 }
 
 /**
