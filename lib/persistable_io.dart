@@ -19,7 +19,7 @@ Future init(String url) {
 abstract class Persistable {
   static Map<Type, List<String>> _columnNames = new Map<Type, List<String>>();
   
-  int _dbId;
+  int dbId;
   
   static const constructor = const Symbol('fromPersistance');
   
@@ -98,7 +98,7 @@ abstract class Persistable {
                     
         return _conn.query(query, map).first.then((row) {
           _log.fine('Result after inserting: $row');
-          _dbId = row[0];
+          dbId = row[0];
         });
       });
   }
@@ -148,10 +148,7 @@ abstract class Persistable {
   static String _getTableName(Type type) => type.toString().toLowerCase();
   
   String get _tableName => _getTableName(runtimeType);
-  
-  // This assumes there's no reason for code to change an ID.
-  int get dbId => _dbId;
-  
+
   Map toJson();
 }
 
