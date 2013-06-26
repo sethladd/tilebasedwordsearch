@@ -75,8 +75,6 @@ class Player {
       isConnected = true;
       _connectServer(id);
     });
-
-    currentPanel = 'main';
   }
 
   void _connectServer(String gplusId) {
