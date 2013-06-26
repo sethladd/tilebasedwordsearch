@@ -1,6 +1,7 @@
 library persistable_html;
 
 import 'dart:async';
+import 'dart:mirrors';
 import 'package:lawndart/lawndart.dart';
 import 'package:logging/logging.dart';
 
@@ -17,31 +18,32 @@ Future init(String dbName, String storeName) {
 int _counter = 0;
 final String _idOffset = new DateTime.now().millisecondsSinceEpoch.toString();
 
-typedef Persistable Constructor(String id, Map data);
 
 /**
- * See also the mirror-based implementation at persistable_html_mirrors.dart
+ * XXX We don't use this when we compile to dart2js because
+ * of code size generation. There is a fix coming:
+ * https://code.google.com/p/dart/issues/detail?id=10905
  */
 abstract class Persistable {
   
   String _dbId;
   
-  /**
-   * 
-   */
-  static Future load(String id, Constructor constructor) {
+  static Future load(String id, Type type) {
     return _store.getByKey(id).then((Map data) {
       if (data == null) {
         return null;
       } else {
-        return _createAndPopulate(constructor, id, data);
+        var classMirror = reflectClass(type);
+        return _createAndPopulate(classMirror, id, data);
       }
     });
   }
   
-  static Stream all(Constructor constructor) {
+  static Stream all(Type type) {
+    ClassMirror classMirror = reflectClass(type);
+
     return _store.all().map((Map data) {
-      return _createAndPopulate(constructor, data['dbId'], data);
+      return _createAndPopulate(classMirror, data['dbId'], data);
     });
   }
   
@@ -57,8 +59,17 @@ abstract class Persistable {
     return _store.nuke();
   }
   
-  static _createAndPopulate(Constructor constructor, String id, Map data) {
-    Persistable object = constructor(id, data);
+  static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
+    var instance = classMirror.newInstance(const Symbol(''), []);
+    var object = instance.reflectee;
+    object.dbId = id;
+    var instanceMirror = reflect(object);
+    data.forEach((k, v) {
+      log.fine('$k has $v which is a ${v.runtimeType}');
+      if (classMirror.variables.containsKey(new Symbol(k))) {
+        instanceMirror.setField(new Symbol(k), v);
+      }
+    });
     return object;
   }
   

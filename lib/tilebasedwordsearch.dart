@@ -133,6 +133,7 @@ Future initialize() {
       .then((_) => parseAssets())
       .then((_) => db.init('wordherd', 'wordherd'))
       .then((_) {
-        return db.Persistable.all(Game).toList().then((g) => games.addAll(g));
+        return db.Persistable.all((String id, Map data) => new Game.fromPersistence(id, data))
+            .toList().then((g) => games.addAll(g));
       });
 }
