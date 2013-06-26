@@ -31,8 +31,13 @@ AssetManager assetManager = new AssetManager();
 Boards boards;
 ImageAtlas letterAtlas;
 ImageAtlas selectedLetterAtlas;
+ImageAtlas doubleLetterAtlas;
+ImageAtlas tripleLetterAtlas;
+ImageAtlas doubleWordAtlas;
+ImageAtlas tripleWordAtlas;
 Player player;
 final Logger clientLogger = new Logger("client");
+Random random = new Random();
 
 // Different panels need access to the board.
 Board board;
@@ -55,7 +60,16 @@ void parseAssets() {
 
   var letterTileImage = assetManager['game.tiles'];
   var selectedLetterTileImage = assetManager['game.tiles_highlighted'];
-  if (letterTileImage == null || selectedLetterTileImage == null) {
+  var doubleLetterTileImage = assetManager['game.tiles_dl'];
+  var doubleWordTileImage = assetManager['game.tiles_dw'];
+  var tripleLetterTileImage = assetManager['game.tiles_tl'];
+  var tripleWordTileImage = assetManager['game.tiles_tw'];
+  if (letterTileImage == null ||
+      selectedLetterTileImage == null ||
+      doubleLetterTileImage == null ||
+      doubleWordTileImage == null ||
+      tripleLetterTileImage == null ||
+      tripleWordTileImage == null) {
     throw new StateError("Can\'t play without tile images.");
   }
 
@@ -68,6 +82,11 @@ void parseAssets() {
 
   letterAtlas = new ImageAtlas(letterTileImage);
   selectedLetterAtlas = new ImageAtlas(selectedLetterTileImage);
+  doubleLetterAtlas = new ImageAtlas(doubleLetterTileImage);
+  tripleLetterAtlas = new ImageAtlas(tripleLetterTileImage);
+  doubleWordAtlas = new ImageAtlas(doubleWordTileImage);
+  tripleWordAtlas = new ImageAtlas(tripleWordTileImage);
+
   final int letterRow = 5;
   final int lettersPerRow = 6;
   List<String> letters = [ 'A', 'B', 'C', 'D', 'E', 'F',
@@ -85,6 +104,10 @@ void parseAssets() {
       int y = offsetY + i * (sizeY + gapY);
       letterAtlas.addElement(letters[index], x, y, sizeX, sizeY);
       selectedLetterAtlas.addElement(letters[index], x, y, sizeX, sizeY);
+      doubleLetterAtlas.addElement(letters[index], x, y, sizeX, sizeY);
+      tripleLetterAtlas.addElement(letters[index], x, y, sizeX, sizeY);
+      doubleWordAtlas.addElement(letters[index], x, y, sizeX, sizeY);
+      tripleWordAtlas.addElement(letters[index], x, y, sizeX, sizeY);
     }
   }
 
@@ -94,15 +117,20 @@ void parseAssets() {
 resumeGame(Game g) {
   clientLogger.info('Resuming game ${g.dbId}');
   game = g;
-  board = new Board.fromGame(boards.getBoardFromString(game.board), g);
+  BoardBonusConfig bonusConfig = new BoardBonusConfig.fromGame(game);
+  board = new Board.fromGame(boards.getBoardFromString(game.board), bonusConfig,
+                             g);
   currentPanel = 'game';
 }
 
 newGame() {
-  board = new Board(boards.getRandomBoard());
+  var bonusConfig = new BoardBonusConfig();
+  board = new Board(boards.getRandomBoard(), bonusConfig);
   game = new Game()
     ..timeRemaining = GameClock.DEFAULT_GAME_LENGTH
     ..board = board.tiles;
+  game.letterBonusTiles = board.bonusConfig.letterBonusTileIndexes;
+  game.wordBonusTile = board.bonusConfig.wordBonusTileIndex;
   currentPanel = 'game';
 }
 

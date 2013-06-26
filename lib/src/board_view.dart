@@ -79,6 +79,11 @@ class BoardView {
           GameConstants.rowFromIndex(i),
           GameConstants.columnFromIndex(i));
       atlas.draw(elementName, c, x, y);
+      if (board.bonusConfig.letterBonusTileIndexes.contains(i)) {
+        tripleLetterAtlas.draw(elementName, c, x, y);
+      } else if (board.bonusConfig.wordBonusTileIndex == i) {
+        tripleWordAtlas.draw(elementName, c, x, y);
+      }
     }
   }
 
