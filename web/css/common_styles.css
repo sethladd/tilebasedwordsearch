@@ -11,7 +11,7 @@ button {
 
   -moz-border-radius: .3em;
   border-radius: .3em;
-  border: .2em solid rgb(30, 15, 5);
+  border: .3em solid black;
   background-color: rgba(60, 30, 15, .8);
 }
 
@@ -24,9 +24,9 @@ button:hover {
 }
 
 button:disabled {
-  color: rgb(99,99,99);
-  background-color: rgb(140,140,140);
-  border: .2em solid rgb(140,140,140);
+  color: rgb(149,133,118);
+  background-color: rgb(58,43,34);
+  border: .2em solid rgb(58,43,34);
 }
 
 .help {
