@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+button.phone-only {
+  display:none;
+}
+
 button {
   font-size: 1em;
   color: white;

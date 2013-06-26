@@ -4,8 +4,8 @@
     width: 100%;
   }
 
-  .header {
-    display: none;
+  button.phone-only {
+    display:inline-block;
   }
 
   .main {
@@ -29,10 +29,6 @@
   }
 
   .main .tertiary {
-    display: none;
-  }
-
-  .footer {
     display: none;
   }
 }
