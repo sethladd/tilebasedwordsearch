@@ -34,6 +34,9 @@ generateAppCache() {
       });
   
   out.writeln('web/out/index.html_bootstrap.dart.js');
+  out.writeln('packages/browser/dart.js');
+  out.writeln('packages/browser/interop.js');
+  out.writeln('packages/js/dart_interop.js');
   
   out.writeln('\nNETWORK:');
   out.writeln('*');
