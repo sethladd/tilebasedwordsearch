@@ -11,11 +11,34 @@
   	"type":"image",
   	"importArguments":{}
   },
+  "tiles_dl": {
+    "loadArguments":{},
+  	"url":"WH_Tile_Grid_DL.png",
+  	"type":"image",
+  	"importArguments":{}
+  },
+  "tiles_tl": {
+    "loadArguments":{},
+  	"url":"WH_Tile_Grid_TL.png",
+  	"type":"image",
+  	"importArguments":{}
+  },
+  "tiles_dw": {
+    "loadArguments":{},
+  	"url":"WH_Tile_Grid_DW.png",
+  	"type":"image",
+  	"importArguments":{}
+  },
+  "tiles_tw": {
+    "loadArguments":{},
+  	"url":"WH_Tile_Grid_TW.png",
+  	"type":"image",
+  	"importArguments":{}
+  },
   "tiles_highlighted": {
   	"loadArguments":{},
   	"url":"Tiles_highlighted.png",
   	"type":"image",
   	"importArguments":{}
   }
-
 }
