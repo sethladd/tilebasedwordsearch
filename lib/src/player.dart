@@ -66,7 +66,7 @@ class Player {
 
     plusclient.makeAuthRequests = true;
     gamesclient.makeAuthRequests = true;
-    print("Player is signed in client side");
+    clientLogger.info("Player is signed in client side");
 
     plusclient.people.get('me').then((Person person) {
       // Connect to the server with offline token.
