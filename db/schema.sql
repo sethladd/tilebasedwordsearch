@@ -9,3 +9,10 @@ CREATE TABLE IF NOT EXISTS game (
   p2_words TEXT,
   last_played TIMESTAMP
 );
+
+DROP TABLE IF NOT EXISTS game;
+
+CREATE TABLE IF NOT EXISTS player (
+  id SERIAL,
+  gplus_id VARCHAR(255) UNIQUE
+);

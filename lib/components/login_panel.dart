@@ -8,6 +8,25 @@ import "package:google_oauth2_client/google_oauth2_browser.dart";
 typedef OnSignInCallback(SimpleOAuth2 authenticationContext);
 typedef OnSignOutCallback();
 
+void enableSignInUI(bool isAnonymous) {
+  Element el;
+  
+  el = query(".welcome");
+  if (el != null) {
+    el.hidden = isAnonymous;
+  }
+  
+  el = query("#disconnect");
+  if (el != null) {
+    el.hidden = isAnonymous;
+  }
+  
+  el = query("#google-connect");
+  if (el != null) {
+    el.hidden = !isAnonymous;
+  }
+}
+
 class LoginPanel extends WebComponent {
   OnSignInCallback signInCallback;
   OnSignOutCallback signOutCallback;
@@ -17,8 +36,7 @@ class LoginPanel extends WebComponent {
     print("authRequest = ${authResult}");
 
     if (authResult["access_token"] != null) {
-      query("#google-connect").style.display = "none";
-      query("#auth-disconnect").style.display = "block";
+      enableSignInUI(false);
 
       // Enable Authenticated requested with the granted token in the client libary
       authenticationContext.token = authResult["access_token"];
@@ -30,11 +48,10 @@ class LoginPanel extends WebComponent {
       }
     } else if (authResult["error"] != null) {
       print("There was an error: ${authResult["error"]}");
-      query("#google-connect").style.display = "block";
-      query("#auth-disconnect").style.display = "none";
+      enableSignInUI(true);
     }
   }
-
+  
   /**
    * Calls the OAuth2 endpoint to disconnect the app for the user.
    */
@@ -42,10 +59,6 @@ class LoginPanel extends WebComponent {
     js.scoped(() {
       // JSONP workaround because the accounts.google.com endpoint doesn't allow CORS
       js.context.myJsonpCallback = new js.Callback.once(([jsonData]) {
-        print("revoke response: $jsonData");
-        query("#auth-disconnect").style.display = "none";
-        query("#google-connect").style.display = "block";
-
         // disable authenticated requests in the client library
         authenticationContext.token = null;
 
@@ -57,6 +70,7 @@ class LoginPanel extends WebComponent {
       ScriptElement script = new Element.tag("script");
       script.src = "https://accounts.google.com/o/oauth2/revoke?token=${authenticationContext.token}&callback=myJsonpCallback";
       document.body.children.add(script);
+      enableSignInUI(true);
     });
   }
 

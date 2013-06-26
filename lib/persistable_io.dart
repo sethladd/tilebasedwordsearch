@@ -5,7 +5,7 @@ import 'dart:mirrors';
 import 'package:logging/logging.dart';
 import 'package:postgresql/postgresql.dart';  // XXX This pulls in dart:io
 
-Logger log = new Logger('persistable');
+Logger _log = new Logger('persistable');
 
 Connection _conn;
 
@@ -17,9 +17,9 @@ Future init(String url) {
 }
 
 abstract class Persistable {
-  List _columnNames;
+  static Map<Type, List<String>> _columnNames = new Map<Type, List<String>>();
   
-  int _dbId;
+  int dbId;
   
   static const constructor = const Symbol('fromPersistance');
   
@@ -29,27 +29,53 @@ abstract class Persistable {
     return _conn.query(query, {'id': id}).map((r) => _rowToMap(r)).toList().then((List rows) {
       if (rows.isEmpty) return null; // TODO: throw if empty?
       
-      var row = rows.first;
-      ClassMirror classMirror = reflectClass(type);
-      
-      // See dartbug.com/11161
-      if (classMirror.constructors[new Symbol('$type.fromPersistance')] == null) {
-        throw '$type should have a constructor $constructor';
-      }
-      
-      var instance = classMirror.newInstance(constructor, [row]);
-      var object = instance.reflectee;
-      
-      // Mixins can't have constructors, so I set the ID here.
-      // Not sure if there's a better way.
-      object._dbId = row['id'];
-      
-      return object;
+      var data = _rowToMap(rows.first);
+      var classMirror = reflectClass(type);
+      return _createAndPopulate(classMirror, id, data);
     });
   }
   
+  static Stream findBy(Type type, Map params) {
+    _validateParams(type, params);
+    
+    var classMirror = reflectClass(type);
+    var conditions = params.keys.map((k) => '$k = @${k}').join(',');
+    var query = 'SELECT * FROM ${_getTableName(type)} WHERE $conditions';
+    
+    _log.fine('Query $query');
+    
+    return _conn.query(query, params).map((row) {
+      return _createAndPopulate(classMirror, row.id, _rowToMap(row));
+    });
+  }
+  
+  static Future _validateParams(Type type, Map params) {
+    return _getColumns(type).then((List<String> columns) {
+      params.keys.forEach((k) {
+        if (!columns.contains(k)) {
+          throw '$k is not a known column for $type';
+        }
+      });
+    });
+
+  }
+  
+  static _createAndPopulate(ClassMirror classMirror, int id, Map data) {
+    var instance = classMirror.newInstance(const Symbol(''), []);
+    var object = instance.reflectee;
+    object.dbId = id;
+    var instanceMirror = reflect(object);
+    data.forEach((k, v) {
+      _log.fine('$k has $v which is a ${v.runtimeType}');
+      if (classMirror.variables.containsKey(new Symbol(k))) {
+        instanceMirror.setField(new Symbol(k), v);
+      }
+    });
+    return object;
+  }
+  
   Future store() {
-    log.info('inside store');
+    _log.info('inside store');
     
     if (dbId == null) {
       return _doInsert();
@@ -59,43 +85,32 @@ abstract class Persistable {
   }
 
   Future _doInsert() {
-    log.info('inserting');
+    _log.info('inserting');
     
-    return _columns.then((cols) {
+    return _getColumns(runtimeType).then((cols) {
         var map = _getExistingValues(cols);
   
         var query = 'INSERT INTO $_tableName (${map.keys.join(',')}) VALUES '
-                    '(${map.keys.map((c) => '@$c').join(',')})';
+                    '(${map.keys.map((c) => '@$c').join(',')}) '
+                    'returning id';
                     
-         return _transaction(() {
-           log.info('in txn, executing $query');
-          
-           return _conn.execute(query, map)
-             .then((_) {
-               log.info('insert sql success');
-               return _conn.query('SELECT max(id) FROM $_tableName').toList();
-             })
-             .then((List rows) {
-               if (rows.isEmpty) {
-                 throw 'Did not find max(id)';
-               }
-               log.info('Max ID is ${rows.first[0]}'); // make rows.first['id'] here, and try to debug it
-               _dbId = rows.first[0];
-             });
-         }, 'insert');
+        _log.fine('Query: $query');
+                    
+        return _conn.query(query, map).first.then((row) {
+          _log.fine('Result after inserting: $row');
+          dbId = row[0];
+        });
       });
   }
 
   Future _doUpdate() {
-    return _columns.then((cols) {
+    return _getColumns(runtimeType).then((cols) {
         var map = _getExistingValues(cols);
         map['id'] = dbId;
         
         var query = 'UPDATE $_tableName SET '
             '${map.keys.map((c) => '$c = @$c').join(', ')} '
             'WHERE id = @id';
-        print(query);
-        print(map);
         return _conn.execute(query, map);
       });
   }
@@ -112,58 +127,29 @@ abstract class Persistable {
     return map;
   }
   
-  Future get _columns {
-    if (_columnNames != null) return new Future.value(_columnNames);
+  static Future<List<String>> _getColumns(Type type) {
+    if (_columnNames[type] != null) return new Future.value(_columnNames[type]);
     
     final sql = '''
       SELECT a.attname
         FROM pg_attribute a LEFT JOIN pg_attrdef d
           ON a.attrelid = d.adrelid AND a.attnum = d.adnum
-       WHERE a.attrelid = '${_tableName}'::regclass
+       WHERE a.attrelid = '${_getTableName(type)}'::regclass
          AND a.attnum > 0 AND NOT a.attisdropped
        ORDER BY a.attnum
     ''';
     
     return _conn.query(sql).toList().then((rows) {
-      _columnNames = rows.map((row) => row.attname).toList();
-      return _columnNames;
+      _columnNames[type] = rows.map((row) => row.attname).toList();
+      return _columnNames[type];
     });
   }
   
   static String _getTableName(Type type) => type.toString().toLowerCase();
   
   String get _tableName => _getTableName(runtimeType);
-  
-  /**
-   * Updates the object. The types of the values must match the
-   * type annotations used on the class, if you want this to run in
-   * checked mode.
-   */
-  void update(Map attributes) {
-    final mirror = reflect(this);
-    final classMirror = reflectClass(runtimeType);
-    attributes.forEach((k, v) {
-      if (classMirror.variables.containsKey(new Symbol(k))) {
-        mirror.setField(new Symbol(k), v);
-      }
-    });
-  }
-  
-  // This assumes there's no reason for code to change an ID.
-  int get dbId => _dbId;
-  
-  dynamic toJson();
-}
 
-Future _transaction(Future inside(), [String logStmt = 'txn']) {
-  logStmt = logStmt == null ? 'txn' : logStmt;
-  return _conn.execute('BEGIN')
-      .then((_) => inside())
-      .then((_) => _conn.execute('COMMIT'))
-      .catchError((e) {
-        log.severe('Error with $logStmt: $e');
-        return _conn.execute('ROLLBACK').then((_) => new Future.error(e));
-      });
+  Map toJson();
 }
 
 Map _rowToMap(row) {

@@ -7,16 +7,29 @@
   <body>
     <element name="main-panel" extends="div" constructor="MainPanel">
       <template>
-        <h2>Main Panel</h2>
-        <button on-click="app.currentPanel = 'highScores'; app.player.refreshHighScoreLeaderboard();">Show high scores</button>
-        <button on-click="app.newGame()">New game</button>
-        <div is="login-panel"
-          authentication-context="{{app.player.authenticationContext}}"
-          sign-in-callback="{{app.player.signedIn}}"
-          sign-out-callback="{{app.player.signedOut}}"
-          ></div>
+        <div class='buttons'>
+          <div class='new-game-with-pardner'>
+            <button class="primary-button"
+              on-click="app.newMultiplayerGame()">
+              New game<br>(with pardner)
+            </button>
+          </div>
+          <div class='new-game'>
+            <button on-click="app.newGame()">New game<br>(lonesome)</button>
+          </div>
+        </div> <!-- end .buttons -->
+
+        <div class='login'>
+          <div is="login-panel"
+            authentication-context="{{app.player.authenticationContext}}"
+            sign-in-callback="{{app.player.signedIn}}"
+            sign-out-callback="{{app.player.signedOut}}"
+            class="login-panel">
+          </div>
+        </div><!-- end .login -->
         <content></content>
       </template>
+
       <script type="application/dart" src="main_panel.dart"></script>
     </element>
   </body>

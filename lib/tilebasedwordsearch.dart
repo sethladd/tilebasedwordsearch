@@ -103,7 +103,12 @@ newGame() {
   game = new Game()
     ..timeRemaining = GameClock.DEFAULT_GAME_LENGTH
     ..board = board.tiles;
-  currentPanel = 'newGame';
+  currentPanel = 'game';
+}
+
+newMultiplayerGame() {
+  currentPanel = 'highScores';
+  player.refreshHighScoreLeaderboard();
 }
 
 Future initialize() {

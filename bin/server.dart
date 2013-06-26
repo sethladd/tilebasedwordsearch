@@ -71,9 +71,6 @@ void main() {
     ..get('/index', getIndexHandler)
     ..post('/connect', postConnectDataHandler)
     ..post('/disconnect', postDisconnectHandler)
-    ..get('/games/:id', getGameHandler)
-    ..post('/games/:id', updateGameHandler)
-    ..post('/games', createGameHandler)
     ..staticFiles('./web/out')
     ..use(new FukiyaJsonParser())
     ..listen('0.0.0.0', port);
@@ -210,7 +207,24 @@ void postConnectDataHandler(FukiyaContext context) {
         String accessToken = credentials.containsKey("access_token") ? credentials["access_token"] : null;
         if (userId != null && userId == gPlusId && accessToken != null) {
           context.request.session["access_token"] = accessToken;
-          context.send("POST OK");
+          
+          serverLogger.info('Set the access token to $accessToken');
+          
+          db.Persistable.findBy(Player, {'gplus_id': userId}).toList().then((List players) {
+            if (players.isEmpty) {
+              serverLogger.info('No player found for gplusId $userId');
+              var p = new Player()..gplus_id = userId;
+              p.store().then((_) {
+                context.request.session['player_id'] = p.dbId;
+                context.send("POST OK");
+              })
+              .catchError((e) {
+                serverLogger.severe('Did not store new person $userId into db: $e');
+                context.response.statusCode = 500;
+                context.response.close();
+              });
+            }
+          });
         } else {
           context.response.statusCode = 401;
           context.send("POST FAILED ${userId} != ${gPlusId}");
@@ -218,83 +232,6 @@ void postConnectDataHandler(FukiyaContext context) {
       });
     });
   });
-}
-
-
-
-void getGameHandler(FukiyaContext context) {
-  serverLogger.fine("getGameHandler");
-  var id = int.parse(context.params['id']);
-  db.Persistable.load(id, Game).then((Game game) {
-    if (game == null) {
-      context.response
-        ..statusCode = HttpStatus.NOT_FOUND
-        ..close();
-    } else {
-      context.send(JSON.stringify(game.toJson()));
-    }
-  })
-  .catchError((e) {
-    serverLogger.severe('Error from getGame: $e');
-    context.response
-      ..statusCode = 500
-      ..close();
-  });
-}
-
-void createGameHandler(FukiyaContext context) {
-  serverLogger.fine("createGameHandler");
-  HttpBodyHandler.processRequest(context.request)
-  .then((HttpBody body) {
-    var game = new Game()
-      ..board = boards.getRandomBoard().board;
-    return game.store().then((_) {
-      context.response
-        ..statusCode = 201
-        ..close();
-    });
-  })
-  .catchError((e) {
-    serverLogger.severe('Error from createGame: $e');
-      context.response
-        ..statusCode = 500
-        ..close();
-  });
-}
-
-void updateGameHandler(FukiyaContext context) {
-  serverLogger.info("updateGame");
-  Game game;
-  var id = int.parse(context.params['id']);
-  db.Persistable.load(id, Game).then((Game g) {
-    if (g == null) {
-      return new Future.error("NOT FOUND");
-    } else {
-      game = g;
-      return HttpBodyHandler.processRequest(context.request);
-    }
-  })
-  .then((HttpBody body) {
-    var map = body.body as Map;
-    game.update(map);
-    return game.store();
-  })
-  .then((_) {
-    context.response
-      ..statusCode = 200
-      ..close();
-  })
-  .catchError((e) {
-    context.response
-      ..statusCode = 404
-      ..close();
-  }, test: (e) => e == 'NOT FOUND')
-  .catchError((e) {
-    serverLogger.severe('Error updating: $e');
-    context.response
-      ..statusCode = 500
-      ..close();
-  });  
 }
 
 /**

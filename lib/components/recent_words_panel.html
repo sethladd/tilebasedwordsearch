@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <element name="recent-words" extends="div" constructor="RecentWordsPanel">
+      <template>
+
+          <h2>Word List</h2>
+          <ul class='words-and-scores'>
+            <template repeat="word in app.board.recentWords">
+              <!--getting around no embedded mustaches-->
+              <li>
+                <div class="word">{{word}}</div>
+                <div class="score">{{scoreFor($index)}}</div>
+                <div style="clear:both"></div>
+              </li>
+            </template>
+          </ul>
+
+      </template>
+      <script type="application/dart" src="recent_words_panel.dart"></script>
+    </element>
+  </body>
+</html>

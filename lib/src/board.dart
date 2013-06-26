@@ -15,13 +15,13 @@ class Board {
   int score = 0;
 
   Board(this.config);
-  
+
   Board.fromGame(this.config, Game game) {
     score = game.score;
     words.addAll(game.words);
     recentWords.addAll(game.recentWords);
   }
-  
+
   String get tiles => config.board;
 
   bool attemptPath(List<int> path) {

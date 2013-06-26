@@ -9,39 +9,18 @@ class GameClock {
   Completer allDone = new Completer();
   
   @observable
-  String timeRemaining = 'Not yet started';
-  
   int secondsRemaining = DEFAULT_GAME_LENGTH;
   
   GameClock(GameLoop this.gameLoop, {this.gameLength:DEFAULT_GAME_LENGTH}) {
     if (gameLength != null) {
       secondsRemaining = gameLength;
     }
-    timeRemaining = formatTime(secondsRemaining);
   }
-  
-  String formatTime(int seconds) {
-    if (seconds <= 0) return '0'; // XXX ok for stop() case?
-    
-    int m = seconds ~/ 60;
-    int s = seconds % 60;
-    
-    String minuteString = "";
-    String secondString = "";
 
-    if (m > 0) {
-      minuteString = '${m.toString()}:';
-      secondString = (s <= 9) ? '0$s' : '$s';
-    } else {
-      secondString = s.toString();
-    }
-    return '$minuteString$secondString';
-  }
   
   tick(GameLoopTimer _) {
     if (!shouldPause) {
       secondsRemaining--;
-      timeRemaining = formatTime(secondsRemaining);
       if (secondsRemaining > 0) {
         gameLoop.addTimer(tick, 1.0); // 1 second timer
       } else {
@@ -59,7 +38,6 @@ class GameClock {
   stop() {
     shouldPause = true;
     secondsRemaining = 0;
-    timeRemaining = 'GAME OVER!';
     allDone.complete(true);
   }
   

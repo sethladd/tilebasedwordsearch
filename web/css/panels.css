@@ -1,0 +1,321 @@
+/*
+ **** MAIN PANEL ****
+ */
+
+.main-panel {
+  width: 100%;
+  margin: 0;
+  padding-top: 2em;
+  padding-bottom: 0em;
+  background-image: url('../assets/WordHerder.png');
+  background-repeat: no-repeat;
+  background-position: 50% 5em;
+  background-size: 50%;
+  min-height: 480px;
+  position: relative;
+}
+
+.main-panel .buttons {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.main-panel .buttons .new-game button {
+}
+
+.main-panel .buttons .new-game-with-pardner button {
+}
+
+/*
+ **** LOGIN PANEL ****
+ */
+
+.main-panel .login-panel {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  bottom: 1em;
+  left: 0;
+}
+
+.login-panel .sign-in-message {
+}
+
+.login-panel .welcome {
+  text-align: center;
+  margin: 0 auto 0 5%;
+  float: left;
+  width: 30%;
+}
+
+/* Avoid visible button before G+ loads. */
+.g-signin {
+  border:0;
+  padding:0;
+}
+
+.login-panel .sign-out {
+  text-align: center;
+  /* margin: 3% 5% 0 auto; */
+  margin: 2em 5% 0 auto;
+  float: right;
+  width: 30%;
+}
+
+.login-panel .welcome .message {
+  font: italic normal .8em;
+}
+
+/*
+ **** GAME PANEL ****
+ */
+
+.game-panel {
+}
+
+.game-panel .selected-word {
+  font: normal bold 1.8em;
+  width: 65%;
+  margin: 0 auto 2% auto;
+  padding: 1% 0%;
+  color: white;
+}
+
+.game-panel .selected-word div {
+  margin-top: .5em;
+}
+
+.game-panel #frontBuffer {
+  width: 55%;
+}
+
+.game-panel .game-data {
+  width: 80%;
+  margin: 0 auto;
+  padding: .05em 0;
+  border: .2em solid rgb(30, 15, 5);
+  margin-top: .5em;
+  margin-bottom: .5em;
+  background-color: rgba(60, 30, 15, .8);
+  color: rgb(240, 150, 60);
+}
+
+.game-panel .game-data div {
+  display: inline-block;
+  padding: 1% 0%;
+  margin: 1% 2%;
+  text-align: center;
+  color: #444;
+  width: 40%;
+  font-weight: bold;
+  font-size: 1.2em;
+  border: .2em solid rgb(30, 15, 5);
+  color: rgb(240, 150, 60);
+  background-color: white;
+}
+
+.game-panel button {
+  width: 40%;
+  display: inline-block;
+  margin-bottom: 1em;
+}
+
+/*
+ **** LIST GAMES PANEL ****
+ */
+
+.list-games-panel {
+  min-height: 480px;
+}
+
+.list-games-panel .wrapper{
+  min-height: 480px;
+}
+
+.list-games-panel h2 {
+  font: normal normal 1.5em;
+  width: auto;
+  margin: 0 auto;
+  padding: .34em 0;
+  background-color: rgba(40, 20, 10, .7);
+  color: white;
+}
+
+.list-games-panel .wrapper p {
+  width: 80%;
+  margin: 0 auto;
+  text-align: left;
+  padding-top: 1em;
+}
+
+.list-games-panel table {
+  margin: 0 auto;
+  width: 95%;
+  padding-top: 1em;
+}
+
+.list-games-panel td {
+  color: rgb(250, 200, 100);
+  font: italic 1em;
+  margin: 1em 0;
+  padding: .2em .4em;
+}
+
+.list-games-panel table thead tr td {
+  border: 0;
+  background-color: rgba(80, 40, 20, .7);
+  font-size: 1.2em;
+  font-weight: bold;
+  border: 2px solid rgb(40, 20, 10);
+  color: white;
+}
+
+.list-games-panel table thead tr td {
+}
+
+.list-games-panel td.last-played {
+  font: italic bold .9em;
+  color: rgb(80, 40, 20);
+  width: 40%;
+}
+
+
+.list-games-panel td.status button {
+  background-color: rgb(33, 88, 33);
+  color: white;
+  padding: .1em .2em;
+  font-size: .8em;
+  width: auto;
+ }
+
+.list-games-panel td.status .score {
+  font: bold normal 1.2em;
+  color: rgb(80, 40, 20);
+  width: 55%;
+}
+
+.list-games-panel td.status .time-remaining {
+  font: italic bold .9em;
+  color: rgb(120, 60, 30);
+}
+
+
+/*
+ **** RECENT WORDS PANEL ****
+ */
+
+.recent-words-panel {
+  min-height: 480px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.recent-words-panel .no-words {
+  background-image: url('../assets/Horse.png');
+  background-position: 50% 70%;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  min-height: 480px;
+
+}
+
+.recent-words-panel h2 {
+  font: normal normal 1.5em;
+  width: auto;
+  margin: 0 auto;
+  padding: .34em 0;
+  background-color: rgba(40, 20, 10, .7);
+  color: white;
+}
+
+.recent-words-panel p {
+  width: 80%;
+  margin: 0 auto;
+  text-align: left;
+  padding-top: 1em;
+}
+
+
+/*  WORD-SCORE lists */
+ul.words-and-scores {
+  list-style: none;
+  width: 90%;
+  padding: 0;
+  margin: 0 auto;
+  padding: .5em 0;
+}
+
+ul.words-and-scores li {
+  margin: 0 auto;
+  width: 90%;
+  font: normal bold .9em;
+  text-align: left;
+  padding: .15em .3em;
+  color: rgb(40, 20, 10);
+}
+
+ul.words-and-scores li .word {
+  float: left;
+  width: 35%;
+}
+
+ul.words-and-scores li .score {
+  width: 55%;
+  float: right;
+  margin-left: 4%;
+}
+
+/*
+ **** GAME RESULTS PANEL
+ */
+
+.game-results-panel {
+  position: relative;
+  min-height: 480px;
+}
+
+.game-results-panel h2 {
+  margin: 0 auto;
+}
+
+.game-results-panel .panel-heading {
+  font: normal normal 1.5em;
+  width: auto;
+  margin: 0 auto;
+  padding: .34em 0;
+  background-color: rgba(40, 20, 10, .7);
+  color: white;
+}
+
+.game-results-panel .game-data .final-score {
+  font: normal bold 2em;
+  background-color: rgb(200, 150, 90);
+  width: 50%;
+  margin: .5em auto;
+  color: rgb(40, 20, 10);
+  border: 2px solid rgb(40, 20, 10);
+}
+
+.game-results-panel .game-data ul {
+  background-color: rgb(200, 150, 90);
+  border: 2px solid rgb(40, 20, 10);
+  min-height: 10em;
+}
+
+.game-results-panel .game-data .main h2 {
+  color: white;
+  margin: .25em;
+}
+
+.game-results-panel .buttons {
+  width: 100%;
+  padding: 0;
+  margin: 1em auto;
+}
+
+.game-results-panel .buttons button {
+  margin: .25em auto;
+}
+

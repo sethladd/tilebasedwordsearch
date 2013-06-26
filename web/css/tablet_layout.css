@@ -1,0 +1,30 @@
+@media screen and (max-width: 1050px) {
+
+  .header {
+    display: none;
+  }
+
+  .main {
+    margin: 0 auto;
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  .main .primary {
+    width: 60%;
+    margin-bottom: 1em;
+  }
+
+  .main .primary .main-panel {
+    background-position: 50% 8em;
+  }
+
+  .main .primary .game-panel #frontBuffer {
+    width: 90%;
+  }
+
+  .main .secondary {
+    width: 39%;
+    text-align: center;
+  }
+}

@@ -22,7 +22,7 @@ class HighScoreInfo {
 
 // XXX: What is the ID that I can use in the database?
 class Player {
-  final Logger _playerLogger = new Logger("Player"); 
+  final Logger _playerLogger = new Logger("Player");
   Map _authResult;
 
   // Simple Authentication class that takes the token from the Sign-in button
@@ -43,14 +43,14 @@ class Player {
   // The ID of the player which corresponds to the g+ id
   // and is only available after signedIn has been called.
   String id;
-  
+
   @observable String displayName = "";
   @observable String imgUrl = "";
-  
+
   List<HighScoreInfo> allTimeHighScores = toObservable(<HighScoreInfo>[]);
-  
+
   @observable bool isConnected = false;
-  
+
   Player() {
     authenticationContext = new SimpleOAuth2(null);
     plusclient = new Plus(authenticationContext);
@@ -66,7 +66,7 @@ class Player {
 
     plusclient.makeAuthRequests = true;
     gamesclient.makeAuthRequests = true;
-    print("Player is signed in client side");
+    clientLogger.info("Player is signed in client side");
 
     plusclient.people.get('me').then((Person person) {
       // Connect to the server with offline token.
@@ -109,7 +109,7 @@ class Player {
 
   void signedOut() {
     print("Player is signed out");
-    currentPanel = 'main';
+    isConnected = false;
   }
 
   Future<List<Person>> friends({String orderBy: 'alphabetical',
@@ -121,7 +121,7 @@ class Player {
   void submitScore(ScoreType scoreType, int score) {
     scoreBoards
     .where((ScoreBoard sb) => sb.scoreType == scoreType)
-    .forEach((ScoreBoard sb) { 
+    .forEach((ScoreBoard sb) {
       sb.submitScore(this, score)
       .then((PlayerScoreResponse playerScoreResponse) => _playerLogger.fine("playerScoreResponse = $playerScoreResponse"))
       .catchError((e) => _playerLogger.fine("Not able to submit score: $e"));
@@ -137,10 +137,10 @@ class Player {
 
   refreshHighScoreLeaderboard() {
     if (gamesclient == null) return;
-    
+
     ScoreBoard highScoreBoard = scoreBoards
     .singleWhere((ScoreBoard sb) => sb.scoreType == ScoreType.HIGH_SCORE);
-    
+
     gamesclient.scores.listWindow(highScoreBoard.leaderBoardId,
         "PUBLIC", "ALL_TIME", maxResults: 25)
         .then((LeaderboardScores leaderboardScores) {
@@ -150,7 +150,7 @@ class Player {
             _playerLogger.fine("${lbe.player.displayName} ${lbe.scoreRank} ${lbe.scoreValue} ${lbe.timeSpan}");
             allTimeHighScores.add(new HighScoreInfo(lbe.player.displayName, lbe.scoreRank, lbe.scoreValue, lbe.timeSpan));
           });
-          
+
         }).catchError((e) => _playerLogger.fine("Not able to refresh high scores: $e"));
   }
 }

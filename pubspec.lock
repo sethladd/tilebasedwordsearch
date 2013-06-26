@@ -12,7 +12,7 @@ packages:
   asset_pack:
     description:
       ref: null
-      resolved-ref: "7d4fb50d86a8546e3160ea509bdc17c0edd76ae2"
+      resolved-ref: d4d75f5682adc5ec632dbfa9846f56de068f7624
       url: "https://github.com/johnmccutchan/asset_pack.git"
     source: git
     version: "0.6.0"
@@ -47,11 +47,11 @@ packages:
   fukiya:
     description: fukiya
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
   game_loop:
     description:
       ref: null
-      resolved-ref: "860d1ca7d9bf165bb6590e0603fa202e7e66108c"
+      resolved-ref: "0884dd5371e431340c4cce5f7dac08a25cb74598"
       url: "https://github.com/johnmccutchan/game_loop.git"
     source: git
     version: "0.9.0"
@@ -59,14 +59,14 @@ packages:
     description:
       ref: null
       resolved-ref: df3b0a93888f36e5b0649b29915ff5e7eb4326f2
-      url: "git://github.com/financeCoding/dart_appstate_v1_api_client.git"
+      url: "https://github.com/financeCoding/dart_appstate_v1_api_client.git"
     source: git
     version: "0.1.0"
   google_games_v1_api:
     description:
       ref: null
       resolved-ref: c6d7146a08e340956501ebf0f4a8c2cd5fbbc355
-      url: "git://github.com/financeCoding/dart_games_v1_api_client.git"
+      url: "https://github.com/financeCoding/dart_games_v1_api_client.git"
     source: git
     version: "0.1.0"
   google_oauth2_client:
@@ -89,10 +89,14 @@ packages:
     description: http
     source: hosted
     version: "0.5.20"
+  intl:
+    description: intl
+    source: hosted
+    version: "0.5.20"
   js:
     description: js
     source: hosted
-    version: "0.0.22"
+    version: "0.0.23"
   lawndart:
     description: lawndart
     source: hosted
@@ -125,6 +129,10 @@ packages:
     description: start
     source: hosted
     version: "0.0.8"
+  static_file_handler:
+    description: static_file_handler
+    source: hosted
+    version: "0.1.0"
   unittest:
     description: unittest
     source: hosted
@@ -132,4 +140,4 @@ packages:
   web_ui:
     description: web_ui
     source: hosted
-    version: "0.4.12+2"
+    version: "0.4.12+3"
