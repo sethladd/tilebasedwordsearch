@@ -25,7 +25,7 @@ final String TOKEN_ENDPOINT = 'https://accounts.google.com/o/oauth2/token';
 final String TOKEN_REVOKE_ENDPOINT = 'https://accounts.google.com/o/oauth2/revoke';
 
 final Random random = new Random();
-final Logger serverLogger = new Logger("server");
+final Logger _log = new Logger("server");
 final String INDEX_HTML = "./web/out/index.html";
 
 Fukiya fukiya;
@@ -34,7 +34,7 @@ Boards boards;
 void main() {
   _setupLogger();
 
-  serverLogger.fine("Starting Server");
+  _log.fine("Starting Server");
 
   var port = Platform.environment['PORT'] != null ?
       int.parse(Platform.environment['PORT'], onError: (_) => 8080) :
@@ -51,17 +51,17 @@ void main() {
   db.init(dbUrl)
   .then((_) {
     var path = new Path(new Options().script).directoryPath.append('..').append('boardgen').append('dense1000.txt');
-    serverLogger.fine("boardgen = ${path}");
+    _log.fine("boardgen = ${path}");
     return new File.fromPath(path).readAsString();
   }, onError: (e) {
-    serverLogger.fine('Error connecting to db: $e');
+    _log.fine('Error connecting to db: $e');
     return new Future.error(e);
   })
   .then((String lines) {
     boards = new Boards(lines);
   })
   .then((_) {
-    serverLogger.fine('DB connected, now starting up web server');
+    _log.fine('DB connected, now starting up web server');
 
     fukiya = new Fukiya()
     ..get('/', getIndexHandler)
@@ -75,15 +75,15 @@ void main() {
     ..use(new FukiyaJsonParser())
     ..listen('0.0.0.0', port);
   })
-  .catchError((e) => serverLogger.fine("error starting up: $e"));
+  .catchError((e) => _log.fine("error starting up: $e"));
 }
 
 /**
  * Revoke current user's token and reset their session.
  */
 void postDisconnectHandler(FukiyaContext context) {
-  serverLogger.fine("postDisconnectHandler");
-  serverLogger.fine("context.request.session = ${context.request.session}");
+  _log.fine("postDisconnectHandler");
+  _log.fine("context.request.session = ${context.request.session}");
 
   String tokenData = context.request.session.containsKey("access_token") ?
       context.request.session["access_token"] : null;
@@ -99,8 +99,8 @@ void postDisconnectHandler(FukiyaContext context) {
 
   new http.Client()
   ..get(revokeTokenUrl).then((http.Response response) {
-    serverLogger.fine("GET ${revokeTokenUrl}");
-    serverLogger.fine("Response = ${response.body}");
+    _log.fine("GET ${revokeTokenUrl}");
+    _log.fine("Response = ${response.body}");
     context.request.session["state_token"] = _createStateToken();
     Map data = {
                 "state_token": context.request.session["state_token"],
@@ -115,7 +115,7 @@ void postDisconnectHandler(FukiyaContext context) {
  * side authentication process.
  */
 void getIndexHandler(FukiyaContext context) {
-  serverLogger.fine("getIndexHandler");
+  _log.fine("getIndexHandler");
   // Create a state token.
   context.request.session["state_token"] = _createStateToken();
 
@@ -129,16 +129,16 @@ void getIndexHandler(FukiyaContext context) {
         Element metaState = new Element.html('<meta name="state_token" content="${context.request.session["state_token"]}">');
         doc.head.children.add(metaState);
         context.response.write(doc.outerHtml);
-        context.response.done.catchError((e) => serverLogger.fine("File Response error: ${e}"));
+        context.response.done.catchError((e) => _log.fine("File Response error: ${e}"));
         context.response.close();
-      }, onError: (error) => serverLogger.fine("error = $error"));
+      }, onError: (error) => _log.fine("error = $error"));
     } else {
-      serverLogger.fine("getIndexHandler exists = $exists");
+      _log.fine("getIndexHandler exists = $exists");
       context.response.statusCode = 404;
       context.response.close();
     }
   })
-  .catchError((e) => serverLogger.fine("error: $e"));
+  .catchError((e) => _log.fine("error: $e"));
 }
 
 /**
@@ -147,10 +147,10 @@ void getIndexHandler(FukiyaContext context) {
  * Example URI: /connect?state=...&gplus_id=...
  */
 void postConnectDataHandler(FukiyaContext context) {
-  serverLogger.fine("postConnectDataHandler");
-  String tokenData = context.request.session.containsKey("access_token") ? context.request.session["access_token"] : null; // TODO: handle missing token
-  String stateToken = context.request.session.containsKey("state_token") ? context.request.session["state_token"] : null;
-  String queryStateToken = context.request.uri.queryParameters.containsKey("state_token") ? context.request.uri.queryParameters["state_token"] : null;
+  _log.fine("postConnectDataHandler");
+  String tokenData = context.request.session["access_token"]; // TODO: handle missing token
+  String stateToken = context.request.session["state_token"];
+  String queryStateToken = context.request.uri.queryParameters["state_token"];
 
   // Check if the token already exists for this session.
   if (tokenData != null) {
@@ -177,7 +177,7 @@ void postConnectDataHandler(FukiyaContext context) {
   context.request
   .transform(new StringDecoder())
   .listen((data) => sb.write(data), onDone: () {
-    serverLogger.fine("context.request.listen.onDone = ${sb.toString()}");
+    _log.fine("context.request.listen.onDone = ${sb.toString()}");
     Map requestData = JSON.parse(sb.toString());
 
     Map fields = {
@@ -189,18 +189,18 @@ void postConnectDataHandler(FukiyaContext context) {
               "client_secret": CLIENT_SECRET
     };
 
-    serverLogger.fine("fields = $fields");
+    _log.fine("fields = $fields");
     http.Client _httpClient = new http.Client();
     _httpClient.post(TOKEN_ENDPOINT, fields: fields).then((http.Response response) {
       // At this point we have the token and refresh token.
       var credentials = JSON.parse(response.body);
-      serverLogger.fine("credentials = ${response.body}");
+      _log.fine("credentials = ${response.body}");
       _httpClient.close();
 
       var verifyTokenUrl = '${TOKENINFO_URL}?access_token=${credentials["access_token"]}';
       new http.Client()
       ..get(verifyTokenUrl).then((http.Response response)  {
-        serverLogger.fine("response = ${response.body}");
+        _log.fine("response = ${response.body}");
 
         var verifyResponse = JSON.parse(response.body);
         String userId = verifyResponse.containsKey("user_id") ? verifyResponse["user_id"] : null;
@@ -208,18 +208,18 @@ void postConnectDataHandler(FukiyaContext context) {
         if (userId != null && userId == gPlusId && accessToken != null) {
           context.request.session["access_token"] = accessToken;
           
-          serverLogger.info('Set the access token to $accessToken');
+          _log.info('Set the access token to $accessToken');
           
           db.Persistable.findBy(Player, {'gplus_id': userId}).toList().then((List players) {
             if (players.isEmpty) {
-              serverLogger.info('No player found for gplusId $userId');
+              _log.info('No player found for gplusId $userId');
               var p = new Player()..gplus_id = userId;
               p.store().then((_) {
                 context.request.session['player_id'] = p.dbId;
                 context.send("POST OK");
               })
               .catchError((e) {
-                serverLogger.severe('Did not store new person $userId into db: $e');
+                _log.severe('Did not store new person $userId into db: $e');
                 context.response.statusCode = 500;
                 context.response.close();
               });
