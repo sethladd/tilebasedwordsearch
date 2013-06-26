@@ -62,7 +62,8 @@
 }
 
 .login-panel .welcome .message {
-  font: italic normal .8em;
+  font-style: italic;
+  font-size: .8em;
 }
 
 /*
@@ -73,7 +74,8 @@
 }
 
 .game-panel .selected-word {
-  font: normal bold 1.8em;
+  font-weight: bold;
+  font-size: 1.8em;
   width: 65%;
   margin: 0 auto 2% auto;
   padding: 1% 0%;
@@ -131,7 +133,7 @@
 }
 
 .list-games-panel h2 {
-  font: normal normal 1.5em;
+  font-size: 1.5em;
   width: auto;
   margin: 0 auto;
   padding: .34em 0;
@@ -154,7 +156,6 @@
 
 .list-games-panel td {
   color: rgb(250, 200, 100);
-  font: italic 1em;
   margin: 1em 0;
   padding: .2em .4em;
 }
@@ -172,7 +173,7 @@
 }
 
 .list-games-panel td.last-played {
-  font: italic bold .9em;
+  font-size: .9em;
   color: rgb(80, 40, 20);
   width: 40%;
 }
@@ -186,13 +187,14 @@
  }
 
 .list-games-panel td.status .score {
-  font: bold normal 1.2em;
+  font-weight: bold;
+  font-size: 1.2em;
   color: rgb(80, 40, 20);
   width: 55%;
 }
 
 .list-games-panel td.status .time-remaining {
-  font: italic bold .9em;
+  font-size: .9em;
   color: rgb(120, 60, 30);
 }
 
@@ -218,7 +220,7 @@
 }
 
 .recent-words-panel h2 {
-  font: normal normal 1.5em;
+  font-size: 1.5em;
   width: auto;
   margin: 0 auto;
   padding: .34em 0;
@@ -246,7 +248,8 @@ ul.words-and-scores {
 ul.words-and-scores li {
   margin: 0 auto;
   width: 90%;
-  font: normal bold .9em;
+  font-weight: bold;
+  font-size: .9em;
   text-align: left;
   padding: .15em .3em;
   color: rgb(40, 20, 10);
@@ -277,7 +280,7 @@ ul.words-and-scores li .score {
 }
 
 .game-results-panel .panel-heading {
-  font: normal normal 1.5em;
+  font-size: 1.5em;
   width: auto;
   margin: 0 auto;
   padding: .34em 0;
@@ -286,7 +289,8 @@ ul.words-and-scores li .score {
 }
 
 .game-results-panel .game-data .final-score {
-  font: normal bold 2em;
+  font-weight: bold;
+  font-size: 2em;
   background-color: rgb(200, 150, 90);
   width: 50%;
   margin: .5em auto;

@@ -4,6 +4,11 @@ body {
   font-family: sans-serif;
 }
 
+/* Hide phone-only elements (except on phones). */
+.phone-only {
+  display:none;
+}
+
 button {
   font-size: 1em;
   color: white;
