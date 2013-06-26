@@ -7,6 +7,7 @@ void main() {
   
   task
       .then((_) => Process.run('cp', ['-R', 'web/assets', 'web/out']))
+      .then((_) => generateAppCache())
       .then((_) => print('All done'));
 }
 
@@ -19,9 +20,22 @@ generateAppCache() {
   IOSink out = file.openWrite();
   out.writeln('CACHE MANIFEST');
   out.writeln('# ${new DateTime.now()}');
-  out.writeln('CACHE:');
+  out.writeln('\nCACHE:');
   
-  out.writeln('NETWORK:');
+  new Directory('web/out')
+      .listSync(recursive: true, followLinks: false)
+      .forEach((entry) {
+        if (entry is Link || entry.path.endsWith('.map') ||
+            entry.path.contains('_from_packages') ||
+            entry is Directory || entry.path.endsWith('appcache.manifest')) {
+          return;
+        }
+        out.writeln(entry.path);
+      });
+  
+  out.writeln('web/out/index.html_bootstrap.dart.js');
+  
+  out.writeln('\nNETWORK:');
   out.writeln('*');
   out.close();
 }
