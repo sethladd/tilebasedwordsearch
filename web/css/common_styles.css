@@ -16,7 +16,7 @@ button {
 }
 
 button.primary-button {
-  background-color: rgba(150, 90, 30, .6);
+  background-color: rgba(150, 90, 30, .8);
 }
 
 button:hover {

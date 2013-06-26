@@ -97,6 +97,12 @@ class GamePanel extends WebComponent {
     _pauseButton.disabled = true;
   }
 
+  /** Returns the user to the home screen. */
+  void goHome() {
+    if (!paused) togglePause();
+    currentPanel = 'main';
+  }
+  
   void endGame() {
     if (window.confirm('Are you sure you want to end the game?')) {
       _gameClock.stop();
