@@ -117,6 +117,76 @@ class BoardController {
     return true;
   }
 
+  void testPoint(int x, int y) {
+    for (int i = 0; i < GameConstants.BoardDimension; i++) {
+      for (int j = 0; j < GameConstants.BoardDimension; j++) {
+        int index = GameConstants.rowColumnToIndex(i, j);
+        if (view.selectedTiles.contains(index)) {
+          continue;
+        }
+        var transform = view.getTileRectangle(i, j);
+        if (transform.containsTouch(x, y)) {
+          view.selectedTiles.add(index);
+          if (selectedPath == null) {
+            selectedPath = new List<int>();
+          }
+          selectedPath.add(index);
+        }
+      }
+    }
+  }
+
+  void _testLine(int i, int j, int x0, int y0, int x1, int y1) {
+    int index = GameConstants.rowColumnToIndex(i, j);
+    if (view.selectedTiles.contains(index)) {
+      return;
+    }
+    var transform = view.getTileRectangle(i, j);
+    if (transform.containsLine(x0, y0, x1, y1)) {
+      view.selectedTiles.add(index);
+      if (selectedPath == null) {
+        selectedPath = new List<int>();
+      }
+      selectedPath.add(index);
+    }
+  }
+
+  void testLine(int x0, int y0, int x1, int y1) {
+    bool moveRight = x1 > x0;
+    bool moveDown = y1 > y0;
+    if (moveDown) {
+      // Scan starting at the top of the board moving down.
+      for (int i = 0; i < GameConstants.BoardDimension; i++) {
+        if (moveRight) {
+          // Scan starting at the left moving to the right.
+          for (int j = 0; j < GameConstants.BoardDimension; j++) {
+            _testLine(i, j, x0, y0, x1, y1);
+          }
+        } else {
+          // Scan starting at the right moving to the left.
+          for (int j = GameConstants.BoardDimension-1; j >= 0; j--) {
+            _testLine(i, j, x0, y0, x1, y1);
+          }
+        }
+      }
+    } else {
+      // Scan starting at the bottom of the board up.
+      for (int i = GameConstants.BoardDimension-1; i >= 0; i--) {
+        if (moveRight) {
+          // Scan starting at the left moving to the right.
+          for (int j = 0; j < GameConstants.BoardDimension; j++) {
+            _testLine(i, j, x0, y0, x1, y1);
+          }
+        } else {
+          // Scan starting at the right moving to the left.
+          for (int j = GameConstants.BoardDimension-1; j >= 0; j--) {
+            _testLine(i, j, x0, y0, x1, y1);
+          }
+        }
+      }
+    }
+  }
+
   void updateFromTouch(GameLoopTouch touch) {
     double scaleX = view.scaleX;
     double scaleY = view.scaleY;
@@ -124,25 +194,16 @@ class BoardController {
       // If we have a touch, ignore keyboard input.
       clearKeyboardInput();
       clearSelected();
-      for (var position in touch.positions) {
-        int x = view.transformTouchToCanvasX(position.x);
-        int y = view.transformTouchToCanvasY(position.y);
-        for (int i = 0; i < GameConstants.BoardDimension; i++) {
-          for (int j = 0; j < GameConstants.BoardDimension; j++) {
-            int index = GameConstants.rowColumnToIndex(i, j);
-            if (view.selectedTiles.contains(index)) {
-              continue;
-            }
-            var transform = view.getTileRectangle(i, j);
-            if (transform.containsTouch(x, y)) {
-              view.selectedTiles.add(index);
-              if (selectedPath == null) {
-                selectedPath = new List<int>();
-              }
-              selectedPath.add(index);
-            }
-          }
-        }
+      for (int i = 0; i < touch.positions.length-1; i++) {
+        var position0 = touch.positions[i];
+        var position1 = touch.positions[i+1];
+        int x0 = view.transformTouchToCanvasX(position0.x);
+        int y0 = view.transformTouchToCanvasY(position0.y);
+        int x1 = view.transformTouchToCanvasX(position1.x);
+        int y1 = view.transformTouchToCanvasY(position1.y);
+        testPoint(x0, y0);
+        testLine(x0, y0, x1, y1);
+        testPoint(x1, y1);
       }
     }
   }
