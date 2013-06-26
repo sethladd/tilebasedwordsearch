@@ -9,3 +9,19 @@ void main() {
       .then((_) => Process.run('cp', ['-R', 'web/assets', 'web/out']))
       .then((_) => print('All done'));
 }
+
+generateAppCache() {
+  var file = new File('web/out/appcache.manifest');
+  if (!file.existsSync()) {
+    file.createSync();
+  }
+  
+  IOSink out = file.openWrite();
+  out.writeln('CACHE MANIFEST');
+  out.writeln('# ${new DateTime.now()}');
+  out.writeln('CACHE:');
+  
+  out.writeln('NETWORK:');
+  out.writeln('*');
+  out.close();
+}
