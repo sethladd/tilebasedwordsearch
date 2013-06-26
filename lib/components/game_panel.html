@@ -6,7 +6,7 @@
       <template>
         <div class="selected-word">
           <template if="board.recentWords.isEmpty">
-            <div>last word</div>
+            <div>Find a word!</div>
           </template>
           <template if="!board.recentWords.isEmpty">
             <div>{{board.recentWords[0]}}</div>
@@ -22,6 +22,7 @@
         <div class='buttons'>
           <button class='pause' id="pause" on-click="togglePause()" disabled>Pause</button>
           <button id="end" on-click="endGame()" disabled>End game</button>
+          <button id="home" on-click="goHome()">Home</button>
         </div>
 
       </template>
