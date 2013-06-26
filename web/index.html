@@ -45,6 +45,11 @@
           <template if="app.currentPanel == 'results'">
             <div is="game-results-panel" class="game-results-panel"></div>
           </template>
+
+          <template if="app.currentPanel == 'list-games'">
+            <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
+          </template>
+
         </div> <!-- end .primary -->
 
         <div class="secondary">
