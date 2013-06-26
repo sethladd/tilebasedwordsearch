@@ -23,16 +23,8 @@
   </head>
   <body>
     <div id="page">
-      <!-- ================================================================= -->
-      <div class="header">
-      <!-- ================================================================= -->
-        <h1>{{app.currentPanel}} panel, isConnected = {{ app.player.isConnected }}</h1>
-      </div>
-
       <div class="main">
-        <!-- =============================================================== -->
         <div class="primary">
-        <!-- =============================================================== -->
           <template if="app.currentPanel == 'main'">
             <div is="main-panel" class="main-panel"></div>
           </template>
@@ -55,9 +47,7 @@
           </template>
         </div> <!-- end .primary -->
 
-        <!-- =============================================================== -->
         <div class="secondary">
-        <!-- =============================================================== -->
           <template if="app.currentPanel == 'main'">
             <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
           </template>
@@ -71,18 +61,9 @@
           </template>
         </div><!-- end .secondary -->
 
-        <!-- =============================================================== -->
         <div class="tertiary">
-        <!-- =============================================================== -->
         </div> <!-- end .tertiary -->
       </div> <!-- end .main -->
-
-      <!-- ================================================================= -->
-      <div class="footer">
-      <!-- ================================================================= -->
-        Built with pride using Dart!
-      </div><!-- end .footer -->
-
     </div><!-- end #page -->
 
     <script type="application/dart" src="main.dart"></script>
