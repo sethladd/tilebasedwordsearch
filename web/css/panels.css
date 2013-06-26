@@ -12,8 +12,6 @@
   background-position: 50% 5em;
   background-size: 50%;
   min-height: 480px;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
   position: relative;
 }
 
@@ -66,7 +64,7 @@
 }
 
 .login-panel .welcome .message {
-  font: italic normal .8em sans-serif;
+  font: italic normal .8em;
 }
 
 /*
@@ -74,11 +72,10 @@
  */
 
 .game-panel {
-  border-radius: .8em;
 }
 
 .game-panel .selected-word {
-  font: normal bold 1.8em sans-serif;
+  font: normal bold 1.8em;
   width: 65%;
   margin: 0 auto 2% auto;
   padding: 1% 0%;
@@ -98,8 +95,6 @@
   margin: 0 auto;
   padding: .05em 0;
   border: .2em solid rgb(30, 15, 5);
-  -moz-border-radius: .4em;
-  border-radius: .4em;
   margin-top: .5em;
   margin-bottom: .5em;
   background-color: rgba(60, 30, 15, .8);
@@ -113,8 +108,6 @@
   text-align: center;
   color: #444;
   width: 40%;
-  -moz-border-radius: .4em;
-  border-radius: .4em;
   font-weight: bold;
   font-size: 1.2em;
   border: .2em solid rgb(30, 15, 5);
@@ -134,23 +127,16 @@
 
 .list-games-panel {
   min-height: 480px;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
-
 }
 
 .list-games-panel .wrapper{
   min-height: 480px;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
 }
 
 .list-games-panel h2 {
-  font: normal normal 1.5em sans-serif;
+  font: normal normal 1.5em;
   width: auto;
   margin: 0 auto;
-  border-top-left-radius: .59em;
-  border-top-right-radius: .59em;
   padding: .34em 0;
   background-color: rgba(40, 20, 10, .7);
   color: white;
@@ -171,11 +157,9 @@
 
 .list-games-panel td {
   color: rgb(250, 200, 100);
-  font: italic 1em serif;
+  font: italic 1em;
   margin: 1em 0;
   padding: .2em .4em;
-  -moz-border-radius: .4em;
-  border-radius: .4em;
 }
 
 .list-games-panel table thead tr td {
@@ -185,37 +169,34 @@
   font-weight: bold;
   border: 2px solid rgb(40, 20, 10);
   color: white;
-  border-radius: .2em;
 }
 
 .list-games-panel table thead tr td {
 }
 
 .list-games-panel td.last-played {
-  font: italic bold .9em serif;
+  font: italic bold .9em;
   color: rgb(80, 40, 20);
   width: 40%;
 }
 
 
 .list-games-panel td.status button {
-   background-color: rgb(33, 88, 33);
-   color: white;
-   -moz-border-radius: .4em;
-  border-radius: .4em;
+  background-color: rgb(33, 88, 33);
+  color: white;
   padding: .1em .2em;
   font-size: .8em;
   width: auto;
  }
 
 .list-games-panel td.status .score {
-  font: bold normal 1.2em sans-serif;
+  font: bold normal 1.2em;
   color: rgb(80, 40, 20);
   width: 55%;
 }
 
 .list-games-panel td.status .time-remaining {
-  font: italic bold .9em sans-serif;
+  font: italic bold .9em;
   color: rgb(120, 60, 30);
 }
 
@@ -229,8 +210,6 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
 }
 
 .recent-words-panel .no-words {
@@ -243,11 +222,9 @@
 }
 
 .recent-words-panel h2 {
-  font: normal normal 1.5em sans-serif;
+  font: normal normal 1.5em;
   width: auto;
   margin: 0 auto;
-  border-top-left-radius: .59em;
-  border-top-right-radius: .59em;
   padding: .34em 0;
   background-color: rgba(40, 20, 10, .7);
   color: white;
@@ -273,8 +250,7 @@ ul.words-and-scores {
 ul.words-and-scores li {
   margin: 0 auto;
   width: 90%;
-  font: normal bold .9em sans-serif;
-  -moz-border-radius: .5em;
+  font: normal bold .9em;
   text-align: left;
   padding: .15em .3em;
   color: rgb(40, 20, 10);
@@ -296,7 +272,6 @@ ul.words-and-scores li .score {
  */
 
 .game-results-panel {
-  border-radius: .8em;
   position: relative;
   min-height: 480px;
 }
@@ -306,30 +281,25 @@ ul.words-and-scores li .score {
 }
 
 .game-results-panel .panel-heading {
-  font: normal normal 1.5em sans-serif;
+  font: normal normal 1.5em;
   width: auto;
   margin: 0 auto;
-  border-top-left-radius: .59em;
-  border-top-right-radius: .59em;
   padding: .34em 0;
   background-color: rgba(40, 20, 10, .7);
   color: white;
 }
 
 .game-results-panel .game-data .final-score {
-  font: normal bold 2em sans-serif;
+  font: normal bold 2em;
   background-color: rgb(200, 150, 90);
   width: 50%;
   margin: .5em auto;
   color: rgb(40, 20, 10);
-  border-radius: .2em;
   border: 2px solid rgb(40, 20, 10);
 }
 
-
 .game-results-panel .game-data ul {
   background-color: rgb(200, 150, 90);
-  border-radius: .8em;
   border: 2px solid rgb(40, 20, 10);
   min-height: 10em;
 }

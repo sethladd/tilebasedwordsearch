@@ -9,7 +9,6 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
 }
 
 body {
@@ -30,8 +29,6 @@ div {
   width: 93.5%;
   margin: 0 auto;
   padding: 0;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
   margin-bottom: 1em;
 }
 
@@ -47,8 +44,6 @@ div {
   padding: 0;
   float: left;
   text-align: center;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
   min-height: 480px;
   background-color: rgba(40, 20, 10, .7);
 }
@@ -59,17 +54,12 @@ div {
   text-align: center;
   margin: 0;
   padding: 0;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
   background-color: rgb(200, 150, 90);
 }
 
 
 .main .tertiary {
   text-align: center;
-  margin: 0 auto;
-  -moz-border-radius: .8em;
-  border-radius: .8em;
   margin: 0;
   padding: 0;
   text-align: center;
@@ -83,8 +73,6 @@ div {
   margin: 0em auto;
   padding: 0;
   text-align: center;
-  -moz-border-radius: .4em;
-  border-radius: .4em;
 }
 
 .debug {
