@@ -51,21 +51,21 @@ packages:
   game_loop:
     description:
       ref: null
-      resolved-ref: "0884dd5371e431340c4cce5f7dac08a25cb74598"
+      resolved-ref: "2084c9f1ba2788b6390c4ac424022ea812455a38"
       url: "https://github.com/johnmccutchan/game_loop.git"
     source: git
     version: "0.9.0"
   google_appstate_v1_api:
     description:
       ref: null
-      resolved-ref: df3b0a93888f36e5b0649b29915ff5e7eb4326f2
+      resolved-ref: "2cba578a05534edf01a66c276e1bbe2f4ad7473c"
       url: "https://github.com/financeCoding/dart_appstate_v1_api_client.git"
     source: git
     version: "0.1.0"
   google_games_v1_api:
     description:
       ref: null
-      resolved-ref: c6d7146a08e340956501ebf0f4a8c2cd5fbbc355
+      resolved-ref: "1c5cd07ca64ed52ce2a41afc98049ce872ef7b5b"
       url: "https://github.com/financeCoding/dart_games_v1_api_client.git"
     source: git
     version: "0.1.0"
@@ -74,9 +74,12 @@ packages:
     source: hosted
     version: "0.2.14"
   google_plus_v1_api:
-    description: google_plus_v1_api
-    source: hosted
-    version: "0.1.7"
+    description:
+      ref: null
+      resolved-ref: "7873a9ff64b2604f5df56820d295054ab9c54d7b"
+      url: "https://github.com/financeCoding/dart_plus_v1_api_client.git"
+    source: git
+    version: "0.1.0"
   hop:
     description: hop
     source: hosted

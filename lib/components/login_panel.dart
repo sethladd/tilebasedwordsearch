@@ -58,7 +58,7 @@ class LoginPanel extends WebComponent {
   void disconnect(event) {
     js.scoped(() {
       // JSONP workaround because the accounts.google.com endpoint doesn't allow CORS
-      js.context.myJsonpCallback = new js.Callback.once(([jsonData]) {
+      js.context["myJsonpCallback"] = new js.Callback.once(([jsonData]) {
         // disable authenticated requests in the client library
         authenticationContext.token = null;
 
@@ -92,9 +92,9 @@ class LoginPanel extends WebComponent {
         return value;
       });
 
-      js.context.onSignInCallback =  new js.Callback.many((js.Proxy authResult) {
+      js.context["onSignInCallback"] =  new js.Callback.many((js.Proxy authResult) {
         Map dartAuthResult =
-            JSON.parse(js.context.JSON.stringify(authResult, reviverOAuth));
+            JSON.parse(js.context["JSON"]["stringify"](authResult, reviverOAuth));
         _onSignInCallback(dartAuthResult);
       });
     });
