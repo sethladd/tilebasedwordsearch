@@ -49,12 +49,44 @@ class RectangleTransform {
 
   bool _containsLine(double x0, double y0, double x1, double y1,
                      double l, double r, double t, double b) {
+    double _a = lineSide(x0, y0, x1, y1, l, t);
+    double _b = lineSide(x0, y0, x1, y1, l, b);
+    double _c = lineSide(x0, y0, x1, y1, r, t);
+    double _d = lineSide(x0, y0, x1, y1, r, b);
+    // All four corners on negative side.
+    if (_a < 0.0 && _b < 0.0 && _c < 0.0 && _d < 0.0) {
+      return false;
+    }
+    // All four corners on positive side.
+    if (_a > 0.0 && _b > 0.0 && _c > 0.0 && _d > 0.0) {
+      return false;
+    }
+    // Line is to the right.
+    if (x0 > r && x1 > r) {
+      return false;
+    }
+    // Line is to the left.
+    if (x0 < l && x1 < l) {
+      return false;
+    }
+    // Line is above.
+    if (y0 > t && y1 > t) {
+      return false;
+    }
+    // Line is below.
+    if (y0 < b && y0 < b) {
+      return false;
+    }
+    return true;
   }
 
   bool containsLine(int x0, int y0, int x1, int y1) {
+    int xChop = (width * 0.10).toInt();
+    int yChop = (height * 0.10).toInt();
     return _containsLine(x0.toDouble(), y0.toDouble(), x1.toDouble(),
-                         y1.toDouble(), left.toDouble(), right.toDouble(),
-                         top.toDouble(), bottom.toDouble());
+                         y1.toDouble(), (left+xChop).toDouble(),
+                         (right-xChop).toDouble(),
+                         (top+yChop).toDouble(), (bottom-yChop).toDouble());
   }
 
   /// Transform [x] into the [this] coordinate system.
