@@ -27,7 +27,7 @@ abstract class Persistable {
     var query = 'SELECT * FROM ${_getTableName(type)} WHERE id = @id';
     
     return _conn.query(query, {'id': id}).map((r) => _rowToMap(r)).toList().then((List rows) {
-      if (rows.isEmpty) return null; // TODO: throw if empty?
+      if (rows.isEmpty) throw 'No $type found for ID $id';
       
       var data = _rowToMap(rows.first);
       var classMirror = reflectClass(type);

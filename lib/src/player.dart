@@ -20,7 +20,6 @@ class HighScoreInfo {
                 this.timeSpan);
 }
 
-// XXX: What is the ID that I can use in the database?
 class Player {
   final Logger _playerLogger = new Logger("Player");
   Map _authResult;
