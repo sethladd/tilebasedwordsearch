@@ -17,13 +17,11 @@
 
 .main-panel .buttons {
   width: 50%;
-  margin: 1.2em auto;
+  margin: 0 auto;
 }
 
-.main-panel .buttons .new-game button {
-}
-
-.main-panel .buttons .new-game-with-pardner button {
+.main-panel .buttons button {
+  width: 100%;
 }
 
 /*
@@ -116,7 +114,6 @@
 }
 
 .game-panel button {
-  width: 40%;
   display: inline-block;
   margin-bottom: 1em;
 }
@@ -186,7 +183,6 @@
   color: white;
   padding: .1em .2em;
   font-size: .8em;
-  width: auto;
  }
 
 .list-games-panel td.status .score {
@@ -310,7 +306,6 @@ ul.words-and-scores li .score {
 }
 
 .game-results-panel .buttons {
-  width: 100%;
   padding: 0;
   margin: 1em auto;
 }
