@@ -4,7 +4,8 @@ body {
   font-family: sans-serif;
 }
 
-button.phone-only {
+/* Hide phone-only elements (except on phones). */
+.phone-only {
   display:none;
 }
 
