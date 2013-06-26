@@ -27,9 +27,9 @@ class GamePanel extends WebComponent {
 
   StreamSubscription _onTouchStartSubscription;
   StreamSubscription _onTouchEndSubscription;
-  
+
   _preventBubble(Event e) => e.preventDefault();
-  
+
   @override
   inserted() {
     _pauseButton = query('#pause');
@@ -42,11 +42,11 @@ class GamePanel extends WebComponent {
     // Don't lock the pointer on a click.
     _gameLoop.pointerLock.lockOnClick = false;
     _bodyElement.classes.add('no-scroll');
-    
-    // Prevent touch events to escape the canvas element so scrolling does not happen. 
+
+    // Prevent touch events to escape the canvas element so scrolling does not happen.
     _onTouchStartSubscription = _canvasElement.onTouchStart.listen(_preventBubble);
     _onTouchEndSubscription = _canvasElement.onTouchEnd.listen(_preventBubble);
-    
+
     _gameLoop.onUpdate = gameUpdate;
     _gameLoop.onRender = gameRender;
     _gameLoop.onTouchStart = gameTouchStart;
@@ -76,12 +76,12 @@ class GamePanel extends WebComponent {
     _gameClock.start();
     _gameClock.allDone.future.then((_) {
       _saveGame();
-      
+
       if (submitHighScore != null) {
         _gamePanelLogger.fine("submitScore(ScoreType.HIGH_SCORE, ${board.score})");
         submitHighScore(ScoreType.HIGH_SCORE, board.score);
       }
-      
+
       currentPanel = 'results';
     });
     _saveGame();
@@ -102,7 +102,7 @@ class GamePanel extends WebComponent {
     if (!paused) togglePause();
     currentPanel = 'main';
   }
-  
+
   void endGame() {
     if (window.confirm('Are you sure you want to end the game?')) {
       _gameClock.stop();
@@ -159,12 +159,15 @@ class GamePanel extends WebComponent {
     if (currentTouch == null) {
       return;
     }
-    var transform = new RectangleTransform(_canvasElement);
-    currentTouch.positions.forEach((position) {
-      int x = boardView.transformTouchToCanvasX(position.x);
-      int y = boardView.transformTouchToCanvasY(position.y);
-      drawCircle(x, y);
-    });
+    bool drawTouchPoints = false;
+    if (drawTouchPoints) {
+      var transform = new RectangleTransform(_canvasElement);
+      currentTouch.positions.forEach((position) {
+        int x = boardView.transformTouchToCanvasX(position.x);
+        int y = boardView.transformTouchToCanvasY(position.y);
+        drawCircle(x, y);
+      });
+    }
   }
 
   int touchCount = 0;
@@ -187,15 +190,15 @@ class GamePanel extends WebComponent {
     touchCount--;
     print('Open touches $touchCount');
   }
-  
+
   String get timeRemaining {
     int seconds = _gameClock.secondsRemaining;
-    
+
     if (seconds <= 0) return 'GAME OVER'; // XXX ok for stop() case?
-    
+
     int m = seconds ~/ 60;
     int s = seconds % 60;
-    
+
     String minuteString = "";
     String secondString = "";
 

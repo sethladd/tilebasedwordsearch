@@ -8,9 +8,7 @@
           <template if="board.recentWords.isEmpty">
             <div>Find a word!</div>
           </template>
-          <template if="!board.recentWords.isEmpty">
-            <div>{{board.recentWords[0]}}</div>
-          </template>
+          <div>{{boardController.wordInProgress}} {{boardController.wordInProgressScore}}</div>
         </div>
         <canvas id="frontBuffer" class="board"></canvas>
         <div class="game-data">

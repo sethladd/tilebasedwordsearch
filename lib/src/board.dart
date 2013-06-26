@@ -82,6 +82,24 @@ class Board {
     words[word] = wordScore;
   }
 
+  String wordForPath(List<int> path) {
+    if (path == null || path.length == 0) {
+      return '';
+    }
+    String r = '';
+    for (int i = 0; i < path.length; i++) {
+      int index = path[i];
+      int row = GameConstants.rowFromIndex(index);
+      int column = GameConstants.columnFromIndex(index);
+      String tileCharacter = config.getChar(row, column);
+      r += tileCharacter;
+      if (tileCharacter == 'Q') {
+        r += 'U';
+      }
+    }
+    return r;
+  }
+
   int scoreForPath(List<int> path) {
     if (path == null || path.length == 0) {
       return 0;

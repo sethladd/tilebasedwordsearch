@@ -1,5 +1,6 @@
 part of tilebasedwordsearch;
 
+@observable
 class BoardController {
   final Board board;
   final BoardView view;
@@ -8,14 +9,20 @@ class BoardController {
 
   List<int> selectedPath;
   String _keyboardSearchString = '';
+  String wordInProgress = '';
+  int wordInProgressScore = 0;
 
   void clearSelected() {
     view.selectedTiles.clear();
     selectedPath = null;
+    wordInProgress = '';
+    wordInProgressScore = 0;
   }
 
   void clearKeyboardInput() {
     _keyboardSearchString = '';
+    wordInProgress = '';
+    wordInProgressScore = 0;
   }
 
   int _comparePaths(List<int> a, List<int> b) {
@@ -61,6 +68,8 @@ class BoardController {
     }
     if (bestPath != null) {
       selectedPath = bestPath;
+      wordInProgress = board.wordForPath(selectedPath);
+      wordInProgressScore = board.scoreForPath(selectedPath);
       for (int i = 0; i < selectedPath.length; i++) {
         view.selectedTiles.add(selectedPath[i]);
       }
@@ -205,6 +214,8 @@ class BoardController {
         testLine(x0, y0, x1, y1);
         testPoint(x1, y1);
       }
+      wordInProgress = board.wordForPath(selectedPath);
+      wordInProgressScore = board.scoreForPath(selectedPath);
     }
   }
 
