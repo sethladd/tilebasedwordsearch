@@ -148,29 +148,50 @@ void getIndexHandler(FukiyaContext context) {
  */
 void postConnectDataHandler(FukiyaContext context) {
   _log.fine("postConnectDataHandler");
+  _confirmOauthSignin(context).then((String userId) {
+    db.Persistable.findBy(Player, {'gplus_id': userId}).toList().then((List players) {
+      if (players.isEmpty) {
+        _log.info('No player found for gplusId $userId');
+        var p = new Player()..gplus_id = userId;
+        p.store().then((_) {
+          context.request.session['player_id'] = p.dbId;
+          context.send("POST OK");
+        })
+        .catchError((e) {
+          _log.severe('Did not store new person $userId into db: $e');
+          context.response.statusCode = 500;
+          context.response.close();
+        });
+      }
+    });
+  });
+}
+
+Future<String> _confirmOauthSignin(FukiyaContext context) {
+  Completer completer = new Completer();
   String tokenData = context.request.session["access_token"]; // TODO: handle missing token
   String stateToken = context.request.session["state_token"];
   String queryStateToken = context.request.uri.queryParameters["state_token"];
-
+  
   // Check if the token already exists for this session.
   if (tokenData != null) {
     context.send("Current user is already connected.");
-    return;
+    completer.complete(context.request.uri.queryParameters["gplus_id"]);
   }
-
+  
   // Check if any of the needed token values are null or mismatched.
   if (stateToken == null || queryStateToken == null || stateToken != queryStateToken) {
     context.response.statusCode = 401;
     context.send("Invalid state parameter.");
-    return;
+    completer.completeError('Invalid state parameter.');
   }
-
+  
   // Normally the state would be a one-time use token, however in our
   // simple case, we want a user to be able to connect and disconnect
   // without reloading the page.  Thus, for demonstration, we don't
   // implement this best practice.
   context.request.session.remove("state_token");
-
+  
   String gPlusId = context.request.uri.queryParameters["gplus_id"];
   StringBuffer sb = new StringBuffer();
   // Read data from request.
@@ -179,7 +200,7 @@ void postConnectDataHandler(FukiyaContext context) {
   .listen((data) => sb.write(data), onDone: () {
     _log.fine("context.request.listen.onDone = ${sb.toString()}");
     Map requestData = JSON.parse(sb.toString());
-
+  
     Map fields = {
               "grant_type": "authorization_code",
               "code": requestData["code"],
@@ -188,7 +209,7 @@ void postConnectDataHandler(FukiyaContext context) {
               "client_id": CLIENT_ID,
               "client_secret": CLIENT_SECRET
     };
-
+  
     _log.fine("fields = $fields");
     http.Client _httpClient = new http.Client();
     _httpClient.post(TOKEN_ENDPOINT, fields: fields).then((http.Response response) {
@@ -196,42 +217,31 @@ void postConnectDataHandler(FukiyaContext context) {
       var credentials = JSON.parse(response.body);
       _log.fine("credentials = ${response.body}");
       _httpClient.close();
-
+  
       var verifyTokenUrl = '${TOKENINFO_URL}?access_token=${credentials["access_token"]}';
       new http.Client()
       ..get(verifyTokenUrl).then((http.Response response)  {
         _log.fine("response = ${response.body}");
-
+  
         var verifyResponse = JSON.parse(response.body);
-        String userId = verifyResponse.containsKey("user_id") ? verifyResponse["user_id"] : null;
-        String accessToken = credentials.containsKey("access_token") ? credentials["access_token"] : null;
+        String userId = verifyResponse["user_id"];
+        String accessToken = credentials["access_token"];
         if (userId != null && userId == gPlusId && accessToken != null) {
           context.request.session["access_token"] = accessToken;
           
           _log.info('Set the access token to $accessToken');
           
-          db.Persistable.findBy(Player, {'gplus_id': userId}).toList().then((List players) {
-            if (players.isEmpty) {
-              _log.info('No player found for gplusId $userId');
-              var p = new Player()..gplus_id = userId;
-              p.store().then((_) {
-                context.request.session['player_id'] = p.dbId;
-                context.send("POST OK");
-              })
-              .catchError((e) {
-                _log.severe('Did not store new person $userId into db: $e');
-                context.response.statusCode = 500;
-                context.response.close();
-              });
-            }
-          });
+          completer.complete(userId);
         } else {
           context.response.statusCode = 401;
           context.send("POST FAILED ${userId} != ${gPlusId}");
+          completer.completeError("POST FAILED ${userId} != ${gPlusId}");
         }
       });
     });
   });
+  
+  return completer.future;
 }
 
 /**
