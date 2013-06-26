@@ -4,11 +4,11 @@ packages:
   analyzer_experimental:
     description: analyzer_experimental
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   args:
     description: args
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   asset_pack:
     description:
       ref: null
@@ -23,7 +23,7 @@ packages:
   bot:
     description: bot
     source: hosted
-    version: "0.22.0"
+    version: "0.21.0"
   bot_io:
     description: bot_io
     source: hosted
@@ -31,11 +31,11 @@ packages:
   browser:
     description: browser
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   crypto:
     description: crypto
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   csslib:
     description: csslib
     source: hosted
@@ -47,11 +47,11 @@ packages:
   fukiya:
     description: fukiya
     source: hosted
-    version: "0.1.6"
+    version: "0.1.5"
   game_loop:
     description:
       ref: null
-      resolved-ref: "2084c9f1ba2788b6390c4ac424022ea812455a38"
+      resolved-ref: "4779c76bd90c18d1ab05d98e006825e4ac3207ec"
       url: "https://github.com/johnmccutchan/game_loop.git"
     source: git
     version: "0.9.0"
@@ -91,11 +91,11 @@ packages:
   http:
     description: http
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   intl:
     description: intl
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   js:
     description: js
     source: hosted
@@ -107,19 +107,19 @@ packages:
   logging:
     description: logging
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   meta:
     description: meta
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   oauth2:
     description: oauth2
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   pathos:
     description: pathos
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   postgresql:
     description: postgresql
     source: hosted
@@ -127,20 +127,16 @@ packages:
   source_maps:
     description: source_maps
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   start:
     description: start
     source: hosted
     version: "0.0.8"
-  static_file_handler:
-    description: static_file_handler
-    source: hosted
-    version: "0.1.0"
   unittest:
     description: unittest
     source: hosted
-    version: "0.5.20"
+    version: "0.5.16"
   web_ui:
     description: web_ui
     source: hosted
-    version: "0.4.12+3"
+    version: "0.4.11+2"
