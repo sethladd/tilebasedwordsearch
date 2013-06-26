@@ -8,14 +8,12 @@
     <element name="main-panel" extends="div" constructor="MainPanel">
       <template>
         <div class='buttons'>
-          <template if="app.player.isConnected">
-            <div class='new-game-with-pardner'>
-              <button class="primary-button"
-                on-click="app.currentPanel = 'highScores'; app.player.refreshHighScoreLeaderboard();">
-                New game<br>(with pardner)
-              </button>
-            </div>
-          </template>
+          <div class='new-game-with-pardner'>
+            <button class="primary-button" disabled="true"
+              on-click="app.currentPanel = 'highScores'; app.player.refreshHighScoreLeaderboard();">
+              New game<br>(with pardner)
+            </button>
+          </div>
           <div class='new-game'>
             <button on-click="app.newGame()">New game<br>(lone)</button>
           </div>
