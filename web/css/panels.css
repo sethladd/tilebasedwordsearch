@@ -152,6 +152,7 @@
   margin: 0 auto;
   width: 95%;
   padding-top: 1em;
+  background-color: rgb(200, 150, 90);
 }
 
 .list-games-panel td {
