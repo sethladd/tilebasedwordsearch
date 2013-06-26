@@ -7,11 +7,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
     <meta name="HandheldFriendly" content="true">
+    <link type='text/css' rel='stylesheet' href='css/common_styles.css' />
+
     <link type='text/css' rel='stylesheet' href='css/default_layout.css' />
     <link type='text/css' rel='stylesheet' href='css/tablet_layout.css' />
     <link type='text/css' rel='stylesheet' href='css/phone_layout.css' />
 
-    <link type='text/css' rel='stylesheet' href='css/common_styles.css' />
     <link type='text/css' rel='stylesheet' href='css/panels.css' />
     <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/high_scores_component.html">
@@ -23,16 +24,8 @@
   </head>
   <body>
     <div id="page">
-      <!-- ================================================================= -->
-      <div class="header">
-      <!-- ================================================================= -->
-        <h1>{{app.currentPanel}} panel, isConnected = {{ app.player.isConnected }}</h1>
-      </div>
-
       <div class="main">
-        <!-- =============================================================== -->
         <div class="primary">
-        <!-- =============================================================== -->
           <template if="app.currentPanel == 'main'">
             <div is="main-panel" class="main-panel"></div>
           </template>
@@ -53,11 +46,14 @@
           <template if="app.currentPanel == 'results'">
             <div is="game-results-panel" class="game-results-panel"></div>
           </template>
+
+          <template if="app.currentPanel == 'list-games'">
+            <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
+          </template>
+
         </div> <!-- end .primary -->
 
-        <!-- =============================================================== -->
         <div class="secondary">
-        <!-- =============================================================== -->
           <template if="app.currentPanel == 'main'">
             <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
           </template>
@@ -67,22 +63,13 @@
           </template>
 
           <template if="app.currentPanel == 'results'">
-            <div is="recent-words" class="recent-words-panel"></div>
+            <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
           </template>
         </div><!-- end .secondary -->
 
-        <!-- =============================================================== -->
         <div class="tertiary">
-        <!-- =============================================================== -->
         </div> <!-- end .tertiary -->
       </div> <!-- end .main -->
-
-      <!-- ================================================================= -->
-      <div class="footer">
-      <!-- ================================================================= -->
-        Built with pride using Dart!
-      </div><!-- end .footer -->
-
     </div><!-- end #page -->
 
     <script type="application/dart" src="main.dart"></script>
