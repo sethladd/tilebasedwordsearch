@@ -147,25 +147,18 @@ void getIndexHandler(FukiyaContext context) {
  * Returns a list of friends that have also installed the game.
  */
 void getNewMultiplayerGame(FukiyaContext context) {
-//  int playerId = context.request.session['player_id'].toInt();
-//  db.Persistable.load(playerId, Player).then((Player player) {
-//    
-//  })
-//  .catchError((e) {
-//    _log.warning('Problem loading player $playerId: $e');
-//    context.response.statusCode = 404;
-//    context.response.close();
-//  });
   String accessToken = context.request.session["access_token"];
-  getAllFriends(accessToken).then((people) {
+  context.response.headers.add(HttpHeaders.CONTENT_TYPE, 'application/json');
+  
+  getAllFriends(accessToken).listen((people) {
     _log.fine('Found friends of current player: $people');
-    context.response.headers.add(HttpHeaders.CONTENT_TYPE, 'application/json');
     context.response.write(JSON.stringify(people));
-    context.response.close();
-  })
-  .catchError((e) {
+  },
+  onError: (e) {
     _log.warning('Problem finding friends: $e');
     context.response.statusCode = 500;
+  },
+  onDone: () {
     context.response.close();
   });
 }
@@ -195,6 +188,11 @@ void postConnectDataHandler(FukiyaContext context) {
         _log.info('Found the player ${players.first}');
       }
     });
+  })
+  .catchError((e) {
+    _log.warning(e);
+    context.response.statusCode = 500;
+    context.response.close();
   });
 }
 
@@ -206,14 +204,11 @@ Future<String> _confirmOauthSignin(FukiyaContext context) {
   
   // Check if the token already exists for this session.
   if (tokenData != null) {
-    context.send("Current user is already connected.");
     return new Future.value(context.request.uri.queryParameters["gplus_id"]);
   }
   
   // Check if any of the needed token values are null or mismatched.
   if (stateToken == null || queryStateToken == null || stateToken != queryStateToken) {
-    context.response.statusCode = 401;
-    context.send("Invalid state parameter: $stateToken $queryStateToken");
     return new Future.error('Invalid state parameter: $stateToken $queryStateToken');
   }
   
@@ -306,26 +301,29 @@ String _createStateToken() {
   return stateToken;
 }
 
-Future<List<Person>> getAllFriends(String accessToken) {
+Stream<List<Person>> getAllFriends(String accessToken) {
   
-  List<Person> people = <Person>[];
-  Completer completer = new Completer();
+  StreamController stream = new StreamController();
   
-  consumePeople([String nextToken]) {
+  Future consumePeople([String nextToken]) {
     return getPageOfFriends(accessToken, nextPageToken: nextToken)
       .then((PeopleFeed feed) {
-        people.addAll(feed.items);
+        stream.add(feed.items);
         if (feed.nextPageToken != null) {
           return consumePeople(feed.nextPageToken);
-        } else {
-          completer.complete(people);
         }
       });
   }
   
-  consumePeople().catchError(completer.completeError);
+  consumePeople()
+      .catchError((e) {
+        stream.addError(e);
+      })
+      .whenComplete(() {
+        stream.close();
+      });
   
-  return completer.future;
+  return stream.stream;
 }
 
 Future<PeopleFeed> getPageOfFriends(String accessToken,
