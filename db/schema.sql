@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS player;
 DROP TABLE IF EXISTS match;
+DROP TABLE IF EXISTS twoplayermatch;
 
 CREATE TABLE IF NOT EXISTS player (
   id SERIAL,
@@ -11,6 +12,8 @@ CREATE TABLE IF NOT EXISTS player (
 CREATE TABLE IF NOT EXISTS twoplayermatch (
   id SERIAL,
   board VARCHAR(255),
+  word_bonus_tile INT,
+  letter_bonus_tile_indexes VARCHAR(255),
   created_on TIMESTAMP,
   p1_id VARCHAR(255),
   p2_id VARCHAR(255),
