@@ -31,7 +31,7 @@ class Game extends Object with Persistable {
   }
 
   String get lastPlayedFormatted {
-    var formatter = new DateFormat("M/d, h:m a");
+    var formatter = new DateFormat("M/d, h:mm a");
     return formatter.format(lastPlayed);
   }
 
