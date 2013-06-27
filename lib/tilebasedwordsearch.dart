@@ -138,7 +138,7 @@ newGame([Game game]) {
 
 newMultiplayerGame() {
   currentPanel = 'newMultiplayerGame';
-  player.refreshHighScoreLeaderboard();
+//  player.refreshHighScoreLeaderboard();
 }
 
 Future initialize() {

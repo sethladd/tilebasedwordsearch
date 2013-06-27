@@ -132,22 +132,22 @@ class Player {
     .map((Achievement ac) => ac.submitAchievment(this, score)).toList();
   }
 
-  refreshHighScoreLeaderboard() {
-    if (gamesclient == null) return;
-
-    ScoreBoard highScoreBoard = scoreBoards
-    .singleWhere((ScoreBoard sb) => sb.scoreType == ScoreType.HIGH_SCORE);
-
-    gamesclient.scores.listWindow(highScoreBoard.leaderBoardId,
-        "PUBLIC", "ALL_TIME", maxResults: 25)
-        .then((LeaderboardScores leaderboardScores) {
-
-          allTimeHighScores.clear();
-          leaderboardScores.items.forEach((LeaderboardEntry lbe) {
-            _playerLogger.fine("${lbe.player.displayName} ${lbe.scoreRank} ${lbe.scoreValue} ${lbe.timeSpan}");
-            allTimeHighScores.add(new HighScoreInfo(lbe.player.displayName, lbe.scoreRank, lbe.scoreValue, lbe.timeSpan));
-          });
-
-        }).catchError((e) => _playerLogger.fine("Not able to refresh high scores: $e"));
-  }
+//  refreshHighScoreLeaderboard() {
+//    if (gamesclient == null) return;
+//
+//    ScoreBoard highScoreBoard = scoreBoards
+//    .singleWhere((ScoreBoard sb) => sb.scoreType == ScoreType.HIGH_SCORE);
+//
+//    gamesclient.scores.listWindow(highScoreBoard.leaderBoardId,
+//        "PUBLIC", "ALL_TIME", maxResults: 25)
+//        .then((LeaderboardScores leaderboardScores) {
+//
+//          allTimeHighScores.clear();
+//          leaderboardScores.items.forEach((LeaderboardEntry lbe) {
+//            _playerLogger.fine("${lbe.player.displayName} ${lbe.scoreRank} ${lbe.scoreValue} ${lbe.timeSpan}");
+//            allTimeHighScores.add(new HighScoreInfo(lbe.player.displayName, lbe.scoreRank, lbe.scoreValue, lbe.timeSpan));
+//          });
+//
+//        }).catchError((e) => _playerLogger.fine("Not able to refresh high scores: $e"));
+//  }
 }
