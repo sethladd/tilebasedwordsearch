@@ -50,7 +50,7 @@ and (orientation : landscape) {
 /* SMALL TABLET PORTRAIT */
 @media screen
 and (max-device-width : 610px)
-and (min-device-width : 600px)
+and (min-device-width : 351px)
 
 and (orientation : portrait) {
 
