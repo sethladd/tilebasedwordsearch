@@ -3,13 +3,15 @@ part of tilebasedwordsearch;
 class BoardBonusConfig {
   static const numBonusLetters = 3;
   static Random random = new Random();
-  final Set<int> letterBonusTileIndexes = new Set<int>();
+  final List<int> letterBonusTileIndexes = new List<int>();
   int wordBonusTileIndex = null;
 
   BoardBonusConfig() {
     while (letterBonusTileIndexes.length < numBonusLetters) {
       int r = random.nextInt(16);
-      letterBonusTileIndexes.add(r);
+      if (!letterBonusTileIndexes.contains(r)) {
+        letterBonusTileIndexes.add(r);
+      }
     }
     while (wordBonusTileIndex == null) {
       int r = random.nextInt(16);
