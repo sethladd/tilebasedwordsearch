@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS twoplayermatch (
   created_on TIMESTAMP,
   p1_id VARCHAR(255),
   p2_id VARCHAR(255),
+  p1_name VARCHAR(255),
+  p2_name VARCHAR(255),
   p1_words TEXT,
   p2_words TEXT,
   p1_score INT,

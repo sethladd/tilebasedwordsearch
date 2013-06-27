@@ -72,7 +72,8 @@ class Player {
   void _connectServer(String gplusId) {
     clientLogger.fine("gplusId = $gplusId");
     var stateToken = (query("meta[name='state_token']") as MetaElement).content;
-    String url = "${window.location.href}connect?state_token=${stateToken}&gplus_id=${gplusId}";
+    String url = "${window.location.href}connect?state_token=${stateToken}"
+                 "&gplus_id=${gplusId}&name=${Uri.encodeQueryComponent(displayName)}";
     clientLogger.fine(url);
     HttpRequest.request(url, method: "POST", sendData: JSON.stringify(_authResult),
         onProgress: (ProgressEvent e) {

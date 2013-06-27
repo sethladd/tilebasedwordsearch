@@ -224,10 +224,12 @@ void createMultiplayerGame(FukiyaContext context) {
     }
     
     String currentUserGplusId = context.request.session['userGplusId'];
+    String userName = context.request.session['userName'];
     
     BoardConfig boardConfig = new BoardConfig(boards);
     TwoPlayerMatch match = new TwoPlayerMatch(boardConfig,
-        currentUserGplusId, opponentGplusId);
+        currentUserGplusId, opponentGplusId,
+        userName, player.name);
     
     return match.store().then((_) => match);
   })
@@ -347,6 +349,7 @@ Future<String> _confirmOauthSignin(FukiyaContext context) {
         if (userGplusId != null && userGplusId == gPlusId && accessToken != null) {
           context.request.session["access_token"] = accessToken;
           context.request.session['userGplusId'] = userGplusId;
+          context.request.session['userName'] = context.request.uri.queryParameters['name'];
           
           _log.info('Set the access token to $accessToken');
           
