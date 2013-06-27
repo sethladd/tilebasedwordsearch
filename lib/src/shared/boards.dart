@@ -34,7 +34,7 @@ class BoardConfig {
   BoardConfig.fromFile(this._board, this._words);
   
   factory BoardConfig.fromGame(Boards boards, Game game) {
-    BoardConfig config = new BoardConfig(boards);
+    BoardConfig config = boards.getBoardFromString(game.board);
     config.letterBonusTileIndexes = game.letterBonusTiles;
     config.wordBonusTileIndex = game.wordBonusTile;
     return config;

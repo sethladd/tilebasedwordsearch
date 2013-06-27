@@ -115,7 +115,9 @@ void parseAssets() {
 resumeGame(Game resumedGame) {
   clientLogger.info('Resuming game ${resumedGame.id}');
   game = resumedGame;
+  print(game.board);
   BoardConfig boardConfig = new BoardConfig.fromGame(boards, resumedGame);
+  print(boardConfig.board);
   board = new Board.fromGame(boardConfig, resumedGame);
   currentPanel = 'game';
 }
