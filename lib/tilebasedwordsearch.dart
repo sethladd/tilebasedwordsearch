@@ -134,9 +134,14 @@ newGame({TwoPlayerMatch match}) {
     game.matchId = match.id;
   }
   
-  games.add(game);
+  game.store().then((_) {
+    games.add(game);
+    currentPanel = 'game';
+  })
+  .catchError((e) {
+    print('Could not store game into local db: $e');
+  });
 
-  currentPanel = 'game';
 }
 newMultiplayerGame() {
   currentPanel = 'newMultiplayerGame';

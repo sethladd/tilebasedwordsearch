@@ -8,6 +8,8 @@ class TwoPlayerMatch extends Object with Persistable {
   DateTime created_on;
   String p1_id;
   String p2_id;
+  String p1_name;
+  String p2_name;
   String p1_words;
   String p2_words;
   int p1_score;
@@ -15,7 +17,8 @@ class TwoPlayerMatch extends Object with Persistable {
   DateTime p1_played;
   DateTime p2_played;
   
-  TwoPlayerMatch(BoardConfig boardConfig, this.p1_id, this.p2_id) {
+  TwoPlayerMatch(BoardConfig boardConfig, this.p1_id, this.p2_id,
+      this.p1_name, this.p2_name) {
     board = boardConfig.board;
     word_bonus_tile = boardConfig.wordBonusTileIndex;
     letter_bonus_tile_indexes = boardConfig.letterBonusTileIndexes.join(',');
@@ -30,6 +33,8 @@ class TwoPlayerMatch extends Object with Persistable {
     board = data['board'];
     p1_id = data['p1_id'];
     p2_id = data['p2_id'];
+    p1_name = data['p1_name'];
+    p2_name = data['p2_name'];
     p1_words = data['p1_words'];
     p2_words = data['p2_words'];
     p1_score = data['p1_score'];
@@ -66,6 +71,8 @@ class TwoPlayerMatch extends Object with Persistable {
       'created_on': created_on == null ? null : created_on.millisecondsSinceEpoch,
       'p1_id': p1_id,
       'p2_id': p2_id,
+      'p1_name': p1_name,
+      'p2_name': p2_name,
       'p1_words': p1_words,
       'p2_words': p2_words,
       'p1_score': p1_score,
