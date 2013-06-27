@@ -1,6 +1,11 @@
 @media screen
-and (max-device-width : 980px)
+and (max-device-width : 1000px)
+and (min-device-width : 600px)
 and (orientation : landscape) {
+  #page:after { content: '600-1000, small tablet landscape'; }
+  body {
+    background-color: green;
+  }
 
   .login-panel {
     bottom: 2em;
@@ -50,10 +55,10 @@ and (orientation : landscape) {
 /* SMALL TABLET PORTRAIT */
 @media screen
 and (max-device-width : 610px)
-and (min-device-width : 600px)
-
+and (min-device-width : 351px)
 and (orientation : portrait) {
 
+  #page:after { content: '351-610, small tablet portrait'; }
   .secondary {
     display: none;
   }
@@ -129,34 +134,3 @@ and (orientation : portrait) {
   }
 } /* end of portrait styles */
 
-
-@media screen and (max-width: 980px{
-
-  .header {
-    display: none;
-  }
-
-  .main {
-    margin: 0 auto;
-    width: 100%;
-    margin-bottom: 1em;
-  }
-
-  .main .primary {
-    width: 60%;
-    margin-bottom: 1em;
-  }
-
-  .main-panel {
-    background-position: 50% 8em;
-  }
-
-  .game-panel #frontBuffer {
-    width: 90%;
-  }
-
-  .main .secondary {
-    width: 39%;
-    text-align: center;
-  }
-}

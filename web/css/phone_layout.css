@@ -1,4 +1,11 @@
-@media screen and (max-width: 599px) {
+@media screen
+and (max-device-width : 350px)
+and (orientation : portrait) {
+  #page:after { content: '< 350, small phone portrait'; }
+  body {
+    background-color: yellow;
+  }
+
   #page {
     margin: 0 auto;
     width: 100%;
@@ -56,6 +63,10 @@
 @media screen
 and (max-device-width : 599px)
 and (orientation : landscape) {
+  #page:after { content: '< 599, small phone landscape'; }
+  body {
+    background-color: brown;
+  }
 
   .primary {
     width: 100%;
