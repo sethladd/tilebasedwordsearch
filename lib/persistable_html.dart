@@ -9,7 +9,7 @@ final Logger log = new Logger("persistence");
 final Map<Type, Store> _stores = new Map<Type, Store>();
 
 Future init(String dbName, Type type) {
-  Store store = new Store(dbName, type.runtimeType.toString());
+  Store store = new Store(dbName, type.toString());
   _stores[type] = store;
   return store.open();
 }
