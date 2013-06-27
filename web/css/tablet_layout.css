@@ -1,5 +1,6 @@
 @media screen
 and (max-device-width : 980px)
+and (min-device-width : 600px)
 and (orientation : landscape) {
 
   .main-panel .login-panel {
@@ -49,8 +50,8 @@ and (orientation : landscape) {
 
 /* SMALL TABLET PORTRAIT */
 @media screen
-and (max-device-width : 610px)
-and (min-device-width : 600px)
+and (max-device-width : 780px)
+and (min-device-width : 401px)
 
 and (orientation : portrait) {
 
