@@ -148,19 +148,24 @@ void getIndexHandler(FukiyaContext context) {
  */
 void getNewMultiplayerGame(FukiyaContext context) {
   String accessToken = context.request.session["access_token"];
-  context.response.headers.add(HttpHeaders.CONTENT_TYPE, 'application/json');
+  context.response.headers.contentType
+           = new ContentType("application", "json", charset: "utf-8");
   
-  getAllFriends(accessToken).listen((people) {
-    _log.fine('Found friends of current player: $people');
-    context.response.write(JSON.stringify(people));
+  runZonedExperimental(() {
+    getAllFriends(accessToken).listen((people) {
+      _log.fine('Found friends of current player: $people');
+      context.response.write(JSON.stringify(people));
+    },
+    onError: (e) {
+      _log.warning('Problem finding friends: $e');
+      context.response.statusCode = 500;
+    },
+    onDone: () {
+      context.response.close();
+    });
   },
-  onError: (e) {
-    _log.warning('Problem finding friends: $e');
-    context.response.statusCode = 500;
-  },
-  onDone: () {
-    context.response.close();
-  });
+  onError: print);
+
 }
 
 /**
