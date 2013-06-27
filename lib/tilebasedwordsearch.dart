@@ -131,11 +131,12 @@ newGame() {
     ..board = board.tiles;
   game.letterBonusTiles = board.bonusConfig.letterBonusTileIndexes;
   game.wordBonusTile = board.bonusConfig.wordBonusTileIndex;
+  games.add(game);
   currentPanel = 'game';
 }
 
 newMultiplayerGame() {
-  currentPanel = 'highScores';
+  currentPanel = 'newMultiplayerGame';
   player.refreshHighScoreLeaderboard();
 }
 

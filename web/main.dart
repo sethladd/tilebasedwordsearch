@@ -19,7 +19,19 @@ void _setupLogger() {
   });
 }
 
+/* Animation gallops off to the left and then disappears. */
+void _removeLoadingAnimation() {
+  Element el = query('.primary');
+  el.style.transitionProperty = 'all';
+  el.style.transitionDuration = '4s';
+  el.style.transitionTimingFunction = 'ease-in';
+  el.style.backgroundPositionX = '-150%';
+  new Timer(new Duration(seconds:5),
+            () => el.style.backgroundImage = 'none');
+}
+
 main() {
+  _removeLoadingAnimation();
   _setupLogger();
   app.initialize();
 }

@@ -152,17 +152,35 @@ void getNewMultiplayerGame(FukiyaContext context) {
            = new ContentType("application", "json", charset: "utf-8");
   
   runZonedExperimental(() {
-    getAllFriends(accessToken).listen((people) {
-      _log.fine('Found friends of current player: $people');
-      context.response.write(JSON.stringify(people));
-    },
-    onError: (e) {
-      _log.warning('Problem finding friends: $e');
-      context.response.statusCode = 500;
-    },
-    onDone: () {
-      context.response.close();
-    });
+    getAllFriends(accessToken).transform(new StreamTransformer<List<Person>, List<Player>>(
+        handleData: (List<Person> people, EventSink<List<Player>> sink) {
+          int numFriends = people == null ? 0 : people.length;
+          _log.fine('Found $numFriends friends of current player');
+          
+          if (people == null) {
+            sink.add([]);
+          } else {
+            List gplusIds = people.map((Person p) => p.id).toList(growable: false);
+            db.Persistable.findBy(Player, {'gplus_id': gplusIds}).toList().then((List<Player> players) {
+              int numPlayers = players == null ? 0 : players.length;
+              _log.fine('Found ${numPlayers} friends of current player that are players');
+              sink.add(players);
+            })
+            .catchError((e) => sink.addError(e));
+          }
+        }))
+      .toList()
+      .then((List<List<Player>> players) {
+        List<Player> flat = players.expand((i) => i).toList();
+        context.response.write(JSON.stringify(flat));
+      })
+      .catchError((e) {
+        _log.warning('Problem finding friends: $e');
+        context.response.statusCode = 500;
+      })
+      .whenComplete(() {
+        context.response.close();
+      });
   },
   onError: print);
 
@@ -179,7 +197,9 @@ void postConnectDataHandler(FukiyaContext context) {
     db.Persistable.findBy(Player, {'gplus_id': userId}).toList().then((List players) {
       if (players.isEmpty) {
         _log.info('No player found for gplusId $userId');
-        var p = new Player()..gplus_id = userId;
+        // TODO save the player's name
+        var p = new Player()
+          ..gplus_id = userId;
         p.store().then((_) {
           context.request.session['player_id'] = p.dbId;
           context.send("POST OK");
