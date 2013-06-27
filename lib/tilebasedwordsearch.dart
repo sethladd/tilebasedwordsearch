@@ -12,7 +12,7 @@ import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
 import "package:google_plus_v1_api/plus_v1_api_browser.dart";
 import "package:google_oauth2_client/google_oauth2_browser.dart";
-import "package:google_games_v1_api/games_v1_api_browser.dart";
+import "package:google_games_v1_api/games_v1_api_browser.dart" as gg;
 import 'package:tilebasedwordsearch/game_constants.dart';
 
 part 'src/board_view.dart';
@@ -24,8 +24,6 @@ part 'src/image_atlas.dart';
 part 'src/game_score.dart';
 part 'src/tile_set.dart';
 part 'src/player.dart';
-part 'src/score_board.dart';
-part 'src/achievement.dart';
 
 AssetManager assetManager = new AssetManager();
 Boards boards;
@@ -146,16 +144,6 @@ newMultiplayerGame() {
 
 Future initialize() {
   player = new Player();
-
-  // Add players scoreboard/leaderboard from game play services
-  player.scoreBoards.add(new ScoreBoard("CgkIoubq9KYHEAIQAQ", ScoreType.HIGH_SCORE));
-  player.scoreBoards.add(new ScoreBoard("CgkIoubq9KYHEAIQAg", ScoreType.MOST_NUMBER_OF_WORDS));
-
-  // Adding achievement that can be achieved
-  player.achievement.add(new Achievement("CgkIoubq9KYHEAIQBA", AchievementType.SEVEN_LETTER_WORD));
-  player.achievement.add(new Achievement("CgkIoubq9KYHEAIQBQ", AchievementType.EIGHT_LETTER_WORD));
-  player.achievement.add(new Achievement("CgkIoubq9KYHEAIQBg", AchievementType.NINE_LETTER_WORD));
-  player.achievement.add(new Achievement("CgkIoubq9KYHEAIQBw", AchievementType.TEN_LETTER_WORD));
 
   assetManager.loaders['image'] = new ImageLoader();
   assetManager.importers['image'] = new NoopImporter();
