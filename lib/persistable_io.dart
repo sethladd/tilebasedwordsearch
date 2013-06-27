@@ -37,14 +37,25 @@ abstract class Persistable {
   
   static Stream findBy(Type type, Map params) {
     _validateParams(type, params);
+    Map conditionValues = new Map.from(params);
     
     var classMirror = reflectClass(type);
-    var conditions = params.keys.map((k) => '$k = @${k}').join(',');
-    var query = 'SELECT * FROM ${_getTableName(type)} WHERE $conditions';
+    var conditions = params.keys.map((k) {
+      String condition = '$k ';
+      if (params[k] is List) {
+        condition += ' IN (@$k)';
+        conditionValues[k] = conditionValues[k].join(',');
+      } else {
+        condition += ' = @$k';
+      }
+      return condition;
+    }).join(',');
+    
+    String query = 'SELECT * FROM ${_getTableName(type)} WHERE $conditions';
     
     _log.fine('Query $query');
     
-    return _conn.query(query, params).map((row) {
+    return _conn.query(query, conditionValues).map((row) {
       return _createAndPopulate(classMirror, row.id, _rowToMap(row));
     });
   }
