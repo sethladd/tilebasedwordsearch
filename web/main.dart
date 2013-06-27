@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:async';
+import 'dart:json';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:web_ui/web_ui.dart';
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart' as app;
@@ -36,8 +37,26 @@ void _removeLoadingAnimation() {
   });
 }
 
+/**
+ * Request the anti-request forgery state token. 
+ */
+_requestSessionToken() {
+  HttpRequest.getString("/session")
+  .then((data) {
+    var stateTokenData = parse(data);
+    var meta = new MetaElement()
+    ..name = "state_token"
+    ..content = stateTokenData["state_token"];
+    document.head.children.add(meta);
+  })
+  .catchError((error) {
+    Logger.root.fine("Requesting Session Token Failed: $error");
+  });
+}
+
 main() {
   _removeLoadingAnimation();
   _setupLogger();
+  _requestSessionToken();
   app.initialize();
 }

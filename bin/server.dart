@@ -70,6 +70,7 @@ void main() {
     // Bug reported.
     // ..get('/index.html', getIndexHandler)
     ..get('/index', getIndexHandler)
+    ..get('/session', getSessionHandler)
     ..post('/connect', postConnectDataHandler)
     ..post('/disconnect', postDisconnectHandler)
     ..get('/multiplayer_games/new', getNewMultiplayerGame)
@@ -78,6 +79,17 @@ void main() {
     ..listen('0.0.0.0', port);
   })
   .catchError((e) => _log.fine("error starting up: $e"));
+}
+
+/**
+ * Return a state token to the client and store in the http session.
+ */
+void getSessionHandler(FukiyaContext context) {
+  context.request.session["state_token"] = _createStateToken();
+  Map data = { "state_token": context.request.session["state_token"],
+               "message" : "Session Established."
+             };
+  context.send(JSON.stringify(data));
 }
 
 /**
@@ -118,18 +130,14 @@ void postDisconnectHandler(FukiyaContext context) {
  */
 void getIndexHandler(FukiyaContext context) {
   _log.fine("getIndexHandler");
-  // Create a state token.
-  context.request.session["state_token"] = _createStateToken();
-
-  // Readin the index file and add state token into the meta element.
+  
+  // Readin the index file.
   // TODO: cache the INDEX_HTML file into memory
   var file = new File(INDEX_HTML);
   file.exists().then((bool exists) {
     if (exists) {
       file.readAsString().then((String indexDocument) {
         Document doc = new Document.html(indexDocument);
-        Element metaState = new Element.html('<meta name="state_token" content="${context.request.session["state_token"]}">');
-        doc.head.children.add(metaState);
         context.response.write(doc.outerHtml);
         context.response.done.catchError((e) => _log.fine("File Response error: ${e}"));
         context.response.close();
