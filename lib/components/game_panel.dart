@@ -144,6 +144,9 @@ class GamePanel extends WebComponent {
     context.fill();
   }
 
+  @observable String wordInProgress = '';
+  @observable String wordInProgressScore = '';
+
   void gameUpdate(GameLoopHtml gameLoop) {
     boardController.update(currentTouch);
   }
@@ -151,8 +154,12 @@ class GamePanel extends WebComponent {
   void gameRender(GameLoopHtml gameLoop) {
     if (paused) {
       boardView.renderPauseScreen();
+      wordInProgress = 'Paused!';
+      wordInProgressScore = '';
       return;
     }
+    wordInProgress = boardController.wordInProgress;
+    wordInProgressScore = boardController.wordInProgressScore.toString();
     if (boardView != null) {
       boardView.render();
     }

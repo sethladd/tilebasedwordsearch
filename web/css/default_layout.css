@@ -38,7 +38,7 @@ div {
   margin-bottom: 1em;
 }
 
-.main .primary {
+.primary {
   width: 60%;
   margin: 0 auto;
   padding: 0;
@@ -48,7 +48,7 @@ div {
   background-color: rgba(40, 20, 10, .7);
 }
 
-.main .secondary {
+.secondary {
   float: left;
   width: 39%;
   text-align: center;
@@ -58,7 +58,7 @@ div {
 }
 
 
-.main .tertiary {
+.tertiary {
   text-align: center;
   margin: 0;
   padding: 0;

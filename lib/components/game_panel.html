@@ -5,24 +5,23 @@
     <element name="game-panel" extends="div" constructor="GamePanel">
       <template>
         <div class="selected-word">
-          <template if="board.recentWords.isEmpty">
-            <div>Find a word!</div>
-          </template>
-          <div>{{boardController.wordInProgress}} {{boardController.wordInProgressScore}}</div>
+            <div class='word'>{{wordInProgress}} {{wordInProgressScore}}</div>
         </div>
-        <canvas id="frontBuffer" class="board"></canvas>
-        <div class="game-data">
-          <template if="board != null">
-            <div class='score'>{{board.score}}</div>
-            <div class='time'>{{timeRemaining}}</div>
-          </template>
-        </div> <!-- end of game-data class -->
-        <div class='buttons'>
-          <button class='pause primary-button' id="pause" on-click="togglePause()" disabled>Pause</button>
-          <button id="end" on-click="endGame()" disabled>End game</button>
-          <button id="home" on-click="goHome()">Home</button>
-        </div>
-
+        <div class='board'><canvas id="frontBuffer"></canvas></div>
+        <div class='not-board'>
+          <div class="game-data">
+            <template if="board != null">
+              <div class='score'>{{board.score}}</div>
+              <div class='time'>{{timeRemaining}}</div>
+            </template>
+          </div> <!-- end of game-data class -->
+          <div class='buttons'>
+            <button class='pause primary-button' id="pause" on-click="togglePause()" disabled>Pause</button>
+            <button id="end" on-click="endGame()" disabled>End</button>
+            <button id="home" on-click="goHome()">Home</button>
+          </div>
+        </div><!-- end .not-board -->
+        <div style='clear:both'></div>
       </template>
       <script type="application/dart" src="game_panel.dart"></script>
     </element>

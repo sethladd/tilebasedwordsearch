@@ -6,7 +6,7 @@ class Game extends Object with Persistable {
   int timeRemaining;
   Map<String, int> words = <String, int>{};
   List<String> recentWords = <String>[];
-  Set<int> letterBonusTiles = new Set<int>();
+  List<int> letterBonusTiles = new List<int>();
   int wordBonusTile;
 
   // See bug 11448. This needs to be a double.
@@ -33,7 +33,7 @@ class Game extends Object with Persistable {
   }
 
   String get lastPlayedFormatted {
-    var formatter = new DateFormat("M/d, h:m a");
+    var formatter = new DateFormat("M/d, h:mm a");
     return formatter.format(lastPlayed);
   }
 
