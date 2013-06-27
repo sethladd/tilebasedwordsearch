@@ -60,6 +60,7 @@ and (orientation : landscape) {
     background-image: none;
     background-size: 30%;
     min-height: none;
+    padding-top: .5em;
   }
 
   .main-panel .login {
@@ -68,11 +69,17 @@ and (orientation : landscape) {
 
   .main-panel .login .login-panel {
     position: relative;
+    bottom: 4em;
   }
 
-  main-panel .buttons button {
-    font-size: 100%;
-    padding: 0.25em;
+  .login-panel .sign-out {
+    margin: 1em 5% 0 auto;
   }
 
+  .main-panel .buttons button {
+    width: 100%;
+    padding: 0;
+    width: 60%;
+    margin: .1em;
+  }
 }
