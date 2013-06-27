@@ -11,7 +11,7 @@
   background-repeat: no-repeat;
   background-position: 50% 5em;
   background-size: 50%;
-  min-height: 480px;
+  min-height: 460px;
   position: relative;
 }
 
@@ -33,7 +33,7 @@
   margin: 0;
   padding: 0;
   position: absolute;
-  bottom: 1em;
+  bottom: 6em;
   left: 0;
 }
 
@@ -56,7 +56,7 @@
 .login-panel .sign-out {
   text-align: center;
   /* margin: 3% 5% 0 auto; */
-  margin: 2em 5% 0 auto;
+  margin: 0 5% 0 auto;
   float: right;
   width: 30%;
 }

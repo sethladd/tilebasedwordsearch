@@ -35,7 +35,7 @@
 
 
 @media screen
-and (max-device-width : 500px)
+and (max-device-width : 599px)
 and (orientation : landscape) {
   body {
     margin: 0 auto;
@@ -59,7 +59,7 @@ and (orientation : landscape) {
   .main-panel {
     background-image: none;
     background-size: 30%;
-    max-height: none;
+    min-height: none;
   }
 
   .main-panel .login {
@@ -69,4 +69,10 @@ and (orientation : landscape) {
   .main-panel .login .login-panel {
     position: relative;
   }
+
+  main-panel .buttons button {
+    font-size: 100%;
+    padding: 0.25em;
+  }
+
 }
