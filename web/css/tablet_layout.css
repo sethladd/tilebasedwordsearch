@@ -147,8 +147,8 @@ and (orientation : portrait) {
     margin-bottom: 1em;
   }
 
-  .main-panel {
-    background-position: 50% 8em;
+  .primary { /* horse animation */
+    background-position: 50% 5em;
   }
 
   .game-panel #frontBuffer {

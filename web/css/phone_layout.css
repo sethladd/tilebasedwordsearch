@@ -13,6 +13,10 @@
     width: 96%;
   }
 
+  .primary { /* horse animation */
+    background-position: 50% 5em;
+  }
+
   .main .primary {
     float: none;
     width: 96%;
@@ -21,7 +25,6 @@
   }
 
   .main-panel {
-    background-position: 50% 10em;
     padding-top: 1%;
   }
 
