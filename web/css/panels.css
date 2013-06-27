@@ -31,10 +31,8 @@
 
 .main-panel .login-panel {
   width: 100%;
-  margin: 0;
+  margin: 20% auto;
   padding: 0;
-  position: absolute;
-  bottom: 6em;
   left: 0;
 }
 

@@ -27,7 +27,7 @@ and (orientation : landscape) {
   }
 
   .main-panel .login-panel {
-    bottom: 2em;
+    margin: 13% auto;
   }
 
   .game-panel .selected-word {
@@ -119,11 +119,16 @@ and (orientation : portrait) {
   display: none;
 }
 
-#page:after { content: '401 - 780, small tablet portrait'; }
-#page {width: 100%; margin: 0 auto;}
+  #page:after { content: '401 - 780, small tablet portrait'; }
+  #page {width: 100%; margin: 0 auto;}
   .main {width: 100%; margin: 0 auto;}
   .primary {width: 100%; margin: 0 auto;}
   .secondary {width: 100%; margin: 0 auto;}
+
+
+  .main-panel .login-panel {
+    margin: 35% auto;
+  }
 
   .game-panel #frontBuffer {
     width: 94%;

@@ -121,8 +121,6 @@ and (orientation : landscape) {
   }
 
   .main-panel .login .login-panel {
-    position: relative;
-    bottom: 2em;
   }
 
   .login-panel .sign-out {
