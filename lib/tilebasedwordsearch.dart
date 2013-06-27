@@ -160,9 +160,10 @@ Future initialize() {
 
   return assetManager.loadPack('game', 'assets/_.pack')
       .then((_) => parseAssets())
-      .then((_) => db.init('wordherd', 'wordherd'))
+      .then((_) => db.init('wordherd', Game))
+      .then((_) => db.init('wordherd', TwoPlayerMatch))
       .then((_) {
-        return db.Persistable.all((String id, Map data) => new Game.fromPersistence(id, data))
+        return db.Persistable.all(Game, (String id, Map data) => new Game.fromPersistence(id, data))
             .toList().then((g) => games.addAll(g));
       });
 }

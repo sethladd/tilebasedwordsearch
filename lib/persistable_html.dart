@@ -6,12 +6,12 @@ import 'package:logging/logging.dart';
 
 final Logger log = new Logger("persistence");
 
-// TODO: one store per type
-Store _store;
+final Map<Type, Store> _stores = new Map<Type, Store>();
 
-Future init(String dbName, String storeName) {
-  _store = new Store(dbName, storeName);
-  return _store.open();
+Future init(String dbName, Type type) {
+  Store store = new Store(dbName, type.runtimeType.toString());
+  _stores[type] = store;
+  return store.open();
 }
 
 int _counter = 0;
@@ -29,8 +29,10 @@ abstract class Persistable {
   /**
    * 
    */
-  static Future load(String id, Constructor constructor) {
-    return _store.getByKey(id).then((Map data) {
+  static Future load(String id, Type type, Constructor constructor) {
+    Store store = _getStore(type);
+    
+    return store.getByKey(id).then((Map data) {
       if (data == null) {
         return null;
       } else {
@@ -39,22 +41,35 @@ abstract class Persistable {
     });
   }
   
-  static Stream all(Constructor constructor) {
-    return _store.all().map((Map data) {
+  static Stream all(Type type, Constructor constructor) {
+    Store store = _getStore(type);
+    
+    return store.all().map((Map data) {
       return _createAndPopulate(constructor, data['id'], data);
     });
   }
   
+  static Store _getStore(Type type) {
+    Store store = _stores[type];
+    if (store == null) {
+      throw new StateError('No store for $type found. You have to init() first');
+    }
+    return store;
+  }
+  
   Future store() {
-    return _store.save(toJson(), id);
+    Store store = _getStore(runtimeType);
+    return store.save(toJson(), id);
   }
   
   Future delete() {
-    return _store.removeByKey(id);
+    Store store = _getStore(runtimeType);
+    return store.removeByKey(id);
   }
   
   static Future clear() {
-    return _store.nuke();
+    Store store = _getStore(runtimeType);
+    return store.nuke();
   }
   
   static _createAndPopulate(Constructor constructor, String id, Map data) {
