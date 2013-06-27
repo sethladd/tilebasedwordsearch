@@ -31,13 +31,7 @@ class Player {
   Plus plusclient;
 
   // Dart Client Library for the Game Play Services API
-  Games gamesclient;
-
-  // Collection of score boards on Play Services.
-  List<ScoreBoard> scoreBoards;
-
-  // Collection of achievements on Play Services.
-  List<Achievement> achievement;
+  gg.Games gamesclient;
 
   // The ID of the player which corresponds to the g+ id
   // and is only available after signedIn has been called.
@@ -53,9 +47,7 @@ class Player {
   Player() {
     authenticationContext = new SimpleOAuth2(null);
     plusclient = new Plus(authenticationContext);
-    gamesclient = new Games(authenticationContext);
-    scoreBoards = new List<ScoreBoard>();
-    achievement = new List<Achievement>();
+    gamesclient = new gg.Games(authenticationContext);
   }
 
   void signedIn(SimpleOAuth2 authenticationContext, [Map authResult]) {
@@ -116,38 +108,13 @@ class Player {
   }
 
   void submitScore(ScoreType scoreType, int score) {
-    scoreBoards
-    .where((ScoreBoard sb) => sb.scoreType == scoreType)
-    .forEach((ScoreBoard sb) {
-      sb.submitScore(this, score)
-      .then((PlayerScoreResponse playerScoreResponse) => _playerLogger.fine("playerScoreResponse = $playerScoreResponse"))
-      .catchError((e) => _playerLogger.fine("Not able to submit score: $e"));
-
-    });
+//    scoreBoards
+//    .where((ScoreBoard sb) => sb.scoreType == scoreType)
+//    .forEach((ScoreBoard sb) {
+//      sb.submitScore(this, score)
+//      .then((gg.PlayerScoreResponse playerScoreResponse) => _playerLogger.fine("playerScoreResponse = $playerScoreResponse"))
+//      .catchError((e) => _playerLogger.fine("Not able to submit score: $e"));
+//
+//    });
   }
-
-  List<Future<AchievementIncrementResponse>> submitAchievement(AchievementType achievementType, int score) {
-    achievement
-    .where((Achievement ac) => ac.achievementType == achievementType)
-    .map((Achievement ac) => ac.submitAchievment(this, score)).toList();
-  }
-
-//  refreshHighScoreLeaderboard() {
-//    if (gamesclient == null) return;
-//
-//    ScoreBoard highScoreBoard = scoreBoards
-//    .singleWhere((ScoreBoard sb) => sb.scoreType == ScoreType.HIGH_SCORE);
-//
-//    gamesclient.scores.listWindow(highScoreBoard.leaderBoardId,
-//        "PUBLIC", "ALL_TIME", maxResults: 25)
-//        .then((LeaderboardScores leaderboardScores) {
-//
-//          allTimeHighScores.clear();
-//          leaderboardScores.items.forEach((LeaderboardEntry lbe) {
-//            _playerLogger.fine("${lbe.player.displayName} ${lbe.scoreRank} ${lbe.scoreValue} ${lbe.timeSpan}");
-//            allTimeHighScores.add(new HighScoreInfo(lbe.player.displayName, lbe.scoreRank, lbe.scoreValue, lbe.timeSpan));
-//          });
-//
-//        }).catchError((e) => _playerLogger.fine("Not able to refresh high scores: $e"));
-//  }
 }

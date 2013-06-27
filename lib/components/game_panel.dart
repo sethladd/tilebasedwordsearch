@@ -77,11 +77,6 @@ class GamePanel extends WebComponent {
     _gameClock.allDone.future.then((_) {
       _saveGame();
 
-      if (submitHighScore != null) {
-        _gamePanelLogger.fine("submitScore(ScoreType.HIGH_SCORE, ${board.score})");
-        submitHighScore(ScoreType.HIGH_SCORE, board.score);
-      }
-
       currentPanel = 'results';
     });
     _saveGame();
