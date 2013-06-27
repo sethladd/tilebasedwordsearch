@@ -1,15 +1,41 @@
 @media screen
-and (max-device-width : 980px)
+and (max-device-width : 1080px)
 and (min-device-width : 600px)
 and (orientation : landscape) {
+
+  #page:after { content: '600 < 1080, small tablet landscape'; }
+
+  body {
+    margin: 0 auto;
+    width: 100%;
+    backround: yellow;
+  }
+
+  .main {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .primary {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+
+  .secondary {
+    display: none;
+  }
 
   .main-panel .login-panel {
     bottom: 2em;
   }
 
   .game-panel .selected-word {
-    margin: 0 auto;
-    padding: .1em;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 0 auto 0% 51%;
+    padding: 0;
+    color: white;
   }
 
   .game-panel .selected-word div {
@@ -17,11 +43,20 @@ and (orientation : landscape) {
   }
 
   .game-panel .selected-word .word {
-    padding: .1em;
+    margin: 0;
+    padding: 0;
+    width: 80%;
+  }
+
+  .game-panel .board {
+    width: 54%;
+    float: left;
+    margin: -1em 0 0 0;
+    padding: 0;
   }
 
   .game-panel #frontBuffer {
-    width: 66%;
+    width: 78%;
   }
 
   ul.words-and-scores li {
@@ -29,36 +64,62 @@ and (orientation : landscape) {
   }
 
   .game-panel .game-data {
-    width: 84%;
+    margin: 3em 0;
     padding: 0;
-    margin: 0 auto;
+    border: .2em solid rgb(30, 15, 5);
+    background-color: rgba(60, 30, 15, .8);
+    width: 95%;
   }
 
-  .game-panel .no-board {
-    padding: 0;
+  .game-panel .not-board {
+    float: right;
+    width: 45%;
+  }
+
+  .game-panel .game-data .score {
+    float: none;
+    display: block;
     margin: 0 auto;
+    padding: 0;
+    width: 40%;
+  }
+
+  .game-panel .game-data .time {
+    float: none;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    width: 40%;
   }
 
   .game-panel .buttons {
-    margin-top: .2em;
+    width: 98%;
+    margin: 0;
+    padding: 0;
+    font-size: 112%;
+    margin-top: .5em;
   }
 
   .game-panel .buttons button {
-    padding: .25em;
+    width: 90%;
+    margin: .2em 0;
+    padding: 0;
   }
 }
 
-/* SMALL TABLET PORTRAIT */
+/* TABLET PORTRAIT */
 @media screen
 and (max-device-width : 780px)
 and (min-device-width : 401px)
-
 and (orientation : portrait) {
+ body {
+ }
 
 .secondary {
   display: none;
 }
 
+#page:after { content: '401 - 780, small tablet portrait'; }
 #page {width: 100%; margin: 0 auto;}
   .main {width: 100%; margin: 0 auto;}
   .primary {width: 100%; margin: 0 auto;}
@@ -75,7 +136,6 @@ and (orientation : portrait) {
   ul.words-and-scores li {
     font-size: 1.3em;
   }
-
 
   .game-panel .selected-word {
     font-weight: bold;
