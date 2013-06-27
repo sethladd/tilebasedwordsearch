@@ -33,3 +33,25 @@
   }
 }
 
+
+@media screen
+and (max-device-width : 500px)
+and (orientation : landscape) {
+  body {
+    margin: 0 auto;
+    width: 100%;
+
+  }
+
+  #page {margin: 0; width: 100%;}
+  .main {margin: 0; width: 100%;}
+  .primary {margin: 0; width: 100%;}
+
+  .main-panel {
+    background-image: none;
+    background-size: 30%;
+  }
+  .main-panel .login { margin-top: 4em;}
+  .main-panel .login .login-panel {position: relative;}
+}
+
