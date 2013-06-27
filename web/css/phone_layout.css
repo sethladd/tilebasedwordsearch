@@ -1,5 +1,5 @@
 @media screen
-and (max-device-width : 350px)
+and (max-device-width : 400px)
 and (orientation : portrait) {
   #page:after { content: '< 350, small phone portrait'; }
   body {
