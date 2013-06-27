@@ -10,17 +10,18 @@ body {
 }
 
 button {
-  font-size: 1em;
+  font-size: 120%;
   color: white;
+  padding: .5em;
 
   -moz-border-radius: .3em;
   border-radius: .3em;
   border: .3em solid black;
-  background-color: rgba(60, 30, 15, .8);
+  background-color: rgba(60, 30, 15, .9);
 }
 
 button.primary-button {
-  background-color: rgba(150, 90, 30, .8);
+  background-color: rgba(150, 90, 30, .9);
 }
 
 button:hover {

@@ -33,3 +33,114 @@
   }
 }
 
+
+@media screen
+and (max-device-width : 599px)
+and (orientation : landscape) {
+
+  .main .primary {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 0em;
+  }
+
+  body {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  #page {
+    margin: 0;
+    width: 100%;
+ }
+
+  .main {
+    margin: 0;
+    width: 100%;
+  }
+  .primary {
+    margin: 0;
+    width: 100%;
+  }
+
+  .main-panel {
+    background-image: none;
+    background-size: 30%;
+    min-height: none;
+    padding-top: .5em;
+    font-size: 88%;
+  }
+
+  .main-panel .login {
+    margin-top: 4em;
+  }
+
+  .main-panel .login .login-panel {
+    position: relative;
+    bottom: 4em;
+  }
+
+  .login-panel .sign-out {
+    margin: 1em 5% 0 auto;
+  }
+
+  .main-panel .buttons {
+    width: 35%;
+  }
+
+  .main-panel .buttons button {
+    width: 90%;
+    padding: 0;
+    width: 60%;
+    margin: .1em;
+  }
+
+  /* GAME PANEL IN LANDSCAPE */
+  .primary .game-panel #frontBuffer {
+    width: 60%;
+    float: left;
+    margin-left: .5em;
+  }
+
+  body {
+    font-size: 105%;
+  }
+
+  .game-panel .selected-word {
+    font-weight: bold;
+    font-size: 1.2em;
+    width: 65%;
+    margin: 0 auto 0% auto;
+    padding: 1% 0%;
+    color: white;
+  }
+
+  .primary .game-panel #frontBuffer {
+    width: 49%;
+    float: left;
+    margin-left: .25em;
+  }
+
+  .game-panel .game-data {
+    width: 36%;
+    float: left;
+    margin: 0;
+    margin-left: 2em;
+    padding: 0;
+    border: .2em solid rgb(30, 15, 5);
+    margin-top: .5em;
+    margin-bottom: .5em;
+    background-color: rgba(60, 30, 15, .8);
+    color: rgb(240, 150, 60);
+  }
+}
+
+
+/*
+Can't remove background-image in landscape
+Set max height?
+In portrait, push login panel buttons in closer
+Main panel buttons should be narrower
+
+>> Hide find a word div
+*/
