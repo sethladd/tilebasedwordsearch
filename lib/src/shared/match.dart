@@ -61,7 +61,7 @@ class TwoPlayerMatch extends Object with Persistable {
       'p1_played': p1_played == null ? null : p1_played.millisecondsSinceEpoch,
       'p2_played': p2_played == null ? null : p2_played.millisecondsSinceEpoch,
       'word_bonus_tile': word_bonus_tile,
-      'letter_bonus_tile_indexes': letter_bonus_tile_indexes.split(',')
+      'letter_bonus_tile_indexes': letter_bonus_tile_indexes == null ? [] : letter_bonus_tile_indexes.split(',')
     };
   }
 }
