@@ -26,6 +26,7 @@ class Game extends Object with Persistable {
     lastPlayedMillisSinceEpoch = data['lastPlayedMillisSinceEpoch'];
     letterBonusTiles = data['letterBonusTiles'];
     wordBonusTile = data['wordBonusTile'];
+    matchId = data['matchId'];
   }
 
   DateTime get lastPlayed {
@@ -57,7 +58,8 @@ class Game extends Object with Persistable {
       'id': id,
       'letterBonusTiles': letterBonusTiles,
       'wordBonusTile': wordBonusTile,
-      'recentWords': recentWords
+      'recentWords': recentWords,
+      'matchId': matchId
     };
   }
 }
