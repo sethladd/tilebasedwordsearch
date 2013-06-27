@@ -15,11 +15,11 @@
     margin-bottom: 1em;
   }
 
-  .main .primary .main-panel {
+  .main-panel {
     background-position: 50% 8em;
   }
 
-  .main .primary .game-panel #frontBuffer {
+  .game-panel #frontBuffer {
     width: 90%;
   }
 
