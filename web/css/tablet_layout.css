@@ -4,7 +4,6 @@ and (min-device-width : 600px)
 and (orientation : landscape) {
   #page:after { content: '600-1000, small tablet landscape'; }
   body {
-    background-color: green;
   }
 
   .login-panel {

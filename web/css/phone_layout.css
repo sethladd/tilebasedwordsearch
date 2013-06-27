@@ -3,7 +3,6 @@ and (max-device-width : 350px)
 and (orientation : portrait) {
   #page:after { content: '< 350, small phone portrait'; }
   body {
-    background-color: yellow;
   }
 
   #page {
@@ -17,14 +16,14 @@ and (orientation : portrait) {
 
   .main {
     margin: 0 auto;
-    width: 96%;
+    width: 100%;
   }
 
   .primary {
     float: none;
-    width: 96%;
+    width: 100%;
     margin: 0 auto;
-    margin-top: 1em;
+    margin-top: 0;
   }
 
   .main-panel {
@@ -65,13 +64,16 @@ and (max-device-width : 599px)
 and (orientation : landscape) {
   #page:after { content: '< 599, small phone landscape'; }
   body {
-    background-color: brown;
   }
 
   .primary {
     width: 100%;
     margin: 0 auto;
     margin-top: 0em;
+  }
+
+  .secondary {
+    display: none;
   }
 
   body {
@@ -150,7 +152,7 @@ and (orientation : landscape) {
   }
 
   .main .primary .game-panel .board #frontBuffer {
-    width: 100%;
+    width: 92%;
   }
 
   .game-panel .not-board {
