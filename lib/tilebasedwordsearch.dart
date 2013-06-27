@@ -122,23 +122,22 @@ resumeGame(Game resumedGame) {
   currentPanel = 'game';
 }
 
-newGame([Game gameToPlay]) {
-  if (gameToPlay == null) {
-    BoardConfig boardConfig = new BoardConfig(boards);
-    board = new Board(boardConfig);
-    game = new Game()
-      ..timeRemaining = GameClock.DEFAULT_GAME_LENGTH
-      ..board = board.tiles
-      ..letterBonusTiles = boardConfig.letterBonusTileIndexes
-      ..wordBonusTile = boardConfig.wordBonusTileIndex;
-    games.add(game);
-  } else {
-    // TODO use this game
+newGame({TwoPlayerMatch match}) {
+  BoardConfig boardConfig = new BoardConfig(boards);
+  board = new Board(boardConfig);
+  game = new Game(GameClock.DEFAULT_GAME_LENGTH,
+      board.tiles,
+      boardConfig.letterBonusTileIndexes,
+      boardConfig.wordBonusTileIndex);
+  
+  if (match != null) {
+    game.matchId = match.id;
   }
+  
+  games.add(game);
 
   currentPanel = 'game';
 }
-
 newMultiplayerGame() {
   currentPanel = 'newMultiplayerGame';
 //  player.refreshHighScoreLeaderboard();

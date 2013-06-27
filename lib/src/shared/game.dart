@@ -14,7 +14,7 @@ class Game extends Object with Persistable {
   
   String matchId;
 
-  Game();
+  Game(this.timeRemaining, this.board, this.letterBonusTiles, this.wordBonusTile);
 
   Game.fromPersistence(String id, Map data) {
     this.id = id;

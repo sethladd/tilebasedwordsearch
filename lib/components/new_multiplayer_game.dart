@@ -32,13 +32,8 @@ class NewMultiplayerGame extends WebComponent {
         Map data = json.parse(request.responseText);
         TwoPlayerMatch match = new TwoPlayerMatch.fromPersistence(data['id'], data);
         // TODO wrap in a transaction
-        match.store().then((_) {
-          // XXX create a game linked to this match
-          Game game = new Game.fromMatch(match);
-          return game.store();
-        })
-        .then((_) {
-          app.newGame(game);
+        return match.store().then((_) {
+          app.newGame(match: match);
         });
         
       })
