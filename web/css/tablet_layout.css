@@ -47,10 +47,16 @@ and (orientation : landscape) {
   }
 }
 
-
+/* SMALL TABLET PORTRAIT */
 @media screen
 and (max-device-width : 610px)
+and (min-device-width : 600px)
+
 and (orientation : portrait) {
+
+.secondary {
+  display: none;
+}
 
 #page {width: 100%; margin: 0 auto;}
   .main {width: 100%; margin: 0 auto;}
@@ -68,7 +74,60 @@ and (orientation : portrait) {
   ul.words-and-scores li {
     font-size: 1.3em;
   }
-}
+
+
+  .game-panel .selected-word {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 0 auto 0 58%;
+    padding: 0;
+    color: white;
+  }
+
+  .game-panel .selected-word .word {
+    margin: 0;
+    padding: 0;
+    width: 80%;
+  }
+  .game-panel .board {
+    width: 68%;
+    float: left;
+    margin: -1.5em 0 0 0;
+    padding: 0;
+  }
+
+  .main .primary .game-panel .board #frontBuffer {
+    width: 100%;
+  }
+
+  .game-panel .not-board {
+    float: right;
+    width: 32%;
+  }
+
+  .game-panel .game-data {
+    margin: 2em auto 3em auto;
+  }
+
+  .game-panel .game-data div {
+    display: block;
+    margin: 1% auto;
+    padding: 0;
+    width: 93%;
+  }
+
+  .game-panel .buttons {
+    width: 93%;
+    margin: 0 auto;
+
+  }
+
+  .game-panel .buttons button {
+    display: block;
+    width: 93%;
+    margin: .5em auto;
+  }
+} /* end of portrait styles */
 
 
 @media screen and (max-width: 980px{
