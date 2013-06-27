@@ -48,8 +48,27 @@ and (orientation : landscape) {
 }
 
 
+@media screen
+and (max-device-width : 610px)
+and (orientation : portrait) {
 
+#page {width: 100%; margin: 0 auto;}
+  .main {width: 100%; margin: 0 auto;}
+  .primary {width: 100%; margin: 0 auto;}
+  .secondary {width: 100%; margin: 0 auto;}
 
+  .game-panel #frontBuffer {
+    width: 94%;
+  }
+
+  ul.words-and-scores {
+    padding: 1em;
+  }
+
+  ul.words-and-scores li {
+    font-size: 1.3em;
+  }
+}
 
 
 @media screen and (max-width: 980px{
