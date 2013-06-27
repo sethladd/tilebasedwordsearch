@@ -6,7 +6,7 @@
       <template>
         <ul>
           <li template repeat="p in players">
-            {{p.name}} - <button>Play!</button>
+            {{p.name}} - <button on-click="createNewMatch(p.gplus_id)">Play!</button>
           </li>
         </ul>
       </template>

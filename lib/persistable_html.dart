@@ -24,7 +24,7 @@ typedef Persistable Constructor(String id, Map data);
  */
 abstract class Persistable {
   
-  String _dbId;
+  String _id;
   
   /**
    * 
@@ -41,16 +41,16 @@ abstract class Persistable {
   
   static Stream all(Constructor constructor) {
     return _store.all().map((Map data) {
-      return _createAndPopulate(constructor, data['dbId'], data);
+      return _createAndPopulate(constructor, data['id'], data);
     });
   }
   
   Future store() {
-    return _store.save(toJson(), dbId);
+    return _store.save(toJson(), id);
   }
   
   Future delete() {
-    return _store.removeByKey(dbId);
+    return _store.removeByKey(id);
   }
   
   static Future clear() {
@@ -63,14 +63,14 @@ abstract class Persistable {
   }
   
   // This assumes there's no reason for code to change an ID.
-  String get dbId {
-    if (_dbId == null) {
-      _dbId = _idOffset + '-' + (_counter++).toString();
+  String get id {
+    if (_id == null) {
+      _id = _idOffset + '-' + (_counter++).toString();
     }
-    return _dbId;
+    return _id;
   }
   
-  void set dbId(String id) { _dbId = id; }
+  void set id(String id) { _id = id; }
   
   Map toJson();
 }

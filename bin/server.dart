@@ -3,7 +3,7 @@ library hello_static;
 import 'dart:io';
 import 'dart:async';
 import 'dart:math';
-import 'dart:json' as JSON;
+import 'dart:json' as json;
 
 import "package:logging/logging.dart";
 import "package:fukiya/fukiya.dart";
@@ -73,8 +73,10 @@ void main() {
     ..post('/connect', postConnectDataHandler)
     ..post('/disconnect', postDisconnectHandler)
     ..get('/multiplayer_games/new', getNewMultiplayerGame)
+    ..post('/multiplayer_games', createMultiplayerGame)
     ..staticFiles('./web/out')
     ..use(new FukiyaJsonParser())
+    ..use(new FukiyaFormParser())
     ..listen('0.0.0.0', port);
   })
   .catchError((e) => _log.fine("error starting up: $e"));
@@ -108,7 +110,7 @@ void postDisconnectHandler(FukiyaContext context) {
                 "state_token": context.request.session["state_token"],
                 "message" : "Successfully disconnected."
                 };
-    context.send(JSON.stringify(data));
+    _sendJson(context, data);
   });
 }
 
@@ -148,8 +150,6 @@ void getIndexHandler(FukiyaContext context) {
  */
 void getNewMultiplayerGame(FukiyaContext context) {
   String accessToken = context.request.session["access_token"];
-  context.response.headers.contentType
-           = new ContentType("application", "json", charset: "utf-8");
   
   runZonedExperimental(() {
     getAllFriends(accessToken).transform(new StreamTransformer<List<Person>, List<Player>>(
@@ -172,7 +172,7 @@ void getNewMultiplayerGame(FukiyaContext context) {
       .toList()
       .then((List<List<Player>> players) {
         List<Player> flat = players.expand((i) => i).toList();
-        context.response.write(JSON.stringify(flat));
+        _sendJson(context, flat);
       })
       .catchError((e) {
         _log.warning('Problem finding friends: $e');
@@ -186,6 +186,58 @@ void getNewMultiplayerGame(FukiyaContext context) {
 
 }
 
+Future _sendJson(FukiyaContext context, object) {
+  context.response.headers.contentType
+    = new ContentType("application", "json", charset: "utf-8");
+  context.response.write(json.stringify(object));
+  return context.response.close();
+}
+
+void createMultiplayerGame(FukiyaContext context) {
+  Map params = context.parsedBody;
+  _log.fine('createMultiplayerGame: $params');
+  
+  if (params['opponentGplusId'] == null) {
+    context.response.statusCode = 500;
+    context.response.write('Missing opponentGplusId');
+    context.response.close();
+    return;
+  }
+  
+  String opponentGplusId = params['opponentGplusId'];
+  db.Persistable.findOneBy(Player, {'gplus_id': opponentGplusId}).then((Player player) {
+    if (player == null) {
+      String msg = 'No player with id $opponentGplusId found opponentGplusId';
+      _log.warning(msg);
+      context.response.statusCode = 404;
+      context.response.write(msg);
+      context.response.close();
+      return;
+    }
+    
+    String currentUserGplusId = context.request.session['userGplusId'];
+    
+    BoardConfig boardConfig = boards.getRandomBoard();
+    TwoPlayerMatch match = new TwoPlayerMatch(boardConfig.board,
+        currentUserGplusId, opponentGplusId);
+    
+    return match.store().then((_) => match);
+  })
+  .then((TwoPlayerMatch match) {
+    _sendJson(context, match);
+  })
+  .catchError((e) {
+    _log.warning('Error from creating multiplayer game: $e ${getAttachedStackTrace(e)}');
+    
+    if (e is json.JsonUnsupportedObjectError) {
+      print(e.cause);
+      print(e.unsupportedObject);
+    }
+    context.response.statusCode = 500;
+    context.response.close();
+  });
+}
+
 /**
  * Upgrade given auth code to token, and store it in the session.
  * POST body of request should be the authorization code.
@@ -193,24 +245,24 @@ void getNewMultiplayerGame(FukiyaContext context) {
  */
 void postConnectDataHandler(FukiyaContext context) {
   _log.fine("postConnectDataHandler");
-  _confirmOauthSignin(context).then((String userId) {
-    db.Persistable.findBy(Player, {'gplus_id': userId}).toList().then((List players) {
-      if (players.isEmpty) {
-        _log.info('No player found for gplusId $userId');
+  _confirmOauthSignin(context).then((String userGplusId) {
+    db.Persistable.findOneBy(Player, {'gplus_id': userGplusId}).then((Player player) {
+      if (player == null) {
+        _log.info('No player found for gplusId userGplusId');
         // TODO save the player's name
         var p = new Player()
-          ..gplus_id = userId;
+          ..gplus_id = userGplusId;
         p.store().then((_) {
-          context.request.session['player_id'] = p.dbId;
+          context.request.session['player_id'] = p.id;
           context.send("POST OK");
         })
         .catchError((e) {
-          _log.severe('Did not store new person $userId into db: $e');
+          _log.severe('Did not store new person userGplusId into db: $e');
           context.response.statusCode = 500;
           context.response.close();
         });
       } else {
-        _log.info('Found the player ${players.first}');
+        _log.info('Found the player ${player}');
       }
     });
   })
@@ -252,7 +304,7 @@ Future<String> _confirmOauthSignin(FukiyaContext context) {
   .transform(new StringDecoder())
   .listen((data) => sb.write(data), onDone: () {
     _log.fine("context.request.listen.onDone = ${sb.toString()}");
-    Map requestData = JSON.parse(sb.toString());
+    Map requestData = json.parse(sb.toString());
   
     Map fields = {
               "grant_type": "authorization_code",
@@ -267,7 +319,7 @@ Future<String> _confirmOauthSignin(FukiyaContext context) {
     http.Client _httpClient = new http.Client();
     _httpClient.post(TOKEN_ENDPOINT, fields: fields).then((http.Response response) {
       // At this point we have the token and refresh token.
-      var credentials = JSON.parse(response.body);
+      var credentials = json.parse(response.body);
       _log.fine("credentials = ${response.body}");
       _httpClient.close();
   
@@ -276,19 +328,20 @@ Future<String> _confirmOauthSignin(FukiyaContext context) {
       ..get(verifyTokenUrl).then((http.Response response)  {
         _log.fine("response = ${response.body}");
   
-        var verifyResponse = JSON.parse(response.body);
-        String userId = verifyResponse["user_id"];
+        var verifyResponse = json.parse(response.body);
+        String userGplusId = verifyResponse["user_id"];
         String accessToken = credentials["access_token"];
-        if (userId != null && userId == gPlusId && accessToken != null) {
+        if (userGplusId != null && userGplusId == gPlusId && accessToken != null) {
           context.request.session["access_token"] = accessToken;
+          context.request.session['userGplusId'] = userGplusId;
           
           _log.info('Set the access token to $accessToken');
           
-          completer.complete(userId);
+          completer.complete(userGplusId);
         } else {
           context.response.statusCode = 401;
-          context.send("POST FAILED ${userId} != ${gPlusId}");
-          completer.completeError("POST FAILED ${userId} != ${gPlusId}");
+          context.send("POST FAILED ${userGplusId} != ${gPlusId}");
+          completer.completeError("POST FAILED ${userGplusId} != ${gPlusId}");
         }
       });
     });

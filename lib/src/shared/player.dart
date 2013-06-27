@@ -6,13 +6,13 @@ class Player extends Object with Persistable {
   
   Player();
   
-  Player.fromPersistence(Map data) {
-    dbId = data['id'];
+  Player.fromPersistence(String id, Map data) {
+    this.id = id;
     gplus_id = data['gplus_id'];
     name = data['name'];
   }
   
   Map toJson() {
-    return {'id': dbId, 'gplus_id': gplus_id, 'name': name};
+    return {'id': id, 'gplus_id': gplus_id, 'name': name};
   }
 }

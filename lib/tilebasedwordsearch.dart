@@ -115,7 +115,7 @@ void parseAssets() {
 }
 
 resumeGame(Game g) {
-  clientLogger.info('Resuming game ${g.dbId}');
+  clientLogger.info('Resuming game ${g.id}');
   game = g;
   BoardBonusConfig bonusConfig = new BoardBonusConfig.fromGame(game);
   board = new Board.fromGame(boards.getBoardFromString(game.board), bonusConfig,
