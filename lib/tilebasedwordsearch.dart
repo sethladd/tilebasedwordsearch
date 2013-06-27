@@ -122,8 +122,8 @@ resumeGame(Game resumedGame) {
   currentPanel = 'game';
 }
 
-newGame([Game game]) {
-  if (game == null) {
+newGame([Game gameToPlay]) {
+  if (gameToPlay == null) {
     BoardConfig boardConfig = new BoardConfig(boards);
     board = new Board(boardConfig);
     game = new Game()
@@ -131,8 +131,11 @@ newGame([Game game]) {
       ..board = board.tiles
       ..letterBonusTiles = boardConfig.letterBonusTileIndexes
       ..wordBonusTile = boardConfig.wordBonusTileIndex;
+    games.add(game);
+  } else {
+    // TODO use this game
   }
-  games.add(game);
+
   currentPanel = 'game';
 }
 
