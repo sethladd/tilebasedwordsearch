@@ -26,6 +26,10 @@ and (orientation : landscape) {
     display: none;
   }
 
+  .phone-only {
+    display:inline-block;
+  }
+
   .main-panel .login-panel {
     margin: 13% auto;
   }
@@ -115,9 +119,14 @@ and (orientation : portrait) {
  body {
  }
 
-.secondary {
-  display: none;
-}
+  .secondary {
+    display: none;
+  }
+
+
+  .phone-only {
+    display:inline-block;
+  }
 
   #page:after { content: '401 - 780, small tablet portrait'; }
   #page {width: 100%; margin: 0 auto;}
@@ -221,7 +230,7 @@ and (orientation : portrait) {
     width: 90%;
   }
 
-  .main .secondary {
+  .secondary {
     width: 39%;
     text-align: center;
   }

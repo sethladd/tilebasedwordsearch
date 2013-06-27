@@ -10,10 +10,6 @@ and (orientation : portrait) {
     width: 100%;
   }
 
-  .phone-only {
-    display:inline-block;
-  }
-
   .main {
     margin: 0 auto;
     width: 100%;
@@ -39,8 +35,12 @@ and (orientation : portrait) {
     width: 100%;
   }
 
-  .main .secondary {
+  .secondary {
     display: none;
+  }
+
+  .phone-only {
+    display:inline-block;
   }
 
   .main .tertiary {
@@ -51,7 +51,6 @@ and (orientation : portrait) {
   .game-panel {
     margin: 0;
     padding: 0;
-
   }
 
   .game-panel .selected-word{
@@ -86,6 +85,10 @@ and (orientation : landscape) {
 
   .secondary {
     display: none;
+  }
+
+  .phone-only {
+    display:inline-block;
   }
 
   body {
