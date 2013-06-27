@@ -20,6 +20,7 @@ and (orientation : portrait) {
   }
 
   .primary {
+    background-position: 50% 5em; /* horse animation */
     float: none;
     width: 100%;
     margin: 0 auto;
@@ -27,7 +28,6 @@ and (orientation : portrait) {
   }
 
   .main-panel {
-    background-position: 50% 10em;
     padding-top: 1%;
   }
 

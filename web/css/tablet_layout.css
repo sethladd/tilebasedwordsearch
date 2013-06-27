@@ -1,12 +1,8 @@
 @media screen
-and (max-device-width : 1000px)
-and (min-device-width : 600px)
+and (max-device-width : 980px)
 and (orientation : landscape) {
-  #page:after { content: '600-1000, small tablet landscape'; }
-  body {
-  }
 
-  .login-panel {
+  .main-panel .login-panel {
     bottom: 2em;
   }
 
@@ -54,15 +50,15 @@ and (orientation : landscape) {
 /* SMALL TABLET PORTRAIT */
 @media screen
 and (max-device-width : 610px)
-and (min-device-width : 351px)
+and (min-device-width : 600px)
+
 and (orientation : portrait) {
 
-  #page:after { content: '351-610, small tablet portrait'; }
-  .secondary {
-    display: none;
-  }
+.secondary {
+  display: none;
+}
 
-  #page {width: 100%; margin: 0 auto;}
+#page {width: 100%; margin: 0 auto;}
   .main {width: 100%; margin: 0 auto;}
   .primary {width: 100%; margin: 0 auto;}
   .secondary {width: 100%; margin: 0 auto;}
@@ -79,6 +75,7 @@ and (orientation : portrait) {
     font-size: 1.3em;
   }
 
+
   .game-panel .selected-word {
     font-weight: bold;
     font-size: 1.2em;
@@ -92,7 +89,6 @@ and (orientation : portrait) {
     padding: 0;
     width: 80%;
   }
-
   .game-panel .board {
     width: 68%;
     float: left;
@@ -100,7 +96,7 @@ and (orientation : portrait) {
     padding: 0;
   }
 
-  .game-panel .board #frontBuffer {
+  .main .primary .game-panel .board #frontBuffer {
     width: 100%;
   }
 
@@ -133,3 +129,34 @@ and (orientation : portrait) {
   }
 } /* end of portrait styles */
 
+
+@media screen and (max-width: 980px{
+
+  .header {
+    display: none;
+  }
+
+  .main {
+    margin: 0 auto;
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  .main .primary {
+    width: 60%;
+    margin-bottom: 1em;
+  }
+
+  .primary { /* horse animation */
+    background-position: 50% 5em;
+  }
+
+  .game-panel #frontBuffer {
+    width: 90%;
+  }
+
+  .main .secondary {
+    width: 39%;
+    text-align: center;
+  }
+}
