@@ -91,7 +91,7 @@ void getSessionHandler(FukiyaContext context) {
   Map data = { "state_token": context.request.session["state_token"],
                "message" : "Session Established."
              };
-  context.send(JSON.stringify(data));
+  context.send(json.stringify(data));
 }
 
 /**
