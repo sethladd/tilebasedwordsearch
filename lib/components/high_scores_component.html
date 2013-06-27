@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<!-- NOTE: NOT USED YET -->
 <html>
   <body>
     <element name="high-scores-panel" extends="div" constructor="HighScoresComponent">
@@ -12,11 +12,15 @@
             </template>
           </ul>
         </template>
-        <template if="highScores == null && highScores.length <= 0">
-          No high scores yet.
+        <template if="highScores == null || highScores.length <= 0">
+          <div class="high-scores-empty-help">
+            No high scores yet.
+          </div>
         </template>
-          <button on-click="app.currentPanel='game'">New game</button>
+        <div class="buttons">
+          <button class="primary-button" on-click="app.currentPanel='game'">New game</button>
           <button on-click="app.currentPanel='main'">Home</button>
+        </div>
       </template>
       <script type="application/dart" src="high_scores_component.dart"></script>
     </element>

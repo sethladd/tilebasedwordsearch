@@ -253,13 +253,18 @@ void createMultiplayerGame(FukiyaContext context) {
  */
 void postConnectDataHandler(FukiyaContext context) {
   _log.fine("postConnectDataHandler");
+  
   _confirmOauthSignin(context).then((String userGplusId) {
-    db.Persistable.findOneBy(Player, {'gplus_id': userGplusId}).then((Player player) {
+    String accessToken = context.request.session['access_token'];
+    return getCurrentPerson(accessToken);
+  }).then((Person currentPerson) {
+    db.Persistable.findOneBy(Player, {'gplus_id': currentPerson.id}).then((Player player) {
       if (player == null) {
         _log.info('No player found for gplusId userGplusId');
         // TODO save the player's name
         var p = new Player()
-          ..gplus_id = userGplusId;
+          ..name = currentPerson.displayName
+          ..gplus_id = currentPerson.id;
         p.store().then((_) {
           context.request.session['player_id'] = p.id;
           context.send("POST OK");
@@ -412,15 +417,25 @@ Stream<List<Person>> getAllFriends(String accessToken) {
   return stream.stream;
 }
 
+Future<Person> getCurrentPerson(String accessToken) {
+  Plus plusclient = makePlusClient(accessToken);
+  return plusclient.people.get('me');
+}
+
 Future<PeopleFeed> getPageOfFriends(String accessToken,
     {String orderBy: 'best', int maxResults: 100, String nextPageToken}) {
+  Plus plusclient = makePlusClient(accessToken);
+  
+  return plusclient.people.list('me', 'visible', orderBy: orderBy,
+      maxResults: maxResults, pageToken: nextPageToken);
+}
+
+Plus makePlusClient(String accessToken) {
   SimpleOAuth2 simpleOAuth2 = new SimpleOAuth2()
       ..credentials = new console_auth.Credentials(accessToken);
   Plus plusclient = new Plus(simpleOAuth2);
   plusclient.makeAuthRequests = true;
-  
-  return plusclient.people.list('me', 'visible', orderBy: orderBy,
-      maxResults: maxResults, pageToken: nextPageToken);
+  return plusclient;
 }
 
 /**

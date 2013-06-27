@@ -31,7 +31,9 @@ class NewMultiplayerGame extends WebComponent {
       .then((request) {
         Map data = json.parse(request.responseText);
         TwoPlayerMatch match = new TwoPlayerMatch.fromPersistence(data['id'], data);
-        print('Match created: $data');
+        // TODO wrap in a transaction
+        match.store().then((_) => null);
+        
       })
       .catchError((e) => print('Error creating new multiplayer game: $e'));
   }
