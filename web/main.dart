@@ -22,18 +22,26 @@ void _setupLogger() {
 
 /* Animation gallops off to the left and then disappears. */
 void _removeLoadingAnimation() {
+  var headIntoSunset = window.offscreenBuffering;
+  var delay = headIntoSunset? 4:1; // # of seconds before tada
   Element el = query('.primary');
   
-  // Set up the transition.
-  el.style.transition = 'all 4s ease-in';
-  
-  // Move the image.
-  el.style.backgroundPositionX = '-150%';
-  
+  // Move or disappear the image.
+  if (headIntoSunset) {
+    el.style.transition = 'all 4s ease-in';
+    el.style.backgroundPositionX = '-150%';
+  } else {
+    el.style.transition = 'all 0.5s';
+    el.style.backgroundSize = "0px 0px";
+  }
+    
   // Remove the transition and image.
-  new Timer(new Duration(seconds:5), () {
+  new Timer(new Duration(seconds:delay), () {
     el.style.transition = 'none 0s ease';
     el.style.backgroundImage = 'none';
+    // PENDING: should I clean up more?
+    
+    query('.main-panel').style.backgroundImage = "url('../assets/WordHerder.png')";
   });
 }
 
@@ -47,6 +55,7 @@ _requestSessionToken() {
     var meta = new MetaElement()
     ..name = "state_token"
     ..content = stateTokenData["state_token"];
+    
     document.head.children.add(meta);
   })
   .catchError((error) {
