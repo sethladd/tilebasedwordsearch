@@ -1,4 +1,58 @@
-@media screen and (max-width: 1050px) {
+@media screen
+and (max-device-width : 980px)
+and (orientation : landscape) {
+
+  .main-panel .login-panel {
+    bottom: 2em;
+  }
+
+  .game-panel .selected-word {
+    margin: 0 auto;
+    padding: .1em;
+  }
+
+  .game-panel .selected-word div {
+    margin: 0 auto;
+  }
+
+  .game-panel .selected-word .word {
+    padding: .1em;
+  }
+
+  .game-panel #frontBuffer {
+    width: 66%;
+  }
+
+  ul.words-and-scores li {
+    font-size: 1.4em;
+  }
+
+  .game-panel .game-data {
+    width: 84%;
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  .game-panel .no-board {
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  .game-panel .buttons {
+    margin-top: .2em;
+  }
+
+  .game-panel .buttons button {
+    padding: .25em;
+  }
+}
+
+
+
+
+
+
+@media screen and (max-width: 980px{
 
   .header {
     display: none;
