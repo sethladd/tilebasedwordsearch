@@ -197,7 +197,9 @@ void postConnectDataHandler(FukiyaContext context) {
     db.Persistable.findBy(Player, {'gplus_id': userId}).toList().then((List players) {
       if (players.isEmpty) {
         _log.info('No player found for gplusId $userId');
-        var p = new Player()..gplus_id = userId;
+        // TODO save the player's name
+        var p = new Player()
+          ..gplus_id = userId;
         p.store().then((_) {
           context.request.session['player_id'] = p.dbId;
           context.send("POST OK");

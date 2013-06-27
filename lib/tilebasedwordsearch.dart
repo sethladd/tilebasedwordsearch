@@ -136,7 +136,7 @@ newGame() {
 }
 
 newMultiplayerGame() {
-  currentPanel = 'highScores';
+  currentPanel = 'newMultiplayerGame';
   player.refreshHighScoreLeaderboard();
 }
 

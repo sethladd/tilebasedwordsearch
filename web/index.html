@@ -22,6 +22,7 @@
     <link rel="import" href="packages/tilebasedwordsearch/components/list_games_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/game_results_panel.html">
     <link rel="import" href="packages/tilebasedwordsearch/components/recent_words_panel.html">
+    <link rel="import" href="packages/tilebasedwordsearch/components/new_multiplayer_game.html">
   </head>
   <body>
     <div id="page">
@@ -33,6 +34,10 @@
 
           <template if="app.currentPanel == 'highScores'">
             <div is="high-scores-panel" high-scores="{{app.player.allTimeHighScores}}"></div>
+          </template>
+          
+          <template if="app.currentPanel == 'newMultiplayerGame'">
+            <div is="new-multiplayer-game"></div>
           </template>
 
           <template if="app.currentPanel == 'game'">

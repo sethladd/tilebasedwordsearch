@@ -43,8 +43,17 @@ abstract class Persistable {
     var conditions = params.keys.map((k) {
       String condition = '$k ';
       if (params[k] is List) {
-        condition += ' IN (@$k)';
-        conditionValues[k] = conditionValues[k].join(',');
+        List list = params[k];
+        int i = 0;
+        
+        condition += ' IN (';
+        condition += list.map((e) => '@${k}_${i++}').join(',');
+            
+        for (var j = 0; j < i; j++) {
+          conditionValues['${k}_$j'] = list[j];
+        }
+        
+        condition += ')';
       } else {
         condition += ' = @$k';
       }
@@ -53,7 +62,7 @@ abstract class Persistable {
     
     String query = 'SELECT * FROM ${_getTableName(type)} WHERE $conditions';
     
-    _log.fine('Query $query');
+    //_log.fine('Query $query ; conditions $conditionValues');
     
     return _conn.query(query, conditionValues).map((row) {
       return _createAndPopulate(classMirror, row.id, _rowToMap(row));
