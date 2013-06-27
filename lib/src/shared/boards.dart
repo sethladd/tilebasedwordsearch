@@ -3,7 +3,7 @@ part of shared;
 class Boards {
 
   List<BoardConfig> boards = new List<BoardConfig>();
-  Random _rand = new Random();
+  static Random _rand = new Random();
 
   Boards(String data) {
     final StringBuffer tiles = new StringBuffer();
@@ -12,13 +12,8 @@ class Boards {
       if (line.trim().length < 32) return;
       String letters = line.substring(0, 32).split(' ').join('');
       List<String> words = line.substring(33).split(' ');
-      boards.add(new BoardConfig(letters, words));
+      boards.add(new BoardConfig.fromFile(letters, words));
     });
-  }
-
-  BoardConfig getRandomBoard() {
-    var index = _rand.nextInt(boards.length);
-    return boards[index];
   }
   
   /// Get a [BoardConfig] from a String of letters like FGETRS...
@@ -29,10 +24,45 @@ class Boards {
 }
 
 class BoardConfig {
+  static const numBonusLetters = 3;
   final String _board;
   final List<String> _words;
+  List<int> letterBonusTileIndexes = new List<int>();
+  int wordBonusTileIndex = null;
+  static Random _random = new Random();
 
-  BoardConfig(this._board, this._words);
+  BoardConfig.fromFile(this._board, this._words);
+  
+  factory BoardConfig.fromGame(Boards boards, Game game) {
+    BoardConfig config = new BoardConfig(boards);
+    config.letterBonusTileIndexes = game.letterBonusTiles;
+    config.wordBonusTileIndex = game.wordBonusTile;
+    return config;
+  }
+  
+  BoardConfig._clone(BoardConfig other) : _board = other._board, _words = other._words;
+  
+  factory BoardConfig(Boards boards) {
+    var index = _random.nextInt(boards.boards.length);
+    BoardConfig oldConfig = boards.boards[index];
+    BoardConfig newConfig = new BoardConfig._clone(oldConfig);
+    
+    while (newConfig.letterBonusTileIndexes.length < numBonusLetters) {
+      int r = _random.nextInt(16);
+      if (!newConfig.letterBonusTileIndexes.contains(r)) {
+        newConfig.letterBonusTileIndexes.add(r);
+      }
+    }
+    
+    while (newConfig.wordBonusTileIndex == null) {
+      int r = _random.nextInt(16);
+      if (newConfig.letterBonusTileIndexes.contains(r) == false) {
+        newConfig.wordBonusTileIndex = r;
+      }
+    }
+    
+    return newConfig;
+  }
 
   String getChar(int i, int j) {
     int index = i * 4 + j;

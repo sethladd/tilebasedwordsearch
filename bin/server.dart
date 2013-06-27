@@ -225,8 +225,8 @@ void createMultiplayerGame(FukiyaContext context) {
     
     String currentUserGplusId = context.request.session['userGplusId'];
     
-    BoardConfig boardConfig = boards.getRandomBoard();
-    TwoPlayerMatch match = new TwoPlayerMatch(boardConfig.board,
+    BoardConfig boardConfig = new BoardConfig(boards);
+    TwoPlayerMatch match = new TwoPlayerMatch(boardConfig,
         currentUserGplusId, opponentGplusId);
     
     return match.store().then((_) => match);

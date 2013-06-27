@@ -114,23 +114,24 @@ void parseAssets() {
   clientLogger.info('Assets loaded and parsed');
 }
 
-resumeGame(Game g) {
-  clientLogger.info('Resuming game ${g.id}');
-  game = g;
-  BoardBonusConfig bonusConfig = new BoardBonusConfig.fromGame(game);
-  board = new Board.fromGame(boards.getBoardFromString(game.board), bonusConfig,
-                             g);
+resumeGame(Game resumedGame) {
+  clientLogger.info('Resuming game ${resumedGame.id}');
+  game = resumedGame;
+  BoardConfig boardConfig = new BoardConfig.fromGame(boards, resumedGame);
+  board = new Board.fromGame(boardConfig, resumedGame);
   currentPanel = 'game';
 }
 
-newGame() {
-  var bonusConfig = new BoardBonusConfig();
-  board = new Board(boards.getRandomBoard(), bonusConfig);
-  game = new Game()
-    ..timeRemaining = GameClock.DEFAULT_GAME_LENGTH
-    ..board = board.tiles;
-  game.letterBonusTiles = board.bonusConfig.letterBonusTileIndexes;
-  game.wordBonusTile = board.bonusConfig.wordBonusTileIndex;
+newGame([Game game]) {
+  if (game == null) {
+    BoardConfig boardConfig = new BoardConfig(boards);
+    board = new Board(boardConfig);
+    game = new Game()
+      ..timeRemaining = GameClock.DEFAULT_GAME_LENGTH
+      ..board = board.tiles
+      ..letterBonusTiles = boardConfig.letterBonusTileIndexes
+      ..wordBonusTile = boardConfig.wordBonusTileIndex;
+  }
   games.add(game);
   currentPanel = 'game';
 }

@@ -1,34 +1,5 @@
 part of tilebasedwordsearch;
 
-class BoardBonusConfig {
-  static const numBonusLetters = 3;
-  static Random random = new Random();
-  final List<int> letterBonusTileIndexes = new List<int>();
-  int wordBonusTileIndex = null;
-
-  BoardBonusConfig() {
-    while (letterBonusTileIndexes.length < numBonusLetters) {
-      int r = random.nextInt(16);
-      if (!letterBonusTileIndexes.contains(r)) {
-        letterBonusTileIndexes.add(r);
-      }
-    }
-    while (wordBonusTileIndex == null) {
-      int r = random.nextInt(16);
-      if (letterBonusTileIndexes.contains(r) == false) {
-        wordBonusTileIndex = r;
-      }
-    }
-  }
-
-  BoardBonusConfig.fromGame(Game game) {
-    game.letterBonusTiles.forEach((a) {
-      letterBonusTileIndexes.add(a);
-    });
-    wordBonusTileIndex = game.wordBonusTile;
-  }
-}
-
 @observable
 class Board {
   static const NUM_RECENT_WORDS = 10;
@@ -37,14 +8,11 @@ class Board {
   final Map<String, int> words = new Map<String, int>();
   final BoardConfig config;
   int scoreMultiplier = 3;
-  BoardBonusConfig bonusConfig;
-  // TODO: create a Turn to keep the score
   int score = 0;
 
-  Board(this.config, this.bonusConfig) {
-  }
+  Board(this.config);
 
-  Board.fromGame(this.config, this.bonusConfig, Game game) {
+  Board.fromGame(this.config, Game game) {
     score = game.score;
     words.addAll(game.words);
     recentWords.addAll(game.recentWords);
@@ -114,10 +82,10 @@ class Board {
       int column = GameConstants.columnFromIndex(index);
       String tileCharacter = config.getChar(row, column);
       int letterScore = GameConstants.letterScores[tileCharacter];
-      if (bonusConfig.letterBonusTileIndexes.contains(index)) {
+      if (config.letterBonusTileIndexes.contains(index)) {
         letterScore *= scoreMultiplier;
       }
-      if (bonusConfig.wordBonusTileIndex == index) {
+      if (config.wordBonusTileIndex == index) {
         wordMultiplier = true;
       }
       scores[i] = letterScore;

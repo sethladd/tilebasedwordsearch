@@ -2,6 +2,9 @@ part of shared;
 
 class TwoPlayerMatch extends Object with Persistable {
   String board;
+  int word_bonus_tile;
+  String letter_bonus_tile_indexes;
+  
   DateTime created_on;
   String p1_id;
   String p2_id;
@@ -12,7 +15,11 @@ class TwoPlayerMatch extends Object with Persistable {
   DateTime p1_played;
   DateTime p2_played;
   
-  TwoPlayerMatch(this.board, this.p1_id, this.p2_id) : created_on = new DateTime.now();
+  TwoPlayerMatch(BoardConfig boardConfig, this.p1_id, this.p2_id) {
+    word_bonus_tile = boardConfig.wordBonusTileIndex;
+    letter_bonus_tile_indexes = boardConfig.letterBonusTileIndexes.join(',');
+    created_on = new DateTime.now();
+  }
   
   TwoPlayerMatch.fromPersistence(String id, Map data) {
     this.id = id;
@@ -33,6 +40,11 @@ class TwoPlayerMatch extends Object with Persistable {
     if (data['p2_played']) {
       p2_played = new DateTime.fromMillisecondsSinceEpoch(data['p2_played']);
     }
+    
+    if (data['letter_bonus_tile_indexes']) {
+      letter_bonus_tile_indexes = data['letter_bonus_tile_indexes'].join(',');
+    }
+    word_bonus_tile = data['word_bonus_tile'];
   }
   
   // TODO once mirrors generate small JS, use mirrors here
@@ -47,7 +59,9 @@ class TwoPlayerMatch extends Object with Persistable {
       'p1_score': p1_score,
       'p2_score': p2_score,
       'p1_played': p1_played == null ? null : p1_played.millisecondsSinceEpoch,
-      'p2_played': p2_played == null ? null : p2_played.millisecondsSinceEpoch
+      'p2_played': p2_played == null ? null : p2_played.millisecondsSinceEpoch,
+      'word_bonus_tile': word_bonus_tile,
+      'letter_bonus_tile_indexes': letter_bonus_tile_indexes.split(',')
     };
   }
 }
