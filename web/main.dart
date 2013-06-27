@@ -22,12 +22,18 @@ void _setupLogger() {
 /* Animation gallops off to the left and then disappears. */
 void _removeLoadingAnimation() {
   Element el = query('.primary');
-  el.style.transitionProperty = 'all';
-  el.style.transitionDuration = '4s';
-  el.style.transitionTimingFunction = 'ease-in';
+  
+  // Set up the transition.
+  el.style.transition = 'all 4s ease-in';
+  
+  // Move the image.
   el.style.backgroundPositionX = '-150%';
-  new Timer(new Duration(seconds:5),
-            () => el.style.backgroundImage = 'none');
+  
+  // Remove the transition and image.
+  new Timer(new Duration(seconds:5), () {
+    el.style.transition = 'none 0s ease';
+    el.style.backgroundImage = 'none';
+  });
 }
 
 main() {
