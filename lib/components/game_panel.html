@@ -5,9 +5,8 @@
     <element name="game-panel" extends="div" constructor="GamePanel">
       <template>
         <div class="selected-word">
-          <div class='word'>{{boardController.wordInProgress}} {{boardController.wordInProgressScore}}</div>
+            <div class='word'>{{wordInProgress}} {{wordInProgressScore}}</div>
         </div>
-
         <div class='board'><canvas id="frontBuffer"></canvas></div>
         <div class='not-board'>
           <div class="game-data">
