@@ -11,11 +11,13 @@ class Game extends Object with Persistable {
 
   // See bug 11448. This needs to be a double.
   double lastPlayedMillisSinceEpoch;
+  
+  String matchId;
 
   Game();
 
   Game.fromPersistence(String id, Map data) {
-    dbId = id;
+    this.id = id;
     board = data['board'];
     score = data['score'];
     words = data['words'];
@@ -42,6 +44,8 @@ class Game extends Object with Persistable {
   bool get done => timeRemaining == null || timeRemaining <= 0;
 
   bool get started => timeRemaining != null;
+  
+  bool get isMultiplayer => matchId != null;
 
   Map toJson() {
     return {
@@ -50,7 +54,7 @@ class Game extends Object with Persistable {
       'timeRemaining': timeRemaining,
       'words': words,
       'lastPlayedMillisSinceEpoch': lastPlayedMillisSinceEpoch,
-      'dbId': dbId,
+      'id': id,
       'letterBonusTiles': letterBonusTiles,
       'wordBonusTile': wordBonusTile,
       'recentWords': recentWords

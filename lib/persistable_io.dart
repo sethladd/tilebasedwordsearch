@@ -19,11 +19,11 @@ Future init(String url) {
 abstract class Persistable {
   static Map<Type, List<String>> _columnNames = new Map<Type, List<String>>();
   
-  int dbId;
+  String id;
   
   static const constructor = const Symbol('fromPersistance');
   
-  static Future load(int id, Type type) {
+  static Future load(String id, Type type) {
     var query = 'SELECT * FROM ${_getTableName(type)} WHERE id = @id';
     
     return _conn.query(query, {'id': id}).map((r) => _rowToMap(r)).toList().then((List rows) {
@@ -69,6 +69,15 @@ abstract class Persistable {
     });
   }
   
+  /**
+   * Completes with [null] if no record was found.
+   */
+  static Future findOneBy(Type type, Map params) {
+    return findBy(type, params).toList().then((List list) {
+      return (list.isEmpty ? null : list[0]);
+    });
+  }
+  
   static Future _validateParams(Type type, Map params) {
     return _getColumns(type).then((List<String> columns) {
       params.keys.forEach((k) {
@@ -80,10 +89,10 @@ abstract class Persistable {
 
   }
   
-  static _createAndPopulate(ClassMirror classMirror, int id, Map data) {
+  static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
     var instance = classMirror.newInstance(const Symbol(''), []);
-    var object = instance.reflectee;
-    object.dbId = id;
+    Persistable object = instance.reflectee;
+    object.id = id;
     var instanceMirror = reflect(object);
     data.forEach((k, v) {
       _log.fine('$k has $v which is a ${v.runtimeType}');
@@ -97,7 +106,7 @@ abstract class Persistable {
   Future store() {
     _log.info('inside store');
     
-    if (dbId == null) {
+    if (id == null) {
       return _doInsert();
     } else {
       return _doUpdate();
@@ -118,7 +127,7 @@ abstract class Persistable {
                     
         return _conn.query(query, map).first.then((row) {
           _log.fine('Result after inserting: $row');
-          dbId = row[0];
+          id = row[0].toString();
         });
       });
   }
@@ -126,7 +135,7 @@ abstract class Persistable {
   Future _doUpdate() {
     return _getColumns(runtimeType).then((cols) {
         var map = _getExistingValues(cols);
-        map['id'] = dbId;
+        map['id'] = id;
         
         var query = 'UPDATE $_tableName SET '
             '${map.keys.map((c) => '$c = @$c').join(', ')} '

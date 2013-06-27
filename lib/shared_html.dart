@@ -8,3 +8,4 @@ import 'package:intl/intl.dart';
 part 'src/shared/game.dart';
 part 'src/shared/boards.dart';
 part 'src/shared/player.dart';
+part 'src/shared/match.dart';

@@ -26,7 +26,7 @@ final String _idOffset = new DateTime.now().millisecondsSinceEpoch.toString();
  */
 abstract class Persistable {
   
-  String _dbId;
+  String _id;
   
   static Future load(String id, Type type) {
     return _store.getByKey(id).then((Map data) {
@@ -43,16 +43,16 @@ abstract class Persistable {
     ClassMirror classMirror = reflectClass(type);
 
     return _store.all().map((Map data) {
-      return _createAndPopulate(classMirror, data['dbId'], data);
+      return _createAndPopulate(classMirror, data['id'], data);
     });
   }
   
   Future store() {
-    return _store.save(toJson(), dbId);
+    return _store.save(toJson(), id);
   }
   
   Future delete() {
-    return _store.removeByKey(dbId);
+    return _store.removeByKey(id);
   }
   
   static Future clear() {
@@ -61,8 +61,8 @@ abstract class Persistable {
   
   static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
     var instance = classMirror.newInstance(const Symbol(''), []);
-    var object = instance.reflectee;
-    object.dbId = id;
+    Persistable object = instance.reflectee;
+    object.id = id;
     var instanceMirror = reflect(object);
     data.forEach((k, v) {
       log.fine('$k has $v which is a ${v.runtimeType}');
@@ -74,14 +74,14 @@ abstract class Persistable {
   }
   
   // This assumes there's no reason for code to change an ID.
-  String get dbId {
-    if (_dbId == null) {
-      _dbId = _idOffset + '-' + (_counter++).toString();
+  String get id {
+    if (_id == null) {
+      _id = _idOffset + '-' + (_counter++).toString();
     }
-    return _dbId;
+    return _id;
   }
   
-  void set dbId(String id) { _dbId = id; }
+  void set id(String id) { _id = id; }
   
   Map toJson();
 }
