@@ -31,7 +31,6 @@ and (orientation : portrait) {
     padding-top: 1%;
   }
 
-
   .login-panel .sign-out {
     width: 36%;
   }
@@ -49,12 +48,25 @@ and (orientation : portrait) {
   }
 
   /* game-panel portrait phone */
-  .game-panel .selected-word .find-a-word {
-    display: none;
+  .game-panel {
+    margin: 0;
+    padding: 0;
+
+  }
+
+  .game-panel .selected-word{
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+  }
+
+  .game-panel .selected-word .word {
+    margin: 0 auto;
+    padding: 0;
   }
 
   .game-panel #frontBuffer {
-    width: 95%;
+    width: 80%;
   }
 }
 
