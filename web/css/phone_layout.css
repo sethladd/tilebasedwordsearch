@@ -13,7 +13,7 @@
     width: 96%;
   }
 
-  .main .primary {
+  .primary {
     float: none;
     width: 96%;
     margin: 0 auto;
@@ -57,7 +57,7 @@
 and (max-device-width : 599px)
 and (orientation : landscape) {
 
-  .main .primary {
+  .primary {
     width: 100%;
     margin: 0 auto;
     margin-top: 0em;
@@ -184,6 +184,5 @@ and (orientation : landscape) {
     margin: .2em 0;
     padding: 0;
   }
-
 }
 

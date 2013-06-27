@@ -2,7 +2,7 @@
 and (max-device-width : 980px)
 and (orientation : landscape) {
 
-  .main-panel .login-panel {
+  .login-panel {
     bottom: 2em;
   }
 
@@ -54,11 +54,11 @@ and (min-device-width : 600px)
 
 and (orientation : portrait) {
 
-.secondary {
-  display: none;
-}
+  .secondary {
+    display: none;
+  }
 
-#page {width: 100%; margin: 0 auto;}
+  #page {width: 100%; margin: 0 auto;}
   .main {width: 100%; margin: 0 auto;}
   .primary {width: 100%; margin: 0 auto;}
   .secondary {width: 100%; margin: 0 auto;}
@@ -75,7 +75,6 @@ and (orientation : portrait) {
     font-size: 1.3em;
   }
 
-
   .game-panel .selected-word {
     font-weight: bold;
     font-size: 1.2em;
@@ -89,6 +88,7 @@ and (orientation : portrait) {
     padding: 0;
     width: 80%;
   }
+
   .game-panel .board {
     width: 68%;
     float: left;
@@ -96,7 +96,7 @@ and (orientation : portrait) {
     padding: 0;
   }
 
-  .main .primary .game-panel .board #frontBuffer {
+  .game-panel .board #frontBuffer {
     width: 100%;
   }
 
