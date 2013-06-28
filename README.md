@@ -4,6 +4,9 @@ tilebasedwordsearch
 Game is hosted on heroku:
 http://tbwfg.herokuapp.com/
 
+Another staged version:
+http://morning-taiga-2034.herokuapp.com/
+
 
 ## How to create a Heroku server
 
