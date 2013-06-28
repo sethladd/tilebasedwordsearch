@@ -3,7 +3,6 @@ and (max-device-width : 1080px)
 and (min-device-width : 600px)
 and (orientation : landscape) {
 
-  #page:after { content: '600 < 1080, small tablet landscape'; }
   #page {
     width: 100%;
     margin: 0 auto;
@@ -132,7 +131,6 @@ and (orientation : portrait) {
     display:inline-block;
   }
 
-  #page:after { content: '401 - 780, small tablet portrait'; }
   #page {width: 100%; margin: 0 auto; min-height: 700px;}
   .main{width: 100%; margin: 0 auto; min-height: 700px;}
   .primary {width: 100%; margin: 0 auto; min-height: 700px;}
