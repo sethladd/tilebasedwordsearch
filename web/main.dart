@@ -22,27 +22,33 @@ void _setupLogger() {
 
 /* Animation gallops off to the left and then disappears. */
 void _removeLoadingAnimation() {
-  var headIntoSunset = window.offscreenBuffering;
-  var delay = headIntoSunset? 4:1; // # of seconds before tada
-  Element el = query('.primary');
+  var ppanel = query('.primary');
   
-  // Move or disappear the image.
-  if (headIntoSunset) {
-    el.style.transition = 'all 4s ease-in';
-    el.style.backgroundPositionX = '-150%';
-  } else {
-    el.style.transition = 'all 0.5s';
-    el.style.backgroundSize = "0px 0px";
+  if (ppanel != null) {
+    bool headIntoSunset = window.innerWidth > 500;
+    var delay = headIntoSunset? 4:1; // # of seconds before tada
+
+    // Move or disappear the image.
+    if (headIntoSunset) {
+      ppanel.style.transition = 'all 4s ease-in';
+      ppanel.style.backgroundPositionX = '-150%';
+    } else {
+      ppanel.style.transition = 'all 0.5s';
+      ppanel.style.backgroundSize = "0px 0px";
+    }
+    
+    // Remove the transition and image.
+    new Timer(new Duration(seconds:delay), () {
+      ppanel.style.transition = 'none 0s ease';
+      ppanel.style.backgroundImage = 'none';
+      // PENDING: should I clean up more?
+
+      var mpanel = query('.main-panel');
+      if (mpanel != null) {
+        mpanel.style.backgroundImage = "url('../assets/WordHerder.png')";
+      }
+    });
   }
-    
-  // Remove the transition and image.
-  new Timer(new Duration(seconds:delay), () {
-    el.style.transition = 'none 0s ease';
-    el.style.backgroundImage = 'none';
-    // PENDING: should I clean up more?
-    
-    query('.main-panel').style.backgroundImage = "url('../assets/WordHerder.png')";
-  });
 }
 
 /**
