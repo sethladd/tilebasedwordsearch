@@ -72,7 +72,6 @@ and (orientation : portrait) {
 and (min-device-width : 530px)
 and (max-device-width : 599px)
 and (orientation : landscape) {
-<<<<<<< HEAD
   body {
   }
 

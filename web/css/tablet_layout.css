@@ -130,18 +130,12 @@ and (orientation : portrait) {
     display:inline-block;
   }
 
-<<<<<<< HEAD
-  #page {width: 100%; margin: 0 auto; min-height: 700px;}
-  .main{width: 100%; margin: 0 auto; min-height: 700px;}
-  .primary {width: 100%; margin: 0 auto; min-height: 700px;}
-  .main-panel {width: 100%; margin: 0 auto; min-height: 700px;}
-  .login-panel {width: 100%; margin: 0 auto; min-height: 700px;}
-=======
   #page {width: 100%; margin: 0 auto;}
+  .main-panel {width: 100%; margin: 0 auto;}
+  .login-panel {width: 100%; margin: 0 auto;}
   .main {width: 100%; margin: 0 auto;}
   .primary {width: 100%; margin: 0 auto;}
   .secondary {width: 100%; margin: 0 auto;}
->>>>>>> master
 
 
   .login-panel {
