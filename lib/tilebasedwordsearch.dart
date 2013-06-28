@@ -149,7 +149,7 @@ newMultiplayerGame() {
 //  player.refreshHighScoreLeaderboard();
 }
 
-signedIn(SimpleOAuth2 authenticationContext, Map authResult) {
+signedIn(SimpleOAuth2 authenticationContext, [Map authResult]) {
   player.signedIn(authenticationContext, authResult).then((_) {
   
     clientLogger.fine('Getting twoplayermatch from server');
@@ -158,8 +158,6 @@ signedIn(SimpleOAuth2 authenticationContext, Map authResult) {
     .then((HttpRequest req) {
       List<TwoPlayerMatch> matches = JSON.parse(req.responseText)
           .map((Map data) => new TwoPlayerMatch.fromPersistence(data['id'], data));
-      
-      print(matches);
       
       // TODO find the ones that aren't in the DB and store them
     })

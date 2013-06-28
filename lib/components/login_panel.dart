@@ -5,7 +5,7 @@ import 'package:web_ui/web_ui.dart';
 import 'package:tilebasedwordsearch/tilebasedwordsearch.dart' as app;
 import "package:google_oauth2_client/google_oauth2_browser.dart";
 
-typedef OnSignInCallback(SimpleOAuth2 authenticationContext);
+typedef OnSignInCallback(SimpleOAuth2 authenticationContext, [Map authResult]);
 typedef OnSignOutCallback();
 
 void enableSignInUI(bool isAnonymous) {
