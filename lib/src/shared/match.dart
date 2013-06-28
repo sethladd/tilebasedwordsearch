@@ -17,7 +17,9 @@ class TwoPlayerMatch extends Object with Persistable {
   DateTime p1_played;
   DateTime p2_played;
   
-  TwoPlayerMatch(BoardConfig boardConfig, this.p1_id, this.p2_id,
+  TwoPlayerMatch();
+  
+  TwoPlayerMatch.fromBoardConfig(BoardConfig boardConfig, this.p1_id, this.p2_id,
       this.p1_name, this.p2_name) {
     board = boardConfig.board;
     word_bonus_tile = boardConfig.wordBonusTileIndex;
@@ -83,4 +85,6 @@ class TwoPlayerMatch extends Object with Persistable {
       'letter_bonus_tile_indexes': letter_bonus_tile_indexes == null ? [] : letter_bonus_tile_indexes.split(',')
     };
   }
+  
+  String toString() => toJson().toString();
 }

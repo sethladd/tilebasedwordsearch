@@ -139,13 +139,39 @@ newGame({TwoPlayerMatch match}) {
     currentPanel = 'game';
   })
   .catchError((e) {
-    print('Could not store game into local db: $e');
+    clientLogger.warning('Could not store game into local db: $e');
   });
 
 }
+
 newMultiplayerGame() {
   currentPanel = 'newMultiplayerGame';
 //  player.refreshHighScoreLeaderboard();
+}
+
+signedIn(SimpleOAuth2 authenticationContext, Map authResult) {
+  player.signedIn(authenticationContext, authResult).then((_) {
+  
+    clientLogger.fine('Getting twoplayermatch from server');
+    
+    return HttpRequest.request('/multiplayer_games/me', method: 'GET')
+    .then((HttpRequest req) {
+      List<TwoPlayerMatch> matches = JSON.parse(req.responseText)
+          .map((Map data) => new TwoPlayerMatch.fromPersistence(data['id'], data));
+      
+      print(matches);
+      
+      // TODO find the ones that aren't in the DB and store them
+    })
+    .catchError((e) {
+      clientLogger.warning('Could not fetch twoplayermatch from server: $e');
+    });
+  
+  });
+}
+
+signedOut() {
+  player.signedOut();
 }
 
 Future initialize() {
@@ -164,4 +190,10 @@ Future initialize() {
         return db.Persistable.all(Game, (String id, Map data) => new Game.fromPersistence(id, data))
             .toList().then((g) => games.addAll(g));
       });
+}
+
+String encodeMap(Map data) {
+  return data.keys.map((k) {
+    return '${Uri.encodeComponent(k)}=${Uri.encodeComponent(data[k])}';
+  }).join('&');
 }

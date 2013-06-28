@@ -15,4 +15,6 @@ class Player extends Object with Persistable {
   Map toJson() {
     return {'id': id, 'gplus_id': gplus_id, 'name': name};
   }
+  
+  String toString() => toJson().toString();
 }

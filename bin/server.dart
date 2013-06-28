@@ -75,6 +75,7 @@ void main() {
     ..post('/disconnect', postDisconnectHandler)
     ..get('/multiplayer_games/new', getNewMultiplayerGame)
     ..post('/multiplayer_games', createMultiplayerGame)
+    ..get('/multiplayer_games/me', getMultiplayerGamesForMe)
     ..staticFiles('./web/out')
     ..use(new FukiyaJsonParser())
     ..use(new FukiyaFormParser())
@@ -123,6 +124,26 @@ void postDisconnectHandler(FukiyaContext context) {
                 "message" : "Successfully disconnected."
                 };
     _sendJson(context, data);
+  });
+}
+
+/**
+ * TODO use a date filter to make this faster and act more like sync
+ */
+void getMultiplayerGamesForMe(FukiyaContext context) {
+  _log.fine('getMultiplayerGamesForMe');
+  String userGplusId = context.request.session['userGplusId'];
+  
+  db.Persistable.findByWhere(TwoPlayerMatch, 'p1_id = @p1_id OR p2_id = @p2_id',
+      {'p1_id': userGplusId, 'p2_id': userGplusId})
+    .toList()
+    .then((List<TwoPlayerMatch> matches) {
+      _sendJson(context, matches);
+  })
+  .catchError((e) {
+    _log.warning('Did not find all multiplayer games: $e ${getAttachedStackTrace(e)}');
+    context.response.statusCode = 500;
+    context.response.close();
   });
 }
 
@@ -227,7 +248,7 @@ void createMultiplayerGame(FukiyaContext context) {
     String userName = context.request.session['userName'];
     
     BoardConfig boardConfig = new BoardConfig(boards);
-    TwoPlayerMatch match = new TwoPlayerMatch(boardConfig,
+    TwoPlayerMatch match = new TwoPlayerMatch.fromBoardConfig(boardConfig,
         currentUserGplusId, opponentGplusId,
         userName, player.name);
     
@@ -267,7 +288,7 @@ void postConnectDataHandler(FukiyaContext context) {
         var p = new Player()
           ..name = currentPerson.displayName
           ..gplus_id = currentPerson.id;
-        p.store().then((_) {
+        return p.store().then((_) {
           context.request.session['player_id'] = p.id;
           context.send("POST OK");
         })
@@ -278,6 +299,8 @@ void postConnectDataHandler(FukiyaContext context) {
         });
       } else {
         _log.info('Found the player ${player}');
+        context.response.statusCode = 200;
+        return context.response.close();
       }
     });
   })

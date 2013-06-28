@@ -50,7 +50,7 @@ class Player {
     gamesclient = new gg.Games(authenticationContext);
   }
 
-  void signedIn(SimpleOAuth2 authenticationContext, [Map authResult]) {
+  Future signedIn(SimpleOAuth2 authenticationContext, [Map authResult]) {
     if (authResult != null) {
       _authResult = authResult;
     }
@@ -59,27 +59,24 @@ class Player {
     gamesclient.makeAuthRequests = true;
     clientLogger.info("Player is signed in client side");
 
-    plusclient.people.get('me').then((Person person) {
+    return plusclient.people.get('me').then((Person person) {
       // Connect to the server with offline token.
       id = person.id;
       displayName = person.displayName;
       imgUrl = person.image.url;
       isConnected = true;
-      _connectServer(id);
+      return _connectServer(id);
     });
   }
 
-  void _connectServer(String gplusId) {
+  Future _connectServer(String gplusId) {
     clientLogger.fine("gplusId = $gplusId");
     var stateToken = (query("meta[name='state_token']") as MetaElement).content;
     String url = "${window.location.href}connect?state_token=${stateToken}"
                  "&gplus_id=${gplusId}&name=${Uri.encodeQueryComponent(displayName)}";
     clientLogger.fine(url);
-    HttpRequest.request(url, method: "POST", sendData: JSON.stringify(_authResult),
-        onProgress: (ProgressEvent e) {
-          clientLogger.fine("ProgressEvent ${e.toString()}");
-        }
-    )
+    
+    return HttpRequest.request(url, method: "POST", sendData: JSON.stringify(_authResult))
     .then((HttpRequest request) {
       clientLogger.fine("connected from POST METHOD");
       if (request.status == 401) {

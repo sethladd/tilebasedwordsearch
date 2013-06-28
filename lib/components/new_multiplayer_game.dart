@@ -19,14 +19,8 @@ class NewMultiplayerGame extends WebComponent {
   }
   
   createNewMatch(String opponentGplusId) {
-    String encodeMap(Map data) {
-      return data.keys.map((k) {
-        return '${Uri.encodeComponent(k)}=${Uri.encodeComponent(data[k])}';
-      }).join('&');
-    }
-    
     HttpRequest.request('/multiplayer_games', method: 'POST',
-        sendData: encodeMap({'opponentGplusId': opponentGplusId}),
+        sendData: app.encodeMap({'opponentGplusId': opponentGplusId}),
         requestHeaders: {'Content-Type': 'application/x-www-form-urlencoded'})
       .then((request) {
         Map data = json.parse(request.responseText);

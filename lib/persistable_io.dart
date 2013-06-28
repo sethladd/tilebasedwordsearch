@@ -35,12 +35,22 @@ abstract class Persistable {
     });
   }
   
+  static Stream findByWhere(Type type, String whereClause, Map params) {
+    _validateParams(type, params);
+    String query = 'SELECT * FROM ${_getTableName(type)} WHERE $whereClause';
+    ClassMirror classMirror = reflectClass(type);
+    
+    return _conn.query(query, params).map((row) {
+      return _createAndPopulate(classMirror, row.id, _rowToMap(row));
+    });
+  }
+  
   static Stream findBy(Type type, Map params) {
     _validateParams(type, params);
     Map conditionValues = new Map.from(params);
     
-    var classMirror = reflectClass(type);
-    var conditions = params.keys.map((k) {
+    ClassMirror classMirror = reflectClass(type);
+    String conditions = params.keys.map((k) {
       String condition = '$k ';
       if (params[k] is List) {
         List list = params[k];
@@ -95,7 +105,7 @@ abstract class Persistable {
     object.id = id;
     var instanceMirror = reflect(object);
     data.forEach((k, v) {
-      _log.fine('$k has $v which is a ${v.runtimeType}');
+      //_log.fine('$k has $v which is a ${v.runtimeType}');
       if (classMirror.variables.containsKey(new Symbol(k))) {
         instanceMirror.setField(new Symbol(k), v);
       }
