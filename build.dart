@@ -6,7 +6,7 @@ void main() {
   Future task = build(new Options().arguments, ['web/index.html']);
   
   task
-      .then((_) => Process.run('cp', ['-R', 'web/assets', 'web/out']))
+      .then((_) => Process.run('cp', ['-R', 'web/assets', 'web/favicon-32.png', 'web/out']))
       .then((_) => generateAppCache())
       .then((_) => print('All done'));
 }
