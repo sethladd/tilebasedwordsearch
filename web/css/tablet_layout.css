@@ -26,8 +26,12 @@ and (orientation : landscape) {
     display: none;
   }
 
+  .phone-only {
+    display:inline-block;
+  }
+
   .main-panel .login-panel {
-    bottom: 2em;
+    margin: 13% auto;
   }
 
   .game-panel .selected-word {
@@ -115,15 +119,25 @@ and (orientation : portrait) {
  body {
  }
 
-.secondary {
-  display: none;
-}
+  .secondary {
+    display: none;
+  }
 
-#page:after { content: '401 - 780, small tablet portrait'; }
-#page {width: 100%; margin: 0 auto;}
+
+  .phone-only {
+    display:inline-block;
+  }
+
+  #page:after { content: '401 - 780, small tablet portrait'; }
+  #page {width: 100%; margin: 0 auto;}
   .main {width: 100%; margin: 0 auto;}
   .primary {width: 100%; margin: 0 auto;}
   .secondary {width: 100%; margin: 0 auto;}
+
+
+  .main-panel .login-panel {
+    margin: 35% auto;
+  }
 
   .game-panel #frontBuffer {
     width: 94%;
@@ -216,7 +230,7 @@ and (orientation : portrait) {
     width: 90%;
   }
 
-  .main .secondary {
+  .secondary {
     width: 39%;
     text-align: center;
   }
