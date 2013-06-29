@@ -9,6 +9,7 @@ final Logger log = new Logger("persistence");
 final Map<Type, Store> _stores = new Map<Type, Store>();
 
 Future init(String dbName, Type type) {
+  log.fine('Attemping to open db $dbName and store $type');
   Store store = new Store(dbName, type.toString());
   _stores[type] = store;
   return store.open();
