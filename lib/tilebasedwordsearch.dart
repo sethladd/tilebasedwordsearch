@@ -123,17 +123,18 @@ resumeGame(Game resumedGame) {
 }
 
 newGame({TwoPlayerMatch match}) {
+  queryAll('.list-games-panel').forEach((item) => item.remove());
   BoardConfig boardConfig = new BoardConfig(boards);
   board = new Board(boardConfig);
   game = new Game(GameClock.DEFAULT_GAME_LENGTH,
       board.tiles,
       boardConfig.letterBonusTileIndexes,
       boardConfig.wordBonusTileIndex);
-  
+
   if (match != null) {
     game.matchId = match.id;
   }
-  
+
   game.store().then((_) {
     games.add(game);
     currentPanel = 'game';
@@ -151,20 +152,20 @@ newMultiplayerGame() {
 
 signedIn(SimpleOAuth2 authenticationContext, [Map authResult]) {
   player.signedIn(authenticationContext, authResult).then((_) {
-  
+
     clientLogger.fine('Getting twoplayermatch from server');
-    
+
     return HttpRequest.request('/multiplayer_games/me', method: 'GET')
     .then((HttpRequest req) {
       List<TwoPlayerMatch> matches = JSON.parse(req.responseText)
           .map((Map data) => new TwoPlayerMatch.fromPersistence(data['id'], data));
-      
+
       // TODO find the ones that aren't in the DB and store them
     })
     .catchError((e) {
       clientLogger.warning('Could not fetch twoplayermatch from server: $e');
     });
-  
+
   });
 }
 
