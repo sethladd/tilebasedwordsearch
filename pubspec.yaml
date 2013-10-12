@@ -1,17 +1,15 @@
-name: tilebasedwordsearch
-version: 0.1.0
+name: wordherd
+version: 0.2.0
 author: Dart DevRel
 description: GAME
 homepage: https://github.com/johnmccutchan/tilebasedwordsearch
 dependencies:
-  asset_pack:
-    git: https://github.com/johnmccutchan/asset_pack.git
+  asset_pack: any
   benchmark_harness: any
   browser: any
   crypto: any
   fukiya: '>=0.1.5'
-  game_loop:
-    git: https://github.com/johnmccutchan/game_loop.git
+  game_loop: any
   google_appstate_v1_api:
     git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
   google_games_v1_api:
@@ -26,4 +24,4 @@ dependencies:
   postgresql: any
   start: any
   unittest: any
-  web_ui: any
+  polymer: any

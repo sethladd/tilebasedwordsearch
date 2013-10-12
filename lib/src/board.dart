@@ -1,6 +1,5 @@
-part of tilebasedwordsearch;
+part of wordherd;
 
-@observable
 class Board {
   static const NUM_RECENT_WORDS = 10;
   // TODO make into linkedlist
@@ -11,12 +10,6 @@ class Board {
   int score = 0;
 
   Board(this.config);
-
-  Board.fromGame(this.config, Game game) {
-    score = game.score;
-    words.addAll(game.words);
-    recentWords.addAll(game.recentWords);
-  }
 
   String get tiles => config.board;
 

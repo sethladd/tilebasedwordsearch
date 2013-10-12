@@ -1,8 +1,6 @@
 library solver;
 
-import 'dart:math';
-import 'package:tilebasedwordsearch/trie.dart';
-export 'package:tilebasedwordsearch/trie.dart' show Trie;
+import 'package:wordherd/trie.dart' show Trie;
 
 class Solver {
   final Trie _words;

@@ -1,4 +1,4 @@
-part of tilebasedwordsearch;
+part of wordherd;
 
 class RectangleTransform {
   /// Left.

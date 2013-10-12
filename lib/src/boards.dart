@@ -1,4 +1,4 @@
-part of shared;
+part of wordherd;
 
 class Boards {
 
@@ -32,13 +32,6 @@ class BoardConfig {
   static Random _random = new Random();
 
   BoardConfig.fromFile(this._board, this._words);
-  
-  factory BoardConfig.fromGame(Boards boards, Game game) {
-    BoardConfig config = boards.getBoardFromString(game.board);
-    config.letterBonusTileIndexes = game.letterBonusTiles;
-    config.wordBonusTileIndex = game.wordBonusTile;
-    return config;
-  }
   
   BoardConfig._clone(BoardConfig other) : _board = other._board, _words = other._words;
   

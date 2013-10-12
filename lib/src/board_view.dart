@@ -1,4 +1,4 @@
-part of tilebasedwordsearch;
+part of wordherd;
 
 class TileCoord {
   num x, y;
@@ -15,6 +15,9 @@ class BoardView {
   final Board board;
   final CanvasElement canvas;
   final Set<int> selectedTiles = new Set<int>();
+  
+  // XXX fixme
+  var tripleWordAtlas, letterAtlas, selectedLetterAtlas, tripleLetterAtlas;
 
   BoardView(this.board, this.canvas) {
     letterTiles.length = 16;
@@ -50,14 +53,15 @@ class BoardView {
   double get scaleY => canvas.height/canvas.clientHeight;
 
   int transformTouchToCanvasX(num v) {
-    Rect canvasRectangle = canvas.getBoundingClientRect();
+    // WTF if I make that var a Rectangle, then it explodes the whole library import
+    var canvasRectangle = canvas.getBoundingClientRect();
     int offsetX = (canvasRectangle.left + document.body.scrollLeft).toInt();
     int x = ((v - offsetX) * scaleX).toInt();
     return x;
   }
 
   int transformTouchToCanvasY(num v) {
-    Rect canvasRectangle = canvas.getBoundingClientRect();
+    var canvasRectangle = canvas.getBoundingClientRect();
     int offsetY = (canvasRectangle.top + document.body.scrollTop).toInt();
     int y = ((v - offsetY) * scaleY).toInt();
     return y;

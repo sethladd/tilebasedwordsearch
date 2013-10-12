@@ -5,77 +5,17 @@
   <head>
     <title>Word Herd</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
     <meta name="HandheldFriendly" content="true">
-    <link type='image/png' rel='shortcut icon' href='favicon-32.png' />
-    <link type='text/css' rel='stylesheet' href='css/common_styles.css' />
-
-    <link type='text/css' rel='stylesheet' href='css/panels.css' />
-
-    <link type='text/css' rel='stylesheet' href='css/default_layout.css' />
-    <link type='text/css' rel='stylesheet' href='css/tablet_layout.css' />
-    <link type='text/css' rel='stylesheet' href='css/phone_layout.css' />
-
-    <link rel="import" href="packages/tilebasedwordsearch/components/login_panel.html">
-    <link rel="import" href="packages/tilebasedwordsearch/components/main_panel.html">
-    <link rel="import" href="packages/tilebasedwordsearch/components/game_panel.html">
-    <link rel="import" href="packages/tilebasedwordsearch/components/list_games_panel.html">
-    <link rel="import" href="packages/tilebasedwordsearch/components/game_results_panel.html">
-    <link rel="import" href="packages/tilebasedwordsearch/components/recent_words_panel.html">
-    <link rel="import" href="packages/tilebasedwordsearch/components/new_multiplayer_game.html">
+    <link type='image/png' rel='shortcut icon' href='favicon-32.png'>
+    
+    <link rel="import" href="elements/wordherd_game.html">
+    
+    <script src="packages/polymer/boot.js"></script>
   </head>
   <body>
-    <div id="page">
-      <div class="main">
-        <div class="primary">
-          <template if="app.currentPanel == 'main'">
-            <div is="main-panel" class="main-panel"></div>
-          </template>
-
-          <template if="app.currentPanel == 'newMultiplayerGame'">
-            <div is="new-multiplayer-game" games="app.games"></div>
-          </template>
-
-          <template if="app.currentPanel == 'game'">
-            <div is="game-panel"
-                 game="{{app.game}}"
-                 letter-atlas="{{app.letterAtlas}}"
-                 submit-high-score="{{app.player.submitScore}}"
-                 class="game-panel">
-            </div>
-          </template>
-
-          <template if="app.currentPanel == 'results'">
-            <div is="game-results-panel" class="game-results-panel"></div>
-          </template>
-
-          <template if="app.currentPanel == 'list-games'">
-            <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
-          </template>
-
-        </div> <!-- end .primary -->
-
-        <div class="secondary">
-          <template if="app.currentPanel == 'main'">
-            <div is="list-games" games="{{app.games}}" class="list-games-panel"></div>
-          </template>
-
-          <template if="app.currentPanel == 'game'">
-             <div is="recent-words" class="recent-words-panel"></div>
-          </template>
-
-          <template if="app.currentPanel == 'results'">
-
-          </template>
-        </div><!-- end .secondary -->
-
-        <div class="tertiary">
-        </div> <!-- end .tertiary -->
-      </div> <!-- end .main -->
-    </div><!-- end #page -->
+    <wordherd-game></wordherd-game>
 
     <script type="application/dart" src="main.dart"></script>
-    <script src="packages/browser/dart.js"></script>
-    <script src="packages/browser/interop.js"></script>
   </body>
 </html>

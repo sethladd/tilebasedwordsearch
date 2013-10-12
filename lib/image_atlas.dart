@@ -1,10 +1,12 @@
-part of tilebasedwordsearch;
+library image_atlas;
+
+import 'dart:html';
 
 class ImageAtlasElement {
   final String name;
-  final Rect rect;
+  final Rectangle rect;
   ImageAtlasElement(this.name, x, y, width, height) :
-    this.rect = new Rect(x, y, width, height);
+    this.rect = new Rectangle(x, y, width, height);
 }
 
 class ImageAtlas {
@@ -25,7 +27,7 @@ class ImageAtlas {
       print('no atlas for $atlasElementName');
       return;
     }
-    Rect destRect = new Rect(x, y, atlasElement.rect.width,
+    Rectangle destRect = new Rectangle(x, y, atlasElement.rect.width,
                              atlasElement.rect.height);
     context.drawImageToRect(image, destRect, sourceRect:atlasElement.rect);
   }

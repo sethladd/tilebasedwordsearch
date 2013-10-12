@@ -1,4 +1,4 @@
-part of tilebasedwordsearch;
+part of wordherd;
 
 class GameClock {
   static const int DEFAULT_GAME_LENGTH = 70; // # of seconds in a game
