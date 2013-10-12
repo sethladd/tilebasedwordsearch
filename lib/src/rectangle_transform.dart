@@ -19,7 +19,7 @@ class RectangleTransform {
 
   /// Draw the rectangle outline in element.
   void drawOutline(CanvasElement element) {
-    var context = element.getContext('2d');
+    CanvasRenderingContext2D context = element.getContext('2d');
     context.strokeRect(left, top, width, height);
   }
 

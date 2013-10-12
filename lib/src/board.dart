@@ -1,33 +1,30 @@
 part of wordherd;
 
 class Board {
-  static const NUM_RECENT_WORDS = 10;
-  // TODO make into linkedlist
-  final List<String> recentWords = toObservable(new List<String>());
-  final Map<String, int> words = new Map<String, int>();
-  final BoardConfig config;
-  int scoreMultiplier = 3;
-  int score = 0;
-
-  Board(this.config);
-
-  String get tiles => config.board;
+  final String tiles;
+  final List<String> words;
+  final List<int> letterBonusTileIndexes;
+  final int wordBonusTileIndex;
+  
+  Game game;
+  
+  Board(this.tiles, this.words, this.letterBonusTileIndexes, this.wordBonusTileIndex);
 
   bool attemptPath(List<int> path) {
     if (path == null) {
       // Invalid path.
       return false;
     }
-    String word = config.stringFromPath(path);
+    String word = stringFromPath(path);
     if (word == '') {
       // Empty word.
       return false;
     }
-    if (words[word] != null) {
+    if (game.foundWord(word)) {
       // Duplicate word.
       return false;
     }
-    if (!config.hasWord(word)) {
+    if (!words.contains(word)) {
       // Invalid word.
       return false;
     }
@@ -37,12 +34,7 @@ class Board {
 
   void _acceptPath(List<int> path, String word) {
     int wordScore = scoreForPath(path);
-    score += wordScore;
-    while (recentWords.length >= NUM_RECENT_WORDS) {
-      recentWords.removeLast();
-    }
-    recentWords.insert(0, word);
-    words[word] = wordScore;
+    game.scoreWord(word, wordScore);
   }
 
   String wordForPath(List<int> path) {
@@ -54,7 +46,7 @@ class Board {
       int index = path[i];
       int row = GameConstants.rowFromIndex(index);
       int column = GameConstants.columnFromIndex(index);
-      String tileCharacter = config.getChar(row, column);
+      String tileCharacter = getChar(row, column);
       r += tileCharacter;
       if (tileCharacter == 'Q') {
         r += 'U';
@@ -73,12 +65,12 @@ class Board {
       int index = path[i];
       int row = GameConstants.rowFromIndex(index);
       int column = GameConstants.columnFromIndex(index);
-      String tileCharacter = config.getChar(row, column);
+      String tileCharacter = getChar(row, column);
       int letterScore = GameConstants.letterScores[tileCharacter];
-      if (config.letterBonusTileIndexes.contains(index)) {
-        letterScore *= scoreMultiplier;
+      if (letterBonusTileIndexes.contains(index)) {
+        letterScore *= game.scoreMultiplier;
       }
-      if (config.wordBonusTileIndex == index) {
+      if (wordBonusTileIndex == index) {
         wordMultiplier = true;
       }
       scores[i] = letterScore;
@@ -104,8 +96,94 @@ class Board {
     }
     // Word bonus.
     if (wordMultiplier) {
-      score *= scoreMultiplier;
+      score *= game.scoreMultiplier;
     }
     return score;
+  }
+  
+  String getChar(int i, int j) {
+    int index = i * 4 + j;
+    return tiles[index];
+  }
+  
+  bool stringInGrid(String search, Set<List<int>> paths) {
+    List<String> tileStrings = GameConstants.convertStringToTileList(search);
+    // Not there.
+    if (tileStrings.length == 0) {
+      return false;
+    }
+    if (paths == null) {
+      paths = new Set<List<int>>();
+    }
+    bool r = false;
+    for (int i = 0; i < GameConstants.BoardDimension; i++) {
+      for (int j = 0; j < GameConstants.BoardDimension; j++) {
+        bool v = _findInGridAt(i, j, tileStrings, paths);
+        r = r || v;
+      }
+    }
+    return r;
+  }
+  
+  String stringFromPath(List<int> path) {
+    String s = '';
+    for (int i = 0; i < path.length; i++) {
+      int row = GameConstants.rowFromIndex(path[i]);
+      int column = GameConstants.columnFromIndex(path[i]);
+      String ch = getChar(row, column);
+      s += ch;
+    }
+    return s;
+  }
+  
+  bool _findInGridWorker(List<String> tiles, int index, int i, int j,
+                         List<List<bool>> visited, List<int> path,
+                         Set<List<int>> paths) {
+    // Do bounds check.
+    if (i < 0 || j < 0 || i >= 4 || j >= 4) {
+      return false;
+    }
+    if (visited[i][j] == true) {
+      return false;
+    }
+    if (getChar(i,j) != tiles[index]) {
+      return false;
+    }
+    path.add(i*4+j);
+    if (tiles.length == index+1) {
+      // Valid.
+      paths.add(new List.from(path));
+      path.removeLast();
+      return true;
+    }
+    visited[i][j] = true;
+    // DFS.
+    bool r = false;
+    // Left side.
+    r = _findInGridWorker(tiles, index+1, i-1, j-1, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i-1, j, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i-1, j+1, visited, path, paths) || r;
+    // Right side.
+    r = _findInGridWorker(tiles, index+1, i+1, j-1, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i+1, j, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i+1, j+1, visited, path, paths) || r;
+    // Top and bottom.
+    r = _findInGridWorker(tiles, index+1, i, j-1, visited, path, paths) || r;
+    r = _findInGridWorker(tiles, index+1, i, j+1, visited, path, paths) || r;
+    visited[i][j] = false;
+    path.removeLast();
+    return r;
+  }
+
+  bool _findInGridAt(int i, int j, List<String> tiles, Set<List<int>> paths) {
+    var visited =
+        new List.generate(GameConstants.BoardDimension,
+                          (_) => new List<bool>(GameConstants.BoardDimension));
+    for (int i = 0; i < GameConstants.BoardDimension; i++) {
+      for (int j = 0; j < GameConstants.BoardDimension; j++) {
+        visited[i][j] = false;
+      }
+    }
+    return _findInGridWorker(tiles, 0, i, j, visited, [], paths);
   }
 }

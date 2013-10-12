@@ -56,7 +56,7 @@ class BoardController {
     // Find the best path.
     List<int> bestPath;
     int bestScore = 0;
-    if (board.config.stringInGrid(_keyboardSearchString, paths)) {
+    if (board.stringInGrid(_keyboardSearchString, paths)) {
       List listOfPaths = sortPathSet(paths);
       listOfPaths.forEach((path) {
         int pathScore = board.scoreForPath(path);
@@ -108,10 +108,10 @@ class BoardController {
     if (event.buttonId < Keyboard.A || event.buttonId > Keyboard.Z) {
       return true;
     }
-    if (board.config.stringInGrid(newSearchString, null)) {
+    if (board.stringInGrid(newSearchString, null)) {
       _keyboardSearchString = newSearchString;
     } else if (event.buttonId == Keyboard.Q &&
-               board.config.stringInGrid(newSearchString + 'U', null)) {
+               board.stringInGrid(newSearchString + 'U', null)) {
       _keyboardSearchString = newSearchString;
     } else {
       while (_keyboardSearchString.length > 0) {

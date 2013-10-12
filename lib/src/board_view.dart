@@ -79,13 +79,13 @@ class BoardView {
       if (selectedTiles.contains(i)) {
         atlas = selectedLetterAtlas;
       }
-      var elementName = board.config.getChar(
+      var elementName = board.getChar(
           GameConstants.rowFromIndex(i),
           GameConstants.columnFromIndex(i));
       atlas.draw(elementName, c, x, y);
-      if (board.config.letterBonusTileIndexes.contains(i)) {
+      if (board.letterBonusTileIndexes.contains(i)) {
         tripleLetterAtlas.draw(elementName, c, x, y);
-      } else if (board.config.wordBonusTileIndex == i) {
+      } else if (board.wordBonusTileIndex == i) {
         tripleWordAtlas.draw(elementName, c, x, y);
       }
     }

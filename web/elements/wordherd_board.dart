@@ -8,7 +8,6 @@ import 'package:game_loop/game_loop_html.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:wordherd/wordherd.dart';
-import 'package:wordherd/image_atlas.dart';
 
 @CustomTag('wordherd-board')
 class WordherdBoard extends PolymerElement {
@@ -16,15 +15,10 @@ class WordherdBoard extends PolymerElement {
   BoardView boardView;
   BoardController boardController;
   GameClock _gameClock;
-  ImageAtlas letterAtlas;
-  Function submitHighScore;
   GameLoopHtml _gameLoop;
   GameLoopTouch currentTouch;
   bool paused = false;
   CanvasElement _canvasElement;
-  ButtonElement _pauseButton;
-  ButtonElement _endButton;
-  DivElement _selectedWord;
   BodyElement _bodyElement;
   final Logger _gamePanelLogger = new Logger("GamePanel");
 
@@ -32,13 +26,14 @@ class WordherdBoard extends PolymerElement {
   StreamSubscription _onTouchEndSubscription;
 
   _preventBubble(Event e) => e.preventDefault();
+  
+  @observable String wordInProgress = '';
+  @observable String wordInProgressScore = '';
+  @observable String pauseOrToggleText = 'Pause';
 
   @override
   inserted() {
-    _pauseButton = query('#pause');
-    _endButton = query('#end');
-    _canvasElement = query('#frontBuffer');
-    _selectedWord = query('selected-word');
+    _canvasElement = $['frontBuffer'];
     _bodyElement = query('body');
     _gameLoop = new GameLoopHtml(_canvasElement);
     _gameClock = new GameClock(_gameLoop);
@@ -54,8 +49,6 @@ class WordherdBoard extends PolymerElement {
     _gameLoop.onRender = gameRender;
     _gameLoop.onTouchStart = gameTouchStart;
     _gameLoop.onTouchEnd = gameTouchEnd;
-
-    enableButtons();
 
     startOrResumeGame();
   }
@@ -79,33 +72,19 @@ class WordherdBoard extends PolymerElement {
     _gameLoop.start();
   }
 
-  void enableButtons() {
-    _endButton.disabled = false;
-    _pauseButton.disabled = false;
-  }
-  void disableButtons() {
-    _endButton.disabled = true;
-    _pauseButton.disabled = true;
-  }
-
-  /** Returns the user to the home screen. */
-  void goHome() {
-    if (!paused) togglePause();
-  }
-
-  void endGame() {
+  void endGame(Event e, var detail, Node target) {
     if (window.confirm('Are you sure you want to end the game?')) {
       _gameClock.stop();
     }
   }
 
-  void togglePause() {
+  void togglePause(Event e, var detail, Node target) {
     if (!paused) {
       _gameClock.pause();
-      _pauseButton.text = "Resume";
+      pauseOrToggleText = "Resume";
     } else {
       _gameClock.restart();
-      _pauseButton.text = "Pause";
+      pauseOrToggleText = "Pause";
       _canvasElement.classes.remove('hidden');
     }
     paused = !paused;
@@ -119,11 +98,9 @@ class WordherdBoard extends PolymerElement {
     context.fill();
   }
 
-  @observable String wordInProgress = '';
-  @observable String wordInProgressScore = '';
-
   void gameUpdate(GameLoopHtml gameLoop) {
     boardController.update(currentTouch);
+    notifyProperty(this, #timeRemaining);
   }
 
   void gameRender(GameLoopHtml gameLoop) {
@@ -159,7 +136,7 @@ class WordherdBoard extends PolymerElement {
     } else {
     }
     touchCount++;
-    print('Open touches $touchCount');
+    _gamePanelLogger.fine('Open touches $touchCount');
   }
 
   void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
@@ -170,7 +147,7 @@ class WordherdBoard extends PolymerElement {
     } else {
     }
     touchCount--;
-    print('Open touches $touchCount');
+    _gamePanelLogger.fine('Open touches $touchCount');
   }
 
   String get timeRemaining {
