@@ -1,19 +1,18 @@
 <polymer-element name="wordherd-board">
   <template>
     <div class="selected-word">
-        <div class="word">{{wordInProgress}} {{wordInProgressScore}}</div>
+      <div class="word">{{wordInProgress}} {{wordInProgressScore}}</div>
     </div>
     <div class="board"><canvas id="frontBuffer"></canvas></div>
-    <div class="not-board">
+    <div>
       <div class="game-data">
-        <template if="{{board}}">
-          <div class="score">{{board.score}}</div>
+          <!-- <div class="score">{{game.score}}</div> -->
           <div class="time">{{timeRemaining}}</div>
-        </template>
       </div>
       <div class="buttons">
-        <button class="pause primary-button" on-click="togglePause" disabled>{{pauseOrToggleText}}</button>
-        <button on-click="endGame" disabled>End</button>
+        <button class="pause primary-button" on-click="togglePause">{{pauseOrToggleText}}</button>
+        <button on-click="endGame">End</button>
+        <a href="../#">Home</a>
       </div>
     </div><!-- end .not-board -->
     <div style="clear:both"></div>

@@ -7,6 +7,7 @@ import 'dart:html';
 import 'game_constants.dart';
 import 'dart:async';
 import 'dart:collection';
+import 'package:wordherd/image_atlas.dart';
 
 part 'src/board_view.dart';
 part 'src/board.dart';

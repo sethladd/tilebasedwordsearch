@@ -5,11 +5,12 @@ import 'package:asset_pack/asset_pack.dart';
 import 'package:logging/logging.dart';
 import 'package:wordherd/image_atlas.dart';
 import 'package:wordherd/wordherd.dart';
+import 'dart:html';
 
 @CustomTag('wordherd-game')
 class WordherdGameElement extends PolymerElement {
-  final Logger clientLogger = new Logger("client");
-  AssetManager assetManager = new AssetManager();
+  final Logger clientLogger = new Logger("WordherdGameElement");
+  final AssetManager assetManager = new AssetManager();
   
   ImageAtlas letterAtlas;
   ImageAtlas selectedLetterAtlas;
@@ -19,11 +20,19 @@ class WordherdGameElement extends PolymerElement {
   ImageAtlas tripleWordAtlas;
   
   Boards boards;
+  Board board;
   
-  created() {
+  @observable bool boardReady = false;
+  
+  void removed() {
+    super.removed();
+    
+  }
+  
+  void created() {
     super.created();
     
-    return assetManager.loadPack('game', 'assets/_.pack')
+    assetManager.loadPack('game', 'assets/_.pack')
         .then((_) => _parseAssets());
   }
   
@@ -35,13 +44,14 @@ class WordherdGameElement extends PolymerElement {
     }
 
     boards = new Boards(assetManager['game.boards']);
+    board = boards.generateBoard();
 
-    var letterTileImage = assetManager['game.tiles'];
-    var selectedLetterTileImage = assetManager['game.tiles_highlighted'];
-    var doubleLetterTileImage = assetManager['game.tiles_dl'];
-    var doubleWordTileImage = assetManager['game.tiles_dw'];
-    var tripleLetterTileImage = assetManager['game.tiles_tl'];
-    var tripleWordTileImage = assetManager['game.tiles_tw'];
+    ImageElement letterTileImage = assetManager['game.tiles'];
+    ImageElement selectedLetterTileImage = assetManager['game.tiles_highlighted'];
+    ImageElement doubleLetterTileImage = assetManager['game.tiles_dl'];
+    ImageElement doubleWordTileImage = assetManager['game.tiles_dw'];
+    ImageElement tripleLetterTileImage = assetManager['game.tiles_tl'];
+    ImageElement tripleWordTileImage = assetManager['game.tiles_tw'];
     if (letterTileImage == null ||
         selectedLetterTileImage == null ||
         doubleLetterTileImage == null ||
@@ -88,6 +98,8 @@ class WordherdGameElement extends PolymerElement {
         tripleWordAtlas.addElement(letters[index], x, y, sizeX, sizeY);
       }
     }
+    
+    boardReady = true;
 
     clientLogger.info('Assets loaded and parsed');
   }

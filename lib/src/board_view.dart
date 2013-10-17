@@ -17,9 +17,10 @@ class BoardView {
   final Set<int> selectedTiles = new Set<int>();
   
   // XXX fixme
-  var tripleWordAtlas, letterAtlas, selectedLetterAtlas, tripleLetterAtlas;
+  ImageAtlas tripleWordAtlas, letterAtlas, selectedLetterAtlas, tripleLetterAtlas;
 
-  BoardView(this.board, this.canvas) {
+  BoardView(this.board, this.canvas, this.tripleWordAtlas, this.letterAtlas,
+      this.selectedLetterAtlas, this.tripleLetterAtlas) {
     letterTiles.length = 16;
     init();
   }

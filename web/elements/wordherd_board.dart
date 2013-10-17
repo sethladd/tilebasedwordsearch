@@ -8,10 +8,21 @@ import 'package:game_loop/game_loop_html.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:wordherd/wordherd.dart';
+import 'package:wordherd/image_atlas.dart';
 
 @CustomTag('wordherd-board')
 class WordherdBoard extends PolymerElement {
-  Board board;
+  @published Board board;
+  
+  // TODO replace with camelcase when bug is resolved
+  
+  @published ImageAtlas letteratlas;
+  @published ImageAtlas selectedletteratlas;
+  @published ImageAtlas doubleletteratlas;
+  @published ImageAtlas tripleletteratlas;
+  @published ImageAtlas doublewordatlas;
+  @published ImageAtlas triplewordatlas;
+  
   BoardView boardView;
   BoardController boardController;
   GameClock _gameClock;
@@ -20,7 +31,7 @@ class WordherdBoard extends PolymerElement {
   bool paused = false;
   CanvasElement _canvasElement;
   BodyElement _bodyElement;
-  final Logger _gamePanelLogger = new Logger("GamePanel");
+  final Logger _gamePanelLogger = new Logger("WordherdBoard");
 
   StreamSubscription _onTouchStartSubscription;
   StreamSubscription _onTouchEndSubscription;
@@ -32,7 +43,9 @@ class WordherdBoard extends PolymerElement {
   @observable String pauseOrToggleText = 'Pause';
 
   @override
-  inserted() {
+  void inserted() {
+    super.inserted();
+    
     _canvasElement = $['frontBuffer'];
     _bodyElement = query('body');
     _gameLoop = new GameLoopHtml(_canvasElement);
@@ -53,17 +66,24 @@ class WordherdBoard extends PolymerElement {
     startOrResumeGame();
   }
 
+  // TODO this isn't being called, but hopefully it will be when leftView works
   @override
-  removed() {
+  void removed() {
+    super.removed();
+    
     _gameLoop.keyboard.interceptor = null;
     _bodyElement.classes.remove('no-scroll');
     _onTouchStartSubscription.cancel();
     _onTouchEndSubscription.cancel();
     _gameLoop.stop();
+    
+    print('board was removed');
   }
 
   void startOrResumeGame() {
-    boardView = new BoardView(board, _canvasElement);
+    _gamePanelLogger.severe("starting game");
+    boardView = new BoardView(board, _canvasElement, triplewordatlas,
+        letteratlas, selectedletteratlas, tripleletteratlas);
     boardController = new BoardController(board, boardView);
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
     _gameClock.start();
@@ -150,7 +170,12 @@ class WordherdBoard extends PolymerElement {
     _gamePanelLogger.fine('Open touches $touchCount');
   }
 
+  // This is "observable" based on the gameUpdate above.
+  // Perhaps one day we'll be able to use an annotation here to make it
+  // more obvious.
   String get timeRemaining {
+    if (_gameClock == null) return '-';
+    
     int seconds = _gameClock.secondsRemaining;
 
     if (seconds <= 0) return 'GAME OVER'; // XXX ok for stop() case?

@@ -10,12 +10,12 @@ dependencies:
   crypto: any
   fukiya: '>=0.1.5'
   game_loop: any
-  google_appstate_v1_api:
-    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
-  google_games_v1_api:
-    git: https://github.com/financeCoding/dart_games_v1_api_client.git
-  google_plus_v1_api:
-    git: https://github.com/financeCoding/dart_plus_v1_api_client.git
+#  google_appstate_v1_api:
+#    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
+#  google_games_v1_api:
+#    git: https://github.com/financeCoding/dart_games_v1_api_client.git
+#  google_plus_v1_api:
+#    git: https://github.com/financeCoding/dart_plus_v1_api_client.git
   html5lib: any
   http: any
   intl: any
@@ -25,3 +25,4 @@ dependencies:
   start: any
   unittest: any
   polymer: any
+  route: any

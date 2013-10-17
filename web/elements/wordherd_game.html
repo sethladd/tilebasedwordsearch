@@ -2,7 +2,15 @@
 
 <polymer-element name="wordherd-game">
   <template>
-    <wordherd-board></wordherd-board>
+    <template if="{{boardReady}}">
+      <wordherd-board board="{{board}}"
+                      letterAtlas="{{letterAtlas}}"
+                      selectedLetterAtlas="{{selectedLetterAtlas}}"
+                      doubleLetterAtlas="{{doubleLetterAtlas}}"
+                      tripleLetterAtlas="{{tripleLetterAtlas}}"
+                      doubleWordAtlas="{{doubleWordAtlas}}"
+                      tripleWordAtlas="{{tripleWordAtlas}}"></wordherd-board>
+    </template>
   </template>
   
   <script type="application/dart" src="wordherd_game.dart"></script>
