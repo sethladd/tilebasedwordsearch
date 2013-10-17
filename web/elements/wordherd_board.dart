@@ -12,7 +12,9 @@ import 'package:wordherd/image_atlas.dart';
 
 @CustomTag('wordherd-board')
 class WordherdBoard extends PolymerElement {
-  @published Board board;
+  @published Boards boards;
+  @observable Board board;
+  @published Game game;
   
   // TODO replace with camelcase when bug is resolved
   
@@ -46,6 +48,8 @@ class WordherdBoard extends PolymerElement {
   void inserted() {
     super.inserted();
     
+    board = boards.generateBoard(game);
+    
     _canvasElement = $['frontBuffer'];
     _bodyElement = query('body');
     _gameLoop = new GameLoopHtml(_canvasElement);
@@ -67,11 +71,14 @@ class WordherdBoard extends PolymerElement {
   }
 
   // TODO this isn't being called, but hopefully it will be when leftView works
+  // BUG: this doesn't fire, two levels deep.
+  // See this thread: https://groups.google.com/a/dartlang.org/forum/#!topic/web-ui/Y1-F2ErXICY
   @override
   void removed() {
     super.removed();
     
     _gameLoop.keyboard.interceptor = null;
+    // TODO move this to data binding
     _bodyElement.classes.remove('no-scroll');
     _onTouchStartSubscription.cancel();
     _onTouchEndSubscription.cancel();

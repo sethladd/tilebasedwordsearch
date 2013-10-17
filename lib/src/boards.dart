@@ -23,7 +23,7 @@ class Boards {
     });
   }
   
-  Board generateBoard({int numBonusLetters: 3}) {
+  Board generateBoard(Game game, {int numBonusLetters: 3}) {
     if (numBonusLetters == null) numBonusLetters = 3;
     int index = _random.nextInt(boardDatas.length);
     BoardData boardData = boardDatas[index];
@@ -44,7 +44,7 @@ class Boards {
       }
     }
     
-    return new Board(boardData.tiles, boardData.words, letterBonusTileIndexes, wordBonusTileIndex);
+    return new Board(game, boardData.tiles, boardData.words, letterBonusTileIndexes, wordBonusTileIndex);
   }
 
 }

@@ -3,7 +3,8 @@
 <polymer-element name="wordherd-game">
   <template>
     <template if="{{boardReady}}">
-      <wordherd-board board="{{board}}"
+      <wordherd-board boards="{{boards}}"
+                      game="{{game}}"
                       letterAtlas="{{letterAtlas}}"
                       selectedLetterAtlas="{{selectedLetterAtlas}}"
                       doubleLetterAtlas="{{doubleLetterAtlas}}"

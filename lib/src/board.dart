@@ -8,7 +8,7 @@ class Board {
   
   Game game;
   
-  Board(this.tiles, this.words, this.letterBonusTileIndexes, this.wordBonusTileIndex);
+  Board(this.game, this.tiles, this.words, this.letterBonusTileIndexes, this.wordBonusTileIndex);
 
   bool attemptPath(List<int> path) {
     if (path == null) {

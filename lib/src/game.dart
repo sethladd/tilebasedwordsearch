@@ -5,7 +5,7 @@ part of wordherd;
 class Game extends ObservableBase {
   final Map<String, int> words = toObservable(new LinkedHashMap());
   @observable int score = 0;
-  int scoreMultiplier = 3;
+  final int scoreMultiplier = 3;
   
   void scoreWord(String word, int wordScore) {
     score += wordScore;

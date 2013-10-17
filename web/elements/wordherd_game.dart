@@ -20,14 +20,10 @@ class WordherdGameElement extends PolymerElement {
   ImageAtlas tripleWordAtlas;
   
   Boards boards;
-  Board board;
+  
+  @observable Game game = new Game();
   
   @observable bool boardReady = false;
-  
-  void removed() {
-    super.removed();
-    
-  }
   
   void created() {
     super.created();
@@ -44,7 +40,6 @@ class WordherdGameElement extends PolymerElement {
     }
 
     boards = new Boards(assetManager['game.boards']);
-    board = boards.generateBoard();
 
     ImageElement letterTileImage = assetManager['game.tiles'];
     ImageElement selectedLetterTileImage = assetManager['game.tiles_highlighted'];
