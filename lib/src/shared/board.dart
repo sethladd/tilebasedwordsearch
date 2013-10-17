@@ -1,4 +1,4 @@
-part of wordherd;
+part of wordherd_shared;
 
 class Board {
   final String tiles;

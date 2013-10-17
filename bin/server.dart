@@ -6,12 +6,6 @@ import 'dart:math';
 import 'dart:json' as json;
 
 import "package:logging/logging.dart";
-import "package:fukiya/fukiya.dart";
-
-import 'package:tilebasedwordsearch/shared_io.dart';
-import 'package:tilebasedwordsearch/persistable_io.dart' as db;
-import "package:google_oauth2_client/google_oauth2_console.dart" as console_auth;
-import "package:google_plus_v1_api/plus_v1_api_console.dart";
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import "package:html5lib/dom.dart";
