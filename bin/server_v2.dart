@@ -65,7 +65,7 @@ main() {
       
       
       new Router(server)
-        ..filter('(.*)', addCorsHeaders)
+        ..filter(new RegExp(r'^.*$'), addCorsHeaders)
         ..serve('/register', method: 'POST')
           .transform(new HttpBodyHandler()).listen(registerPlayer)
         ..serve('/matches', method: 'GET')
@@ -90,6 +90,7 @@ Future loadData() {
 }
 
 Future<bool> addCorsHeaders(HttpRequest req) {
+  log.fine('Adding CORS headers');
   req.response.headers.add('Access-Control-Allow-Origin', '*');
   return new Future.sync(() => true);
 }
@@ -111,6 +112,7 @@ void registerPlayer(HttpRequestBody body) {
     }
   })
   .then((_) {
+    log.fine('All done registering');
     body.response.close();
   })
   .catchError((e) => _handleError(body, e));
