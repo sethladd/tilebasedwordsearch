@@ -1,14 +1,10 @@
 part of wordherd_shared;
 
 class Board {
-  final String tiles;
-  final List<String> words;
-  final List<int> letterBonusTileIndexes;
-  final int wordBonusTileIndex;
-  
-  Game game;
-  
-  Board(this.game, this.tiles, this.words, this.letterBonusTileIndexes, this.wordBonusTileIndex);
+  String tiles;
+  List<String> words;
+  List<int> letterBonusTileIndexes;
+  int wordBonusTileIndex;
 
   bool attemptPath(List<int> path) {
     if (path == null) {
@@ -20,21 +16,22 @@ class Board {
       // Empty word.
       return false;
     }
-    if (game.foundWord(word)) {
-      // Duplicate word.
-      return false;
-    }
     if (!words.contains(word)) {
       // Invalid word.
       return false;
     }
-    _acceptPath(path, word);
     return true;
   }
-
-  void _acceptPath(List<int> path, String word) {
-    int wordScore = scoreForPath(path);
-    game.scoreWord(word, wordScore);
+  
+  String stringFromPath(List<int> path) {
+    String s = '';
+    for (int i = 0; i < path.length; i++) {
+      int row = GameConstants.rowFromIndex(path[i]);
+      int column = GameConstants.columnFromIndex(path[i]);
+      String ch = getChar(row, column);
+      s += ch;
+    }
+    return s;
   }
 
   String wordForPath(List<int> path) {
@@ -68,7 +65,7 @@ class Board {
       String tileCharacter = getChar(row, column);
       int letterScore = GameConstants.letterScores[tileCharacter];
       if (letterBonusTileIndexes.contains(index)) {
-        letterScore *= game.scoreMultiplier;
+        letterScore *= Game.scoreMultiplier;
       }
       if (wordBonusTileIndex == index) {
         wordMultiplier = true;
@@ -96,7 +93,7 @@ class Board {
     }
     // Word bonus.
     if (wordMultiplier) {
-      score *= game.scoreMultiplier;
+      score *= Game.scoreMultiplier;
     }
     return score;
   }
@@ -123,17 +120,6 @@ class Board {
       }
     }
     return r;
-  }
-  
-  String stringFromPath(List<int> path) {
-    String s = '';
-    for (int i = 0; i < path.length; i++) {
-      int row = GameConstants.rowFromIndex(path[i]);
-      int column = GameConstants.columnFromIndex(path[i]);
-      String ch = getChar(row, column);
-      s += ch;
-    }
-    return s;
   }
   
   bool _findInGridWorker(List<String> tiles, int index, int i, int j,

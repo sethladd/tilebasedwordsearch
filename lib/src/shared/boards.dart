@@ -1,4 +1,4 @@
-part of wordherd;
+part of wordherd_shared;
 
 class BoardData {
   String tiles;
@@ -23,7 +23,7 @@ class Boards {
     });
   }
   
-  Board generateBoard(Game game, {int numBonusLetters: 3}) {
+  Board generateBoard({int numBonusLetters: 3}) {
     if (numBonusLetters == null) numBonusLetters = 3;
     int index = _random.nextInt(boardDatas.length);
     BoardData boardData = boardDatas[index];
@@ -44,7 +44,11 @@ class Boards {
       }
     }
     
-    return new Board(game, boardData.tiles, boardData.words, letterBonusTileIndexes, wordBonusTileIndex);
+    return new Board()
+        ..tiles = boardData.tiles
+        ..words = boardData.words
+        ..letterBonusTileIndexes = letterBonusTileIndexes
+        ..wordBonusTileIndex = wordBonusTileIndex;
   }
 
 }

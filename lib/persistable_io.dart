@@ -2,7 +2,9 @@ library persistable;
 
 import 'dart:async';
 import 'dart:mirrors';
+import 'dart:convert' show JSON;
 import 'package:logging/logging.dart';
+import 'package:serialization/serialization.dart';
 import 'package:postgresql/postgresql.dart';  // XXX This pulls in dart:io
 
 Logger _log = new Logger('persistable');
@@ -15,6 +17,10 @@ Future init(String url) {
     return true;
   });
 }
+
+const String serialized = "__SERIALIZED";
+
+final Serialization _serialization = new Serialization();
 
 abstract class Persistable {
   static Map<Type, List<String>> _columnNames = new Map<Type, List<String>>();
@@ -112,16 +118,26 @@ abstract class Persistable {
   
   static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
     var instance = classMirror.newInstance(const Symbol(''), []);
+    Serialization ser = new Serialization()..addRuleFor(instance);
     Persistable object = instance.reflectee;
     object.id = id;
     var instanceMirror = reflect(object);
     data.forEach((k, v) {
+      Symbol fieldName = new Symbol(k);
       //_log.fine('$k has $v which is a ${v.runtimeType}');
-      if (classMirror.variables.containsKey(new Symbol(k))) {
-        instanceMirror.setField(new Symbol(k), v);
+      if (classMirror.variables.containsKey(fieldName)) {
+        VariableMirror field = classMirror.variables[fieldName];
+        if (isFieldSerialized(field)) {
+          v = _serialization.read(JSON.decode(v));
+        }
+        instanceMirror.setField(fieldName, v);
       }
     });
     return object;
+  }
+
+  static bool isFieldSerialized(VariableMirror field) {
+    return field.metadata.any((InstanceMirror im) => im.reflectee == serialized);
   }
   
   Future store() {
@@ -172,7 +188,12 @@ abstract class Persistable {
     cols.map((c) => new Symbol(c))
         .where((c) => classMirror.variables.keys.contains(c))
         .forEach((Symbol c) {
-          map[MirrorSystem.getName(c)] = mirror.getField(c).reflectee;
+          VariableMirror field = classMirror.variables[c];
+          if (isFieldSerialized(field)) {
+            map[MirrorSystem.getName(c)] = JSON.encode(_serialization.write(mirror.getField(c).reflectee));
+          } else {
+            map[MirrorSystem.getName(c)] = mirror.getField(c).reflectee;
+          }
         });
     return map;
   }

@@ -27,3 +27,4 @@ dependencies:
   polymer: any
   route: any
   path: any
+  serialization: any

@@ -5,7 +5,7 @@ part of wordherd_shared;
 class Game extends ObservableBase with Persistable {
   final Map<String, int> words = toObservable(new LinkedHashMap());
   @observable int score = 0;
-  final int scoreMultiplier = 3;
+  static const int scoreMultiplier = 3;
   Board board;
   
   void scoreWord(String word, int wordScore) {

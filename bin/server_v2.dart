@@ -7,8 +7,10 @@ import 'package:wordherd/persistable_io.dart' as db;
 import 'package:wordherd/shared_io.dart';
 import 'dart:convert';
 import 'dart:async';
+import 'package:serialization/serialization.dart';
 
 final Logger log = new Logger('Server');
+final Serialization serializer = new Serialization();
 
 configureLogger() {
   Logger.root.onRecord.listen((LogRecord logRecord) {
@@ -23,6 +25,8 @@ configureLogger() {
     print(sb.toString());
   });
 }
+
+Boards boards;
 
 main() {
   configureLogger();
@@ -46,6 +50,7 @@ main() {
   runZoned(() {
     
     db.init(dbUrl)
+    .then((_) => loadData())
     .then((_) => HttpServer.bind('0.0.0.0', 8765))
     .then((HttpServer server) {
       
@@ -71,23 +76,30 @@ main() {
 
 }
 
+Future loadData() {
+  File boardData = new File('dense1000FINAL.txt');
+  return boardData.readAsString().then((String data) => boards = new Boards(data));
+}
+
 void createMatch(HttpRequestBody body) {
   log.fine('Create match');
   Map data = body.body;
-  Match match = new Match.fromJson(data);
+  
+  Match match = new Match()
+      ..p1_id = data['p1_id']
+      ..p2_id = data['p2_id']
+      ..board = boards.generateBoard();
   match.store().then((_) {
     body.response.statusCode = 201;
     body.response.close();
   })
   .catchError((e) => _handleError(body, e));
-  
-
 }
 
 void listMatches(HttpRequestBody body) {
   log.fine('Listing matches');
   db.Persistable.all(Match).toList().then((List<Match> matches) {
-    String json = JSON.encode(matches);
+    String json = JSON.encode(serializer.write(matches));
     body.response.headers.contentType = ContentType.parse('application/json');
     body.response.contentLength = json.length;
     body.response.write(json);

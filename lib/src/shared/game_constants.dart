@@ -1,4 +1,4 @@
-library game_constants;
+part of wordherd_shared;
 
 class GameConstants {
   static const int TilePixels = 94;
