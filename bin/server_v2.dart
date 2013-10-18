@@ -20,8 +20,12 @@ configureLogger() {
     ..write(logRecord.loggerName)..write(":")
     ..write(logRecord.level.name)..write(":")
     ..write(logRecord.sequenceNumber)..write(": ")
-    ..write(logRecord.message.toString())..write(": ")
-    ..write(logRecord.exception);
+    ..write(logRecord.message.toString());
+    if (logRecord.exception != null) {
+      sb
+      ..write(": ")
+      ..write(logRecord.exception);
+    }
     print(sb.toString());
   });
 }
@@ -60,6 +64,9 @@ main() {
       
       
       new Router(server)
+        ..filter('(.*)', addCorsHeaders)
+        ..serve('/register', method: 'POST')
+          .transform(new HttpBodyHandler()).listen(registerPlayer)
         ..serve('/matches', method: 'GET')
           .transform(new HttpBodyHandler()).listen(listMatches)
         ..serve('/matches', method: 'POST')
@@ -79,6 +86,24 @@ main() {
 Future loadData() {
   File boardData = new File('dense1000FINAL.txt');
   return boardData.readAsString().then((String data) => boards = new Boards(data));
+}
+
+Future<bool> addCorsHeaders(HttpRequest req) {
+  req.response.headers.add('Access-Control-Allow-Origin', '*');
+  return new Future.sync(() => true);
+}
+
+void registerPlayer(HttpRequestBody body) {
+  log.fine('Register player');
+  Map data = body.body;
+  Player player = new Player()
+      ..gplus_id = data['gplus_id']
+      ..name = data['name'];
+  player.store().then((_) {
+    body.response.statusCode = 201;
+    body.response.close();
+  })
+  .catchError((e) => _handleError(body, e));
 }
 
 void createMatch(HttpRequestBody body) {
