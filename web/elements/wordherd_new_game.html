@@ -1,0 +1,11 @@
+<polymer-element name="wordherd-new-game">
+  <template>
+    <p>Pick yer pardner</p>
+    <ul>
+      <template repeat="{{friend in friends}}">
+        <li>{{friend}}</li>
+      </template>
+    </ul>
+  </template>
+  <script type="application/dart" src="wordherd_new_game.dart"></script>
+</polymer-element>

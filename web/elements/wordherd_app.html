@@ -1,15 +1,22 @@
 <link rel="import" href="wordherd_game.html">
 <link rel="import" href="wordherd_home.html">
+<link rel="import" href="wordherd_new_game.html">
 
 <polymer-element name="wordherd-app">
   <template>
     
-    <template if="{{ view == 'home' }}">
-      <wordherd-home></wordherd-home>
-    </template>
-    
-    <template if="{{ view == 'game' }}">
-      <wordherd-game></wordherd-game>
+    <template if="{{playerSignedIn}}">
+      <template if="{{ view == 'home' }}">
+        <wordherd-home></wordherd-home>
+      </template>
+      
+      <template if="{{ view == 'game' }}">
+        <wordherd-game></wordherd-game>
+      </template>
+      
+      <template if="{{ view == 'newgame' }}">
+        <wordherd-new-game></wordherd-new-game>
+      </template>
     </template>
   </template>
   <script type="application/dart" src="wordherd_app.dart"></script>

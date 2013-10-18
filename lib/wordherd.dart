@@ -1,18 +1,14 @@
 library wordherd;
 
-import 'dart:math';
 import 'package:observe/observe.dart';
 import 'package:game_loop/game_loop_html.dart';
 import 'dart:html';
-import 'game_constants.dart';
 import 'dart:async';
 import 'dart:collection';
 import 'package:wordherd/image_atlas.dart';
+import 'shared_html.dart';
 
 part 'src/board_view.dart';
-part 'src/board.dart';
 part 'src/board_controller.dart';
 part 'src/game_clock.dart';
 part 'src/rectangle_transform.dart';
-part 'src/boards.dart';
-part 'src/game.dart';
