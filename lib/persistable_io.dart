@@ -92,7 +92,7 @@ abstract class Persistable {
     //_log.fine('Query $query ; conditions $conditionValues');
     
     return _conn.query(query, conditionValues).map((row) {
-      return _createAndPopulate(classMirror, row.id, _rowToMap(row));
+      return _createAndPopulate(classMirror, row.id.toString(), _rowToMap(row));
     });
   }
   

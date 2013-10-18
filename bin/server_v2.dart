@@ -13,6 +13,7 @@ final Logger log = new Logger('Server');
 final Serialization serializer = new Serialization();
 
 configureLogger() {
+  Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord logRecord) {
     StringBuffer sb = new StringBuffer();
     sb
@@ -96,11 +97,20 @@ Future<bool> addCorsHeaders(HttpRequest req) {
 void registerPlayer(HttpRequestBody body) {
   log.fine('Register player');
   Map data = body.body;
-  Player player = new Player()
+  String gplusId = data['gplus_id'];
+  
+  db.Persistable.findOneBy(Player, {'gplus_id':gplusId}).then((Player p) {
+    if (p == null) {
+      Player player = new Player()
       ..gplus_id = data['gplus_id']
       ..name = data['name'];
-  player.store().then((_) {
-    body.response.statusCode = 201;
+      return player.store().then((_) => body.response.statusCode = 201);
+    } else {
+      body.response.statusCode = 200;
+      return true;
+    }
+  })
+  .then((_) {
     body.response.close();
   })
   .catchError((e) => _handleError(body, e));
