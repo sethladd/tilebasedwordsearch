@@ -12,8 +12,8 @@ final Logger log = new Logger('WordherdApp');
 class WordherdApp extends PolymerElement {
   @observable String view = 'home';
   @observable bool playerSignedIn = false;
-  @observable Person player;
-  @published String gameServerUrl;
+  @observable Person person;
+  @published String gameserverurl;
   
   void created() {
     super.created();
@@ -28,6 +28,7 @@ class WordherdApp extends PolymerElement {
     // TODO once https://code.google.com/p/dart/issues/detail?id=14210
     // is fixed, I can put this into a declarative event handler
     document.body.on['signincomplete'].listen((CustomEvent e) {
+      log.fine('Received the signingcomplete event');
       Node target = e.target; 
       playerSignedIn = true;
       Plus plus = (((target as Element).xtag as GoogleSignin).plusClient);
@@ -37,8 +38,8 @@ class WordherdApp extends PolymerElement {
   
   Future _registerPlayer(Plus plus) {
     return plus.people.get('me').then((Person p) {
-      player = p;
-      return HttpRequest.postFormData('$gameServerUrl/register', {'gplus_id': p.id, 'name': p.displayName})
+      person = p;
+      return HttpRequest.postFormData('$gameserverurl/register', {'gplus_id': p.id, 'name': p.displayName})
          .then((_) => log.fine('player registered with server'))
          .catchError((e) {
            log.severe('Error when registering with server: $e');

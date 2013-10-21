@@ -20,3 +20,5 @@ CREATE TABLE IF NOT EXISTS player (
 
 CREATE INDEX ON match (p1_id);
 CREATE INDEX ON match (p2_id);
+
+INSERT INTO player (gplus_id, name) VALUES ('100399120809275930649', 'Kathy Walrath');

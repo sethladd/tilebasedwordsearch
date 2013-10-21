@@ -12,7 +12,6 @@ final Logger log = new Logger('google-signin-element');
 
 @CustomTag('google-signin')
 class GoogleSignin extends PolymerElement {
-  @observable bool isConnected = false;
   @published String clientId;
   @published String signInMsg;
   @published String serverUrl;
@@ -43,8 +42,8 @@ class GoogleSignin extends PolymerElement {
       .then((Person person) => gplusId = person.id)
       .then((_) => _connectWithServer(authResult))
       .then((_) {
-        isConnected = true;
         dispatchEvent(new CustomEvent('signincomplete'));
+        log.fine('Signin complete!');
       });
 
     } else if (authResult["error"] != null) {

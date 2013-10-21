@@ -26,7 +26,7 @@ final String _idOffset = new DateTime.now().millisecondsSinceEpoch.toString();
  */
 abstract class Persistable {
   
-  String _id;
+  String id;
   
   static Future load(String id, Type type) {
     return _store.getByKey(id).then((Map data) {
@@ -48,6 +48,9 @@ abstract class Persistable {
   }
   
   Future store() {
+    if (id == null) {
+      id = _nextId();
+    }
     return _store.save(toJson(), id);
   }
   
@@ -73,13 +76,6 @@ abstract class Persistable {
     return object;
   }
   
-  // This assumes there's no reason for code to change an ID.
-  String get id {
-    if (_id == null) {
-      _id = _idOffset + '-' + (_counter++).toString();
-    }
-    return _id;
-  }
-  
-  void set id(String id) { _id = id; }
+  String _nextId() => _idOffset + '-' + (_counter++).toString();
+
 }

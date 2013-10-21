@@ -15,7 +15,8 @@
       </template>
       
       <template if="{{ view == 'newgame' }}">
-        <wordherd-new-game></wordherd-new-game>
+        <!--  TODO fix back to camel case when bug is fixed -->
+        <wordherd-new-game gameserverurl="{{gameserverurl}}"></wordherd-new-game>
       </template>
     </template>
   </template>

@@ -16,6 +16,10 @@ void oauthConnect(HttpRequest request) {
   log.fine("Inside oauthConnect");
   
   _confirmOauthSignin(request)
+  .then((_) {
+    request.response.statusCode = 200;
+    request.response.close();
+  })
   .catchError((e) {
     log.warning(e);
     request.response.statusCode = 500;
