@@ -45,7 +45,8 @@ class WordherdNewGame extends PolymerElement {
     HttpRequest.postFormData('$gameserverurl/matches', data, withCredentials: true)
       .then((HttpRequest response) {
         String location = response.getResponseHeader('Location');
-        String matchId = new RegExp('/match/(\d+)').firstMatch(location).group(1);
+        log.fine('Location to new match is $location');
+        String matchId = new RegExp(r'/matches/(\d+)').firstMatch(location).group(1);
         log.fine('Match created with ID $matchId');
       })
       .catchError((e) {
