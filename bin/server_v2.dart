@@ -1,3 +1,5 @@
+library server;
+
 import 'package:http_server/http_server.dart';
 import 'dart:io';
 import 'package:logging/logging.dart';
@@ -5,9 +7,16 @@ import 'package:route/server.dart';
 import 'package:path/path.dart' as path;
 import 'package:wordherd/persistable_io.dart' as db;
 import 'package:wordherd/shared_io.dart';
-import 'dart:convert';
+import 'dart:convert' show JSON;
 import 'dart:async';
+import 'dart:math';
+import 'package:crypto/crypto.dart';
+import 'package:http/http.dart' as http;
 import 'package:serialization/serialization.dart';
+import 'package:google_oauth2_client/google_oauth2_console.dart' as oauth2;
+import 'package:google_plus_v1_api/plus_v1_api_console.dart';
+
+part 'oauth_handler.dart';
 
 final Logger log = new Logger('Server');
 final Serialization serializer = new Serialization();
@@ -35,10 +44,6 @@ Boards boards;
 
 main() {
   configureLogger();
-  
-  int port = Platform.environment['PORT'] != null ?
-      int.parse(Platform.environment['PORT'], onError: (_) => 8080) :
-      8080;
 
   String dbUrl;
   if (Platform.environment['DATABASE_URL'] != null) {
@@ -62,10 +67,10 @@ main() {
       VirtualDirectory staticFiles = new VirtualDirectory(root)
         ..followLinks = true;
       
-      
-      
       new Router(server)
         ..filter(new RegExp(r'^.*$'), addCorsHeaders)
+        ..serve('/session', method: 'GET').listen(oauthSession)
+        ..serve('/connect', method: 'POST').listen(oauthConnect) // TODO use HttpBodyHandler when dartbug.com/14259 is fixed
         ..serve('/register', method: 'POST')
           .transform(new HttpBodyHandler()).listen(registerPlayer)
         ..serve('/matches', method: 'GET')
@@ -90,9 +95,18 @@ Future loadData() {
 }
 
 Future<bool> addCorsHeaders(HttpRequest req) {
-  log.fine('Adding CORS headers');
-  req.response.headers.add('Access-Control-Allow-Origin', '*');
-  return new Future.sync(() => true);
+  log.fine('Adding CORS headers for ${req.method} ${req.uri}');
+  log.fine(new List.from(req.cookies).toString());
+  req.response.headers.add('Access-Control-Allow-Origin', 'http://127.0.0.1:3030');
+  req.response.headers.add('Access-Control-Allow-Headers', 'Content-Type');
+  req.response.headers.add('Access-Control-Allow-Credentials', 'true');
+  if (req.method == 'OPTIONS') {
+    req.response.statusCode = 200;
+    req.response.close(); // TODO: wait for this?
+    return new Future.sync(() => false);
+  } else {
+    return new Future.sync(() => true);
+  }
 }
 
 void registerPlayer(HttpRequestBody body) {
@@ -149,4 +163,17 @@ void _handleError(HttpRequestBody body, e) {
   log.severe('Oh noes! $e', getAttachedStackTrace(e));
   body.response.statusCode = 500;
   body.response.close();
+}
+
+Future<Person> getCurrentPerson(String accessToken) {
+  Plus plusclient = makePlusClient(accessToken);
+  return plusclient.people.get('me');
+}
+
+Plus makePlusClient(String accessToken) {
+  SimpleOAuth2 simpleOAuth2 = new SimpleOAuth2()
+      ..credentials = new oauth2.Credentials(accessToken);
+  Plus plusclient = new Plus(simpleOAuth2);
+  plusclient.makeAuthRequests = true;
+  return plusclient;
 }
