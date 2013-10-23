@@ -7,6 +7,8 @@ import 'package:logging/logging.dart';
 
 final Logger log = new Logger("persistence");
 
+const String serialized = "__SERIALIZED";
+
 // TODO: one store per type
 Store _store;
 

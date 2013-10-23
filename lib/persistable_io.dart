@@ -27,8 +27,6 @@ abstract class Persistable {
   
   String id;
   
-  static const constructor = const Symbol('fromPersistance');
-  
   static Future load(String id, Type type) {
     var query = 'SELECT * FROM ${_getTableName(type)} WHERE id = @id';
     
@@ -42,12 +40,12 @@ abstract class Persistable {
   }
   
   static Stream findByWhere(Type type, String whereClause, Map params) {
-    _validateParams(type, params);
+    _validateParams(type, params); // TODO wait for this to finish
     String query = 'SELECT * FROM ${_getTableName(type)} WHERE $whereClause';
     ClassMirror classMirror = reflectClass(type);
     
     return _conn.query(query, params).map((row) {
-      return _createAndPopulate(classMirror, row.id, _rowToMap(row));
+      return _createAndPopulate(classMirror, row.id.toString(), _rowToMap(row));
     });
   }
   
@@ -117,11 +115,9 @@ abstract class Persistable {
   }
   
   static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
-    var instance = classMirror.newInstance(const Symbol(''), []);
-    Serialization ser = new Serialization()..addRuleFor(instance);
-    Persistable object = instance.reflectee;
-    object.id = id;
-    var instanceMirror = reflect(object);
+    InstanceMirror instanceMirror = classMirror.newInstance(const Symbol(''), []);
+    Persistable object = instanceMirror.reflectee;
+    object.id = id.toString();
     data.forEach((k, v) {
       Symbol fieldName = new Symbol(k);
       //_log.fine('$k has $v which is a ${v.runtimeType}');

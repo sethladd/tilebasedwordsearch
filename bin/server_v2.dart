@@ -34,7 +34,7 @@ configureLogger() {
     if (logRecord.exception != null) {
       sb
       ..write(": ")
-      ..write(logRecord.exception);
+      ..write(getAttachedStackTrace(logRecord.exception));
     }
     print(sb.toString());
   });
@@ -78,6 +78,7 @@ main() {
         ..serve('/friendsToPlay', method: 'GET').listen(friendsToPlay)
         ..serve('/matches', method: 'GET')
           .transform(new HttpBodyHandler()).listen(listMatches)
+        ..serve('/matches/me', method: 'GET').listen(listPlayerMatches)
         ..serve('/matches', method: 'POST')
           .transform(new HttpBodyHandler()).listen(createMatch)
         ..serve(getMatchUrl).listen(getMatch)
@@ -250,8 +251,27 @@ void listMatches(HttpRequestBody body) {
   .catchError((e) => _handleError(body.response, e));
 }
 
+void listPlayerMatches(HttpRequest request) {
+  log.fine('In listPlayerMatches');
+  String userGplusId = request.session['userGplusId'];
+  
+  if (userGplusId == null) {
+    log.warning('No gplusId detected');
+    request.response.statusCode = 401;
+    request.response.close();
+  }
+  
+  db.Persistable.findByWhere(Match, 'p1_id = @p1_id OR p2_id = @p2_id',
+      {'p1_id': userGplusId, 'p2_id': userGplusId})
+  .toList()
+  .then((List<Match> matches) {
+    _sendJson(request.response, matches);
+  })
+  .catchError((e) => _handleError(request.response, e));
+}
+
 void _handleError(HttpResponse response, e) {
-  log.severe('Oh noes! $e', getAttachedStackTrace(e));
+  log.severe('Oh noes! $e', e);
   response.statusCode = 500;
   response.close();
 }

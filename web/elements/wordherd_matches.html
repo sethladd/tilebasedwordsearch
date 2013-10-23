@@ -1,0 +1,11 @@
+<polymer-element name="wordherd-matches">
+  <template>
+    <h1>Matches</h1>
+    <ul>
+      <template repeat="{{ match in gameMatches }}">
+        <li>Opponent: {{match.opponentName(playerId)}}</li>
+      </template>
+    </ul>
+  </template>
+  <script type="application/dart" src="wordherd_matches.dart"></script>
+</polymer-element>

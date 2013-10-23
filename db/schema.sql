@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS match (
   id SERIAL,
   p1_id VARCHAR(255),
   p2_id VARCHAR(255),
+  p1_name VARCHAR(255),
+  p2_name VARCHAR(255),
+  created_at TIMESTAMP,
   board TEXT,
   p1_game TEXT,
   p2_game TEXT

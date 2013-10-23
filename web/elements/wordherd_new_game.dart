@@ -48,6 +48,10 @@ class WordherdNewGame extends PolymerElement {
         log.fine('Location to new match is $location');
         String matchId = new RegExp(r'/matches/(\d+)').firstMatch(location).group(1);
         log.fine('Match created with ID $matchId');
+        
+        // TODO: store the match locally?
+        
+        window.location.hash = '/matches';
       })
       .catchError((e) {
         log.severe('Could not create match: $e');

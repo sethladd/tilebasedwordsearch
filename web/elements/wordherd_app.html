@@ -1,6 +1,7 @@
 <link rel="import" href="wordherd_game.html">
 <link rel="import" href="wordherd_home.html">
 <link rel="import" href="wordherd_new_game.html">
+<link rel="import" href="wordherd_matches.html">
 
 <polymer-element name="wordherd-app">
   <template>
@@ -12,6 +13,10 @@
       
       <template if="{{ view == 'game' }}">
         <wordherd-game></wordherd-game>
+      </template>
+      
+      <template if="{{ view == 'matches' }}">
+        <wordherd-matches gameserverurl="{{gameserverurl}}"></wordherd-matches>
       </template>
       
       <template if="{{ view == 'newgame' }}">

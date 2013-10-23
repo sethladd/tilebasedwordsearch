@@ -23,6 +23,7 @@ class WordherdApp extends PolymerElement {
     ..addHandler(new UrlPattern(r'(.*)/index.html'), (_) => view = 'home')
     ..addHandler(new UrlPattern(r'(.*)#/game'), (_) => view = 'game')
     ..addHandler(new UrlPattern(r'(.*)#/newgame'), (_) => view = 'newgame')
+    ..addHandler(new UrlPattern(r'(.*)#/matches'), (_) => view = 'matches')
     ..listen();
     
     // TODO once https://code.google.com/p/dart/issues/detail?id=14210
