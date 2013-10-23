@@ -5,6 +5,7 @@ import 'dart:async';
 import 'google_signin.dart';
 import "package:google_plus_v1_api/plus_v1_api_browser.dart";
 import 'package:logging/logging.dart';
+import 'package:wordherd/shared_html.dart';
 
 final Logger log = new Logger('WordherdApp');
 
@@ -13,6 +14,7 @@ class WordherdApp extends PolymerElement {
   @observable String view = 'home';
   @observable bool playerSignedIn = false;
   @observable Person person;
+  @observable Player player;
   @published String gameserverurl;
   
   void created() {
@@ -48,4 +50,5 @@ class WordherdApp extends PolymerElement {
     })
     .catchError((e) => log.severe('Could not get person data from g+: $e'));
   }
+  
 }

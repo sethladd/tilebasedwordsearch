@@ -234,6 +234,8 @@ void createMatch(HttpRequestBody body) {
   Match match = new Match()
       ..p1_id = data['p1_id']
       ..p2_id = data['p2_id']
+      ..p1_name = data['p1_name']
+      ..p2_name = data['p2_name']
       ..board = boards.generateBoard();
   match.store().then((_) {
     body.response.statusCode = 201;
@@ -274,11 +276,6 @@ void _handleError(HttpResponse response, e) {
   log.severe('Oh noes! $e', e);
   response.statusCode = 500;
   response.close();
-}
-
-Future<Person> getCurrentPerson(String accessToken) {
-  Plus plusclient = makePlusClient(accessToken);
-  return plusclient.people.get('me');
 }
 
 Plus makePlusClient(String accessToken) {

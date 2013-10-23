@@ -6,7 +6,10 @@
     </template>
     <ul>
       <template repeat="{{friend in friends}}">
-        <li>{{friend}} <button on-click="createMatch" data-friend="{{friend.gplus_id}}">{{friend.name}}</button></li>
+        <li>{{friend}}
+            <button on-click="createMatch"
+              data-friend-id="{{friend.gplus_id}}"
+              data-friend-name="{{friend.name}}">{{friend.name}}</button></li>
       </template>
     </ul>
   </template>

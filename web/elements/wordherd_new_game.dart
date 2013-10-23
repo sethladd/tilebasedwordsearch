@@ -39,8 +39,9 @@ class WordherdNewGame extends PolymerElement {
   
   void createMatch(Event e, var detail, Node target) {
     Person me = (document.body.query('wordherd-app').xtag as WordherdApp).person;
-    String friendGplusId = (target as Element).dataset['friend'];
-    Map data = {'p1_id': me.id, 'p2_id': friendGplusId};
+    String friendGplusId = (target as Element).dataset['friend-id'];
+    String friendName = (target as Element).dataset['friend-name'];
+    Map data = {'p1_id': me.id, 'p1_name': me.displayName, 'p2_id': friendGplusId, 'p2_name': friendName};
     log.fine('Creating match with $data');
     HttpRequest.postFormData('$gameserverurl/matches', data, withCredentials: true)
       .then((HttpRequest response) {
