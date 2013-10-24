@@ -4,7 +4,7 @@ import 'package:polymer/polymer.dart';
 import 'package:asset_pack/asset_pack.dart';
 import 'package:logging/logging.dart';
 import 'package:wordherd/image_atlas.dart';
-import 'package:wordherd/wordherd.dart';
+import 'package:wordherd/shared_html.dart';
 import 'dart:html';
 
 @CustomTag('wordherd-game')

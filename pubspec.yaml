@@ -22,7 +22,6 @@ dependencies:
   lawndart: any
   logging: any
   postgresql: any
-  start: any
   unittest: any
   polymer: any
   route: any

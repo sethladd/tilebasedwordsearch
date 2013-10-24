@@ -1,12 +1,12 @@
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, published;
 import "package:google_oauth2_client/google_oauth2_browser.dart";
 import "package:google_plus_v1_api/plus_v1_api_browser.dart";
-import "package:js/js.dart" as js;
 import 'dart:html';
-import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
+import 'package:logging/logging.dart' show Logger;
 import 'dart:convert' show JSON;
-import 'dart:async';
+import 'dart:async' show Future;
+import 'dart:js' as js;
+import 'package:meta/meta.dart' show override;
 
 final Logger log = new Logger('google-signin-element');
 
@@ -26,11 +26,7 @@ class GoogleSignin extends PolymerElement {
     if (authResult["access_token"] != null) {
       log.fine('looks like signin worked!');
       
-      authenticationContext = new SimpleOAuth2(null);
-      
-      // Enable Authenticated requested with the granted token in the client libary
-      authenticationContext.token = authResult["access_token"];
-      authenticationContext.tokenType = authResult["token_type"];
+      authenticationContext = new SimpleOAuth2(authResult["access_token"], tokenType: authResult["token_type"]);
       
       plusClient = new Plus(authenticationContext);
       plusClient.makeAuthRequests = true;
@@ -93,9 +89,11 @@ class GoogleSignin extends PolymerElement {
   // See https://code.google.com/p/dart/issues/detail?id=14210
   // See also https://code.google.com/p/dart/issues/detail?id=14230
   @override
-  ShadowRoot shadowFromTemplate(Element template) {
-    TemplateElement tmpl = template as TemplateElement;
-    append(tmpl.content.clone(true));
+  Node shadowFromTemplate(Element template) {
+    var dom = instanceTemplate(template);
+    append(dom);
+    shadowRootReady(this, template);
+    return null; // no shadow here, it's all bright and shiny
   }
 
   GoogleSignin.created() : super.created() {
@@ -106,24 +104,30 @@ class GoogleSignin extends PolymerElement {
      * @param {Object} authResult An Object which contains the access token and
      *   other authentication information.
      */
-    js.scoped(() {
-      js.context["onSignInCallback"] =  new js.Callback.many((js.Proxy authResult) {
-        Map dartAuthResult =
-            JSON.decode(js.context["JSON"]["stringify"](authResult));
-        _onSignInCallback(dartAuthResult);
-      });
-      
-      ButtonElement button = querySelector('#signin');
-      button.dataset['clientId'] = clientId;
-      button.text = signInMsg;
-      
-      //js.context.gapi.signin.render(button, js.map(button.dataset));
-    });
+    js.context["onSignInCallback"] =  (authResult) {
+      // TODO is there a better way to get this data over? Is there a dejsify ?
+      Map dartAuthResult = JSON.decode(js.context["JSON"].callMethod("stringify", [authResult]));
+      _onSignInCallback(dartAuthResult);
+    };
+    
+    //ButtonElement button = querySelector('#signin');
+//      button.dataset['clientId'] = clientId;
+//      button.text = signInMsg;
+    
+    // why doesn't this work?
+//    js.context['signinReady'] = () {
+//      js.context['gapi']['signin'].callMethod('render', [button, new js.JsObject.jsify(button.dataset)]);
+//      print('here in singinReady');
+//    };
     
     ScriptElement script = new ScriptElement()
     ..type = 'text/javascript'
     ..src = 'https://plus.google.com/js/client:plusone.js'
     ..async = true;
     document.body.append(script);
+    
+//    new Timer(const Duration(seconds: 2), () {
+//      js.context['gapi']['signin'].callMethod('render', [button, new js.JsObject.jsify(button.dataset)]);
+//    });
   }
 }
