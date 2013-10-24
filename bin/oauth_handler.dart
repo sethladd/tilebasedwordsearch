@@ -155,11 +155,9 @@ class SimpleOAuth2 implements oauth2.OAuth2Console {
   void set credentials(value) {
     _credentials = value;
   }
-  oauth2.SystemCache _systemCache;
-  oauth2.SystemCache get systemCache => _systemCache;
 
-  void clearCredentials(oauth2.SystemCache cache) {
-    logger.fine("clearCredentials(console_auth.SystemCache $cache)");
+  void clearCredentials() {
+    logger.fine("clearCredentials()");
   }
 
   Future withClient(Future fn(oauth2.Client client)) {
@@ -170,5 +168,17 @@ class SimpleOAuth2 implements oauth2.OAuth2Console {
 
   void close() {
     logger.fine("close()");
+  }
+
+  void set authorizedRedirect(String _authorizedRedirect) {
+    // TODO implement this setter
+  }
+
+  String get authorizedRedirect => null; // TODO implement this getter
+
+  String get credentialsFilePath => null; // TODO implement this getter
+
+  void set credentialsFilePath(String _credentialsFilePath) {
+    // TODO implement this setter
   }
 }

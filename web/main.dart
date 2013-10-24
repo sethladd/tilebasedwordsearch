@@ -1,6 +1,6 @@
-import 'dart:async';
-import 'package:wordherd/wordherd.dart';
-import 'package:logging/logging.dart';
+library main;
+
+import 'package:logging/logging.dart' show Level, LogRecord, Logger;
 
 void _setupLogger() {
   Logger.root.level = Level.ALL;

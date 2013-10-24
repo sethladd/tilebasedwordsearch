@@ -1,11 +1,11 @@
 import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, published;
-import "package:google_oauth2_client/google_oauth2_browser.dart";
-import "package:google_plus_v1_api/plus_v1_api_browser.dart";
-import 'dart:html';
+import "package:google_oauth2_client/google_oauth2_browser.dart" show SimpleOAuth2;
+import "package:google_plus_v1_api/plus_v1_api_browser.dart" show Plus, Person;
+import 'dart:html' show CustomEvent, Element, HttpRequest, Node, ScriptElement, document;
 import 'package:logging/logging.dart' show Logger;
 import 'dart:convert' show JSON;
 import 'dart:async' show Future;
-import 'dart:js' as js;
+import 'dart:js' as js show context;
 import 'package:meta/meta.dart' show override;
 
 final Logger log = new Logger('google-signin-element');
@@ -20,6 +20,28 @@ class GoogleSignin extends PolymerElement {
   
   SimpleOAuth2 authenticationContext;
   @observable Plus plusClient;
+  
+  GoogleSignin.created() : super.created() {
+    
+    /**
+     * Calls the method that handles the authentication flow.
+     *
+     * @param {Object} authResult An Object which contains the access token and
+     *   other authentication information.
+     */
+    js.context["onSignInCallback"] =  (authResult) {
+      // TODO is there a better way to get this data over? Is there a dejsify ?
+      Map dartAuthResult = JSON.decode(js.context["JSON"].callMethod("stringify", [authResult]));
+      _onSignInCallback(dartAuthResult);
+    };
+    
+    ScriptElement script = new ScriptElement()
+    ..type = 'text/javascript'
+    ..src = 'https://plus.google.com/js/client:plusone.js'
+    ..async = true;
+    document.body.append(script);
+    
+  }
 
   _onSignInCallback(Map authResult) {
     log.fine('In signin callback');
@@ -88,6 +110,7 @@ class GoogleSignin extends PolymerElement {
   // BUG, can't use shadow dom for some reason.
   // See https://code.google.com/p/dart/issues/detail?id=14210
   // See also https://code.google.com/p/dart/issues/detail?id=14230
+  // No time to figure it out. Let's use the LightDOM!
   @override
   Node shadowFromTemplate(Element template) {
     var dom = instanceTemplate(template);
@@ -95,39 +118,5 @@ class GoogleSignin extends PolymerElement {
     shadowRootReady(this, template);
     return null; // no shadow here, it's all bright and shiny
   }
-
-  GoogleSignin.created() : super.created() {
     
-    /**
-     * Calls the method that handles the authentication flow.
-     *
-     * @param {Object} authResult An Object which contains the access token and
-     *   other authentication information.
-     */
-    js.context["onSignInCallback"] =  (authResult) {
-      // TODO is there a better way to get this data over? Is there a dejsify ?
-      Map dartAuthResult = JSON.decode(js.context["JSON"].callMethod("stringify", [authResult]));
-      _onSignInCallback(dartAuthResult);
-    };
-    
-    //ButtonElement button = querySelector('#signin');
-//      button.dataset['clientId'] = clientId;
-//      button.text = signInMsg;
-    
-    // why doesn't this work?
-//    js.context['signinReady'] = () {
-//      js.context['gapi']['signin'].callMethod('render', [button, new js.JsObject.jsify(button.dataset)]);
-//      print('here in singinReady');
-//    };
-    
-    ScriptElement script = new ScriptElement()
-    ..type = 'text/javascript'
-    ..src = 'https://plus.google.com/js/client:plusone.js'
-    ..async = true;
-    document.body.append(script);
-    
-//    new Timer(const Duration(seconds: 2), () {
-//      js.context['gapi']['signin'].callMethod('render', [button, new js.JsObject.jsify(button.dataset)]);
-//    });
-  }
 }
