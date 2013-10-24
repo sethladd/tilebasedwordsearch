@@ -6,7 +6,7 @@ import 'package:logging/logging.dart' show Level, LogRecord, Logger;
 import 'package:route/server.dart' show Router, UrlPattern;
 import 'package:path/path.dart' as path;
 import 'package:wordherd/persistable_io.dart' as db;
-import 'package:wordherd/shared_io.dart';
+import 'package:wordherd/shared_io.dart' show GameMatch, Player, Boards;
 import 'dart:convert' show JSON;
 import 'dart:async' show Completer, EventSink, Future, Stream, StreamController, StreamTransformer, runZoned;
 import 'dart:math' show Random;
@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:serialization/serialization.dart' show Serialization;
 import 'package:google_oauth2_client/google_oauth2_console.dart' as oauth2;
 import 'package:google_plus_v1_api/plus_v1_api_console.dart' show Plus;
+import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person, PeopleFeed;
 
 part 'oauth_handler.dart';
 
@@ -38,7 +39,7 @@ configureLogger() {
   });
 }
 
-final UrlPattern getMatchUrl = new UrlPattern('/matches/(\d+)');
+final UrlPattern getMatchUrl = new UrlPattern(r'/matches/(\d+)');
 
 Boards boards;
 
@@ -116,7 +117,7 @@ void getMatch(HttpRequest request) {
   // TODO wouldn't it be nice if this was passed in for me so I didn't
   // have to parse it again?
   var matchId = getMatchUrl.parse(request.uri.path)[1];
-  db.Persistable.findOneBy(Match, {'id': matchId}).then((Match match) {
+  db.Persistable.findOneBy(GameMatch, {'id': matchId}).then((GameMatch match) {
     if (match == null) {
       request.response.statusCode = 404;
       request.response.close();
@@ -229,7 +230,7 @@ void createMatch(HttpRequestBody body) {
   log.fine('Create match');
   Map data = body.body;
   
-  Match match = new Match()
+  GameMatch match = new GameMatch()
       ..p1_id = data['p1_id']
       ..p2_id = data['p2_id']
       ..p1_name = data['p1_name']
@@ -245,7 +246,7 @@ void createMatch(HttpRequestBody body) {
 
 void listMatches(HttpRequestBody body) {
   log.fine('Listing matches');
-  db.Persistable.all(Match).toList().then((List<Match> matches) {
+  db.Persistable.all(GameMatch).toList().then((List<GameMatch> matches) {
     _sendJson(body.response, matches);
   })
   .catchError((e, stackTrace) => _handleError(body.response, e, stackTrace));
@@ -261,10 +262,10 @@ void listPlayerMatches(HttpRequest request) {
     request.response.close();
   }
   
-  db.Persistable.findByWhere(Match, 'p1_id = @p1_id OR p2_id = @p2_id',
+  db.Persistable.findByWhere(GameMatch, 'p1_id = @p1_id OR p2_id = @p2_id',
       {'p1_id': userGplusId, 'p2_id': userGplusId})
   .toList()
-  .then((List<Match> matches) {
+  .then((List<GameMatch> matches) {
     _sendJson(request.response, matches);
   })
   .catchError((e, stackTrace) => _handleError(request.response, e, stackTrace));

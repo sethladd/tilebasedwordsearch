@@ -21,7 +21,7 @@
       </template>
       
       <template if="{{ view == 'match' }}">
-        <wordherd-match matchId="{{pathParts['matchId']}}"></wordherd-match>
+        <wordherd-match matchId="{{pathParts['matchId']}}" gameserverurl="{{gameserverurl}}"></wordherd-match>
       </template>
       
       <template if="{{ view == 'newgame' }}">

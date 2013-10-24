@@ -1,6 +1,20 @@
 <polymer-element name="wordherd-match">
   <template>
-    <p>Match ID is {{matchId}}</p>
+    <template if="{{match}}">
+      <template if="{{match.isOver}}">
+        <p>The match is over! {{match.winningName}} won.</p>
+      </template>
+      <template if="{{!match.isOver && !match.myTurnOver(playerId)}}">
+        Resume your game
+      </template>
+      <p>
+        Your score: {{match.myScore(playerId)}},
+        {{match.opponentName(playerId)}} score: {{match.opponentScore(playerId)}}
+      </p>
+    </template>
+    <template if="{{!match}}">
+      <p>Loading...</p>
+    </template>
     <p>
       <a href="#/">Home</a>
     </p>
