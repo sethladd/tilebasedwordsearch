@@ -25,9 +25,7 @@ class WordherdGameElement extends PolymerElement {
   
   @observable bool boardReady = false;
   
-  void created() {
-    super.created();
-    
+  WordherdGameElement.created() : super.created() {
     assetManager.loadPack('game', 'assets/_.pack')
         .then((_) => _parseAssets());
   }

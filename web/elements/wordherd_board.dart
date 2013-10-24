@@ -15,6 +15,7 @@ class WordherdBoard extends PolymerElement {
   @published Boards boards;
   @observable Board board;
   @published Game game;
+  @observable String timeRemaining;
   
   // TODO replace with camelcase when bug is resolved
   
@@ -43,15 +44,17 @@ class WordherdBoard extends PolymerElement {
   @observable String wordInProgress = '';
   @observable String wordInProgressScore = '';
   @observable String pauseOrToggleText = 'Pause';
+  
+  WordherdBoard.created() : super.created();
 
   @override
-  void inserted() {
-    super.inserted();
+  void enteredView() {
+    super.enteredView();
     
     board = boards.generateBoard(game);
     
     _canvasElement = $['frontBuffer'];
-    _bodyElement = query('body');
+    _bodyElement = querySelector('body');
     _gameLoop = new GameLoopHtml(_canvasElement);
     _gameClock = new GameClock(_gameLoop);
     // Don't lock the pointer on a click.
@@ -74,8 +77,8 @@ class WordherdBoard extends PolymerElement {
   // BUG: this doesn't fire, two levels deep.
   // See this thread: https://groups.google.com/a/dartlang.org/forum/#!topic/web-ui/Y1-F2ErXICY
   @override
-  void removed() {
-    super.removed();
+  void leftView() {
+    super.leftView();
     
     _gameLoop.keyboard.interceptor = null;
     // TODO move this to data binding
@@ -127,7 +130,7 @@ class WordherdBoard extends PolymerElement {
 
   void gameUpdate(GameLoopHtml gameLoop) {
     boardController.update(currentTouch);
-    notifyProperty(this, #timeRemaining);
+    timeRemaining = _timeRemaining;
   }
 
   void gameRender(GameLoopHtml gameLoop) {
@@ -180,7 +183,7 @@ class WordherdBoard extends PolymerElement {
   // This is "observable" based on the gameUpdate above.
   // Perhaps one day we'll be able to use an annotation here to make it
   // more obvious.
-  String get timeRemaining {
+  String get _timeRemaining {
     if (_gameClock == null) return '-';
     
     int seconds = _gameClock.secondsRemaining;

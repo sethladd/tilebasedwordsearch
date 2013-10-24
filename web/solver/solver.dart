@@ -1,12 +1,13 @@
-import 'dart:html';
-import 'package:tilebasedwordsearch/solver.dart';
+import 'dart:html' show HttpRequest, querySelector, window;
+import 'package:wordherd/solver.dart' show Solver;
+import 'package:wordherd/trie.dart' show Trie;
 
 main() {
-  var timeToParseFiles = query("#time-to-parse-file");
-  var numWords = query('#num-words');
-  var resultsWords = query('#results-words');
-  var resultsLength = query('#results-length');
-  var time = query('#time');
+  var timeToParseFiles = querySelector("#time-to-parse-file");
+  var numWords = querySelector('#num-words');
+  var resultsWords = querySelector('#results-words');
+  var resultsLength = querySelector('#results-length');
+  var time = querySelector('#time');
   
   const List<List<String>> grid = const [
     const ['A', 'B', 'C', 'D'],

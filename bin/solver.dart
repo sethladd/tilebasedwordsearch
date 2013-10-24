@@ -1,4 +1,4 @@
-import 'package:tilebasedwordsearch/solver.dart';
+import 'package:wordherd/solver.dart' show Solver, Trie;
 import 'dart:io';
 
 main() {

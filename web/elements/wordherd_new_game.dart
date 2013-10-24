@@ -16,9 +16,12 @@ class WordherdNewGame extends PolymerElement {
   final List<Player> friends = toObservable([]);
   @published String gameserverurl; // TODO move back to camel case once bug is fixed
   
+  WordherdNewGame.created() : super.created();
+  
   // Looks like inserted is when all attributes are ready (??)
-  void inserted() {
-    super.inserted();
+  // TODO ready() might be a better callback here
+  void enteredView() {
+    super.enteredView();
     
     _loadFriendsToPlay().then((List<Player> people) {
       log.fine('Found friends: $people');

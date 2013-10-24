@@ -1,6 +1,7 @@
 library solver;
 
 import 'package:wordherd/trie.dart' show Trie;
+export 'package:wordherd/trie.dart' show Trie;
 
 class Solver {
   final Trie _words;

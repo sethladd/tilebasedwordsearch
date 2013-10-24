@@ -95,11 +95,10 @@ class GoogleSignin extends PolymerElement {
   @override
   ShadowRoot shadowFromTemplate(Element template) {
     TemplateElement tmpl = template as TemplateElement;
-    host.append(tmpl.content.clone(true));
+    append(tmpl.content.clone(true));
   }
 
-  void created() {
-    super.created();
+  GoogleSignin.created() : super.created() {
     
     /**
      * Calls the method that handles the authentication flow.
@@ -114,7 +113,7 @@ class GoogleSignin extends PolymerElement {
         _onSignInCallback(dartAuthResult);
       });
       
-      ButtonElement button = host.query('#signin');
+      ButtonElement button = querySelector('#signin');
       button.dataset['clientId'] = clientId;
       button.text = signInMsg;
       

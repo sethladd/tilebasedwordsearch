@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:logging/logging.dart';
 import 'package:serialization/serialization.dart';
 import 'dart:convert' show JSON;
+import 'package:meta/meta.dart' show override;
 
 final Logger log = new Logger('WordherdMatches');
 final Serialization serializer = new Serialization();
@@ -14,8 +15,11 @@ class WordherdMatches extends PolymerElement {
   final List<Match> gameMatches = toObservable([]);
   @published String gameserverurl; // TODO move back to camel case once bug is fixed
   
-  void inserted() {
-    super.inserted();
+  WordherdMatches.created() : super.created();
+  
+  @override
+  void enteredView() {
+    super.enteredView();
     
     Person me = (document.body.query('wordherd-app').xtag as WordherdApp).person;
     playerId = me.id;

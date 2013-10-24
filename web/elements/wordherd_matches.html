@@ -3,7 +3,10 @@
     <h1>Matches</h1>
     <ul>
       <template repeat="{{ match in gameMatches }}">
-        <li>Opponent: {{match.opponentName(playerId)}}</li>
+        <li>
+          Opponent: {{match.opponentName(playerId)}}
+          <a href="../#game"
+        </li>
       </template>
     </ul>
   </template>
