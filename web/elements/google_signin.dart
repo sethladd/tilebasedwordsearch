@@ -1,5 +1,6 @@
 import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, published;
 import "package:google_oauth2_client/google_oauth2_browser.dart" show SimpleOAuth2;
+import "package:google_plus_v1_api/plus_v1_api_client.dart" show Person;
 import "package:google_plus_v1_api/plus_v1_api_browser.dart" show Plus, Person;
 import 'dart:html' show CustomEvent, Element, HttpRequest, Node, ScriptElement, document;
 import 'package:logging/logging.dart' show Logger;

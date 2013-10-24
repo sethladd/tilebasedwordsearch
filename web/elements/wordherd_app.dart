@@ -3,7 +3,8 @@ import 'package:route/client.dart';
 import 'dart:html';
 import 'dart:async';
 import 'google_signin.dart';
-import "package:google_plus_v1_api/plus_v1_api_browser.dart";
+import "package:google_plus_v1_api/plus_v1_api_client.dart" show Person;
+import "package:google_plus_v1_api/plus_v1_api_browser.dart" show Plus;
 import 'package:logging/logging.dart';
 import 'package:wordherd/shared_html.dart';
 

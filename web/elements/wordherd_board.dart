@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:game_loop/game_loop_html.dart';
 import 'dart:math';
 import 'dart:async';
-import 'package:wordherd/wordherd.dart';
+import 'package:wordherd/shared_html.dart';
 import 'package:wordherd/image_atlas.dart';
 
 @CustomTag('wordherd-board')

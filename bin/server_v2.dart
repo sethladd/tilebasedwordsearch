@@ -1,20 +1,20 @@
 library server;
 
-import 'package:http_server/http_server.dart';
-import 'dart:io';
-import 'package:logging/logging.dart';
-import 'package:route/server.dart';
+import 'package:http_server/http_server.dart' show HttpBodyHandler, HttpRequestBody, VirtualDirectory;
+import 'dart:io' show ContentType, File, HttpRequest, HttpResponse, HttpServer, Platform;
+import 'package:logging/logging.dart' show Level, LogRecord, Logger;
+import 'package:route/server.dart' show Router, UrlPattern;
 import 'package:path/path.dart' as path;
 import 'package:wordherd/persistable_io.dart' as db;
 import 'package:wordherd/shared_io.dart';
 import 'dart:convert' show JSON;
-import 'dart:async';
-import 'dart:math';
-import 'package:crypto/crypto.dart';
+import 'dart:async' show Completer, EventSink, Future, Stream, StreamController, StreamTransformer, runZoned;
+import 'dart:math' show Random;
+import 'package:crypto/crypto.dart' show MD5;
 import 'package:http/http.dart' as http;
-import 'package:serialization/serialization.dart';
+import 'package:serialization/serialization.dart' show Serialization;
 import 'package:google_oauth2_client/google_oauth2_console.dart' as oauth2;
-import 'package:google_plus_v1_api/plus_v1_api_console.dart';
+import 'package:google_plus_v1_api/plus_v1_api_console.dart' show Plus;
 
 part 'oauth_handler.dart';
 
@@ -115,7 +115,7 @@ Future<bool> addCorsHeaders(HttpRequest req) {
 void getMatch(HttpRequest request) {
   // TODO wouldn't it be nice if this was passed in for me so I didn't
   // have to parse it again?
-  var matchId = getMatchUrl.parse(request.uri.path)[0];
+  var matchId = getMatchUrl.parse(request.uri.path)[1];
   db.Persistable.findOneBy(Match, {'id': matchId}).then((Match match) {
     if (match == null) {
       request.response.statusCode = 404;

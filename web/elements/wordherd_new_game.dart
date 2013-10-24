@@ -5,7 +5,7 @@ import 'dart:convert' show JSON;
 import 'package:logging/logging.dart';
 import 'package:wordherd/shared_html.dart';
 import 'package:serialization/serialization.dart';
-import 'package:google_plus_v1_api/plus_v1_api_browser.dart';
+import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person;
 import 'wordherd_app.dart';
 
 final Logger log = new Logger('WordherdNewGame');
