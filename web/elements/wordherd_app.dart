@@ -12,16 +12,29 @@ final Logger log = new Logger('WordherdApp');
 @CustomTag('wordherd-app')
 class WordherdApp extends PolymerElement {
   @observable String view = 'home';
+  final Map<String, String> pathParts = toObservable({});
+  
   @observable bool playerSignedIn = false;
   @observable Person person;
   @observable Player player;
   @published String gameserverurl;
+  
+  final UrlPattern matchPath = new UrlPattern(r'(.*)#/match/(\d+)');
   
   WordherdApp.created() : super.created() {
     
     // TODO put this into a custom element, once auto-node finding works from expressions
     var router = new Router(useFragment: true)
     ..addHandler(new UrlPattern(r'(.*)/index.html'), (_) => view = 'home')
+    ..addHandler(new UrlPattern(r'(.*)#/'), (_) => view = 'home')
+    
+    // TODO check in on https://github.com/dart-lang/route/issues/52
+    ..addHandler(matchPath, (String path) {
+      view = 'match';
+      pathParts
+        ..clear()
+        ..['matchId'] = matchPath.parse(path)[1];
+    })
     ..addHandler(new UrlPattern(r'(.*)#/game'), (_) => view = 'game')
     ..addHandler(new UrlPattern(r'(.*)#/newgame'), (_) => view = 'newgame')
     ..addHandler(new UrlPattern(r'(.*)#/matches'), (_) => view = 'matches')
@@ -33,7 +46,7 @@ class WordherdApp extends PolymerElement {
       log.fine('Received the signingcomplete event');
       Node target = e.target; 
       playerSignedIn = true;
-      Plus plus = (((target as Element).xtag as GoogleSignin).plusClient);
+      Plus plus = ((target as GoogleSignin).plusClient);
       _registerPlayer(plus);
     });
   }

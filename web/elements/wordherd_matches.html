@@ -4,11 +4,14 @@
     <ul>
       <template repeat="{{ match in gameMatches }}">
         <li>
-          Opponent: {{match.opponentName(playerId)}}
-          <a href="../#game"
+          <a href="#/match/{{match.id}}">Opponent: {{match.opponentName(playerId)}}</a>
         </li>
       </template>
     </ul>
+    
+    <p>
+      <a href="#/">Home</a>
+    </p>
   </template>
   <script type="application/dart" src="wordherd_matches.dart"></script>
 </polymer-element>

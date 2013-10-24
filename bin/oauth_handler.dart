@@ -72,7 +72,6 @@ Future<String> _confirmOauthSignin(HttpRequest request) {
       "client_secret": CLIENT_SECRET
     };
   
-    log.fine("fields = $fields");
     http.Client _httpClient = new http.Client();
     _httpClient.post(TOKEN_ENDPOINT, fields: fields).then((http.Response response) {
       // At this point we have the token and refresh token.
@@ -102,6 +101,10 @@ Future<String> _confirmOauthSignin(HttpRequest request) {
           completer.completeError("POST FAILED ${userGplusId} != ${gPlusId}");
         }
       });
+    })
+    .catchError((e, stackTrace) {
+      log.severe('Could not verify token with Google: $e : $stackTrace');
+      completer.completeError(e, stackTrace);
     });
   });
   
