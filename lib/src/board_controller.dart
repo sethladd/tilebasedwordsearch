@@ -1,16 +1,27 @@
 part of client_game;
 
+class WordEvent {
+  final String word;
+  final int score;
+  WordEvent(this.word, this.score);
+}
+
 @observable
 class BoardController {
   final Board board;
   final BoardView view;
-
-  BoardController(this.board, this.view);
-
+  
   List<int> selectedPath;
   String _keyboardSearchString = '';
   String wordInProgress = '';
   int wordInProgressScore = 0;
+  
+  StreamController<WordEvent> _wordsStream = new StreamController();
+
+
+  BoardController(this.board, this.view);
+
+  Stream<WordEvent> get onWords => _wordsStream.stream;
 
   void clearSelected() {
     view.selectedTiles.clear();
@@ -99,7 +110,11 @@ class BoardController {
     }
     if (event.buttonId == Keyboard.ENTER) {
       // Submit.
-      board.attemptPath(selectedPath);
+      board.attemptPathAsWord(selectedPath);
+      bool goodWord = board.attemptPathAsWord(selectedPath);
+      if (goodWord) {
+        _wordsStream.add(new WordEvent(board.wordForPath(selectedPath), board.scoreForPath(selectedPath)));
+      }
       clearKeyboardInput();
       return true;
     }

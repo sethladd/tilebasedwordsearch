@@ -9,9 +9,12 @@ class Game extends Object with Observable, Persistable {
   static const int scoreMultiplier = 3;
   
   void scoreWord(String word, int wordScore) {
-    score += wordScore;
-    words[word] = wordScore;
+    // TODO play a sound if the word was already found?
+    if (!words.containsKey(word) || words[word] < wordScore) {
+      words[word] = wordScore;
+      score = words.values.reduce((v, e) => v + e);
+    }
   }
   
-  bool foundWord(String word) => words.containsKey(word);
+  bool previouslyFoundWord(String word) => words.containsKey(word);
 }

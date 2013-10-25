@@ -7,10 +7,9 @@ import 'package:meta/meta.dart' show override;
 import 'package:game_loop/game_loop_html.dart' show GameLoop, GameLoopHtml, GameLoopTouch;
 import 'dart:math' show PI;
 import 'dart:async' show StreamSubscription;
-import 'package:wordherd/client_game.dart' show BoardController, BoardView, GameClock, RectangleTransform;
+import 'package:wordherd/client_game.dart' show BoardController, BoardView, GameClock, RectangleTransform, WordEvent;
 import 'package:wordherd/shared_html.dart' show Board, Boards, Game;
 import 'package:wordherd/image_atlas.dart' show ImageAtlas;
-import 'package:logging/logging.dart' show Logger;
 
 final Logger log = new Logger('WordherdBoard');
 
@@ -96,6 +95,7 @@ class WordherdBoard extends PolymerElement {
     boardView = new BoardView(board, _canvasElement, triplewordatlas,
         letteratlas, selectedletteratlas, tripleletteratlas);
     boardController = new BoardController(board, boardView);
+    boardController.onWords.listen((WordEvent e) => game.scoreWord(e.word, e.score));
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
     _gameClock.start();
     _gameClock.allDone.future.then((_) {
@@ -174,7 +174,10 @@ class WordherdBoard extends PolymerElement {
     if (touch == currentTouch) {
       currentTouch = null;
       List<int> path = boardController.selectedPath;
-      board.attemptPath(path);
+      bool goodWord = board.attemptPathAsWord(path);
+      if (goodWord) {
+        game.scoreWord(board.wordForPath(path), board.scoreForPath(path));
+      }
     } else {
     }
     touchCount--;

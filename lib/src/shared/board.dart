@@ -6,7 +6,10 @@ class Board {
   List<int> letterBonusTileIndexes;
   int wordBonusTileIndex;
 
-  bool attemptPath(List<int> path) {
+  /**
+   * Returns true if the path is a word and it exists on the board.
+   */
+  bool attemptPathAsWord(List<int> path) {
     if (path == null) {
       // Invalid path.
       return false;

@@ -186,7 +186,7 @@ class GamePanel extends WebComponent {
     if (touch == currentTouch) {
       currentTouch = null;
       List<int> path = boardController.selectedPath;
-      board.attemptPath(path);
+      board.attemptPathAsWord(path);
     } else {
     }
     touchCount--;
