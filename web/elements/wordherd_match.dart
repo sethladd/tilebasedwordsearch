@@ -2,7 +2,7 @@ import 'package:polymer/polymer.dart';
 import 'dart:html';
 import 'dart:convert' show JSON;
 import 'package:serialization/serialization.dart';
-import 'package:wordherd/shared_html.dart' show GameMatch;
+import 'package:wordherd/shared_html.dart' show Game, GameMatch;
 import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person;
 import 'wordherd_app.dart';
 import 'package:logging/logging.dart' show Logger;
@@ -16,6 +16,8 @@ class WordherdMatch extends PolymerElement {
   @observable GameMatch match;
   @observable String playerId;
   @published String gameserverurl;
+  @observable Game game;
+  @observable Board board;
   
   WordherdMatch.created() : super.created();
   
@@ -32,5 +34,11 @@ class WordherdMatch extends PolymerElement {
       match = serializer.read(JSON.decode(request.responseText));
     })
     .catchError((e) => log.severe('Could not retrieve match for $matchId: $e'));
+  }
+  
+  void playGame(Event e, var detail, Node target) {
+    log.fine('So you want to play a game');
+    game = match.myGame(playerId);
+    board = match.board;
   }
 }

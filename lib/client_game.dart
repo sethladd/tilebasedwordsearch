@@ -1,4 +1,4 @@
-library wordherd;
+library client_game;
 
 import 'package:observe/observe.dart';
 import 'package:game_loop/game_loop_html.dart';

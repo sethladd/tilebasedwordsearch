@@ -1,19 +1,22 @@
 library wordherd_board;
 
-import 'package:polymer/polymer.dart';
-import 'dart:html';
-import 'package:logging/logging.dart';
-import 'package:meta/meta.dart';
-import 'package:game_loop/game_loop_html.dart';
-import 'dart:math';
-import 'dart:async';
-import 'package:wordherd/shared_html.dart';
-import 'package:wordherd/image_atlas.dart';
+import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, published;
+import 'dart:html' show BodyElement, CanvasElement, Event, Node, querySelector, window;
+import 'package:logging/logging.dart' show Logger;
+import 'package:meta/meta.dart' show override;
+import 'package:game_loop/game_loop_html.dart' show GameLoop, GameLoopHtml, GameLoopTouch;
+import 'dart:math' show PI;
+import 'dart:async' show StreamSubscription;
+import 'package:wordherd/client_game.dart' show BoardController, BoardView, GameClock, RectangleTransform;
+import 'package:wordherd/shared_html.dart' show Board, Boards, Game;
+import 'package:wordherd/image_atlas.dart' show ImageAtlas;
+import 'package:logging/logging.dart' show Logger;
+
+final Logger log = new Logger('WordherdBoard');
 
 @CustomTag('wordherd-board')
 class WordherdBoard extends PolymerElement {
-  @published Boards boards;
-  @observable Board board;
+  @published Board board;
   @published Game game;
   @observable String timeRemaining;
   
@@ -51,8 +54,6 @@ class WordherdBoard extends PolymerElement {
   void enteredView() {
     super.enteredView();
     
-    board = boards.generateBoard(game);
-    
     _canvasElement = $['frontBuffer'];
     _bodyElement = querySelector('body');
     _gameLoop = new GameLoopHtml(_canvasElement);
@@ -87,7 +88,7 @@ class WordherdBoard extends PolymerElement {
     _onTouchEndSubscription.cancel();
     _gameLoop.stop();
     
-    print('board was removed');
+    log.fine('board was removed');
   }
 
   void startOrResumeGame() {

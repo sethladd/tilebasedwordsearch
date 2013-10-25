@@ -1,4 +1,4 @@
-part of wordherd;
+part of client_game;
 
 @observable
 class BoardController {

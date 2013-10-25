@@ -1,4 +1,3 @@
-<link rel="import" href="wordherd_game.html">
 <link rel="import" href="wordherd_home.html">
 <link rel="import" href="wordherd_new_game.html">
 <link rel="import" href="wordherd_matches.html">
@@ -10,10 +9,6 @@
     <template if="{{playerSignedIn}}">
       <template if="{{ view == 'home' }}">
         <wordherd-home></wordherd-home>
-      </template>
-      
-      <template if="{{ view == 'game' }}">
-        <wordherd-game></wordherd-game>
       </template>
       
       <template if="{{ view == 'matches' }}">

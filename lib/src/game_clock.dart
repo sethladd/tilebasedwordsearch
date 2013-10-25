@@ -1,4 +1,4 @@
-part of wordherd;
+part of client_game;
 
 class GameClock {
   static const int DEFAULT_GAME_LENGTH = 70; // # of seconds in a game

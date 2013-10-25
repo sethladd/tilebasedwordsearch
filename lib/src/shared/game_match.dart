@@ -35,4 +35,8 @@ class GameMatch extends Object with Persistable {
   }
   
   bool get isOver => p1_game.isDone && p2_game.isDone;
+  
+  Game myGame(String playerId) {
+    return (p1_id == playerId) ? p1_game : p2_game;
+  }
 }

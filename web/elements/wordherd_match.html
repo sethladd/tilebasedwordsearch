@@ -1,23 +1,33 @@
+<link rel="import" href="wordherd_game.html">
+
 <polymer-element name="wordherd-match">
   <template>
-    <template if="{{match != null}}">
-      <template if="{{match.isOver}}">
-        <p>The match is over! {{match.winningName}} won.</p>
+    <template if="{{game == null}}">
+      <template if="{{match != null}}">
+        <template if="{{match.isOver}}">
+          <p>The match is over! {{match.winningName}} won.</p>
+        </template>
+        <template if="{{!match.isOver && !match.myTurnOver(playerId)}}">
+          <p><button on-click="playGame">Resume your game</button></p>
+        </template>
+        <p>
+          Your score: {{match.myScore(playerId)}},
+          {{match.opponentName(playerId)}} score: {{match.opponentScore(playerId)}}
+        </p>
       </template>
-      <template if="{{!match.isOver && !match.myTurnOver(playerId)}}">
-        Resume your game
+      <template if="{{match == null}}">
+        <p>Loading...</p>
       </template>
       <p>
-        Your score: {{match.myScore(playerId)}},
-        {{match.opponentName(playerId)}} score: {{match.opponentScore(playerId)}}
+        <a href="#/">Home</a>
       </p>
     </template>
-    <template if="{{match != null}}">
-      <p>Loading...</p>
+    
+    <template if="{{game != null}}">
+      Here we are
+      <wordherd-game game="{{game}}" board="{{board}}"></wordherd-game>
     </template>
-    <p>
-      <a href="#/">Home</a>
-    </p>
   </template>
+  
   <script type="application/dart" src="wordherd_match.dart"></script>
 </polymer-element>

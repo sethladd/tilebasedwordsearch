@@ -7,9 +7,10 @@ import 'package:wordherd/image_atlas.dart';
 import 'package:wordherd/shared_html.dart';
 import 'dart:html';
 
+final Logger log = new Logger("WordherdGameElement");
+
 @CustomTag('wordherd-game')
 class WordherdGameElement extends PolymerElement {
-  final Logger clientLogger = new Logger("WordherdGameElement");
   final AssetManager assetManager = new AssetManager();
   
   ImageAtlas letterAtlas;
@@ -21,7 +22,8 @@ class WordherdGameElement extends PolymerElement {
   
   Boards boards;
   
-  @observable Game game = new Game();
+  @published Game game;
+  @published Board board;
   
   @observable bool boardReady = false;
   
@@ -31,7 +33,7 @@ class WordherdGameElement extends PolymerElement {
   }
   
   void _parseAssets() {
-    clientLogger.info('start processing assets');
+    log.info('start processing assets');
 
     if (assetManager['game.boards'] == null) {
       throw new StateError("Can't play without the boards");
@@ -94,6 +96,6 @@ class WordherdGameElement extends PolymerElement {
     
     boardReady = true;
 
-    clientLogger.info('Assets loaded and parsed');
+    log.info('Assets loaded and parsed');
   }
 }
