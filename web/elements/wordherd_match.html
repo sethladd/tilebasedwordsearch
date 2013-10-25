@@ -1,6 +1,6 @@
 <polymer-element name="wordherd-match">
   <template>
-    <template if="{{match}}">
+    <template if="{{match != null}}">
       <template if="{{match.isOver}}">
         <p>The match is over! {{match.winningName}} won.</p>
       </template>
@@ -12,7 +12,7 @@
         {{match.opponentName(playerId)}} score: {{match.opponentScore(playerId)}}
       </p>
     </template>
-    <template if="{{!match}}">
+    <template if="{{match != null}}">
       <p>Loading...</p>
     </template>
     <p>

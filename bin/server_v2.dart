@@ -6,7 +6,7 @@ import 'package:logging/logging.dart' show Level, LogRecord, Logger;
 import 'package:route/server.dart' show Router, UrlPattern;
 import 'package:path/path.dart' as path;
 import 'package:wordherd/persistable_io.dart' as db;
-import 'package:wordherd/shared_io.dart' show GameMatch, Player, Boards;
+import 'package:wordherd/shared_io.dart' show Boards, Game, GameMatch, Player;
 import 'dart:convert' show JSON;
 import 'dart:async' show Completer, EventSink, Future, Stream, StreamController, StreamTransformer, runZoned;
 import 'dart:math' show Random;
@@ -89,7 +89,7 @@ main() {
     });
     
   },
-  onError: (e) => log.severe("Error handling request: $e"));
+  onError: (e, stackTrace) => log.severe("Error handling request: $e : $stackTrace"));
 
 }
 
@@ -116,7 +116,8 @@ Future<bool> addCorsHeaders(HttpRequest req) {
 void getMatch(HttpRequest request) {
   // TODO wouldn't it be nice if this was passed in for me so I didn't
   // have to parse it again?
-  var matchId = getMatchUrl.parse(request.uri.path)[1];
+  List<String> options = getMatchUrl.parse(request.uri.path);
+  var matchId = options[0];
   db.Persistable.findOneBy(GameMatch, {'id': matchId}).then((GameMatch match) {
     if (match == null) {
       request.response.statusCode = 404;
@@ -235,6 +236,8 @@ void createMatch(HttpRequestBody body) {
       ..p2_id = data['p2_id']
       ..p1_name = data['p1_name']
       ..p2_name = data['p2_name']
+      ..p1_game = new Game()
+      ..p2_game = new Game()
       ..board = boards.generateBoard();
   match.store().then((_) {
     body.response.statusCode = 201;
