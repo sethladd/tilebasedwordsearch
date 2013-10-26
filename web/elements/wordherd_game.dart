@@ -32,6 +32,16 @@ class WordherdGameElement extends PolymerElement {
         .then((_) => _parseAssets());
   }
   
+  void ready() {
+    super.ready();
+    
+    // game might be null because it is set via binding,
+    // so wait for game and then wait for isDone
+    new PathObserver(this, 'game.isDone').changes.listen((_) {
+      print(game.isDone);
+    });
+  }
+  
   void _parseAssets() {
     log.info('start processing assets');
 

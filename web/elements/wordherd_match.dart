@@ -2,7 +2,7 @@ import 'package:polymer/polymer.dart';
 import 'dart:html';
 import 'dart:convert' show JSON;
 import 'package:serialization/serialization.dart';
-import 'package:wordherd/shared_html.dart' show Game, GameMatch;
+import 'package:wordherd/shared_html.dart' show Board, Game, GameMatch;
 import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person;
 import 'wordherd_app.dart';
 import 'package:logging/logging.dart' show Logger;
@@ -40,5 +40,10 @@ class WordherdMatch extends PolymerElement {
     log.fine('So you want to play a game');
     game = match.myGame(playerId);
     board = match.board;
+  }
+  
+  void syncGame(Event e, var detail, Node target) {
+    // TODO save the game on the server
+    log.fine('Saving the game to the server');
   }
 }

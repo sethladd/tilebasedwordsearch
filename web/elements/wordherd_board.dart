@@ -98,7 +98,8 @@ class WordherdBoard extends PolymerElement {
     boardController.onWords.listen((WordEvent e) => game.scoreWord(e.word, e.score));
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
     _gameClock.start();
-    _gameClock.allDone.future.then((_) {
+    _gameClock.whenDone.then((_) {
+      game.isDone = true;
     });
     _gameLoop.start();
   }

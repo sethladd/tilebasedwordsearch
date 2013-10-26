@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'package:wordherd/image_atlas.dart';
 import 'shared_html.dart';
+import 'package:logging/logging.dart';
 
 part 'src/board_view.dart';
 part 'src/board_controller.dart';

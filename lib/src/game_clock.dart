@@ -1,12 +1,13 @@
 part of client_game;
 
 class GameClock {
+  final Logger _log = new Logger('GameClock');
   static const int DEFAULT_GAME_LENGTH = 70; // # of seconds in a game
   final GameLoop gameLoop;
 
   bool shouldPause = false;
   int gameLength = DEFAULT_GAME_LENGTH;
-  Completer allDone = new Completer();
+  final Completer _allDone = new Completer();
   
   @observable
   int secondsRemaining = DEFAULT_GAME_LENGTH;
@@ -17,6 +18,7 @@ class GameClock {
     }
   }
 
+  Future get whenDone => _allDone.future;
   
   tick(GameLoopTimer _) {
     if (!shouldPause) {
@@ -24,8 +26,8 @@ class GameClock {
       if (secondsRemaining > 0) {
         gameLoop.addTimer(tick, 1.0); // 1 second timer
       } else {
-        allDone.complete(true);
-        print('DONE!');
+        _allDone.complete(true);
+        _log.fine('Timer is done');
       }
     }
   }
@@ -38,7 +40,8 @@ class GameClock {
   stop() {
     shouldPause = true;
     secondsRemaining = 0;
-    allDone.complete(true);
+    _allDone.complete(true);
+    _log.fine('forced stop');
   }
   
   pause() {

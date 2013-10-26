@@ -24,7 +24,7 @@
     </template>
     
     <template if="{{game != null}}">
-      <wordherd-game game="{{game}}" board="{{board}}"></wordherd-game>
+      <wordherd-game game="{{game}}" board="{{board}}" on-gameover="{{syncGame}}"></wordherd-game>
     </template>
   </template>
   
