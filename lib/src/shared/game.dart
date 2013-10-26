@@ -2,9 +2,10 @@ part of wordherd_shared;
 
 /// Represents a game, with a score and other
 /// data that indicates a play session.
-class Game extends Object with Observable, Persistable {
+class Game extends Object with Observable {
   Map<String, int> words = toObservable(new LinkedHashMap());
   @observable int score = 0;
+  @observable bool isStarted = false;
   @observable bool isDone = false;
   static const int scoreMultiplier = 3;
   

@@ -8,7 +8,8 @@ class GameMatch extends Object with Persistable {
   @serialized Board board;
   @serialized Game p1_game;
   @serialized Game p2_game;
-  DateTime created_at = new DateTime.now(); // TODO persistence should set this
+  DateTime created_at; // set by persistance
+  DateTime updated_at;
   
   String opponentName(String myId) {
     return (p1_id == myId) ? p2_name : p1_name;

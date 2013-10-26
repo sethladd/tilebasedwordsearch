@@ -36,7 +36,6 @@ class WordherdBoard extends PolymerElement {
   bool paused = false;
   CanvasElement _canvasElement;
   BodyElement _bodyElement;
-  final Logger _gamePanelLogger = new Logger("WordherdBoard");
 
   StreamSubscription _onTouchStartSubscription;
   StreamSubscription _onTouchEndSubscription;
@@ -73,9 +72,6 @@ class WordherdBoard extends PolymerElement {
     startOrResumeGame();
   }
 
-  // TODO this isn't being called, but hopefully it will be when leftView works
-  // BUG: this doesn't fire, two levels deep.
-  // See this thread: https://groups.google.com/a/dartlang.org/forum/#!topic/web-ui/Y1-F2ErXICY
   @override
   void leftView() {
     super.leftView();
@@ -91,7 +87,7 @@ class WordherdBoard extends PolymerElement {
   }
 
   void startOrResumeGame() {
-    _gamePanelLogger.severe("starting game");
+    log.fine("starting game");
     boardView = new BoardView(board, _canvasElement, triplewordatlas,
         letteratlas, selectedletteratlas, tripleletteratlas);
     boardController = new BoardController(board, boardView);
@@ -102,6 +98,8 @@ class WordherdBoard extends PolymerElement {
       game.isDone = true;
     });
     _gameLoop.start();
+    
+    game.isStarted = true;
   }
 
   void endGame(Event e, var detail, Node target) {
@@ -168,7 +166,7 @@ class WordherdBoard extends PolymerElement {
     } else {
     }
     touchCount++;
-    _gamePanelLogger.fine('Open touches $touchCount');
+    log.fine('Open touches $touchCount');
   }
 
   void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
@@ -182,7 +180,7 @@ class WordherdBoard extends PolymerElement {
     } else {
     }
     touchCount--;
-    _gamePanelLogger.fine('Open touches $touchCount');
+    log.fine('Open touches $touchCount');
   }
 
   // This is "observable" based on the gameUpdate above.

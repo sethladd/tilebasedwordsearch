@@ -67,4 +67,6 @@ class WordherdMatch extends PolymerElement {
       log.severe('Did not sync game to server: $e $stackTrace');
     });
   }
+  
+  String get startOrResumeMsg => game.isStarted ? 'Resume' : 'Start';
 }

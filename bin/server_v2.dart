@@ -76,8 +76,6 @@ main() {
         ..serve('/register', method: 'POST')
           .transform(new HttpBodyHandler()).listen(registerPlayer)
         ..serve('/friendsToPlay', method: 'GET').listen(friendsToPlay)
-        ..serve('/matches', method: 'GET')
-          .transform(new HttpBodyHandler()).listen(listMatches)
         ..serve('/matches/me', method: 'GET').listen(listPlayerMatches)
         ..serve('/matches', method: 'POST')
           .transform(new HttpBodyHandler()).listen(createMatch)
@@ -135,6 +133,8 @@ void updateGameForMatch(HttpRequest request) {
     return game;
   })
   .then((Game game) {
+    // TODO WARNING race condition here, we don't handle the case
+    // where someone slides in an update between read and save.
     return db.Persistable.findOneBy(GameMatch, {'id': matchId})
         .then((GameMatch match) {
           if (match == null) {
@@ -284,14 +284,6 @@ void createMatch(HttpRequestBody body) {
     body.response.statusCode = 201;
     body.response.headers.add('Location', '/matches/${match.id}'); // TODO make into absolute URI
     body.response.close();
-  })
-  .catchError((e, stackTrace) => _handleError(body.response, e, stackTrace));
-}
-
-void listMatches(HttpRequestBody body) {
-  log.fine('Listing matches');
-  db.Persistable.all(GameMatch).toList().then((List<GameMatch> matches) {
-    _sendJson(body.response, matches);
   })
   .catchError((e, stackTrace) => _handleError(body.response, e, stackTrace));
 }

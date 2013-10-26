@@ -150,9 +150,9 @@ abstract class Persistable {
     _log.info('inserting');
     
     return _getColumns(runtimeType).then((cols) {
-        var map = _getExistingValues(cols);
+        Map map = _getExistingValues(cols);
   
-        var query = 'INSERT INTO $_tableName (${map.keys.join(',')}) VALUES '
+        String query = 'INSERT INTO $_tableName (${map.keys.join(',')}) VALUES '
                     '(${map.keys.map((c) => '@$c').join(',')}) '
                     'returning id';
                     
@@ -166,8 +166,8 @@ abstract class Persistable {
   }
 
   Future _doUpdate() {
-    return _getColumns(runtimeType).then((cols) {
-        var map = _getExistingValues(cols);
+    return _getColumns(runtimeType).then((List<String> cols) {
+        Map<String, dynamic> map = _getExistingValues(cols);
         map['id'] = id;
         
         var query = 'UPDATE $_tableName SET '
@@ -177,16 +177,26 @@ abstract class Persistable {
       });
   }
   
-  Map<String, dynamic> _getExistingValues(cols) {
-    var mirror = reflect(this);
-    var classMirror = reflectClass(runtimeType);
-    var map = {};
-    cols.map((c) => new Symbol(c))
-        .where((c) => classMirror.variables.keys.contains(c))
+  /**
+   * Returns a map of column names to values. Also handles
+   * updated_at and created_at, if they exist.
+   */
+  Map<String, dynamic> _getExistingValues(List<String> cols) {
+    InstanceMirror mirror = reflect(this);
+    ClassMirror classMirror = reflectClass(runtimeType);
+    Map map = {};
+    cols.map((String columnName) => new Symbol(columnName))
+        .where((Symbol c) => classMirror.variables.keys.contains(c))
         .forEach((Symbol c) {
           VariableMirror field = classMirror.variables[c];
           if (isFieldSerialized(field)) {
             map[MirrorSystem.getName(c)] = JSON.encode(_serialization.write(mirror.getField(c).reflectee));
+          } else if (c == #updated_at) {
+            map['updated_at'] = new DateTime.now();
+            (this as dynamic).updated_at = map['updated_at'];
+          } else if (c == #created_at && id == null) {
+            map['created_at'] = new DateTime.now();
+            (this as dynamic).created_at = map['created_at'];
           } else {
             map[MirrorSystem.getName(c)] = mirror.getField(c).reflectee;
           }
@@ -215,8 +225,6 @@ abstract class Persistable {
   static String _getTableName(Type type) => type.toString().toLowerCase();
   
   String get _tableName => _getTableName(runtimeType);
-
-  //Map toJson();
 }
 
 Map _rowToMap(row) {

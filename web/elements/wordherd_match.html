@@ -8,7 +8,7 @@
           <p>The match is over! {{match.winningName}} won.</p>
         </template>
         <template if="{{!match.isOver && !match.myTurnOver(playerId)}}">
-          <p><button on-click="playGame">Resume your game</button></p>
+          <p><button on-click="playGame">{{startOrResumeMessage}} your game</button></p>
         </template>
         <template if="{{!match.isOver && match.myTurnOver(playerId)}}">
           <p>Your game is over. Waiting on other player.</p>

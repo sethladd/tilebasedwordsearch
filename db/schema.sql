@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS player;
-DROP TABLE IF EXISTS match;
+DROP TABLE IF EXISTS gamematch;
 DROP TABLE IF EXISTS twoplayermatch;
 
 CREATE TABLE IF NOT EXISTS gamematch (
@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS gamematch (
   p1_name VARCHAR(255),
   p2_name VARCHAR(255),
   created_at TIMESTAMP,
+  updated_at TIMESTAMP,
   board TEXT,
   p1_game TEXT,
   p2_game TEXT
