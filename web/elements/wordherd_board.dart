@@ -1,6 +1,6 @@
 library wordherd_board;
 
-import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, published;
+import 'package:polymer/polymer.dart';
 import 'dart:html' show BodyElement, CanvasElement, Event, Node, querySelector, window;
 import 'package:logging/logging.dart' show Logger;
 import 'package:meta/meta.dart' show override;

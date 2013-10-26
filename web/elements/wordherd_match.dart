@@ -21,6 +21,17 @@ class WordherdMatch extends PolymerElement {
   
   WordherdMatch.created() : super.created();
   
+  void ready() {
+    super.ready();
+    
+    new PathObserver(this, 'game.isDone').changes.listen((_) {
+      log.fine('Notified that game.isDone has changed');
+      if (game.isDone) {
+        syncGameToServer();
+      }
+    });
+  }
+  
   void enteredView() {
     super.enteredView();
     
@@ -42,8 +53,18 @@ class WordherdMatch extends PolymerElement {
     board = match.board;
   }
   
-  void syncGame(Event e, var detail, Node target) {
-    // TODO save the game on the server
-    log.fine('Saving the game to the server');
+  void syncGameToServer() {
+    log.fine('Syncing game to server');
+    HttpRequest.request('$gameserverurl/matches/$matchId/game/$playerId',
+        method: 'POST',
+        withCredentials: true,
+        requestHeaders: {'Content-Type': 'application/json'},
+        sendData: JSON.encode(serializer.write(game)))
+    .then((HttpRequest request) {
+      log.fine('Game update sent to server');
+    })
+    .catchError((e, stackTrace) {
+      log.severe('Did not sync game to server: $e $stackTrace');
+    });
   }
 }

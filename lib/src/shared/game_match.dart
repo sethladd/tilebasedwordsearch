@@ -39,4 +39,14 @@ class GameMatch extends Object with Persistable {
   Game myGame(String playerId) {
     return (p1_id == playerId) ? p1_game : p2_game;
   }
+  
+  void updateGameFor(Game game, String playerId) {
+    if (p1_id == playerId) {
+      p1_game = game;
+    } else if (p2_id == playerId) {
+      p2_game = game;
+    } else {
+      throw new ArgumentError('$playerId does not have a game in this match');
+    }
+  }
 }

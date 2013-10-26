@@ -10,6 +10,9 @@
         <template if="{{!match.isOver && !match.myTurnOver(playerId)}}">
           <p><button on-click="playGame">Resume your game</button></p>
         </template>
+        <template if="{{!match.isOver && match.myTurnOver(playerId)}}">
+          <p>Your game is over. Waiting on other player.</p>
+        </template>
         <p>
           Your score: {{match.myScore(playerId)}},
           {{match.opponentName(playerId)}} score: {{match.opponentScore(playerId)}}
@@ -24,7 +27,7 @@
     </template>
     
     <template if="{{game != null}}">
-      <wordherd-game game="{{game}}" board="{{board}}" on-gameover="{{syncGame}}"></wordherd-game>
+      <wordherd-game game="{{game}}" board="{{board}}"></wordherd-game>
     </template>
   </template>
   

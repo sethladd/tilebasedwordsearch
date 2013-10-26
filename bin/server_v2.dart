@@ -40,6 +40,7 @@ configureLogger() {
 }
 
 final UrlPattern getMatchUrl = new UrlPattern(r'/matches/(\d+)');
+final UrlPattern gameForMatchUrl = new UrlPattern(r'/matches/(\d+)/game/(\d+)');
 
 Boards boards;
 
@@ -81,6 +82,7 @@ main() {
         ..serve('/matches', method: 'POST')
           .transform(new HttpBodyHandler()).listen(createMatch)
         ..serve(getMatchUrl).listen(getMatch)
+        ..serve(gameForMatchUrl, method: 'POST').listen(updateGameForMatch)
 
         // BUG: https://code.google.com/p/dart/issues/detail?id=14196
         ..defaultStream.listen(staticFiles.serveRequest);
@@ -111,6 +113,45 @@ Future<bool> addCorsHeaders(HttpRequest req) {
   } else {
     return new Future.sync(() => true);
   }
+}
+
+void updateGameForMatch(HttpRequest request) {
+  String userGplusId = request.session['userGplusId'];
+  
+  log.fine('Updating game for player [$userGplusId]');
+  
+  List<String> options = gameForMatchUrl.parse(request.uri.path);
+  String matchId = options[0];
+  String playerId = options[1];
+  
+  if (playerId != userGplusId) {
+    _respondWithMessage(request.response, 401, 'Not your game');
+    return;
+  }
+  
+  HttpBodyHandler.processRequest(request).then((HttpRequestBody body) {
+    Map json = body.body as Map;
+    Game game = serializer.read(json);
+    return game;
+  })
+  .then((Game game) {
+    return db.Persistable.findOneBy(GameMatch, {'id': matchId})
+        .then((GameMatch match) {
+          if (match == null) {
+            _respondWithMessage(request.response, 404, 'Match not found');
+            return;
+          }
+          
+          match.updateGameFor(game, userGplusId);
+          
+          return match.store();
+        });
+  })
+  .then((_) {
+    request.response.statusCode = 200;
+    request.response.close();
+  })
+  .catchError((e, stackTrace) => _handleError(request.response, e, stackTrace));
 }
 
 void getMatch(HttpRequest request) {
@@ -296,4 +337,10 @@ _sendJson(HttpResponse response, var payload) {
   response.contentLength = json.length;
   response.write(json);
   response.close();
+}
+
+_respondWithMessage(HttpResponse resp, int statusCode, String message) {
+  resp.statusCode = statusCode;
+  resp.write(message);
+  resp.close();
 }

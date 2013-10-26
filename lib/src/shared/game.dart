@@ -5,7 +5,7 @@ part of wordherd_shared;
 class Game extends Object with Observable, Persistable {
   Map<String, int> words = toObservable(new LinkedHashMap());
   @observable int score = 0;
-  bool isDone = false;
+  @observable bool isDone = false;
   static const int scoreMultiplier = 3;
   
   void scoreWord(String word, int wordScore) {
