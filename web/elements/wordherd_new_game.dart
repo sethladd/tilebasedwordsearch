@@ -14,7 +14,7 @@ final Serialization _serializer = new Serialization();
 @CustomTag('wordherd-new-game')
 class WordherdNewGame extends PolymerElement {
   final List<Player> friends = toObservable([]);
-  
+  @observable bool loadDataComplete = false;
   WordherdNewGame.created() : super.created();
   
   // Looks like inserted is when all attributes are ready (??)
@@ -26,7 +26,8 @@ class WordherdNewGame extends PolymerElement {
       log.fine('Found friends: $people');
       friends.addAll(people);
     })
-    .catchError((e) => log.severe('Problem finding friends: $e'));
+    .catchError((e) => log.severe('Problem finding friends: $e'))
+    .whenComplete(() => loadDataComplete = true);
   }
   
   Future<List<Player>> _loadFriendsToPlay() {

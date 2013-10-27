@@ -1,17 +1,30 @@
+<link rel="import" href="my_spinner.html">
+
 <polymer-element name="wordherd-new-game">
   <template>
     <p>Pick yer pardner</p>
-    <template if="{{friends.isEmpty}}">
+    
+    <template if="{{!loadDataComplete}}">
       <p>Searching for friends that also play...</p>
+      <my-spinner></my-spinner>
     </template>
-    <ul>
-      <template repeat="{{friend in friends}}">
-        <li>{{friend}}
-            <button on-click="createMatch"
-              data-friend-id="{{friend.gplus_id}}"
-              data-friend-name="{{friend.name}}">{{friend.name}}</button></li>
+    
+    <template if="{{loadDataComplete}}">
+      <template if="{{friends.isEmpty}}">
+        <p>Aw shucks, ya ain't got no friends that play Wordherd.</p>
       </template>
-    </ul>
+      <template if="{{!friends.isEmpty}}">
+        <ul>
+          <template repeat="{{friend in friends}}">
+            <li>{{friend}}
+                <button on-click="createMatch"
+                  data-friend-id="{{friend.gplus_id}}"
+                  data-friend-name="{{friend.name}}">{{friend.name}}</button></li>
+          </template>
+        </ul>
+      </template>
+    </template>
+
   </template>
   <script type="application/dart" src="wordherd_new_game.dart"></script>
 </polymer-element>
