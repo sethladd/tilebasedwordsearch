@@ -223,33 +223,46 @@ void friendsToPlay(HttpRequest request) {
   
   String accessToken = request.session["access_token"];
   
-  _getAllFriends(accessToken).transform(new StreamTransformer<List<Person>, List<Player>>.fromHandlers(
-      handleData: (List<Person> people, EventSink<List<Player>> sink) {
-        int numFriends = people == null ? 0 : people.length;
-        log.fine('Found $numFriends friends of current player');
-        
-        if (people == null) {
-          sink.add([]);
-        } else {
-          List gplusIds = people.map((Person p) => p.id).toList(growable: false);
-          db.Persistable.findBy(Player, {'gplus_id': gplusIds}).toList().then((List<Player> players) {
-            int numPlayers = players == null ? 0 : players.length;
-            log.fine('Found ${numPlayers} friends of current player that are players');
-            sink.add(players);
-          })
-          .catchError((e) => sink.addError(e));
-        }
-      }))
-    .toList()
-    .then((List<List<Player>> players) {
-      List<Player> flat = players.expand((i) => i).toList();
-      _sendJson(request.response, flat);
+  bool transformIsDone = false;
+  
+  // TODO do this with a StreamTransformer
+  _getAllFriends(accessToken).toList()
+  
+    // Convert G+ Person to IDs
+    .then((List<List<Person>> friends) {
+      log.fine('Finding friends: ${friends.length} groups found');
+      return friends.map((List<Person> someFriends) {
+        return someFriends.map((Person p) => p.id).toList(growable: false);
+      });
     })
-    .catchError((e) {
-      log.warning('Problem finding friends: $e');
+    
+    // Check the DB if the IDs are also Players
+    .then((List<List<String>> allIds) {
+      return allIds.map((List<String> ids) {
+        log.fine('Finding friends: ${ids.length} friends might be players');
+        return db.Persistable.findBy(Player, {'gplus_id': ids}).toList();
+      });
+    })
+    
+    // Wait for all queries into DB to finish
+    .then((List<Future<List<Player>>> queries) {
+      return Future.wait(queries);
+    })
+    
+    // Create a flat list of all players that are also friends
+    .then((List<List<Player>> allPlayers) {
+      return allPlayers.expand((i) => i).toList();
+    })
+    
+    // Send all friend players to client as JSON
+    .then((List<Player> friendPlayers) {
+      log.fine('Finding friends: ${friendPlayers.length} actual friends are players');
+      _sendJson(request.response, friendPlayers);
+    })
+
+    .catchError((e, stackTrace) {
+      log.warning('Problem finding friends: $e $stackTrace');
       request.response.statusCode = 500;
-    })
-    .whenComplete(() {
       request.response.close();
     });
 
@@ -271,12 +284,8 @@ Stream<List<Person>> _getAllFriends(String accessToken) {
   }
   
   consumePeople()
-      .catchError((e) {
-        stream.addError(e);
-      })
-      .whenComplete(() {
-        stream.close();
-      });
+      .catchError(stream.addError)
+      .whenComplete(stream.close);
   
   return stream.stream;
 }
