@@ -14,8 +14,7 @@ dependencies:
 #    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
 #  google_games_v1_api:
 #    git: https://github.com/financeCoding/dart_games_v1_api_client.git
-  google_plus_v1_api:
-    git: https://github.com/financeCoding/dart_plus_v1_api_client.git
+  google_plus_v1_api: any
   html5lib: any
   http: any
   intl: any
