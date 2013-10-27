@@ -15,7 +15,6 @@ final Logger log = new Logger('google-signin-element');
 class GoogleSignin extends PolymerElement {
   @published String clientId;
   @published String signInMsg;
-  @published String serverUrl;
   @observable String oauthStateToken;
   @observable String gplusId;
   
@@ -73,7 +72,7 @@ class GoogleSignin extends PolymerElement {
   
   Future _connectWithServer(Map authResult) {
     final String stateToken = oauthStateToken;
-    final String url = "${serverUrl}/connect?state_token=${stateToken}&gplus_id=${gplusId}";
+    final String url = "/connect?state_token=${stateToken}&gplus_id=${gplusId}";
     log.fine("Connecting with oauth server at $url");
     
     return HttpRequest.request(url, method: "POST",
@@ -97,7 +96,7 @@ class GoogleSignin extends PolymerElement {
    */
   Future _requestSessionToken() {
     log.fine('Getting state token');
-    return HttpRequest.getString("${serverUrl}/session", withCredentials: true)
+    return HttpRequest.getString("/session", withCredentials: true)
       .then((data) {
         var stateTokenData = JSON.decode(data);
         oauthStateToken = stateTokenData['state_token'];

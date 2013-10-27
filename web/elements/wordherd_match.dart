@@ -15,7 +15,6 @@ class WordherdMatch extends PolymerElement {
   @published String matchId;
   @observable GameMatch match;
   @observable String playerId;
-  @published String gameserverurl;
   @observable Game game;
   @observable Board board;
   
@@ -40,7 +39,7 @@ class WordherdMatch extends PolymerElement {
 
     log.fine('Getting match details for $matchId');
     
-    HttpRequest.request('$gameserverurl/matches/$matchId', method: 'GET', withCredentials: true)
+    HttpRequest.request('/matches/$matchId', method: 'GET', withCredentials: true)
     .then((HttpRequest request) {
       match = serializer.read(JSON.decode(request.responseText));
     })
@@ -55,7 +54,7 @@ class WordherdMatch extends PolymerElement {
   
   void syncGameToServer() {
     log.fine('Syncing game to server');
-    HttpRequest.request('$gameserverurl/matches/$matchId/game/$playerId',
+    HttpRequest.request('/matches/$matchId/game/$playerId',
         method: 'POST',
         withCredentials: true,
         requestHeaders: {'Content-Type': 'application/json'},

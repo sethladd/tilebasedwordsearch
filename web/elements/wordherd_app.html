@@ -12,16 +12,16 @@
       </template>
       
       <template if="{{ view == 'matches' }}">
-        <wordherd-matches gameserverurl="{{gameserverurl}}"></wordherd-matches>
+        <wordherd-matches></wordherd-matches>
       </template>
       
       <template if="{{ view == 'match' }}">
-        <wordherd-match matchId="{{pathParts['matchId']}}" gameserverurl="{{gameserverurl}}"></wordherd-match>
+        <wordherd-match matchId="{{pathParts['matchId']}}"></wordherd-match>
       </template>
       
       <template if="{{ view == 'newgame' }}">
         <!--  TODO fix back to camel case when bug is fixed -->
-        <wordherd-new-game gameserverurl="{{gameserverurl}}"></wordherd-new-game>
+        <wordherd-new-game></wordherd-new-game>
       </template>
     </template>
   </template>

@@ -18,7 +18,6 @@ class WordherdApp extends PolymerElement {
   @observable bool playerSignedIn = false;
   @observable Person person;
   @observable Player player;
-  @published String gameserverurl;
   
   final UrlPattern matchPath = new UrlPattern(r'(.*)#/match/(\d+)');
   
@@ -55,7 +54,7 @@ class WordherdApp extends PolymerElement {
   Future _registerPlayer(Plus plus) {
     return plus.people.get('me').then((Person p) {
       person = p;
-      return HttpRequest.postFormData('$gameserverurl/register', {'gplus_id': p.id, 'name': p.displayName})
+      return HttpRequest.postFormData('/register', {'gplus_id': p.id, 'name': p.displayName})
          .then((_) => log.fine('player registered with server'))
          .catchError((e) {
            log.severe('Error when registering with server: $e');

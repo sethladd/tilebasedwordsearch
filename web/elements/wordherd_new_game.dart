@@ -14,7 +14,6 @@ final Serialization _serializer = new Serialization();
 @CustomTag('wordherd-new-game')
 class WordherdNewGame extends PolymerElement {
   final List<Player> friends = toObservable([]);
-  @published String gameserverurl; // TODO move back to camel case once bug is fixed
   
   WordherdNewGame.created() : super.created();
   
@@ -32,7 +31,7 @@ class WordherdNewGame extends PolymerElement {
   
   Future<List<Player>> _loadFriendsToPlay() {
     log.fine('Finding friends to play');
-    return HttpRequest.request('$gameserverurl/friendsToPlay',
+    return HttpRequest.request('/friendsToPlay',
         withCredentials: true, method: 'GET') // TODO accept json
       .then((HttpRequest response) {
         Map json = JSON.decode(response.responseText) as Map;
@@ -41,12 +40,12 @@ class WordherdNewGame extends PolymerElement {
   }
   
   void createMatch(Event e, var detail, Node target) {
-    Person me = (document.body.query('wordherd-app').xtag as WordherdApp).person;
+    Person me = (document.body.querySelector('wordherd-app').xtag as WordherdApp).person;
     String friendGplusId = (target as Element).dataset['friend-id'];
     String friendName = (target as Element).dataset['friend-name'];
     Map data = {'p1_id': me.id, 'p1_name': me.displayName, 'p2_id': friendGplusId, 'p2_name': friendName};
     log.fine('Creating match with $data');
-    HttpRequest.postFormData('$gameserverurl/matches', data, withCredentials: true)
+    HttpRequest.postFormData('/matches', data, withCredentials: true)
       .then((HttpRequest response) {
         String location = response.getResponseHeader('Location');
         log.fine('Location to new match is $location');

@@ -50,7 +50,8 @@ main() {
   String dbUrl = getDbUrl();
   log.info("DB URL is $dbUrl");
   
-  String root = path.join(path.dirname(path.current), 'web');
+  String root = path.join(path.dirname(Platform.script), '..', 'web');
+  log.info('Root directory is $root');
   
   int webServerPort = getWebServerPort();
   log.info("HTTP port is $webServerPort");
@@ -67,7 +68,7 @@ main() {
         ..followLinks = true;
       
       new Router(server)
-        ..filter(new RegExp(r'^.*$'), addCorsHeaders)
+        //..filter(new RegExp(r'^.*$'), addCorsHeaders)          // Required if also using the Editor's server
         ..serve('/session', method: 'GET').listen(oauthSession)
         ..serve('/connect', method: 'POST').listen(oauthConnect) // TODO use HttpBodyHandler when dartbug.com/14259 is fixed
         ..serve('/register', method: 'POST')
@@ -201,17 +202,17 @@ void registerPlayer(HttpRequestBody body) {
       Player player = new Player()
       ..gplus_id = data['gplus_id']
       ..name = data['name'];
-      return player.store().then((_) => body.response.statusCode = 201);
+      return player.store().then((_) => body.request.response.statusCode = 201);
     } else {
-      body.response.statusCode = 200;
+      body.request.response.statusCode = 200;
       return true;
     }
   })
   .then((_) {
     log.fine('All done registering');
-    body.response.close();
+    body.request.response.close();
   })
-  .catchError((e, stackTrace) => _handleError(body.response, e, stackTrace));
+  .catchError((e, stackTrace) => _handleError(body.request.response, e, stackTrace));
 }
 
 /**
@@ -299,11 +300,11 @@ void createMatch(HttpRequestBody body) {
       ..p2_game = new Game()
       ..board = boards.generateBoard();
   match.store().then((_) {
-    body.response.statusCode = 201;
-    body.response.headers.add('Location', '/matches/${match.id}'); // TODO make into absolute URI
-    body.response.close();
+    body.request.response.statusCode = 201;
+    body.request.response.headers.add('Location', '/matches/${match.id}'); // TODO make into absolute URI
+    body.request.response.close();
   })
-  .catchError((e, stackTrace) => _handleError(body.response, e, stackTrace));
+  .catchError((e, stackTrace) => _handleError(body.request.response, e, stackTrace));
 }
 
 void listPlayerMatches(HttpRequest request) {
@@ -334,8 +335,7 @@ void _handleError(HttpResponse response, e, StackTrace stackTrace) {
 }
 
 Plus makePlusClient(String accessToken) {
-  SimpleOAuth2 simpleOAuth2 = new SimpleOAuth2()
-      ..credentials = new oauth2.Credentials(accessToken);
+  oauth2.SimpleOAuth2Console simpleOAuth2 = new oauth2.SimpleOAuth2Console(CLIENT_ID, CLIENT_SECRET, accessToken);
   Plus plusclient = new Plus(simpleOAuth2);
   plusclient.makeAuthRequests = true;
   return plusclient;

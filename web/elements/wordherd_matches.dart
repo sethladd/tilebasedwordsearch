@@ -15,7 +15,6 @@ final Serialization serializer = new Serialization();
 class WordherdMatches extends PolymerElement {
   @observable String playerId;
   final List<GameMatch> gameMatches = toObservable([]);
-  @published String gameserverurl; // TODO move back to camel case once bug is fixed
   
   WordherdMatches.created() : super.created();
   
@@ -26,7 +25,7 @@ class WordherdMatches extends PolymerElement {
     Person me = (document.body.querySelector('wordherd-app') as WordherdApp).person;
     playerId = me.id;
     
-    HttpRequest.request('$gameserverurl/matches/me', withCredentials: true)
+    HttpRequest.request('/matches/me', withCredentials: true)
       .then((HttpRequest contents) {
         List<GameMatch> _matches = serializer.read(JSON.decode(contents.responseText));
         gameMatches.addAll(_matches);
