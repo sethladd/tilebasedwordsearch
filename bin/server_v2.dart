@@ -16,7 +16,6 @@ import 'package:serialization/serialization.dart' show Serialization;
 import 'package:google_oauth2_client/google_oauth2_console.dart' as oauth2;
 import 'package:google_plus_v1_api/plus_v1_api_console.dart' show Plus;
 import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person, PeopleFeed;
-import 'package:path/path.dart';
 
 part 'oauth_handler.dart';
 
@@ -48,23 +47,19 @@ Boards boards;
 main() {
   configureLogger();
 
-  String dbUrl;
-  if (Platform.environment['DATABASE_URL'] != null) {
-    dbUrl = Platform.environment['DATABASE_URL'];
-  } else {
-    String user = Platform.environment['USER'];
-    dbUrl = 'postgres://$user:@localhost:5432/$user';
-  }
-  
+  String dbUrl = getDbUrl();
   log.info("DB URL is $dbUrl");
   
   String root = path.join(path.dirname(path.current), 'web');
+  
+  int webServerPort = getWebServerPort();
+  log.info("HTTP port is $webServerPort");
   
   runZoned(() {
     
     db.init(dbUrl)
     .then((_) => loadData())
-    .then((_) => HttpServer.bind('0.0.0.0', 8765))
+    .then((_) => HttpServer.bind('0.0.0.0', webServerPort))
     .then((HttpServer server) {
       
       VirtualDirectory staticFiles = new VirtualDirectory(root)
@@ -95,9 +90,29 @@ main() {
 
 }
 
+int getWebServerPort() {
+  String port = Platform.environment['PORT'];
+  if (port == null) {
+    return 8765;
+  } else {
+    return int.parse(port);
+  }
+}
+
+String getDbUrl() {
+  String dbUrl;
+  if (Platform.environment['DATABASE_URL'] != null) {
+    dbUrl = Platform.environment['DATABASE_URL'];
+  } else {
+    String user = Platform.environment['USER'];
+    dbUrl = 'postgres://$user:@localhost:5432/$user';
+  }
+  return dbUrl;
+}
+
 Future loadData() {
-  String scriptDir = dirname(Platform.script);
-  File boardData = new File(join(scriptDir, 'dense1000FINAL.txt'));
+  String scriptDir = path.dirname(Platform.script);
+  File boardData = new File(path.join(scriptDir, 'dense1000FINAL.txt'));
   return boardData.readAsString().then((String data) => boards = new Boards(data));
 }
 
