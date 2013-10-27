@@ -16,6 +16,7 @@ import 'package:serialization/serialization.dart' show Serialization;
 import 'package:google_oauth2_client/google_oauth2_console.dart' as oauth2;
 import 'package:google_plus_v1_api/plus_v1_api_console.dart' show Plus;
 import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person, PeopleFeed;
+import 'package:path/path.dart';
 
 part 'oauth_handler.dart';
 
@@ -67,6 +68,7 @@ main() {
     .then((HttpServer server) {
       
       VirtualDirectory staticFiles = new VirtualDirectory(root)
+        ..jailRoot = false
         ..followLinks = true;
       
       new Router(server)
@@ -94,7 +96,8 @@ main() {
 }
 
 Future loadData() {
-  File boardData = new File('dense1000FINAL.txt');
+  String scriptDir = dirname(Platform.script);
+  File boardData = new File(join(scriptDir, 'dense1000FINAL.txt'));
   return boardData.readAsString().then((String data) => boards = new Boards(data));
 }
 
@@ -139,7 +142,7 @@ void updateGameForMatch(HttpRequest request) {
         .then((GameMatch match) {
           if (match == null) {
             _respondWithMessage(request.response, 404, 'Match not found');
-            return;
+            return null;
           }
           
           match.updateGameFor(game, userGplusId);

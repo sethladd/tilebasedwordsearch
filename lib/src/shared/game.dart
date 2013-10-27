@@ -18,4 +18,6 @@ class Game extends Object with Observable {
   }
   
   bool previouslyFoundWord(String word) => words.containsKey(word);
+  
+  String toString() => 'score: $score, isStarted: $isStarted, isDone: $isDone';
 }
