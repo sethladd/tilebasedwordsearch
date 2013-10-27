@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, published, toObservable;
+import 'package:polymer/polymer.dart';
 import 'package:wordherd/shared_html.dart' show GameMatch;
 import 'dart:html' show HttpRequest, document;
 import 'package:logging/logging.dart' show Logger;

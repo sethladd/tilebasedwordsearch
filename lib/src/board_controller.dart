@@ -6,18 +6,18 @@ class WordEvent {
   WordEvent(this.word, this.score);
 }
 
-@observable
 class BoardController {
   final Board board;
   final BoardView view;
   
   List<int> selectedPath;
   String _keyboardSearchString = '';
+  
+  // TODO I think I can delete these
   String wordInProgress = '';
   int wordInProgressScore = 0;
   
   StreamController<WordEvent> _wordsStream = new StreamController();
-
 
   BoardController(this.board, this.view);
 

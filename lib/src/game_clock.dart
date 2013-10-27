@@ -1,6 +1,6 @@
 part of client_game;
 
-class GameClock {
+class GameClock extends Observable {
   final Logger _log = new Logger('GameClock');
   static const int DEFAULT_GAME_LENGTH = 70; // # of seconds in a game
   final GameLoop gameLoop;
