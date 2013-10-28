@@ -26,3 +26,6 @@ dependencies:
   route: any
   path: any
   serialization: any
+# TODO: when https://code.google.com/p/dart/issues/detail?id=14512 is fixed
+# then I don't need this package
+  js: any

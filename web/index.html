@@ -13,9 +13,8 @@
     <link rel="import" href="elements/google_signin.html">
     
     <!-- After experimenting, this is the right order. DO NOT change this order. -->
-    <script src="packages/browser/interop.js"></script>
-    <script type="application/dart" src="main.dart"></script>
-    <script src="packages/browser/dart.js"></script>
+
+    
   </head>
   <body>
     
@@ -24,5 +23,8 @@
                    signInMsg="Please sign in"></google-signin>
 
     <wordherd-app></wordherd-app>
+    
+    <script type="application/dart" src="main.dart"></script>
+    <script src="packages/browser/dart.js"></script>
   </body>
 </html>

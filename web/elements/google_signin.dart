@@ -6,7 +6,7 @@ import 'dart:html' show CustomEvent, Element, HttpRequest, Node, ScriptElement, 
 import 'package:logging/logging.dart' show Logger;
 import 'dart:convert' show JSON;
 import 'dart:async' show Future;
-import 'dart:js' as js show context;
+import 'package:js/js.dart' as js;
 import 'package:meta/meta.dart' show override;
 
 final Logger log = new Logger('google-signin-element');
@@ -22,18 +22,16 @@ class GoogleSignin extends PolymerElement {
   @observable Plus plusClient;
   
   GoogleSignin.created() : super.created() {
+    log.fine('GoogleSignin created');
     
-    /**
-     * Calls the method that handles the authentication flow.
-     *
-     * @param {Object} authResult An Object which contains the access token and
-     *   other authentication information.
-     */
-    js.context["onSignInCallback"] =  (authResult) {
+    // TODO when https://code.google.com/p/dart/issues/detail?id=14512 is
+    // fixed, then go back to dart:js
+    js.context["onSignInCallback"] =  new js.Callback.once((authResult) {
+      log.fine('AuthResult callback from G+ signin');
       // TODO is there a better way to get this data over? Is there a dejsify ?
-      Map dartAuthResult = JSON.decode(js.context["JSON"].callMethod("stringify", [authResult]));
+      Map dartAuthResult = JSON.decode(js.context["JSON"]["stringify"](authResult));
       _onSignInCallback(dartAuthResult);
-    };
+    });
     
     ScriptElement script = new ScriptElement()
     ..type = 'text/javascript'
