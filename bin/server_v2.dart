@@ -1,7 +1,8 @@
 library server;
 
+import 'package:args/args.dart';
 import 'package:http_server/http_server.dart' show HttpBodyHandler, HttpRequestBody, VirtualDirectory;
-import 'dart:io' show ContentType, File, HttpRequest, HttpResponse, HttpServer, Platform;
+import 'dart:io' show ContentType, File, HttpRequest, HttpResponse, HttpServer, Options, Platform;
 import 'package:logging/logging.dart' show Level, LogRecord, Logger;
 import 'package:route/server.dart' show Router, UrlPattern;
 import 'package:path/path.dart' as path;
@@ -46,15 +47,30 @@ Boards boards;
 
 main() {
   configureLogger();
+  ArgParser argsParser = initArgsParser();
 
   String dbUrl = getDbUrl();
   log.info("DB URL is $dbUrl");
   
-  String root = path.join(path.dirname(Platform.script), '..', 'web');
-  log.info('Root directory is $root');
-  
   int webServerPort = getWebServerPort();
   log.info("HTTP port is $webServerPort");
+  
+  String root;
+  
+  try {
+    ArgResults args = argsParser.parse(new Options().arguments);
+    if (args['help']) {
+      print(argsParser.getUsage());
+      return;
+    }
+    root = args['root'];
+  } on FormatException catch (e) {
+    log.severe(e.message);
+    log.severe('Use "--help" to see available options.');
+    return;
+  }
+  
+  log.info('Root directory is $root');
   
   runZoned(() {
     
@@ -89,6 +105,15 @@ main() {
   },
   onError: (e, stackTrace) => log.severe("Error handling request: $e : $stackTrace"));
 
+}
+
+ArgParser initArgsParser() {
+  ArgParser argsParser = new ArgParser()
+    ..addOption('root',
+        defaultsTo: path.join(path.dirname(Platform.script), '..', 'web'),
+        help: 'root directory for the HTTP server')
+    ..addFlag('help', help: 'Prints the help information', negatable: false);
+  return argsParser;
 }
 
 int getWebServerPort() {

@@ -9,23 +9,20 @@
     <meta name="HandheldFriendly" content="true">
     <link type='image/png' rel='shortcut icon' href='favicon-32.png'>
     
-    <link rel="import" href="elements/logging_config.html">
     <link rel="import" href="elements/wordherd_app.html">
     <link rel="import" href="elements/google_signin.html">
     
-    <script type="application/dart"
-          src="packages/polymer/init.dart"></script>
+    <!-- After experimenting, this is the right order. DO NOT change this order. -->
+    <script src="packages/browser/interop.js"></script>
+    <script type="application/dart" src="main.dart"></script>
     <script src="packages/browser/dart.js"></script>
   </head>
   <body>
-    <logging-config></logging-config>
     
     <!-- MUST be at top level until a bug is fixed -->
     <google-signin clientId="250963735330.apps.googleusercontent.com"
                    signInMsg="Please sign in"></google-signin>
 
     <wordherd-app></wordherd-app>
-
-    <script src="packages/browser/interop.js"></script>
   </body>
 </html>
