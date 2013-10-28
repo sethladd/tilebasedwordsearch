@@ -67,5 +67,7 @@ class WordherdMatch extends PolymerElement {
     });
   }
   
-  String get startOrResumeMsg => game.isStarted ? 'Resume' : 'Start';
+  String get startOrResumeMsg {
+    return (game == null) ? '' : game.isStarted ? 'Resume' : 'Start';
+  }
 }
