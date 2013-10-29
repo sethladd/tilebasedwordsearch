@@ -41,7 +41,8 @@ class WordherdNewGame extends PolymerElement {
   }
   
   void createMatch(Event e, var detail, Node target) {
-    Person me = (document.body.querySelector('wordherd-app').xtag as WordherdApp).person;
+    log.fine('here in create');
+    Person me = (document.body.querySelector('wordherd-app') as WordherdApp).person;
     String friendGplusId = (target as Element).dataset['friend-id'];
     String friendName = (target as Element).dataset['friend-name'];
     Map data = {'p1_id': me.id, 'p1_name': me.displayName, 'p2_id': friendGplusId, 'p2_name': friendName};
@@ -61,6 +62,5 @@ class WordherdNewGame extends PolymerElement {
         log.severe('Could not create match: $e');
         // TODO display error
       });
-        
   }
 }

@@ -4,7 +4,6 @@ import 'dart:html' show HttpRequest, document;
 import 'package:logging/logging.dart' show Logger;
 import 'package:serialization/serialization.dart' show Serialization;
 import 'dart:convert' show JSON;
-import 'package:meta/meta.dart' show override;
 import 'wordherd_app.dart';
 import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person;
 

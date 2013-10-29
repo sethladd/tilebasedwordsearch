@@ -3,7 +3,6 @@ library wordherd_board;
 import 'package:polymer/polymer.dart';
 import 'dart:html' show BodyElement, CanvasElement, Event, Node, querySelector, window;
 import 'package:logging/logging.dart' show Logger;
-import 'package:meta/meta.dart' show override;
 import 'package:game_loop/game_loop_html.dart' show GameLoop, GameLoopHtml, GameLoopTouch;
 import 'dart:math' show PI;
 import 'dart:async' show StreamSubscription;

@@ -28,4 +28,8 @@ dependencies:
   serialization: any
 # TODO: when https://code.google.com/p/dart/issues/detail?id=14512 is fixed
 # then I don't need this package
-  js: any
+  js: "0.0.25"
+  
+transformers:
+- polymer:
+    entry_points: web/index.html
