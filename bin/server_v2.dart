@@ -93,8 +93,11 @@ main() {
         ..serve('/matches/me', method: 'GET').listen(listPlayerMatches)
         ..serve('/matches', method: 'POST')
           .transform(new HttpBodyHandler()).listen(createMatch)
+        ..serve('/matches', method: 'GET').listen(getAllMatches)
         ..serve(getMatchUrl).listen(getMatch)
         ..serve(gameForMatchUrl, method: 'POST').listen(updateGameForMatch)
+        ..serve(r'/admin/matches/update', method: 'POST')
+          .transform(new HttpBodyHandler()).listen(adminUpdateMatch)
 
         // BUG: https://code.google.com/p/dart/issues/detail?id=14196
         ..defaultStream.listen(staticFiles.serveRequest);
@@ -155,6 +158,25 @@ Future<bool> addCorsHeaders(HttpRequest req) {
   } else {
     return new Future.sync(() => true);
   }
+}
+
+void adminUpdateMatch(HttpRequestBody request) {
+  log.fine('Inside adminUpdateMatch');
+  Map body = request.body;
+  GameMatch theMatch = serializer.read(body);
+  theMatch.store().then((_) {
+    request.request.response.statusCode = 200;
+    request.request.response.close();
+  })
+  .catchError((e, stackTrace) => _handleError(request.request.response, e, stackTrace));
+}
+
+void getAllMatches(HttpRequest request) {
+  log.fine('Inside getAllMatches');
+  db.Persistable.all(GameMatch).toList().then((List<GameMatch> allMatches) {
+    _sendJson(request.response, allMatches);
+  })
+  .catchError((e, stackTrace) => _handleError(request.response, e, stackTrace));
 }
 
 void updateGameForMatch(HttpRequest request) {

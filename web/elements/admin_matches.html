@@ -1,0 +1,22 @@
+<polymer-element name="admin-matches">
+  <template>
+    <ul>
+      <template repeat="{{match in gameMatches}}">
+        <li><ul>
+          <li>Id: {{match.id}}</li>
+          <li>Created at: {{match.created_at}}</li>
+          <li>Updated at: {{match.updated_at}}</li>
+          <li>P1 name: {{match.p1_name}}</li>
+          <li>P2 name: {{match.p2_name}}</li>
+          <li>P1 Game Is Done: <input type="checkbox" checked="{{match.p1_game.isDone}}"></li>
+          <li>P2 Game Is Done: <input type="checkbox" checked="{{match.p2_game.isDone}}"></li>
+          <li>P1 Game score: <input type="text" value="{{match.p1_game.score}}"></li>
+          <li>P2 Game score: <input type="text" value="{{match.p2_game.score}}"></li>
+          <li><button on-click="{{saveMatch}}" data-id="{{match.id}}">Update</button></li>
+        </ul></li>
+      </template>
+    </ul>
+  </template>
+  
+  <script type="application/dart" src="admin_matches.dart"></script>
+</polymer-element>
