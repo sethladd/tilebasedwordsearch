@@ -14,6 +14,7 @@ void main() {
 }
 
 compileToJs() {
+  print('Executable is ${new Options().executable}');
   print('Running dart2js, assuming it is on the PATH');
   var result =
     Process.runSync('dart2js', [
