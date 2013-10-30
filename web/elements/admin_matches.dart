@@ -1,9 +1,11 @@
-import 'package:polymer/polymer.dart';
-import 'package:serialization/serialization.dart';
-import 'package:wordherd/shared_html.dart';
-import 'dart:html';
+import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, toObservable;
+import 'package:template_binding/template_binding.dart' show templateBind;
+import 'package:serialization/serialization.dart' show Serialization;
+import 'package:wordherd/shared_html.dart' show GameMatch;
+import 'dart:html' show DocumentFragment, Element, Event, HttpRequest, Node;
 import 'dart:convert' show JSON;
-import 'package:logging/logging.dart';
+import 'package:logging/logging.dart' show Logger;
+import 'package:wordherd/ui_filters.dart' show PolymerExpressionsWithEventDelegate, StringToInt;
 
 final Serialization serializer = new Serialization();
 final Logger log = new Logger('AdminMatches');
@@ -13,6 +15,12 @@ class AdminMatches extends PolymerElement {
   final List<GameMatch> gameMatches = toObservable([]);
   
   AdminMatches.created() : super.created();
+  
+  DocumentFragment instanceTemplate(Element template) {
+    return templateBind(template).createInstance(this, new PolymerExpressionsWithEventDelegate(globals: {
+      'integer': new StringToInt()
+    }));
+  }
   
   void enteredView() {
     super.enteredView();
@@ -26,6 +34,7 @@ class AdminMatches extends PolymerElement {
   }
   
   void saveMatch(Event e, var detail, Node target) {
+    log.fine('Saving match');
     String matchId = (target as Element).dataset['id'];
     GameMatch theMatch = gameMatches.firstWhere((m) => m.id == matchId);
     String data = JSON.encode(serializer.write(theMatch));

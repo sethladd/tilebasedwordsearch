@@ -10,8 +10,8 @@
           <li>P2 name: {{match.p2_name}}</li>
           <li>P1 Game Is Done: <input type="checkbox" checked="{{match.p1_game.isDone}}"></li>
           <li>P2 Game Is Done: <input type="checkbox" checked="{{match.p2_game.isDone}}"></li>
-          <li>P1 Game score: <input type="text" value="{{match.p1_game.score}}"></li>
-          <li>P2 Game score: <input type="text" value="{{match.p2_game.score}}"></li>
+          <li>P1 Game score: <input type="number" value="{{match.p1_game.score | integer}}"></li>
+          <li>P2 Game score: <input type="number" value="{{match.p2_game.score | integer}}"></li>
           <li><button on-click="{{saveMatch}}" data-id="{{match.id}}">Update</button></li>
         </ul></li>
       </template>
