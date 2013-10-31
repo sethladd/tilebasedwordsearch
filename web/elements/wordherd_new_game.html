@@ -17,10 +17,9 @@
         <ul>
           <template repeat="{{friend in friends}}">
             <li>
-              {{friend}}
               <button on-click="{{createMatch}}"
                 data-friend-id="{{friend.gplus_id}}"
-                data-friend-name="{{friend.name}}">{{friend.name}}</button>
+                data-friend-name="{{friend.name}}">Start a game with {{friend.name}}</button>
             </li>
           </template>
         </ul>

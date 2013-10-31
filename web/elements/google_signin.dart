@@ -7,7 +7,6 @@ import 'package:logging/logging.dart' show Logger;
 import 'dart:convert' show JSON;
 import 'dart:async' show Future;
 import 'package:js/js.dart' as js;
-import 'package:meta/meta.dart' show override;
 
 final Logger log = new Logger('google-signin-element');
 
@@ -53,17 +52,23 @@ class GoogleSignin extends PolymerElement {
       
       _requestSessionToken()
       .then((_) => plusClient.people.get('me'))
-      // TODO when https://code.google.com/p/dart/issues/detail?id=14196 is
-      // fixed, add these back
       .then((Person person) => gplusId = person.id)
       .then((_) => _connectWithServer(authResult))
       .then((_) {
         dispatchEvent(new CustomEvent('signincomplete'));
+        document.querySelector('#signin').style.display = 'none';
         log.fine('Signin complete!');
       });
 
     } else if (authResult["error"] != null) {
-      log.severe("There was an error authenticating: ${authResult["error"]}");
+      log.info("There was an error authenticating: ${authResult["error"]}");
+      
+      // Update the app to reflect a signed out user
+      // Possible error values:
+      //   "user_signed_out" - User is signed-out
+      //   "access_denied" - User denied access to your app
+      //   "immediate_failed" - Could not automatically log in the user
+      
       dispatchEvent(new CustomEvent('signinerror', detail: authResult["error"]));
     }
   }

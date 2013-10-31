@@ -1,13 +1,37 @@
 <polymer-element name="wordherd-matches">
   <template>
     <h1>Matches</h1>
-    <ul>
-      <template repeat="{{ match in gameMatches }}">
-        <li>
-          <a href="#/match/{{match.id}}">Opponent: {{match.opponentName(playerId)}}</a>
-        </li>
-      </template>
-    </ul>
+    <p>You have {{gameMatches.length}} matches</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Partner</th>
+          <th>Result</th>
+          <th>Your Score</th>
+          <th>Partner Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr template repeat="{{ match in gameMatches }}">
+          <td>
+            {{matchStatus(match)}}
+          </td>
+          <td>
+            {{match.opponentName(playerId)}}
+          </td>
+          <td>
+            {{matchResult(match)}}
+          </td>
+          <td>
+            {{match.myScore(playerId)}}
+          </td>
+          <td>
+            {{match.opponentScore(playerId)}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
     
     <p>
       <a href="#/">Home</a>

@@ -2,7 +2,6 @@
 import 'package:benchmark_harness/benchmark_harness.dart';
 
 import 'dart:io';
-import 'dart:collection';
 
 // Create a new benchmark by extending BenchmarkBase
 class FindInMap extends BenchmarkBase {

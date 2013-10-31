@@ -31,4 +31,24 @@ class WordherdMatches extends PolymerElement {
       })
       .catchError((e) => log.severe('Did not load matches: $e'));
   }
+  
+  String matchStatus(GameMatch match) {
+    if (match.isOver) {
+      return 'Over';
+    } else if (match.myGame(playerId).isDone) {
+      return 'Waiting for Partner';
+    } else if (!match.myGame(playerId).isDone){
+      return 'Waiting for You';
+    }
+  }
+  
+  String matchResult(GameMatch match) {
+    if (!match.isOver) {
+      return 'In Progress';
+    } else if (match.winningId == playerId) {
+      return 'Ya Won';
+    } else if (match.winningId != playerId) {
+      return 'Ya Lost';
+    }
+  }
 }

@@ -32,7 +32,13 @@ class GameMatch extends Object with Persistable {
   }
   
   String get winningName {
+    if (!isOver) return null;
     return (p1_game.score > p2_game.score) ? p1_name : p2_name;
+  }
+  
+  String get winningId {
+    if (!isOver) return null;
+    return (p1_game.score > p2_game.score) ? p1_id : p2_id;
   }
   
   bool get isOver => p1_game.isDone && p2_game.isDone;

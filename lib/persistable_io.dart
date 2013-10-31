@@ -44,7 +44,7 @@ abstract class Persistable {
     String query = 'SELECT * FROM ${_getTableName(type)} WHERE $whereClause';
     ClassMirror classMirror = reflectClass(type);
     
-    return _conn.query(query, params).map((row) {
+    return _conn.query(query, params).map((Row row) {
       return _createAndPopulate(classMirror, row.id.toString(), _rowToMap(row));
     });
   }
