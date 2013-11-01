@@ -14,6 +14,7 @@ final Serialization serializer = new Serialization();
 class WordherdMatches extends PolymerElement {
   @observable String playerId;
   final List<GameMatch> gameMatches = toObservable([]);
+  @observable bool isReady = false;
   
   WordherdMatches.created() : super.created();
   
@@ -28,6 +29,7 @@ class WordherdMatches extends PolymerElement {
       .then((HttpRequest contents) {
         List<GameMatch> _matches = serializer.read(JSON.decode(contents.responseText));
         gameMatches.addAll(_matches);
+        isReady = true;
       })
       .catchError((e) => log.severe('Did not load matches: $e'));
   }

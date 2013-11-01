@@ -1,4 +1,5 @@
 <link rel="import" href="wordherd_gamematch_row.html">
+<link rel="import" href="my_spinner.html">
 
 <polymer-element name="wordherd-matches">
   <template>
@@ -8,14 +9,24 @@
     }
     </style>
     <h1>Matches</h1>
-    <p>You have {{gameMatches.length}} matches</p>
     
-    <template repeat="{{ m in gameMatches }}">
-      <div class="row">
-        <wordherd-gamematch-row
-          playerId="{{playerId}}"
-          gameMatch="{{m}}"></wordherd-gamematch-row>
-      </div>
+    <template if="{{!isReady}}">
+      <p>Loading matches</p>
+      <my-spinner></my-spinner>
+    </template>
+    
+    <template if="{{isReady}}">
+    
+      <p>You have {{gameMatches.length}} matches</p>
+      
+      <template repeat="{{ m in gameMatches }}">
+        <div class="row">
+          <wordherd-gamematch-row
+            playerId="{{playerId}}"
+            gameMatch="{{m}}"></wordherd-gamematch-row>
+        </div>
+      </template>
+    
     </template>
     
     <p>
