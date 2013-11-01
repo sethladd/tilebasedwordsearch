@@ -165,7 +165,6 @@ class WordherdBoard extends PolymerElement {
     } else {
     }
     touchCount++;
-    log.fine('Open touches $touchCount');
   }
 
   void gameTouchEnd(GameLoop gameLoop, GameLoopTouch touch) {
@@ -179,7 +178,6 @@ class WordherdBoard extends PolymerElement {
     } else {
     }
     touchCount--;
-    log.fine('Open touches $touchCount');
   }
 
   // This is "observable" based on the gameUpdate above.
