@@ -1,7 +1,7 @@
-<polymer-element name="wordherd-gamematch-row" extends="tr">
+<polymer-element name="wordherd-gamematch-row">
   <template>
-    <template if="{{isReady}}">
-      <td>
+    <!-- TODO: go back to a table row when we get it to work -->
+      <div>
         <template if="{{ !gameMatch.isOver && !gameMatch.myTurnOver(playerId)}}">
           <a href="#/match/{{gameMatch.id}}">{{startOrResumeMsg}} your game</a>
         </template>
@@ -11,20 +11,19 @@
         <template if="{{ gameMatch.isOver}}">
           Over
         </template>
-      </td>
-      <td>
+      </div>
+      <div>
         {{gameMatch.opponentName(playerId)}}
-      </td>
-      <td>
+      </div>
+      <div>
         {{matchResult}}
-      </td>
-      <td>
+      </div>
+      <div>
         {{gameMatch.myScore(playerId)}}
-      </td>
-      <td>
+      </div>
+      <div>
         {{gameMatch.opponentScore(playerId)}}
-      </td>
-    </template>
+      </div>
   </template>
   <script type="application/dart" src="wordherd_gamematch_row.dart"></script>
 </polymer-element>

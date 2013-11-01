@@ -2,24 +2,21 @@
 
 <polymer-element name="wordherd-matches">
   <template>
+    <style>
+    .row {
+      margin-bottom: 10px;
+    }
+    </style>
     <h1>Matches</h1>
     <p>You have {{gameMatches.length}} matches</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Status</th>
-          <th>Partner</th>
-          <th>Result</th>
-          <th>Your Score</th>
-          <th>Partner Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        <template repeat="{{ m in gameMatches }}">
-          <tr is="wordherd-gamematch-row" playerId="{{playerId}}" gameMatch="{{m}}"></tr>
-        </template>
-      </tbody>
-    </table>
+    
+    <template repeat="{{ m in gameMatches }}">
+      <div class="row">
+        <wordherd-gamematch-row
+          playerId="{{playerId}}"
+          gameMatch="{{m}}"></wordherd-gamematch-row>
+      </div>
+    </template>
     
     <p>
       <a href="#/">Home</a>

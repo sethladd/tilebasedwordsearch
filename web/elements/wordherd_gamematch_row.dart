@@ -1,9 +1,9 @@
-import 'package:polymer/polymer.dart' show CustomTag, Observable, Polymer, observable, published, onPropertyChange;
-import 'dart:html' show TableRowElement;
+// DO NOT add show's here, the code generation messes that up
+import 'package:polymer/polymer.dart';
 import 'package:wordherd/shared_html.dart' show GameMatch, Game;
 
 @CustomTag('wordherd-gamematch-row')
-class WordherdGamematchRow extends TableRowElement with Polymer, Observable {
+class WordherdGamematchRow extends PolymerElement {
   @published GameMatch gameMatch;
   @published String playerId;
   @observable bool isReady = false;
@@ -18,7 +18,6 @@ class WordherdGamematchRow extends TableRowElement with Polymer, Observable {
     });
   }
   
-  // TODO create a game-match custom element and put these in there
   String get matchResult {
     if (gameMatch == null) return '';
     

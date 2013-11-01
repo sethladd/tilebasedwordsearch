@@ -4,11 +4,11 @@ import 'package:polymer/builder.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-void main() {
-  build(entryPoints: ['web/index.html'])
+void main(List<String> args) {
+  build(entryPoints: ['web/index.html'], options: parseOptions(args))
   //.then((_) => deploy(entryPoints: ['web/index.html']))
   .then((_) {
-    if (parseOptions().forceDeploy) {
+    if (parseOptions(args).forceDeploy) {
       compileToJs();
     }
   });
