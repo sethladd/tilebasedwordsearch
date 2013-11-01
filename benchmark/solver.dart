@@ -1,5 +1,6 @@
 import 'package:wordherd/solver.dart' show Solver, Trie;
 import 'dart:io';
+import 'package:path/path.dart' show dirname;
 
 List<String> readFile(String path) {
   return new File(path).readAsLinesSync();
@@ -26,8 +27,8 @@ main() {
     const ['I', 'J', 'K', 'L'],
     const ['M', 'N', 'O', 'P']
   ];
-  final Directory pwd = new File(new Options().script).directory;
-  final String path = '${pwd.path}/../web/assets/dictionary.txt';
+  final String pwd = dirname(Platform.script.toString());
+  final String path = '${pwd}/../web/assets/dictionary.txt';
 
   // Warmup.
   for (int i = 0; i < 5; i++) {

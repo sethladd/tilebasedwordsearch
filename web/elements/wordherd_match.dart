@@ -42,14 +42,10 @@ class WordherdMatch extends PolymerElement {
     HttpRequest.request('/matches/$matchId', method: 'GET', withCredentials: true)
     .then((HttpRequest request) {
       match = serializer.read(JSON.decode(request.responseText));
+      game = match.myGame(playerId);
+      board = match.board;
     })
     .catchError((e) => log.severe('Could not retrieve match for $matchId: $e'));
-  }
-  
-  void playGame(Event e, var detail, Node target) {
-    log.fine('So you want to play a game');
-    game = match.myGame(playerId);
-    board = match.board;
   }
   
   void syncGameToServer() {
@@ -65,9 +61,5 @@ class WordherdMatch extends PolymerElement {
     .catchError((e, stackTrace) {
       log.severe('Did not sync game to server: $e $stackTrace');
     });
-  }
-  
-  String get startOrResumeMsg {
-    return (game == null) ? '' : game.isStarted ? 'Resume' : 'Start';
   }
 }

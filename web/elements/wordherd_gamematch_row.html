@@ -1,0 +1,30 @@
+<polymer-element name="wordherd-gamematch-row" extends="tr">
+  <template>
+    <template if="{{isReady}}">
+      <td>
+        <template if="{{ !gameMatch.isOver && !gameMatch.myTurnOver(playerId)}}">
+          <a href="#/match/{{gameMatch.id}}">{{startOrResumeMsg}} your game</a>
+        </template>
+        <template if="{{ !gameMatch.isOver && gameMatch.myTurnOver(playerId)}}">
+          Waiting for partner
+        </template>
+        <template if="{{ gameMatch.isOver}}">
+          Over
+        </template>
+      </td>
+      <td>
+        {{gameMatch.opponentName(playerId)}}
+      </td>
+      <td>
+        {{matchResult}}
+      </td>
+      <td>
+        {{gameMatch.myScore(playerId)}}
+      </td>
+      <td>
+        {{gameMatch.opponentScore(playerId)}}
+      </td>
+    </template>
+  </template>
+  <script type="application/dart" src="wordherd_gamematch_row.dart"></script>
+</polymer-element>

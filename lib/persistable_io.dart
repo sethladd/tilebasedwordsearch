@@ -120,9 +120,9 @@ abstract class Persistable {
     object.id = id.toString();
     data.forEach((k, v) {
       Symbol fieldName = new Symbol(k);
-      //_log.fine('$k has $v which is a ${v.runtimeType}');
-      if (classMirror.variables.containsKey(fieldName)) {
-        VariableMirror field = classMirror.variables[fieldName];
+      if (classMirror.declarations.containsKey(fieldName) &&
+          classMirror.declarations[fieldName] is VariableMirror) {
+        VariableMirror field = classMirror.declarations[fieldName];
         if (isFieldSerialized(field)) {
           v = _serialization.read(JSON.decode(v));
         }
@@ -186,9 +186,9 @@ abstract class Persistable {
     ClassMirror classMirror = reflectClass(runtimeType);
     Map map = {};
     cols.map((String columnName) => new Symbol(columnName))
-        .where((Symbol c) => classMirror.variables.keys.contains(c))
+        .where((Symbol c) => classMirror.declarations.containsKey(c))
         .forEach((Symbol c) {
-          VariableMirror field = classMirror.variables[c];
+          VariableMirror field = classMirror.declarations[c];
           if (isFieldSerialized(field)) {
             map[MirrorSystem.getName(c)] = JSON.encode(_serialization.write(mirror.getField(c).reflectee));
           } else if (c == #updated_at) {

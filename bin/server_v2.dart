@@ -45,7 +45,7 @@ final UrlPattern gameForMatchUrl = new UrlPattern(r'/matches/(\d+)/game/(\d+)');
 
 Boards boards;
 
-main() {
+main(List<String> arguments) {
   configureLogger();
   ArgParser argsParser = initArgsParser();
 
@@ -58,7 +58,7 @@ main() {
   String root;
   
   try {
-    ArgResults args = argsParser.parse(new Options().arguments);
+    ArgResults args = argsParser.parse(arguments);
     if (args['help']) {
       print(argsParser.getUsage());
       return;
@@ -113,7 +113,7 @@ main() {
 ArgParser initArgsParser() {
   ArgParser argsParser = new ArgParser()
     ..addOption('root',
-        defaultsTo: path.join(path.dirname(Platform.script), '..', 'web'),
+        defaultsTo: path.join(path.dirname(Platform.script.toString()), '..', 'web'),
         help: 'root directory for the HTTP server')
     ..addFlag('help', help: 'Prints the help information', negatable: false);
   return argsParser;
@@ -140,7 +140,7 @@ String getDbUrl() {
 }
 
 Future loadData() {
-  String scriptDir = path.dirname(Platform.script);
+  String scriptDir = path.dirname(Platform.script.toString());
   File boardData = new File(path.join(scriptDir, 'dense1000FINAL.txt'));
   return boardData.readAsString().then((String data) => boards = new Boards(data));
 }

@@ -15,7 +15,7 @@ void main() {
 }
 
 compileToJs() {
-  String dartCmd = new Options().executable;
+  String dartCmd = Platform.executable;
   String pathToCmd = path.dirname(dartCmd);
   String dart2jsCmd = pathToCmd == '.' ? 'dart2js' : path.join(path.dirname(dartCmd), 'dart2js');
   print('Running dart2js with path: $dart2jsCmd');
