@@ -42,7 +42,7 @@ main() {
   Map words = new Map();
   
   String pwd = dirname(Platform.script.toString());
-  lines = new File('${pwd}/../web/assets/dictionary.txt')
+  lines = new File('${pwd}/dictionary.txt')
   .readAsLinesSync();
   
   lines.forEach((line) => words[line] = true);

@@ -28,6 +28,7 @@ main() {
   
   HttpRequest.getString("../assets/dictionary.txt")
     .then((contents) {
+      
       var start = window.performance.now();
       contents.split("\n").forEach((line) => words[line] = line);
       var stop = window.performance.now();
