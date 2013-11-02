@@ -1,9 +1,11 @@
 library persistable_html;
 
-import 'dart:async';
-import 'dart:mirrors';
-import 'package:lawndart/lawndart.dart';
-import 'package:logging/logging.dart';
+import 'dart:async' show Future, Stream;
+import 'dart:mirrors' show ClassMirror, InstanceMirror, VariableMirror, reflectClass;
+import 'package:lawndart/lawndart.dart' show Store;
+import 'package:logging/logging.dart' show Logger;
+import 'package:serialization/serialization.dart' show Serialization;
+import 'dart:convert' show JSON;
 
 final Logger log = new Logger("persistence");
 
@@ -19,7 +21,9 @@ Future init(String dbName, String storeName) {
 
 int _counter = 0;
 final String _idOffset = new DateTime.now().millisecondsSinceEpoch.toString();
+String _nextId() => _idOffset + '-' + (_counter++).toString();
 
+final Serialization _serialization = new Serialization();
 
 /**
  * XXX We don't use this when we compile to dart2js because
@@ -53,7 +57,7 @@ abstract class Persistable {
     if (id == null) {
       id = _nextId();
     }
-    return _store.save(toJson(), id);
+    return _store.save(JSON.encode(_serialization.write(this)), id);
   }
   
   Future delete() {
@@ -65,19 +69,25 @@ abstract class Persistable {
   }
   
   static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
-    var instance = classMirror.newInstance(const Symbol(''), []);
-    Persistable object = instance.reflectee;
-    object.id = id;
-    var instanceMirror = reflect(object);
+    InstanceMirror instanceMirror = classMirror.newInstance(const Symbol(''), []);
+    Persistable object = instanceMirror.reflectee;
+    object.id = id.toString();
     data.forEach((k, v) {
-      log.fine('$k has $v which is a ${v.runtimeType}');
-      if (classMirror.variables.containsKey(new Symbol(k))) {
-        instanceMirror.setField(new Symbol(k), v);
+      Symbol fieldName = new Symbol(k);
+      if (classMirror.declarations.containsKey(fieldName) &&
+          classMirror.declarations[fieldName] is VariableMirror) {
+        VariableMirror field = classMirror.declarations[fieldName];
+        if (isFieldSerialized(field)) {
+          v = _serialization.read(JSON.decode(v));
+        }
+        instanceMirror.setField(fieldName, v);
       }
     });
     return object;
   }
   
-  String _nextId() => _idOffset + '-' + (_counter++).toString();
+  static bool isFieldSerialized(VariableMirror field) {
+    return field.metadata.any((InstanceMirror im) => im.reflectee == serialized);
+  }
 
 }
