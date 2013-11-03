@@ -12,7 +12,11 @@ class WordherdSoloGame extends PolymerElement {
   @published String gameId;
 
   WordherdSoloGame.created() : super.created() {
-    onPropertyChange(this, #gameId, _loadGame);
+    if (gameId != null) {
+      _loadGame();
+    } else {
+      onPropertyChange(this, #gameId, _loadGame);
+    }
   }
 
   void _loadGame() {

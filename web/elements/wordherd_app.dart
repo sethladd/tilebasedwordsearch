@@ -20,7 +20,7 @@ class WordherdApp extends PolymerElement {
   @observable Player player;
 
   final UrlPattern matchPath = new UrlPattern(r'(.*)#/match/(\d+)');
-  final UrlPattern soloGamePath = new UrlPattern(r'(.*)#/sologame/(.*)$');
+  final UrlPattern soloGamePath = new UrlPattern(r'(.*)#/sologame/(.*)');
 
   WordherdApp.created() : super.created() {
 
@@ -41,7 +41,7 @@ class WordherdApp extends PolymerElement {
       view = 'sologame';
       pathParts
         ..clear()
-        ..['gameId'] = matchPath.parse(path)[1];
+        ..['gameId'] = soloGamePath.parse(path)[1];
     })
     ..addHandler(new UrlPattern(r'(.*)#/sologames'), (_) => view = 'sologames')
     ..addHandler(new UrlPattern(r'(.*)#/newgame'), (_) => view = 'newgame')

@@ -35,7 +35,6 @@ class WordherdGameElement extends PolymerElement {
     // game might be null because it is set via binding,
     // so wait for game and then wait for isDone
     new PathObserver(this, 'game.isDone').changes.listen((_) {
-      log.fine('in game.isDone in game');
       if (game.isDone) {
         dispatchEvent(new CustomEvent('gameover'));
       }
@@ -61,6 +60,8 @@ class WordherdGameElement extends PolymerElement {
     if (!assets.loaded) {
       log.severe('Assets not loaded. You are going to have a bad time');
     }
+
+    _parseAssets();
   }
 
   void _parseAssets() {
