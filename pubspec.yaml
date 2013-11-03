@@ -4,7 +4,7 @@ author: Dart DevRel
 description: GAME
 homepage: https://github.com/johnmccutchan/tilebasedwordsearch
 environment:
-  sdk: 0.8.9
+  sdk: '>= 0.8.9'
 dependencies:
   asset_pack: any
   benchmark_harness: any
