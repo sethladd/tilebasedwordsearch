@@ -1,9 +1,10 @@
 library persistable_html;
 
 import 'dart:async' show Future, Stream;
-import 'dart:mirrors' show ClassMirror, InstanceMirror, VariableMirror, reflectClass;
 import 'package:lawndart/lawndart.dart' show Store;
 import 'package:logging/logging.dart' show Logger;
+// TODO how to use mirrorsused here?
+// I want to say "anything that mixes in Persistable has mirrors used on it"
 import 'package:serialization/serialization.dart' show Serialization;
 import 'dart:convert' show JSON;
 
@@ -23,71 +24,62 @@ int _counter = 0;
 final String _idOffset = new DateTime.now().millisecondsSinceEpoch.toString();
 String _nextId() => _idOffset + '-' + (_counter++).toString();
 
-final Serialization _serialization = new Serialization();
+final Serialization _serializer = new Serialization();
 
-/**
- * XXX We don't use this when we compile to dart2js because
- * of code size generation. There is a fix coming:
- * https://code.google.com/p/dart/issues/detail?id=10905
- */
 abstract class Persistable {
-  
+
   String id;
-  
+
   static Future load(String id, Type type) {
-    return _store.getByKey(id).then((Map data) {
-      if (data == null) {
+    if (_store == null) throw new StateError('Store is not initialized');
+
+    return _store.getByKey(id).then((String serialized) {
+      if (serialized == null) {
         return null;
       } else {
-        var classMirror = reflectClass(type);
-        return _createAndPopulate(classMirror, id, data);
+        return _deserialize(serialized);
       }
     });
   }
-  
-  static Stream all(Type type) {
-    ClassMirror classMirror = reflectClass(type);
 
-    return _store.all().map((Map data) {
-      return _createAndPopulate(classMirror, data['id'], data);
-    });
+  // TODO currently we assume all items in the store are of the same
+  // type, so this doesn't so what you think it does. This selects
+  // everything from the store and assumes its of type Type.
+  static Stream all(Type type) {
+    return _store.all().map((String serialized) => _deserialize(serialized));
   }
-  
-  Future store() {
+
+  static dynamic _deserialize(String serialized) {
+    Map data = JSON.decode(serialized);
+    return _serializer.read(data);
+  }
+
+  /**
+   * Completes with the ID of the object just stored into persistence.
+   */
+  Future<String> store() {
+    if (_store == null) throw new StateError('Store is not initialized');
+
     if (id == null) {
       id = _nextId();
     }
-    return _store.save(JSON.encode(_serialization.write(this)), id);
+
+    // TODO do I need to encode to JSON? Can we store maps and lists of
+    // core types?
+
+    return _store.save(JSON.encode(_serializer.write(this)), id);
   }
-  
+
   Future delete() {
+    if (_store == null) throw new StateError('Store is not initialized');
+
     return _store.removeByKey(id);
   }
-  
+
   static Future clear() {
+    if (_store == null) throw new StateError('Store is not initialized');
+
     return _store.nuke();
-  }
-  
-  static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
-    InstanceMirror instanceMirror = classMirror.newInstance(const Symbol(''), []);
-    Persistable object = instanceMirror.reflectee;
-    object.id = id.toString();
-    data.forEach((k, v) {
-      Symbol fieldName = new Symbol(k);
-      if (classMirror.declarations.containsKey(fieldName) &&
-          classMirror.declarations[fieldName] is VariableMirror) {
-        VariableMirror field = classMirror.declarations[fieldName];
-        if (isFieldSerialized(field)) {
-          v = _serialization.read(JSON.decode(v));
-        }
-        instanceMirror.setField(fieldName, v);
-      }
-    });
-    return object;
-  }
-  
-  static bool isFieldSerialized(VariableMirror field) {
-    return field.metadata.any((InstanceMirror im) => im.reflectee == serialized);
   }
 
 }

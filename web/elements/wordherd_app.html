@@ -3,13 +3,23 @@
 <link rel="import" href="wordherd_matches.html">
 <link rel="import" href="wordherd_match.html">
 <link rel="import" href="admin_matches.html">
+<link rel="import" href="wordherd_sologames.html">
+<link rel="import" href="wordherd_sologame.html">
 
 <polymer-element name="wordherd-app">
   <template>
     
-    <template if="{{playerSignedIn}}">
+    <template if="{{ playerSignedIn }}">
       <template if="{{ view == 'home' }}">
         <wordherd-home></wordherd-home>
+      </template>
+      
+      <template if="{{ view == 'sologames' }}">
+        <wordherd-sologames></wordherd-sologames>
+      </template>
+      
+      <template if="{{ view == 'sologame' }}">
+        <wordherd-sologame gameId="{{pathParts['gameId']}}"></wordherd-sologame>
       </template>
       
       <template if="{{ view == 'matches' }}">

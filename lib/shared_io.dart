@@ -11,3 +11,5 @@ part 'src/shared/game_match.dart';
 part 'src/shared/boards.dart';
 part 'src/shared/game_constants.dart';
 part 'src/shared/player.dart';
+part 'src/shared/game_solo.dart'; // not actually used on server-side
+                                  // but keeping this here for symmetry

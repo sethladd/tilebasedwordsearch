@@ -24,76 +24,76 @@ final Serialization _serialization = new Serialization();
 
 abstract class Persistable {
   static Map<Type, List<String>> _columnNames = new Map<Type, List<String>>();
-  
+
   String id;
-  
+
   static Future load(String id, Type type) {
     var query = 'SELECT * FROM ${_getTableName(type)} WHERE id = @id';
-    
+
     return _conn.query(query, {'id': id}).map((r) => _rowToMap(r)).toList().then((List rows) {
       if (rows.isEmpty) throw 'No $type found for ID $id';
-      
+
       var data = _rowToMap(rows.first);
       var classMirror = reflectClass(type);
       return _createAndPopulate(classMirror, id, data);
     });
   }
-  
+
   static Stream findByWhere(Type type, String whereClause, Map params) {
     _validateParams(type, params); // TODO wait for this to finish
     String query = 'SELECT * FROM ${_getTableName(type)} WHERE $whereClause';
     ClassMirror classMirror = reflectClass(type);
-    
+
     return _conn.query(query, params).map((Row row) {
       return _createAndPopulate(classMirror, row.id.toString(), _rowToMap(row));
     });
   }
-  
+
   static Stream all(Type type) {
     _log.fine('Inside all');
-    
+
     String query = 'SELECT * FROM ${_getTableName(type)}';
     ClassMirror classMirror = reflectClass(type);
-    
+
     return _conn.query(query).map((row) {
       return _createAndPopulate(classMirror, row.id.toString(), _rowToMap(row));
     });
   }
-  
+
   static Stream findBy(Type type, Map params) {
     _validateParams(type, params);
     Map conditionValues = new Map.from(params);
-    
+
     ClassMirror classMirror = reflectClass(type);
     String conditions = params.keys.map((k) {
       String condition = '$k ';
       if (params[k] is List) {
         List list = params[k];
         int i = 0;
-        
+
         condition += ' IN (';
         condition += list.map((e) => '@${k}_${i++}').join(',');
-            
+
         for (var j = 0; j < i; j++) {
           conditionValues['${k}_$j'] = list[j];
         }
-        
+
         condition += ')';
       } else {
         condition += ' = @$k';
       }
       return condition;
     }).join(',');
-    
+
     String query = 'SELECT * FROM ${_getTableName(type)} WHERE $conditions';
-    
+
     //_log.fine('Query $query ; conditions $conditionValues');
-    
+
     return _conn.query(query, conditionValues).map((row) {
       return _createAndPopulate(classMirror, row.id.toString(), _rowToMap(row));
     });
   }
-  
+
   /**
    * Completes with [null] if no record was found.
    */
@@ -102,7 +102,7 @@ abstract class Persistable {
       return (list.isEmpty ? null : list[0]);
     });
   }
-  
+
   static Future _validateParams(Type type, Map params) {
     return _getColumns(type).then((List<String> columns) {
       params.keys.forEach((k) {
@@ -113,7 +113,7 @@ abstract class Persistable {
     });
 
   }
-  
+
   static _createAndPopulate(ClassMirror classMirror, String id, Map data) {
     InstanceMirror instanceMirror = classMirror.newInstance(const Symbol(''), []);
     Persistable object = instanceMirror.reflectee;
@@ -135,10 +135,10 @@ abstract class Persistable {
   static bool isFieldSerialized(VariableMirror field) {
     return field.metadata.any((InstanceMirror im) => im.reflectee == serialized);
   }
-  
+
   Future store() {
     _log.info('inside store');
-    
+
     if (id == null) {
       return _doInsert();
     } else {
@@ -148,16 +148,16 @@ abstract class Persistable {
 
   Future _doInsert() {
     _log.info('inserting');
-    
+
     return _getColumns(runtimeType).then((cols) {
         Map map = _getExistingValues(cols);
-  
+
         String query = 'INSERT INTO $_tableName (${map.keys.join(',')}) VALUES '
                     '(${map.keys.map((c) => '@$c').join(',')}) '
                     'returning id';
-                    
+
         _log.fine('Query: $query');
-                    
+
         return _conn.query(query, map).first.then((row) {
           _log.fine('Result after inserting: $row');
           id = row[0].toString();
@@ -169,14 +169,14 @@ abstract class Persistable {
     return _getColumns(runtimeType).then((List<String> cols) {
         Map<String, dynamic> map = _getExistingValues(cols);
         map['id'] = id;
-        
+
         var query = 'UPDATE $_tableName SET '
             '${map.keys.map((c) => '$c = @$c').join(', ')} '
             'WHERE id = @id';
         return _conn.execute(query, map);
       });
   }
-  
+
   /**
    * Returns a map of column names to values. Also handles
    * updated_at and created_at, if they exist.
@@ -203,10 +203,10 @@ abstract class Persistable {
         });
     return map;
   }
-  
+
   static Future<List<String>> _getColumns(Type type) {
     if (_columnNames[type] != null) return new Future.value(_columnNames[type]);
-    
+
     final sql = '''
       SELECT a.attname
         FROM pg_attribute a LEFT JOIN pg_attrdef d
@@ -215,15 +215,15 @@ abstract class Persistable {
          AND a.attnum > 0 AND NOT a.attisdropped
        ORDER BY a.attnum
     ''';
-    
+
     return _conn.query(sql).toList().then((rows) {
       _columnNames[type] = rows.map((row) => row.attname).toList();
       return _columnNames[type];
     });
   }
-  
+
   static String _getTableName(Type type) => type.toString().toLowerCase();
-  
+
   String get _tableName => _getTableName(runtimeType);
 }
 

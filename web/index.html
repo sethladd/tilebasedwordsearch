@@ -11,8 +11,12 @@
     
     <link rel="import" href="elements/wordherd_app.html">
     <link rel="import" href="elements/google_signin.html">
+    <link rel="import" href="elements/wordherd_assets.html">
+    <link rel="import" href="elements/persistable_db.html">
   </head>
   <body>
+    <persistable-db dbname="wordherd" storename="sologames"></persistable-db>
+    <wordherd-assets></wordherd-assets>
     
     <!-- MUST be at top level until a bug is fixed -->
     <google-signin clientId="250963735330.apps.googleusercontent.com"

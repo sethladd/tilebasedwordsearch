@@ -6,35 +6,32 @@ import 'package:logging/logging.dart';
 import 'package:wordherd/image_atlas.dart';
 import 'package:wordherd/shared_html.dart';
 import 'dart:html';
+import 'wordherd_assets.dart';
 
 final Logger log = new Logger("WordherdGameElement");
 
 @CustomTag('wordherd-game')
 class WordherdGameElement extends PolymerElement {
-  final AssetManager assetManager = new AssetManager();
-  
+  // TODO figure out how to eliminate this from this class
+  AssetManager assetManager;
+
   ImageAtlas letterAtlas;
   ImageAtlas selectedLetterAtlas;
   ImageAtlas doubleLetterAtlas;
   ImageAtlas tripleLetterAtlas;
   ImageAtlas doubleWordAtlas;
   ImageAtlas tripleWordAtlas;
-  
-  Boards boards;
-  
+
   @published Game game;
   @published Board board;
-  
+
   @observable bool boardReady = false;
-  
-  WordherdGameElement.created() : super.created() {
-    assetManager.loadPack('game', 'assets/_.pack')
-        .then((_) => _parseAssets());
-  }
-  
+
+  WordherdGameElement.created() : super.created();
+
   void ready() {
     super.ready();
-    
+
     // game might be null because it is set via binding,
     // so wait for game and then wait for isDone
     new PathObserver(this, 'game.isDone').changes.listen((_) {
@@ -44,16 +41,29 @@ class WordherdGameElement extends PolymerElement {
       }
     });
   }
-  
-  void _parseAssets() {
-    log.info('start processing assets');
 
-    if (assetManager['game.boards'] == null) {
-      throw new StateError("Can't play without the boards");
+  @override
+  void enteredView() {
+    super.enteredView();
+
+    // TODO handle an asset manager that isn't done loading assets
+    WordherdAssets assets = document.body.querySelector('wordherd-assets') as WordherdAssets;
+
+    // TODO gah I wish there was a toolable way to say this tag
+    // expects another tag somewhere else
+
+    if (assets == null) {
+      log.severe('No wordherd-assets found in document body. Not good!');
     }
 
-    boards = new Boards(assetManager['game.boards']);
+    assetManager = assets.assetManager;
 
+    if (!assets.loaded) {
+      log.severe('Assets not loaded. You are going to have a bad time');
+    }
+  }
+
+  void _parseAssets() {
     ImageElement letterTileImage = assetManager['game.tiles'];
     ImageElement selectedLetterTileImage = assetManager['game.tiles_highlighted'];
     ImageElement doubleLetterTileImage = assetManager['game.tiles_dl'];
@@ -106,7 +116,7 @@ class WordherdGameElement extends PolymerElement {
         tripleWordAtlas.addElement(letters[index], x, y, sizeX, sizeY);
       }
     }
-    
+
     boardReady = true;
 
     log.info('Assets loaded and parsed');

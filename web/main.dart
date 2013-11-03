@@ -15,6 +15,13 @@ initLogging() {
       ..write(logRecord.level.name)..write(":")
       ..write(logRecord.sequenceNumber)..write(": ")
       ..write(logRecord.message.toString());
+
+    if (logRecord.stackTrace != null) {
+      sb
+        ..write(' :\n')
+        ..write(logRecord.stackTrace.toString());
+    }
+
     print(sb.toString());
   });
 }

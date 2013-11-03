@@ -3,6 +3,8 @@ version: 0.2.0
 author: Dart DevRel
 description: GAME
 homepage: https://github.com/johnmccutchan/tilebasedwordsearch
+environment:
+  sdk: 0.8.9
 dependencies:
   asset_pack: any
   benchmark_harness: any
@@ -26,9 +28,7 @@ dependencies:
   route: any
   path: any
   serialization: any
-# TODO: when https://code.google.com/p/dart/issues/detail?id=14512 is fixed
-# then I don't need this package
-  
+
 transformers:
 - polymer:
     entry_points: web/index.html
