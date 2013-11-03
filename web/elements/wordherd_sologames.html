@@ -6,8 +6,11 @@
     </p>
     
     <ul>
-      <template repeat="{{ g in soloGames }}">
-        <li>{{g.id}} - moar data here</li>
+      <template repeat="{{ soloGame in soloGames }}">
+        <li>
+          Score: {{ soloGame.game.score }} - Done: {{ soloGame.game.isDone }} -
+          <a href="#/sologame/{{ soloGame.id }}">Results</a>
+        </li>
       </template>
     </ul>
     
