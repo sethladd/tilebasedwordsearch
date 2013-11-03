@@ -1,7 +1,7 @@
 name: wordherd
 version: 0.2.0
-author: Dart DevRel
-description: GAME
+author: Dart Developer Relations
+description: A tile-based word forming game.
 homepage: https://github.com/johnmccutchan/tilebasedwordsearch
 environment:
   sdk: '>= 0.8.9'

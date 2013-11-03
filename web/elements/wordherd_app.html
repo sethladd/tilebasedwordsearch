@@ -8,19 +8,19 @@
 
 <polymer-element name="wordherd-app">
   <template>
+    <template if="{{ view == 'home' }}">
+      <wordherd-home></wordherd-home>
+    </template>
     
+    <template if="{{ view == 'sologames' }}">
+      <wordherd-sologames></wordherd-sologames>
+    </template>
+    
+    <template if="{{ view == 'sologame' }}">
+      <wordherd-sologame gameId="{{pathParts['gameId']}}"></wordherd-sologame>
+    </template>
+      
     <template if="{{ playerSignedIn }}">
-      <template if="{{ view == 'home' }}">
-        <wordherd-home></wordherd-home>
-      </template>
-      
-      <template if="{{ view == 'sologames' }}">
-        <wordherd-sologames></wordherd-sologames>
-      </template>
-      
-      <template if="{{ view == 'sologame' }}">
-        <wordherd-sologame gameId="{{pathParts['gameId']}}"></wordherd-sologame>
-      </template>
       
       <template if="{{ view == 'matches' }}">
         <wordherd-matches></wordherd-matches>

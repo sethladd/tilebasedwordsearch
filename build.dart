@@ -10,6 +10,7 @@ void main(List<String> args) {
   .then((_) {
     if (parseOptions(args).forceDeploy) {
       compileToJs();
+      activateAndUpdateAppCache();
     }
   });
 }
@@ -28,4 +29,33 @@ compileToJs() {
   print("STDOUT: ${result.stdout}");
   print("STDERR: ${result.stderr}");
   print("Done compiling to JS");
+}
+
+activateAndUpdateAppCache() {
+  activateAppCache();
+  updateAppCache();
+}
+
+activateAppCache() {
+  _replaceInFile('<html>',
+                 '<html manifest="appcache.manifest">',
+                 'out/web/index.html');
+}
+
+updateAppCache() {
+  _replaceInFile('# DATETIME XXX',
+                 '# DATETIME ${new DateTime.now()}',
+                 'out/web/appcache.manifest');
+}
+
+_replaceInFile(final String placeholder, final String newText, final String filename) {
+  File file = new File(filename);
+  String fileContents = file.readAsStringSync();
+  if (!fileContents.contains(placeholder)) {
+    print("WARNING! Text '$placeholder' was not found: $filename");
+    return;
+  }
+  fileContents = fileContents.replaceFirst(placeholder, newText);
+  file.writeAsStringSync(fileContents, mode: FileMode.WRITE);
+  print("$filename is updated");
 }
