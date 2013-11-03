@@ -1,11 +1,21 @@
+<link rel="import" href="when_online.html">
+
 <polymer-element name="wordherd-home">
   <template>
     <h1>Giddyup!</h1>
     
     <p>
       <a href="#/sologames">Solo Games</a>
-      <a href="#/newgame">New Multiplayer Game</a> <!-- TODO: replace with a custom element that helps normalize these paths -->
-      <a href="#/matches">Matches</a>
+      
+      <when-online>
+        <span class="for-online">
+          <a href="#/newgame">New Multiplayer Game</a> <!-- TODO: replace with a custom element that helps normalize these paths -->
+          <a href="#/matches">Matches</a>
+        </span>
+        <span class="for-offline">
+          Go online to play multiplayer
+        </span>
+      </when-online>
     </p>
   </template>
   <script type="application/dart" src="wordherd_home.dart"></script>
