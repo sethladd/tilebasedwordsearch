@@ -22,7 +22,7 @@ void main(List<String> _args) {
     if (options.forceDeploy) {
       compileToJs(minify: args['minify']);
 
-      if (!args['appcache']) {
+      if (args['appcache']) {
         print('Generating appcache');
         activateAndUpdateAppCache();
       } else {

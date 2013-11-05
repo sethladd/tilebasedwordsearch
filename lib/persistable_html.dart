@@ -3,8 +3,6 @@ library persistable_html;
 import 'dart:async' show Future, Stream;
 import 'package:lawndart/lawndart.dart' show Store;
 import 'package:logging/logging.dart' show Logger;
-// TODO how to use mirrorsused here?
-// I want to say "anything that mixes in Persistable has mirrors used on it"
 import 'package:serialization/serialization.dart' show Serialization;
 import 'dart:convert' show JSON;
 

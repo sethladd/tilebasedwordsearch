@@ -33,9 +33,9 @@ configureLogger() {
     ..write(logRecord.level.name)..write(":")
     ..write(logRecord.sequenceNumber)..write(": ")
     ..write(logRecord.message.toString());
-    
+
     // TODO: wait for https://code.google.com/p/dart/issues/detail?id=14416
-    
+
     print(sb.toString());
   });
 }
@@ -51,12 +51,12 @@ main(List<String> arguments) {
 
   String dbUrl = getDbUrl();
   log.info("DB URL is $dbUrl");
-  
+
   int webServerPort = getWebServerPort();
   log.info("HTTP port is $webServerPort");
-  
+
   String root;
-  
+
   try {
     ArgResults args = argsParser.parse(arguments);
     if (args['help']) {
@@ -69,20 +69,20 @@ main(List<String> arguments) {
     log.severe('Use "--help" to see available options.');
     return;
   }
-  
+
   log.info('Root directory is $root');
-  
+
   runZoned(() {
-    
+
     db.init(dbUrl)
     .then((_) => loadData())
     .then((_) => HttpServer.bind('0.0.0.0', webServerPort))
     .then((HttpServer server) {
-      
+
       VirtualDirectory staticFiles = new VirtualDirectory(root)
         ..jailRoot = false
         ..followLinks = true;
-      
+
       new Router(server)
         //..filter(new RegExp(r'^.*$'), addCorsHeaders)          // Required if also using the Editor's server
         ..serve('/session', method: 'GET').listen(oauthSession)
@@ -101,10 +101,10 @@ main(List<String> arguments) {
 
         // BUG: https://code.google.com/p/dart/issues/detail?id=14196
         ..defaultStream.listen(staticFiles.serveRequest);
-      
+
       log.info('Server running');
     });
-    
+
   },
   onError: (e, stackTrace) => log.severe("Error handling request: $e : $stackTrace"));
 
@@ -140,7 +140,7 @@ String getDbUrl() {
 }
 
 Future loadData() {
-  String scriptDir = path.dirname(Platform.script.toString());
+  String scriptDir = path.dirname(Platform.script.toFilePath());
   File boardData = new File(path.join(scriptDir, 'dense1000FINAL.txt'));
   return boardData.readAsString().then((String data) => boards = new Boards(data));
 }
@@ -181,18 +181,18 @@ void getAllMatches(HttpRequest request) {
 
 void updateGameForMatch(HttpRequest request) {
   String userGplusId = request.session['userGplusId'];
-  
+
   log.fine('Updating game for player [$userGplusId]');
-  
+
   List<String> options = gameForMatchUrl.parse(request.uri.path);
   String matchId = options[0];
   String playerId = options[1];
-  
+
   if (playerId != userGplusId) {
     _respondWithMessage(request.response, 401, 'Not your game');
     return;
   }
-  
+
   HttpBodyHandler.processRequest(request).then((HttpRequestBody body) {
     Map json = body.body as Map;
     Game game = serializer.read(json);
@@ -207,9 +207,9 @@ void updateGameForMatch(HttpRequest request) {
             _respondWithMessage(request.response, 404, 'Match not found');
             return null;
           }
-          
+
           match.updateGameFor(game, userGplusId);
-          
+
           return match.store();
         });
   })
@@ -243,7 +243,7 @@ void registerPlayer(HttpRequestBody body) {
   String gplusId = data['gplus_id'];
 
   // TODO check the logged in session user matches this user
-  
+
   db.Persistable.findOneBy(Player, {'gplus_id':gplusId}).then((Player p) {
     if (p == null) {
       Player player = new Player()
@@ -267,14 +267,14 @@ void registerPlayer(HttpRequestBody body) {
  */
 void friendsToPlay(HttpRequest request) {
   log.fine('Inside getFriendPlayers');
-  
+
   String accessToken = request.session["access_token"];
-  
+
   bool transformIsDone = false;
-  
+
   // TODO do this with a StreamTransformer
   _getAllFriends(accessToken).toList()
-  
+
     // Convert G+ Person to IDs
     .then((List<List<Person>> friends) {
       log.fine('Finding friends: ${friends.length} groups found');
@@ -282,7 +282,7 @@ void friendsToPlay(HttpRequest request) {
         return someFriends.map((Person p) => p.id).toList(growable: false);
       });
     })
-    
+
     // Check the DB if the IDs are also Players
     .then((List<List<String>> allIds) {
       return allIds.map((List<String> ids) {
@@ -290,17 +290,17 @@ void friendsToPlay(HttpRequest request) {
         return db.Persistable.findBy(Player, {'gplus_id': ids}).toList();
       });
     })
-    
+
     // Wait for all queries into DB to finish
     .then((List<Future<List<Player>>> queries) {
       return Future.wait(queries);
     })
-    
+
     // Create a flat list of all players that are also friends
     .then((List<List<Player>> allPlayers) {
       return allPlayers.expand((i) => i).toList();
     })
-    
+
     // Send all friend players to client as JSON
     .then((List<Player> friendPlayers) {
       log.fine('Finding friends: ${friendPlayers.length} actual friends are players');
@@ -317,9 +317,9 @@ void friendsToPlay(HttpRequest request) {
 
 Stream<List<Person>> _getAllFriends(String accessToken) {
   Plus plusclient = makePlusClient(accessToken);
-  
+
   StreamController stream = new StreamController();
-  
+
   Future consumePeople([String nextToken]) {
     return _getPageOfFriends(plusclient, nextPageToken: nextToken)
       .then((PeopleFeed feed) {
@@ -329,11 +329,11 @@ Stream<List<Person>> _getAllFriends(String accessToken) {
         }
       });
   }
-  
+
   consumePeople()
       .catchError(stream.addError)
       .whenComplete(stream.close);
-  
+
   return stream.stream;
 }
 
@@ -346,7 +346,7 @@ Future<PeopleFeed> _getPageOfFriends(Plus plusclient,
 void createMatch(HttpRequestBody body) {
   log.fine('Create match');
   Map data = body.body;
-  
+
   GameMatch match = new GameMatch()
       ..p1_id = data['p1_id']
       ..p2_id = data['p2_id']
@@ -366,13 +366,13 @@ void createMatch(HttpRequestBody body) {
 void listPlayerMatches(HttpRequest request) {
   log.fine('In listPlayerMatches');
   String userGplusId = request.session['userGplusId'];
-  
+
   if (userGplusId == null) {
     log.warning('No gplusId detected');
     request.response.statusCode = 401;
     request.response.close();
   }
-  
+
   db.Persistable.findByWhere(GameMatch, 'p1_id = @p1_id OR p2_id = @p2_id',
       {'p1_id': userGplusId, 'p2_id': userGplusId})
   .toList()
