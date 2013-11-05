@@ -17,22 +17,21 @@ class WordherdBoard extends PolymerElement {
   @published Board board;
   @published Game game;
   @observable String timeRemaining;
-  
+
   // TODO replace with camelcase when bug is resolved
-  
+
   @published ImageAtlas letteratlas;
   @published ImageAtlas selectedletteratlas;
   @published ImageAtlas doubleletteratlas;
   @published ImageAtlas tripleletteratlas;
   @published ImageAtlas doublewordatlas;
   @published ImageAtlas triplewordatlas;
-  
+
   BoardView boardView;
   BoardController boardController;
   GameClock _gameClock;
   GameLoopHtml _gameLoop;
   GameLoopTouch currentTouch;
-  bool paused = false;
   CanvasElement _canvasElement;
   BodyElement _bodyElement;
 
@@ -40,17 +39,17 @@ class WordherdBoard extends PolymerElement {
   StreamSubscription _onTouchEndSubscription;
 
   _preventBubble(Event e) => e.preventDefault();
-  
+
   @observable String wordInProgress = '';
   @observable String wordInProgressScore = '';
   @observable String pauseOrToggleText = 'Pause';
-  
+
   WordherdBoard.created() : super.created();
 
   @override
   void enteredView() {
     super.enteredView();
-    
+
     _canvasElement = $['frontBuffer'];
     _bodyElement = querySelector('body');
     _gameLoop = new GameLoopHtml(_canvasElement);
@@ -74,14 +73,14 @@ class WordherdBoard extends PolymerElement {
   @override
   void leftView() {
     super.leftView();
-    
+
     _gameLoop.keyboard.interceptor = null;
     // TODO move this to data binding
     _bodyElement.classes.remove('no-scroll');
     _onTouchStartSubscription.cancel();
     _onTouchEndSubscription.cancel();
     _gameLoop.stop();
-    
+
     log.fine('board was removed');
   }
 
@@ -97,7 +96,7 @@ class WordherdBoard extends PolymerElement {
       game.isDone = true;
     });
     _gameLoop.start();
-    
+
     game.isStarted = true;
   }
 
@@ -105,18 +104,6 @@ class WordherdBoard extends PolymerElement {
     if (window.confirm('Are you sure you want to end the game?')) {
       _gameClock.stop();
     }
-  }
-
-  void togglePause(Event e, var detail, Node target) {
-    if (!paused) {
-      _gameClock.pause();
-      pauseOrToggleText = "Resume";
-    } else {
-      _gameClock.restart();
-      pauseOrToggleText = "Pause";
-      _canvasElement.classes.remove('hidden');
-    }
-    paused = !paused;
   }
 
   void drawCircle(int x, int y) {
@@ -133,12 +120,6 @@ class WordherdBoard extends PolymerElement {
   }
 
   void gameRender(GameLoopHtml gameLoop) {
-    if (paused) {
-      boardView.renderPauseScreen();
-      wordInProgress = 'Paused!';
-      wordInProgressScore = '';
-      return;
-    }
     wordInProgress = boardController.wordInProgress;
     wordInProgressScore = boardController.wordInProgressScore.toString();
     if (boardView != null) {
@@ -185,7 +166,7 @@ class WordherdBoard extends PolymerElement {
   // more obvious.
   String get _timeRemaining {
     if (_gameClock == null) return '-';
-    
+
     int seconds = _gameClock.secondsRemaining;
 
     if (seconds <= 0) return 'GAME OVER'; // XXX ok for stop() case?
