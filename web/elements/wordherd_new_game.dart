@@ -16,12 +16,12 @@ class WordherdNewGame extends PolymerElement {
   final List<Player> friends = toObservable([]);
   @observable bool loadDataComplete = false;
   WordherdNewGame.created() : super.created();
-  
+
   // Looks like inserted is when all attributes are ready (??)
   // TODO ready() might be a better callback here
   void enteredView() {
     super.enteredView();
-    
+
     _loadFriendsToPlay().then((List<Player> people) {
       log.fine('Found friends: $people');
       friends.addAll(people);
@@ -29,7 +29,7 @@ class WordherdNewGame extends PolymerElement {
     .catchError((e) => log.severe('Problem finding friends: $e'))
     .whenComplete(() => loadDataComplete = true);
   }
-  
+
   Future<List<Player>> _loadFriendsToPlay() {
     log.fine('Finding friends to play');
     return HttpRequest.request('/friendsToPlay',
@@ -39,7 +39,7 @@ class WordherdNewGame extends PolymerElement {
         return _serializer.read(json);
       });
   }
-  
+
   void createMatch(Event e, var detail, Node target) {
     log.fine('here in create');
     Person me = (document.body.querySelector('wordherd-app') as WordherdApp).person;
@@ -53,9 +53,9 @@ class WordherdNewGame extends PolymerElement {
         log.fine('Location to new match is $location');
         String matchId = new RegExp(r'/matches/(\d+)').firstMatch(location).group(1);
         log.fine('Match created with ID $matchId');
-        
+
         // TODO: store the match locally?
-        
+
         window.location.hash = '/matches';
       })
       .catchError((e) {
@@ -63,4 +63,7 @@ class WordherdNewGame extends PolymerElement {
         // TODO display error
       });
   }
+
+  // This is here to force MirrorsUsed to keep isEmpty
+  bool get noFriends => friends.isEmpty;
 }

@@ -1,4 +1,4 @@
-library persistable_html;
+library persistable;
 
 import 'dart:async' show Future, Stream;
 import 'package:lawndart/lawndart.dart' show Store;

@@ -21,7 +21,7 @@
         <p>Your score: {{game.score}}</p>
         <p>Your words:</p>
         <ul>
-          <template repeat="{{ word in game.words.keys }}">
+          <template repeat="{{ word in game.justWords }}">
             <li>{{word}} - {{game.words[word]}}</li>
           </template>
         </ul>

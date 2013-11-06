@@ -85,7 +85,7 @@ compileToJs({bool minify: true}) {
   print('Running dart2js with path: $dart2jsCmd');
   var result =
     Process.runSync(dart2jsCmd, [
-        minify ? '--minify' : '',
+        minify ? '--minify' : '--terse', // there's no --no-minify so just put this
         '-o', 'out/web/index.html_bootstrap.dart.js',
         'out/web/index.html_bootstrap.dart', '--suppress-hints'],
         runInShell: true);

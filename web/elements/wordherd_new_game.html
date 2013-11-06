@@ -10,10 +10,10 @@
     </template>
     
     <template if="{{loadDataComplete}}">
-      <template if="{{friends.isEmpty}}">
+      <template if="{{noFriends}}">
         <p>Aw shucks, ya ain't got no friends that play Wordherd.</p>
       </template>
-      <template if="{{!friends.isEmpty}}">
+      <template if="{{!noFriends}}">
         <ul>
           <template repeat="{{friend in friends}}">
             <li>

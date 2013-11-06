@@ -8,7 +8,7 @@ class Game extends Object with Observable {
   @observable bool isStarted = false;
   @observable bool isDone = false;
   static const int scoreMultiplier = 3;
-  
+
   void scoreWord(String word, int wordScore) {
     // TODO play a sound if the word was already found?
     if (!words.containsKey(word) || words[word] < wordScore) {
@@ -16,8 +16,11 @@ class Game extends Object with Observable {
       score = words.values.reduce((v, e) => v + e);
     }
   }
-  
+
   bool previouslyFoundWord(String word) => words.containsKey(word);
-  
+
   String toString() => 'score: $score, isStarted: $isStarted, isDone: $isDone';
+
+  // This is here to so that mirrorsused keeps words.keys.
+  Iterable<String> get justWords => words.keys;
 }
