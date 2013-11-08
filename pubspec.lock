@@ -41,7 +41,7 @@ packages:
     description:
       ref: null
       resolved-ref: d84f218c855f154fd9d3ab19b7ed3792b6e4d737
-      url: "git@github.com:sethladd/game_loop.git"
+      url: "https://github.com/sethladd/game_loop.git"
     source: git
     version: "0.9.3"
   google_oauth2_client:

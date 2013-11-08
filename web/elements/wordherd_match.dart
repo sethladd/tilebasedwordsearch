@@ -66,6 +66,9 @@ class WordherdMatch extends PolymerElement {
   }
 
   String get winningMsg {
+    if (!match.isOver) {
+      return "Waiting on partner";
+    }
     if (match.winningId == playerId) {
       return "You Won!";
     } else {

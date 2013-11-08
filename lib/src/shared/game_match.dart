@@ -1,5 +1,6 @@
 part of wordherd_shared;
 
+@reflectable
 class GameMatch extends Object with Persistable {
   String p1_id;
   String p1_name;
@@ -24,11 +25,11 @@ class GameMatch extends Object with Persistable {
   }
 
   int myScore(String myId) {
-    return (p1_id == myId) ? p1_game.score : p2_game.score;
+    return myGame(myId).score;
   }
 
   bool myTurnOver(String myId) {
-    return (p1_id == myId) ? p1_game.isDone : p2_game.isDone;
+    return myGame(myId).isDone;
   }
 
   String get winningName {
