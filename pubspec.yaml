@@ -12,7 +12,7 @@ dependencies:
   crypto: any
   http_server: any
   game_loop:
-    git: git@github.com:sethladd/game_loop.git
+    git: https://github.com/sethladd/game_loop.git
 #  google_appstate_v1_api:
 #    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
 #  google_games_v1_api:
