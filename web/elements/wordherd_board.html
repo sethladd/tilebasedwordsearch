@@ -1,19 +1,39 @@
 <polymer-element name="wordherd-board">
   <template>
-    <div class="selected-word">
-      <div class="word">{{wordInProgress}} {{wordInProgressScore}}</div>
+    <style>
+      @media only screen
+      and (max-device-width : 400px)
+      and (orientation : portrait) {
+        #frontBuffer {
+          width: 330px;
+        }
+      }
+      
+      @media only screen
+      and (min-device-width : 600px)
+      and (max-device-width : 800px)
+      and (orientation : portrait) {
+        #frontBuffer {
+          width: 530px;
+        }
+      }
+    </style>
+  
+    <div class="word">{{wordInProgress}} {{wordInProgressScore}}</div>
+    
+    <div class="board">
+      <canvas id="frontBuffer"></canvas>
     </div>
-    <div class="board"><canvas id="frontBuffer"></canvas></div>
-    <div>
-      <div class="game-data">
-          <!-- <div class="score">{{game.score}}</div> -->
-          <div class="time">{{timeRemaining}}</div>
-      </div>
-      <!-- TODO get these over to game, not board -->
-      <div class="buttons">
-        <button on-click="{{endGame}}">End</button>
-      </div>
-    </div><!-- end .not-board -->
+    
+    <div class="game-data">
+      <!-- TODO get this out of board and into game -->
+      <div class="time">{{timeRemaining}}</div>
+    </div>
+    
+    <!-- TODO get these over to game, not board -->
+    <div class="buttons">
+      <button on-click="{{endGame}}">End</button>
+    </div>
   </template>
   <script type="application/dart" src="wordherd_board.dart"></script>
 </polymer-element>

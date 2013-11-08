@@ -15,7 +15,7 @@ class BoardView {
   final Board board;
   final CanvasElement canvas;
   final Set<int> selectedTiles = new Set<int>();
-  
+
   // XXX fixme
   ImageAtlas tripleWordAtlas, letterAtlas, selectedLetterAtlas, tripleLetterAtlas;
 
@@ -54,8 +54,7 @@ class BoardView {
   double get scaleY => canvas.height/canvas.clientHeight;
 
   int transformTouchToCanvasX(num v) {
-    // WTF if I make that var a Rectangle, then it explodes the whole library import
-    var canvasRectangle = canvas.getBoundingClientRect();
+    Rectangle canvasRectangle = canvas.getBoundingClientRect();
     int offsetX = (canvasRectangle.left + document.body.scrollLeft).toInt();
     int x = ((v - offsetX) * scaleX).toInt();
     return x;
