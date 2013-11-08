@@ -1,7 +1,7 @@
 library wordherd_board;
 
 import 'package:polymer/polymer.dart';
-import 'dart:html' show BodyElement, CanvasElement, Event, Node, querySelector, window;
+import 'dart:html' show BodyElement, CanvasElement, Event, KeyboardEvent, Node, querySelector, window;
 import 'package:logging/logging.dart' show Logger;
 import 'package:game_loop/game_loop_html.dart' show GameLoop, GameLoopHtml, GameLoopTouch;
 import 'dart:math' show PI;
@@ -70,6 +70,7 @@ class WordherdBoard extends PolymerElement {
     _gameLoop.onRender = gameRender;
     _gameLoop.onTouchStart = gameTouchStart;
     _gameLoop.onTouchEnd = gameTouchEnd;
+    _gameLoop.onKeyDown = (KeyboardEvent event) => event.preventDefault();
 
     startOrResumeGame();
   }

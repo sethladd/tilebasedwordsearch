@@ -38,9 +38,12 @@ packages:
     source: hosted
     version: "0.9.0"
   game_loop:
-    description: game_loop
-    source: hosted
-    version: "0.9.2"
+    description:
+      ref: null
+      resolved-ref: d84f218c855f154fd9d3ab19b7ed3792b6e4d737
+      url: "git@github.com:sethladd/game_loop.git"
+    source: git
+    version: "0.9.3"
   google_oauth2_client:
     description: google_oauth2_client
     source: hosted
@@ -112,7 +115,7 @@ packages:
   postgresql:
     description: postgresql
     source: hosted
-    version: "0.2.10"
+    version: "0.2.11"
   route:
     description: route
     source: hosted

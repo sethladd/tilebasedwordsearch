@@ -9,14 +9,14 @@ class WordEvent {
 class BoardController {
   final Board board;
   final BoardView view;
-  
+
   List<int> selectedPath;
   String _keyboardSearchString = '';
-  
+
   // TODO I think I can delete these
   String wordInProgress = '';
   int wordInProgressScore = 0;
-  
+
   StreamController<WordEvent> _wordsStream = new StreamController();
 
   BoardController(this.board, this.view);
@@ -102,8 +102,9 @@ class BoardController {
       return true;
     }
     if (event.buttonId == Keyboard.ESCAPE ||
-        event.buttonId == Keyboard.SPACE) {
-      // Space or escape kills the current word search.
+        event.buttonId == Keyboard.SPACE ||
+        event.buttonId == Keyboard.BACKSPACE ||
+        event.buttonId == Keyboard.DELETE) {
       // TODO: Indicate in GUI.
       clearKeyboardInput();
       return true;

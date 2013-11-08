@@ -4,14 +4,15 @@ author: Dart Developer Relations
 description: A tile-based word forming game.
 homepage: https://github.com/johnmccutchan/tilebasedwordsearch
 environment:
-  sdk: '>= 0.8.9'
+  sdk: '>= 0.8.10'
 dependencies:
   asset_pack: any
   benchmark_harness: any
   browser: any
   crypto: any
   http_server: any
-  game_loop: any
+  game_loop:
+    git: git@github.com:sethladd/game_loop.git
 #  google_appstate_v1_api:
 #    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
 #  google_games_v1_api:
