@@ -17,22 +17,45 @@
           width: 530px;
         }
       }
+      
+      .row {
+        clear: both;
+      }
+      
+      .row .col-md-6 {
+        width: 50%;
+        float: left;
+      }
     </style>
   
-    <div class="word">{{wordInProgress}} {{wordInProgressScore}}</div>
+    <div class="row">
+      <div class="col-md-6">
+        {{wordInProgress}}
+        &nbsp;
+      </div>
+      <div class="col-md-6">
+        <template if="{{ wordInProgress != null && !wordInProgress.isEmpty }}">
+          Points: {{wordInProgressScore}}
+        </template>
+      </div>
+    </div>
     
-    <div class="board">
+    <div>
       <canvas id="frontBuffer"></canvas>
     </div>
     
-    <div class="game-data">
-      <!-- TODO get this out of board and into game -->
-      <div class="time">{{timeRemaining}}</div>
+    <div class="row">
+      <div class="col-md-6">
+        Current score: {{game.score}}
+      </div>
+      <div class="col-md-6">
+        Time: {{timeRemaining}}
+      </div>
     </div>
     
     <!-- TODO get these over to game, not board -->
-    <div class="buttons">
-      <button on-click="{{endGame}}">End</button>
+    <div style="margin-bottom: 0.5em">
+      <button on-click="{{endGame}}">End Game</button>
     </div>
   </template>
   <script type="application/dart" src="wordherd_board.dart"></script>

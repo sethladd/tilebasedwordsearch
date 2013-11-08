@@ -42,6 +42,7 @@ class WordherdBoard extends PolymerElement {
 
   _preventBubble(Event e) => e.preventDefault();
 
+  // TODO move these up to game
   @observable String wordInProgress = '';
   @observable String wordInProgressScore = '';
   @observable String pauseOrToggleText = 'Pause';
