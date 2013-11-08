@@ -1,6 +1,16 @@
 <polymer-element name="wordherd-sologames">
   <template>
+    <style>
+      li {
+        font-size: 2em;
+      }
+      li a {
+        font-size: 1em;
+      }
+    </style>
+    
     <h1>Solo games</h1>
+    
     <p>
       <button on-click="{{newSoloGame}}">Start new solo game</button>
     </p>
@@ -8,8 +18,13 @@
     <ul>
       <template repeat="{{ soloGame in soloGames }}">
         <li>
-          Score: {{ soloGame.game.score }} - Done: {{ soloGame.game.isDone }} -
-          <a href="#/sologame/{{ soloGame.id }}">Results</a>
+          Score: {{ soloGame.game.score }}
+          <template if="{{ soloGame.game.isDone }}">
+            <a href="#/sologame/{{ soloGame.id }}">Results</a>
+          </template>
+          <template if="{{ !soloGame.game.isDone }}">
+            <a href="#/sologame/{{ soloGame.id }}">Continue</a>
+          </template>
         </li>
       </template>
     </ul>

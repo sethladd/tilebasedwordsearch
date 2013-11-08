@@ -29,6 +29,8 @@ class WordherdBoard extends PolymerElement {
 
   BoardView boardView;
   BoardController boardController;
+
+  // TODO move this into wordherd_game or just game
   GameClock _gameClock;
   GameLoopHtml _gameLoop;
   GameLoopTouch currentTouch;
@@ -45,6 +47,8 @@ class WordherdBoard extends PolymerElement {
   @observable String pauseOrToggleText = 'Pause';
 
   WordherdBoard.created() : super.created();
+
+  bool get applyAuthorStyles => true;
 
   @override
   void enteredView() {
@@ -85,12 +89,18 @@ class WordherdBoard extends PolymerElement {
   }
 
   void startOrResumeGame() {
-    log.fine("starting game");
+    log.fine("Starting or resuming game");
     boardView = new BoardView(board, _canvasElement, triplewordatlas,
         letteratlas, selectedletteratlas, tripleletteratlas);
     boardController = new BoardController(board, boardView);
     boardController.onWords.listen((WordEvent e) => game.scoreWord(e.word, e.score));
     _gameLoop.keyboard.interceptor = boardController.keyboardEventInterceptor;
+    if (game.timeRemaining != null) {
+      _gameClock.secondsRemaining = game.timeRemaining;
+    }
+    _gameClock.onTimeRemaning.listen((int secondsRemaining) {
+      game.timeRemaining = secondsRemaining;
+    });
     _gameClock.start();
     _gameClock.whenDone.then((_) {
       game.isDone = true;

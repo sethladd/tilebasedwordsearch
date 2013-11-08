@@ -17,12 +17,14 @@ class WordherdMatch extends PolymerElement {
   @observable String playerId;
   @observable Game game;
   @observable Board board;
-  
+
   WordherdMatch.created() : super.created();
-  
+
+  bool get applyAuthorStyles => true;
+
   void ready() {
     super.ready();
-    
+
     new PathObserver(this, 'game.isDone').changes.listen((_) {
       log.fine('Notified that game.isDone has changed');
       if (game.isDone) {
@@ -30,15 +32,15 @@ class WordherdMatch extends PolymerElement {
       }
     });
   }
-  
+
   void enteredView() {
     super.enteredView();
-    
+
     Person me = (document.body.querySelector('wordherd-app') as WordherdApp).person;
     playerId = me.id;
 
     log.fine('Getting match details for $matchId');
-    
+
     HttpRequest.request('/matches/$matchId', method: 'GET', withCredentials: true)
     .then((HttpRequest request) {
       match = serializer.read(JSON.decode(request.responseText));
@@ -47,7 +49,7 @@ class WordherdMatch extends PolymerElement {
     })
     .catchError((e) => log.severe('Could not retrieve match for $matchId: $e'));
   }
-  
+
   void syncGameToServer() {
     log.fine('Syncing game to server');
     HttpRequest.request('/matches/$matchId/game/$playerId',

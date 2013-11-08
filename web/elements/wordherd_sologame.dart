@@ -12,6 +12,7 @@ class WordherdSoloGame extends PolymerElement {
   @observable Board board;
   @published String gameId;
 
+  // TODO move this into enteredView ?
   WordherdSoloGame.created() : super.created() {
     if (gameId != null) {
       _loadGame();
@@ -23,14 +24,23 @@ class WordherdSoloGame extends PolymerElement {
     new PathObserver(this, 'game.isDone').changes.listen((_) {
       log.fine('Notified that game.isDone has changed');
       if (game.isDone) {
-        _syncGameToServer();
+        _syncGameToStore();
       }
     });
   }
 
-  _syncGameToServer() {
+
+  @override
+  void leftView() {
+    super.leftView();
+    _syncGameToStore();
+  }
+
+  bool get applyAuthorStyles => true;
+
+  _syncGameToStore() {
     soloGame.store()
-    .then((_) => log.fine('Stored solo game into store'))
+    .then((_) => log.fine('Stored solo game ${soloGame.id} into store'))
     .catchError((e, stackTrace) {
       log.severe('Could not sync solo game to store: $e', e, stackTrace);
     });

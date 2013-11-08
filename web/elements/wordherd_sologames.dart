@@ -1,9 +1,10 @@
 import 'package:polymer/polymer.dart';
 import 'package:logging/logging.dart' show Logger;
 import 'package:wordherd/shared_html.dart' show Boards, Game, GameSolo;
-import 'package:wordherd/persistable_html.dart';
+import 'package:wordherd/persistable_html.dart' as db;
 import 'dart:html' show Event, Node, document, window;
 import 'wordherd_assets.dart' show WordherdAssets;
+import 'dart:async' show Future;
 
 final Logger log = new Logger('WordherdSoloGames');
 
@@ -14,6 +15,8 @@ class WordherdSoloGames extends PolymerElement {
   Boards _boards;
 
   WordherdSoloGames.created() : super.created();
+
+  bool get applyAuthorStyles => true;
 
   @override
   void enteredView() {
@@ -28,7 +31,17 @@ class WordherdSoloGames extends PolymerElement {
 
     log.fine('Loading all solo games');
 
-    Persistable.all(GameSolo).toList()
+    if (db.isInitialized) {
+      _loadAllGames();
+    } else {
+      window.on['persistablestoreinitialized'].listen((_) {
+        _loadAllGames();
+      });
+    }
+  }
+
+  Future _loadAllGames() {
+    return db.Persistable.all(GameSolo).toList()
     .then((List<GameSolo> allGames) {
       soloGames.addAll(allGames);
     })

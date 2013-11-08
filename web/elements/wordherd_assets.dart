@@ -15,6 +15,7 @@ class WordherdAssets extends PolymerElement {
   @observable String status;
   @observable bool loaded = false;
 
+  // TODO move this into enteredView?
   WordherdAssets.created() : super.created() {
     status = 'Loading...';
     assetManager.loadPack('game', 'assets/_.pack')

@@ -7,20 +7,22 @@ class WordherdGamematchRow extends PolymerElement {
   @published GameMatch gameMatch;
   @published String playerId;
   @observable bool isReady = false;
-  
+
   WordherdGamematchRow.created() : super.created() {
     onPropertyChange(this, #gameMatch, () {
       isReady = _isReady;
     });
-    
+
     onPropertyChange(this, #playerId, () {
       isReady = _isReady;
     });
   }
-  
+
+  bool get applyAuthorStyles => true;
+
   String get matchResult {
     if (gameMatch == null) return '';
-    
+
     if (!gameMatch.isOver) {
       return 'In Progress';
     } else if (gameMatch.winningId == playerId) {
@@ -29,14 +31,14 @@ class WordherdGamematchRow extends PolymerElement {
       return 'Ya Lost';
     }
   }
-  
+
   String get startOrResumeMsg {
     if (gameMatch == null) return '';
-    
+
     Game game = gameMatch.myGame(playerId);
     return (game == null) ? '' : game.isStarted ? 'Resume' : 'Start';
   }
-  
+
   bool get _isReady => gameMatch != null && playerId != null;
-  
+
 }

@@ -7,7 +7,10 @@ class Game extends Object with Observable {
   @observable int score = 0;
   @observable bool isStarted = false;
   @observable bool isDone = false;
+  @observable int timeRemaining = DEFAULT_GAME_LENGTH;
+
   static const int scoreMultiplier = 3;
+  static const int DEFAULT_GAME_LENGTH = 70;
 
   void scoreWord(String word, int wordScore) {
     // TODO play a sound if the word was already found?

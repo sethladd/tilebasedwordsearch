@@ -29,6 +29,8 @@ class WordherdGameElement extends PolymerElement {
 
   WordherdGameElement.created() : super.created();
 
+  bool get applyAuthorStyles => true;
+
   void ready() {
     super.ready();
 

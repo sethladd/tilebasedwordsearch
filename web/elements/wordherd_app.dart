@@ -22,6 +22,7 @@ class WordherdApp extends PolymerElement {
   final UrlPattern matchPath = new UrlPattern(r'(.*)#/match/(\d+)');
   final UrlPattern soloGamePath = new UrlPattern(r'(.*)#/sologame/(.*)');
 
+  // TODO move this into enteredView ?
   WordherdApp.created() : super.created() {
 
     // TODO put this into a custom element, once auto-node finding works from expressions
@@ -59,6 +60,8 @@ class WordherdApp extends PolymerElement {
       _registerPlayer(plus);
     });
   }
+
+  bool get applyAuthorStyles => true;
 
   Future _registerPlayer(Plus plus) {
     return plus.people.get('me').then((Person p) {

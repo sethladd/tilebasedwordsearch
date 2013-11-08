@@ -18,6 +18,8 @@ Future init(String dbName, String storeName) {
   return _store.open();
 }
 
+bool get isInitialized => _store.isOpen;
+
 int _counter = 0;
 final String _idOffset = new DateTime.now().millisecondsSinceEpoch.toString();
 String _nextId() => _idOffset + '-' + (_counter++).toString();

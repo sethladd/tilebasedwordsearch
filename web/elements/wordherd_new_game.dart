@@ -15,7 +15,10 @@ final Serialization _serializer = new Serialization();
 class WordherdNewGame extends PolymerElement {
   final List<Player> friends = toObservable([]);
   @observable bool loadDataComplete = false;
+
   WordherdNewGame.created() : super.created();
+
+  bool get applyAuthorStyles => true;
 
   // Looks like inserted is when all attributes are ready (??)
   // TODO ready() might be a better callback here
