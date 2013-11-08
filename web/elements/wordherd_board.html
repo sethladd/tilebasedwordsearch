@@ -34,7 +34,7 @@
         &nbsp;
       </div>
       <div class="col-md-6">
-        <template if="{{ wordInProgress != null && !wordInProgress.isEmpty }}">
+        <template if="{{ isWordInProgress }}">
           Points: {{wordInProgressScore}}
         </template>
       </div>

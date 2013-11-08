@@ -46,6 +46,7 @@ class WordherdBoard extends PolymerElement {
   @observable String wordInProgress = '';
   @observable String wordInProgressScore = '';
   @observable String pauseOrToggleText = 'Pause';
+  @observable bool isWordInProgress = false;
 
   WordherdBoard.created() : super.created();
 
@@ -90,6 +91,8 @@ class WordherdBoard extends PolymerElement {
     log.fine('board was removed');
   }
 
+  bool get _isWordInProgress => wordInProgress != null && !wordInProgress.isEmpty;
+
   void startOrResumeGame() {
     log.fine("Starting or resuming game");
     boardView = new BoardView(board, _canvasElement, triplewordatlas,
@@ -133,6 +136,7 @@ class WordherdBoard extends PolymerElement {
 
   void gameRender(GameLoopHtml gameLoop) {
     wordInProgress = boardController.wordInProgress;
+    isWordInProgress = _isWordInProgress;
     wordInProgressScore = boardController.wordInProgressScore.toString();
     if (boardView != null) {
       boardView.render();
