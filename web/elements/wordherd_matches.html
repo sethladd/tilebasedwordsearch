@@ -1,4 +1,3 @@
-<link rel="import" href="wordherd_gamematch_row.html">
 <link rel="import" href="my_spinner.html">
 
 <polymer-element name="wordherd-matches">
@@ -6,6 +5,14 @@
     <style>
     .row {
       margin-bottom: 10px;
+    }
+    table {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    th {
+      text-align: center;
     }
     </style>
     
@@ -20,14 +27,33 @@
     
       <p>You have {{gameMatches.length}} matches</p>
       
-      <template repeat="{{ m in gameMatches }}">
-        <div class="row">
-          <wordherd-gamematch-row
-            playerId="{{playerId}}"
-            gameMatch="{{m}}"></wordherd-gamematch-row>
-        </div>
-      </template>
-    
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr template repeat="{{ gameMatch in gameMatches }}">
+            <td>
+              {{gameMatch.opponentName(playerId)}}
+            </td>
+            
+            <td>
+              <template if="{{ !gameMatch.isOver && !gameMatch.myTurnOver(playerId)}}">
+                <a class="button" href="#/match/{{gameMatch.id}}">{{startOrResumeMsg(gameMatch)}}</a>
+              </template>
+              <template if="{{ !gameMatch.isOver && gameMatch.myTurnOver(playerId)}}">
+                Waiting for Partner
+              </template>
+              <template if="{{ gameMatch.isOver}}">
+                <a class="button" href="#/match/{{gameMatch.id}}">See results</a>
+              </template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </template>
     
     <p>

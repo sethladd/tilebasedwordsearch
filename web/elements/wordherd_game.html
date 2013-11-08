@@ -27,8 +27,7 @@
       </template>
       
       <template if="{{game.isDone}}">
-        <h1>Game Over</h1>
-        <p>Your score: {{game.score}}</p>
+        <content select=".header"></content>
 
         <table class="table">
           <thead>

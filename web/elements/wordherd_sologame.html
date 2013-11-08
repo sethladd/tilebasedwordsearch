@@ -3,7 +3,12 @@
 <polymer-element name="wordherd-sologame">
   <template>
     <template if="{{ isReady }}">
-      <wordherd-game game="{{game}}" board="{{board}}"></wordherd-game>
+      <wordherd-game game="{{game}}" board="{{board}}">
+        <div class="header">
+          <h1>Game Over</h1>
+          <p>Your score: {{game.score}}</p>
+        </div>
+      </wordherd-game>
     </template>
     <p>
       <a class="button" href="#/">Home</a>

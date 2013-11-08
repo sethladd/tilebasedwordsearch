@@ -3,7 +3,12 @@
 <polymer-element name="wordherd-match">
   <template>
     <template if="{{game != null && board != null}}">
-      <wordherd-game game="{{game}}" board="{{board}}"></wordherd-game>
+      <wordherd-game game="{{game}}" board="{{board}}">
+        <div class="header">
+          <h1>{{ winningMsg }}</h1>
+          <p>Your score: {{ match.myScore(playerId) }}. Partner's score: {{ match.opponentScore(playerId) }}.</p>
+        </div>
+      </wordherd-game>
       <p>
         <a class="button" href="#/">Home</a>
       </p>

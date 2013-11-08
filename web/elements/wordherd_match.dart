@@ -64,4 +64,12 @@ class WordherdMatch extends PolymerElement {
       log.severe('Did not sync game to server: $e $stackTrace');
     });
   }
+
+  String get winningMsg {
+    if (match.winningId == playerId) {
+      return "You Won!";
+    } else {
+      return "You Got Wrangled";
+    }
+  }
 }
