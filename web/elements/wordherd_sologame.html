@@ -2,12 +2,12 @@
 
 <polymer-element name="wordherd-sologame">
   <template>
-    <template if="{{game != null && board != null}}">
+    <template if="{{ isReady }}">
       <wordherd-game game="{{game}}" board="{{board}}"></wordherd-game>
-      <p>
-        <a class="button" href="#/">Home</a>
-      </p>
     </template>
+    <p>
+      <a class="button" href="#/">Home</a>
+    </p>
   </template>
   <script type="application/dart" src="wordherd_sologame.dart"></script>
 </polymer-element>

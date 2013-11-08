@@ -11,9 +11,14 @@ class WordherdSoloGame extends PolymerElement {
   @observable Game game;
   @observable Board board;
   @published String gameId;
+  @observable bool isReady = false;
 
-  // TODO move this into enteredView ?
-  WordherdSoloGame.created() : super.created() {
+  WordherdSoloGame.created() : super.created();
+
+  @override
+  void enteredView() {
+    super.enteredView();
+
     if (gameId != null) {
       _loadGame();
     } else {
@@ -28,7 +33,6 @@ class WordherdSoloGame extends PolymerElement {
       }
     });
   }
-
 
   @override
   void leftView() {
@@ -51,6 +55,7 @@ class WordherdSoloGame extends PolymerElement {
       soloGame = _soloGame;
       game = soloGame.game;
       board = soloGame.board;
+      isReady = true;
     })
     .catchError((e, stackTrace) {
       log.severe('Error loading game $gameId: $e', e, stackTrace);

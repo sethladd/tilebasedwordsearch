@@ -1,24 +1,47 @@
 <polymer-element name="wordherd-sologames">
   <template>
+    <style>
+    table {
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    td.score {
+      text-align: left;
+    }
+    
+    </style>
+    
     <h1>Solo games</h1>
     
     <p>
       <button on-click="{{newSoloGame}}">Start new solo game</button>
     </p>
     
-    <ul>
-      <template repeat="{{ soloGame in soloGames }}">
-        <li>
-          Score: {{ soloGame.game.score }}
-          <template if="{{ soloGame.game.isDone }}">
-            <a href="#/sologame/{{ soloGame.id }}">Results</a>
-          </template>
-          <template if="{{ !soloGame.game.isDone }}">
-            <a href="#/sologame/{{ soloGame.id }}">Continue</a>
-          </template>
-        </li>
-      </template>
-    </ul>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Score</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr template repeat="{{ soloGame in soloGames }}">
+          <td class="score">
+            {{ soloGame.game.score }}
+          </td>
+          <td>
+            <template if="{{ soloGame.game.isDone }}">
+              <a class="button" href="#/sologame/{{ soloGame.id }}">Results</a>
+            </template>
+            <template if="{{ !soloGame.game.isDone }}">
+              <a class="button" href="#/sologame/{{ soloGame.id }}">Continue</a>
+            </template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     
     <p>
       <a class="button" href="#/">Home</a>

@@ -17,6 +17,7 @@ CACHE:
 /assets/WH_Tile_Grid_TW.png
 /assets/Tiles_highlighted.png
 /css/bootstrap.min.css
+/css/bootstrap-theme.min.css
 /css/styles.css
 
 NETWORK:

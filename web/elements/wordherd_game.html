@@ -2,6 +2,16 @@
 
 <polymer-element name="wordherd-game">
   <template>
+    <style>
+      table {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      td {
+        text-align: left;
+      }
+    </style>
     <template if="{{boardReady}}">
       <template if="{{!game.isDone}}">
         <wordherd-board board="{{board}}"
@@ -19,16 +29,21 @@
       <template if="{{game.isDone}}">
         <h1>Game Over</h1>
         <p>Your score: {{game.score}}</p>
-        <p>Your words:</p>
-        <ul>
-          <template repeat="{{ word in game.justWords }}">
-            <li>{{word}} - {{game.words[word]}}</li>
-          </template>
-        </ul>
-        
-        <p>
-          <a class="button" href="#/">Home</a>
-        </p>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Word</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr template repeat="{{ word in game.justWords }}">
+              <td>{{word}}</td>
+              <td>{{game.words[word]}}</td>
+            </tr>
+          </tbody>
+        </table>
       </template>
     </template>
   </template>
