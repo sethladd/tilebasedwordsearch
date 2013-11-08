@@ -21,7 +21,6 @@ class WordherdNewGame extends PolymerElement {
   bool get applyAuthorStyles => true;
 
   // Looks like inserted is when all attributes are ready (??)
-  // TODO ready() might be a better callback here
   void enteredView() {
     super.enteredView();
 
@@ -59,7 +58,7 @@ class WordherdNewGame extends PolymerElement {
 
         // TODO: store the match locally?
 
-        window.location.hash = '/matches';
+        window.location.hash = '/match/$matchId';
       })
       .catchError((e) {
         log.severe('Could not create match: $e');
