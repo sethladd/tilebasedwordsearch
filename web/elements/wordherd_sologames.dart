@@ -29,18 +29,18 @@ class WordherdSoloGames extends PolymerElement {
 
     _boards = _assets.boards;
 
-    log.fine('Loading all solo games');
-
     if (db.isInitialized) {
       _loadAllGames();
     } else {
       window.on['persistablestoreinitialized'].listen((_) {
-        _loadAllGames();
+        // TODO why do I need to put a delay here?
+        new Future.delayed(const Duration(seconds:1), _loadAllGames);
       });
     }
   }
 
   Future _loadAllGames() {
+    log.fine('Loading all solo games');
     return db.Persistable.all(GameSolo).toList()
     .then((List<GameSolo> allGames) {
       soloGames.addAll(allGames);

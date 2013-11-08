@@ -11,7 +11,12 @@ class PersistableDb extends PolymerElement {
   @published String dbname;
   @published String storename;
 
-  PersistableDb.created() : super.created() {
+  PersistableDb.created() : super.created();
+
+  @override
+  void enteredView() {
+    super.enteredView();
+
     _init();
   }
 
@@ -35,7 +40,7 @@ class PersistableDb extends PolymerElement {
     .then((_) {
       log.fine('Persistable store initialized');
       initialized = true;
-      dispatchEvent(new CustomEvent('persistablestoreinitialized'));
+      this.dispatchEvent(new CustomEvent('persistablestoreinitialized'));
     })
     .catchError((e, stackTrace) {
       log.severe('Could not initialize storage: $e', e, stackTrace);
