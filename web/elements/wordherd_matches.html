@@ -8,14 +8,15 @@
       margin-bottom: 10px;
     }
     </style>
+    
     <h1>Matches</h1>
     
-    <template if="{{!isReady}}">
+    <template if="{{ !isReady }}">
       <p>Loading matches</p>
       <my-spinner></my-spinner>
     </template>
     
-    <template if="{{isReady}}">
+    <template if="{{ isReady }}">
     
       <p>You have {{gameMatches.length}} matches</p>
       
