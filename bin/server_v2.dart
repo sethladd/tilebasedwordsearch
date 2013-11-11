@@ -17,6 +17,7 @@ import 'package:serialization/serialization.dart' show Serialization;
 import 'package:google_oauth2_client/google_oauth2_console.dart' as oauth2;
 import 'package:google_plus_v1_api/plus_v1_api_console.dart' show Plus;
 import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person, PeopleFeed;
+import 'package:wordherd/log_handlers.dart' show onLogRecord;
 
 part 'oauth_handler.dart';
 
@@ -25,19 +26,7 @@ final Serialization serializer = new Serialization();
 
 configureLogger() {
   Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((LogRecord logRecord) {
-    StringBuffer sb = new StringBuffer();
-    sb
-    ..write(logRecord.time.toString())..write(":")
-    ..write(logRecord.loggerName)..write(":")
-    ..write(logRecord.level.name)..write(":")
-    ..write(logRecord.sequenceNumber)..write(": ")
-    ..write(logRecord.message.toString());
-
-    // TODO: wait for https://code.google.com/p/dart/issues/detail?id=14416
-
-    print(sb.toString());
-  });
+  Logger.root.onRecord.listen(onLogRecord);
 }
 
 final UrlPattern getMatchUrl = new UrlPattern(r'/matches/(\d+)');
@@ -106,7 +95,7 @@ main(List<String> arguments) {
     });
 
   },
-  onError: (e, stackTrace) => log.severe("Error handling request: $e : $stackTrace"));
+  onError: (e, stackTrace) => log.severe("Error handling request: $e", e, stackTrace));
 
 }
 
@@ -308,7 +297,7 @@ void friendsToPlay(HttpRequest request) {
     })
 
     .catchError((e, stackTrace) {
-      log.warning('Problem finding friends: $e $stackTrace');
+      log.warning('Problem finding friends: $e', e, stackTrace);
       request.response.statusCode = 500;
       request.response.close();
     });
@@ -385,7 +374,7 @@ void listPlayerMatches(HttpRequest request) {
 // TODO: this should get better.
 // See https://code.google.com/p/dart/issues/detail?id=14416
 void _handleError(HttpResponse response, e, StackTrace stackTrace) {
-  log.severe('Oh noes! $e : $stackTrace', e);
+  log.severe('Oh noes! $e', e, stackTrace);
   response.statusCode = 500;
   response.close();
 }

@@ -1,19 +1,17 @@
 part of client_game;
 
 class RectangleTransform {
-  /// Left.
   final int left;
-  /// Top.
   final int top;
-  /// Width.
   final int width;
-  /// Height.
   final int height;
+
   /// Construct a [RectangleTransform] from an element.
   RectangleTransform(Element element) : this.left = element.offsetLeft,
                                         this.top = element.offsetTop,
                                         this.width = element.clientWidth,
                                         this.height = element.clientHeight;
+
   /// Construct a [RectangleTransform] from raw coordinates.
   RectangleTransform.raw(this.left, this.top, this.width, this.height);
 
@@ -23,9 +21,7 @@ class RectangleTransform {
     context.strokeRect(left, top, width, height);
   }
 
-  /// Bottom.
   int get bottom => top + height;
-  /// Right.
   int get right => left + width;
 
   /// Is [x] and [y] contained by this rectangle?

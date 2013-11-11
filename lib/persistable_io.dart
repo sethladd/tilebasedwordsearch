@@ -111,7 +111,6 @@ abstract class Persistable {
         }
       });
     });
-
   }
 
   static _createAndPopulate(ClassMirror classMirror, String id, Map data) {

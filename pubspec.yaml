@@ -11,20 +11,18 @@ dependencies:
   browser: any
   crypto: any
   http_server: any
-  game_loop:
-    git: https://github.com/sethladd/game_loop.git
+  game_loop: any
 #  google_appstate_v1_api:
 #    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
 #  google_games_v1_api:
 #    git: https://github.com/financeCoding/dart_games_v1_api_client.git
   google_plus_v1_api: any
-  html5lib: any
   http: any
-  intl: any
+#  intl: any
   lawndart: any
   logging: any
   postgresql: any
-  unittest: any
+#  unittest: any
   polymer: any
   route: any
   path: any

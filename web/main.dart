@@ -1,7 +1,6 @@
 import 'package:polymer/polymer.dart';
-import 'package:logging/logging.dart';
-
-
+import 'package:logging/logging.dart' show Level, Logger;
+import 'package:wordherd/log_handlers.dart' show onLogRecord;
 
 main() {
   initLogging();
@@ -10,20 +9,5 @@ main() {
 
 initLogging() {
   Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((LogRecord logRecord) {
-    StringBuffer sb = new StringBuffer()
-      ..write(logRecord.time.toString())..write(":")
-      ..write(logRecord.loggerName)..write(":")
-      ..write(logRecord.level.name)..write(":")
-      ..write(logRecord.sequenceNumber)..write(": ")
-      ..write(logRecord.message.toString());
-
-    if (logRecord.stackTrace != null) {
-      sb
-        ..write(' :\n')
-        ..write(logRecord.stackTrace.toString());
-    }
-
-    print(sb.toString());
-  });
+  Logger.root.onRecord.listen(onLogRecord);
 }
