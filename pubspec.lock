@@ -38,11 +38,8 @@ packages:
     source: hosted
     version: "0.9.0"
   game_loop:
-    description:
-      ref: null
-      resolved-ref: d84f218c855f154fd9d3ab19b7ed3792b6e4d737
-      url: "https://github.com/sethladd/game_loop.git"
-    source: git
+    description: game_loop
+    source: hosted
     version: "0.9.3"
   google_oauth2_client:
     description: google_oauth2_client
@@ -66,10 +63,6 @@ packages:
     version: "0.9.0"
   http_server:
     description: http_server
-    source: hosted
-    version: "0.9.0"
-  intl:
-    description: intl
     source: hosted
     version: "0.9.0"
   lawndart:
@@ -138,10 +131,6 @@ packages:
     version: "0.9.0"
   template_binding:
     description: template_binding
-    source: hosted
-    version: "0.9.0"
-  unittest:
-    description: unittest
     source: hosted
     version: "0.9.0"
   unmodifiable_collection:
