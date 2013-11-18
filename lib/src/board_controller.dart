@@ -1,16 +1,27 @@
-part of tilebasedwordsearch;
+part of client_game;
 
-@observable
+class WordEvent {
+  final String word;
+  final int score;
+  WordEvent(this.word, this.score);
+}
+
 class BoardController {
   final Board board;
   final BoardView view;
 
-  BoardController(this.board, this.view);
-
   List<int> selectedPath;
   String _keyboardSearchString = '';
+
+  // TODO I think I can delete these
   String wordInProgress = '';
   int wordInProgressScore = 0;
+
+  StreamController<WordEvent> _wordsStream = new StreamController();
+
+  BoardController(this.board, this.view);
+
+  Stream<WordEvent> get onWords => _wordsStream.stream;
 
   void clearSelected() {
     view.selectedTiles.clear();
@@ -56,7 +67,7 @@ class BoardController {
     // Find the best path.
     List<int> bestPath;
     int bestScore = 0;
-    if (board.config.stringInGrid(_keyboardSearchString, paths)) {
+    if (board.stringInGrid(_keyboardSearchString, paths)) {
       List listOfPaths = sortPathSet(paths);
       listOfPaths.forEach((path) {
         int pathScore = board.scoreForPath(path);
@@ -91,15 +102,20 @@ class BoardController {
       return true;
     }
     if (event.buttonId == Keyboard.ESCAPE ||
-        event.buttonId == Keyboard.SPACE) {
-      // Space or escape kills the current word search.
+        event.buttonId == Keyboard.SPACE ||
+        event.buttonId == Keyboard.BACKSPACE ||
+        event.buttonId == Keyboard.DELETE) {
       // TODO: Indicate in GUI.
       clearKeyboardInput();
       return true;
     }
     if (event.buttonId == Keyboard.ENTER) {
       // Submit.
-      board.attemptPath(selectedPath);
+      board.attemptPathAsWord(selectedPath);
+      bool goodWord = board.attemptPathAsWord(selectedPath);
+      if (goodWord) {
+        _wordsStream.add(new WordEvent(board.wordForPath(selectedPath), board.scoreForPath(selectedPath)));
+      }
       clearKeyboardInput();
       return true;
     }
@@ -108,10 +124,10 @@ class BoardController {
     if (event.buttonId < Keyboard.A || event.buttonId > Keyboard.Z) {
       return true;
     }
-    if (board.config.stringInGrid(newSearchString, null)) {
+    if (board.stringInGrid(newSearchString, null)) {
       _keyboardSearchString = newSearchString;
     } else if (event.buttonId == Keyboard.Q &&
-               board.config.stringInGrid(newSearchString + 'U', null)) {
+               board.stringInGrid(newSearchString + 'U', null)) {
       _keyboardSearchString = newSearchString;
     } else {
       while (_keyboardSearchString.length > 0) {

@@ -1,29 +1,33 @@
-name: tilebasedwordsearch
-version: 0.1.0
-author: Dart DevRel
-description: GAME
+name: wordherd
+version: 0.2.0
+author: Dart Developer Relations
+description: A tile-based word forming game.
 homepage: https://github.com/johnmccutchan/tilebasedwordsearch
+environment:
+  sdk: '>= 0.8.10'
 dependencies:
-  asset_pack:
-    git: https://github.com/johnmccutchan/asset_pack.git
+  asset_pack: any
   benchmark_harness: any
   browser: any
   crypto: any
-  fukiya: '>=0.1.5'
-  game_loop:
-    git: https://github.com/johnmccutchan/game_loop.git
-  google_appstate_v1_api:
-    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
-  google_games_v1_api:
-    git: https://github.com/financeCoding/dart_games_v1_api_client.git
-  google_plus_v1_api:
-    git: https://github.com/financeCoding/dart_plus_v1_api_client.git
-  html5lib: any
+  http_server: any
+  game_loop: any
+#  google_appstate_v1_api:
+#    git: https://github.com/financeCoding/dart_appstate_v1_api_client.git
+#  google_games_v1_api:
+#    git: https://github.com/financeCoding/dart_games_v1_api_client.git
+  google_plus_v1_api: any
   http: any
-  intl: any
+#  intl: any
   lawndart: any
   logging: any
   postgresql: any
-  start: any
-  unittest: any
-  web_ui: any
+#  unittest: any
+  polymer: any
+  route: any
+  path: any
+  serialization: any
+
+transformers:
+- polymer:
+    entry_points: web/index.html

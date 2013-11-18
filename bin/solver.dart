@@ -1,5 +1,6 @@
-import 'package:tilebasedwordsearch/solver.dart';
+import 'package:wordherd/solver.dart' show Solver, Trie;
 import 'dart:io';
+import 'package:path/path.dart';
 
 main() {
   const List<List<String>> grid = const [
@@ -10,8 +11,8 @@ main() {
   ];
   
   Trie words = new Trie();
-  Directory pwd = new File(new Options().script).directory;
-  new File('${pwd.path}/../web/assets/dictionary.txt')
+  String pwd = dirname(Platform.script.toString());
+  new File('${pwd}/../web/assets/dictionary.txt')
       .readAsLinesSync()
       .forEach((line) => words[line] = line);
   //print(words.length);

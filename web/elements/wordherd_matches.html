@@ -1,0 +1,64 @@
+<link rel="import" href="my_spinner.html">
+
+<polymer-element name="wordherd-matches">
+  <template>
+    <style>
+    .row {
+      margin-bottom: 10px;
+    }
+    table {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    th {
+      text-align: center;
+    }
+    </style>
+    
+    <h1>Matches</h1>
+    
+    <template if="{{ !isReady }}">
+      <p>Loading matches</p>
+      <my-spinner></my-spinner>
+    </template>
+    
+    <template if="{{ isReady }}">
+    
+      <p>You have {{gameMatches.length}} matches</p>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr template repeat="{{ gameMatch in gameMatches }}">
+            <td>
+              {{gameMatch.opponentName(playerId)}}
+            </td>
+            
+            <td>
+              <template if="{{ !gameMatch.isOver && !gameMatch.myTurnOver(playerId)}}">
+                <a class="button" href="#/match/{{gameMatch.id}}">{{startOrResumeMsg(gameMatch)}}</a>
+              </template>
+              <template if="{{ !gameMatch.isOver && gameMatch.myTurnOver(playerId)}}">
+                Waiting for Partner
+              </template>
+              <template if="{{ gameMatch.isOver}}">
+                <a class="button" href="#/match/{{gameMatch.id}}">See results</a>
+              </template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
+    
+    <p>
+      <a class="button" href="#/">Home</a>
+    </p>
+  </template>
+  <script type="application/dart" src="wordherd_matches.dart"></script>
+</polymer-element>

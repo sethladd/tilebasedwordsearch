@@ -1,65 +1,29 @@
-part of shared;
+part of wordherd_shared;
 
-class Game extends Object with Persistable {
-  String board;
-  int score;
-  int timeRemaining;
-  Map<String, int> words = <String, int>{};
-  List<String> recentWords = <String>[];
-  List<int> letterBonusTiles = new List<int>();
-  int wordBonusTile;
+/// Represents a game, with a score and other
+/// data that indicates a play session.
+class Game extends Object with Observable {
+  Map<String, int> words = new ObservableMap();
+  @observable int score = 0;
+  @observable bool isStarted = false;
+  @observable bool isDone = false;
+  @observable int timeRemaining = DEFAULT_GAME_LENGTH;
 
-  // See bug 11448. This needs to be a double.
-  double lastPlayedMillisSinceEpoch;
-  
-  String matchId;
+  static const int SCORE_MULTIPLIER = 3;
+  static const int DEFAULT_GAME_LENGTH = 70;
 
-  Game(this.timeRemaining, this.board, this.letterBonusTiles, this.wordBonusTile);
-
-  Game.fromPersistence(String id, Map data) {
-    this.id = id;
-    board = data['board'];
-    score = data['score'];
-    words = data['words'];
-    timeRemaining = data['timeRemaining'];
-    recentWords = data['recentWords'];
-    lastPlayedMillisSinceEpoch = data['lastPlayedMillisSinceEpoch'];
-    letterBonusTiles = data['letterBonusTiles'];
-    wordBonusTile = data['wordBonusTile'];
-    matchId = data['matchId'];
+  void scoreWord(String word, int wordScore) {
+    // TODO play a sound if the word was already found?
+    if (!words.containsKey(word) || words[word] < wordScore) {
+      words[word] = wordScore;
+      score = words.values.reduce((v, e) => v + e);
+    }
   }
 
-  DateTime get lastPlayed {
-    return new DateTime.fromMillisecondsSinceEpoch(lastPlayedMillisSinceEpoch.toInt());
-  }
+  bool previouslyFoundWord(String word) => words.containsKey(word);
 
-  String get lastPlayedFormatted {
-    var formatter = new DateFormat("M/d, h:mm a");
-    return formatter.format(lastPlayed);
-  }
+  String toString() => 'score: $score, isStarted: $isStarted, isDone: $isDone';
 
-  void set lastPlayed(DateTime timestamp) {
-    lastPlayedMillisSinceEpoch = timestamp.millisecondsSinceEpoch.toDouble();
-  }
-
-  bool get done => timeRemaining == null || timeRemaining <= 0;
-
-  bool get started => timeRemaining != null;
-  
-  bool get isMultiplayer => matchId != null;
-
-  Map toJson() {
-    return {
-      'board': board,
-      'score': score,
-      'timeRemaining': timeRemaining,
-      'words': words,
-      'lastPlayedMillisSinceEpoch': lastPlayedMillisSinceEpoch,
-      'id': id,
-      'letterBonusTiles': letterBonusTiles,
-      'wordBonusTile': wordBonusTile,
-      'recentWords': recentWords,
-      'matchId': matchId
-    };
-  }
+  // This is here to so that mirrorsused keeps words.keys.
+  Iterable<String> get justWords => words.keys;
 }

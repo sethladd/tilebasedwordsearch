@@ -1,0 +1,62 @@
+<polymer-element name="wordherd-board">
+  <template>
+    <style>
+      @media only screen
+      and (max-device-width : 400px)
+      and (orientation : portrait) {
+        #frontBuffer {
+          width: 330px;
+        }
+      }
+      
+      @media only screen
+      and (min-device-width : 600px)
+      and (max-device-width : 800px)
+      and (orientation : portrait) {
+        #frontBuffer {
+          width: 530px;
+        }
+      }
+      
+      .row {
+        clear: both;
+      }
+      
+      .row .col-md-6 {
+        width: 50%;
+        float: left;
+      }
+    </style>
+  
+    <div class="row">
+      <div class="col-md-6">
+        {{wordInProgress}}
+        &nbsp;
+      </div>
+      <div class="col-md-6">
+        <template if="{{ isWordInProgress }}">
+          Points: {{wordInProgressScore}}
+        </template>
+      </div>
+    </div>
+    
+    <div>
+      <canvas id="frontBuffer"></canvas>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        Current score: {{game.score}}
+      </div>
+      <div class="col-md-6">
+        Time: {{timeRemaining}}
+      </div>
+    </div>
+    
+    <!-- TODO get these over to game, not board -->
+    <div style="margin-bottom: 0.5em">
+      <button on-click="{{endGame}}">End Game</button>
+    </div>
+  </template>
+  <script type="application/dart" src="wordherd_board.dart"></script>
+</polymer-element>

@@ -1,5 +1,7 @@
-import 'package:tilebasedwordsearch/solver.dart';
+import 'package:benchmark_harness/benchmark_harness.dart';
+import 'package:wordherd/solver.dart' show Solver, Trie;
 import 'dart:io';
+import 'package:path/path.dart' show dirname;
 
 List<String> readFile(String path) {
   return new File(path).readAsLinesSync();
@@ -19,6 +21,24 @@ void solveBoard(Trie words, List<List<String>> grid) {
   List<String> results = solver.findAll().toList();
 }
 
+class SolverBenchmark extends BenchmarkBase {
+  final List<List<String>> grid;
+  final Trie words;
+  
+  const SolverBenchmark(this.words, this.grid) : super("SolverBenchmark");
+
+  // The benchmark code.
+  void run() {
+    solveBoard(words, grid);
+  }
+
+  // Not measured setup code executed prior to the benchmark runs.
+  void setup() { }
+
+  // Not measures teardown code executed after the benchark runs.
+  void teardown() { }
+}
+
 main() {
   const List<List<String>> grid = const [
     const ['A', 'B', 'C', 'D'],
@@ -26,16 +46,9 @@ main() {
     const ['I', 'J', 'K', 'L'],
     const ['M', 'N', 'O', 'P']
   ];
-  final Directory pwd = new File(new Options().script).directory;
-  final String path = '${pwd.path}/../web/assets/dictionary.txt';
+  final String pwd = dirname(Platform.script.toString());
+  final String path = '${pwd}/dictionary.txt';
 
-  // Warmup.
-  for (int i = 0; i < 5; i++) {
-    List<String> lines = readFile(path);
-    Trie words = buildTrie(lines);
-    solveBoard(words, grid);
-  }
-  print('***** warmup over');
   var sw = new Stopwatch();
   sw.start();
   List<String> lines = readFile(path);
@@ -47,8 +60,7 @@ main() {
   sw.stop();
   print('Building Trie took ${sw.elapsedMilliseconds} ms');
   sw.reset();
-  sw.start();
-  solveBoard(words, grid);
-  sw.stop();
-  print('Solving board took ${sw.elapsedMilliseconds} ms');
+  
+  new SolverBenchmark(words, grid).report();
+  
 }

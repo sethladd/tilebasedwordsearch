@@ -1,4 +1,4 @@
-part of tilebasedwordsearch;
+part of client_game;
 
 class TileCoord {
   num x, y;
@@ -16,7 +16,11 @@ class BoardView {
   final CanvasElement canvas;
   final Set<int> selectedTiles = new Set<int>();
 
-  BoardView(this.board, this.canvas) {
+  // XXX fixme
+  ImageAtlas tripleWordAtlas, letterAtlas, selectedLetterAtlas, tripleLetterAtlas;
+
+  BoardView(this.board, this.canvas, this.tripleWordAtlas, this.letterAtlas,
+      this.selectedLetterAtlas, this.tripleLetterAtlas) {
     letterTiles.length = 16;
     init();
   }
@@ -50,14 +54,14 @@ class BoardView {
   double get scaleY => canvas.height/canvas.clientHeight;
 
   int transformTouchToCanvasX(num v) {
-    Rect canvasRectangle = canvas.getBoundingClientRect();
+    Rectangle canvasRectangle = canvas.getBoundingClientRect();
     int offsetX = (canvasRectangle.left + document.body.scrollLeft).toInt();
     int x = ((v - offsetX) * scaleX).toInt();
     return x;
   }
 
   int transformTouchToCanvasY(num v) {
-    Rect canvasRectangle = canvas.getBoundingClientRect();
+    var canvasRectangle = canvas.getBoundingClientRect();
     int offsetY = (canvasRectangle.top + document.body.scrollTop).toInt();
     int y = ((v - offsetY) * scaleY).toInt();
     return y;
@@ -75,13 +79,13 @@ class BoardView {
       if (selectedTiles.contains(i)) {
         atlas = selectedLetterAtlas;
       }
-      var elementName = board.config.getChar(
+      var elementName = board.getChar(
           GameConstants.rowFromIndex(i),
           GameConstants.columnFromIndex(i));
       atlas.draw(elementName, c, x, y);
-      if (board.config.letterBonusTileIndexes.contains(i)) {
+      if (board.letterBonusTileIndexes.contains(i)) {
         tripleLetterAtlas.draw(elementName, c, x, y);
-      } else if (board.config.wordBonusTileIndex == i) {
+      } else if (board.wordBonusTileIndex == i) {
         tripleWordAtlas.draw(elementName, c, x, y);
       }
     }

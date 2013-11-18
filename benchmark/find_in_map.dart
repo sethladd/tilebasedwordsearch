@@ -1,8 +1,6 @@
-// Import BenchmarkBase class.
 import 'package:benchmark_harness/benchmark_harness.dart';
-
 import 'dart:io';
-import 'dart:collection';
+import 'package:path/path.dart' show dirname;
 
 // Create a new benchmark by extending BenchmarkBase
 class FindInMap extends BenchmarkBase {
@@ -43,8 +41,8 @@ main() {
   List<String> lines = [];
   Map words = new Map();
   
-  Directory pwd = new File(new Options().script).directory;
-  lines = new File('${pwd.path}/../web/assets/dictionary.txt')
+  String pwd = dirname(Platform.script.toString());
+  lines = new File('${pwd}/dictionary.txt')
   .readAsLinesSync();
   
   lines.forEach((line) => words[line] = true);

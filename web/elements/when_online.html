@@ -1,0 +1,12 @@
+<polymer-element name="when-online">
+  <template>
+    <template if="{{ isOnline }}">
+      <content select=".for-online"></content>
+    </template>
+    
+    <template if="{{ !isOnline }}">
+      <content select=".for-offline"></content>
+    </template>
+  </template>
+  <script type="application/dart" src="when_online.dart"></script>
+</polymer-element>

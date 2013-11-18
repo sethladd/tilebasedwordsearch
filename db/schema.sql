@@ -1,7 +1,23 @@
 DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS player;
-DROP TABLE IF EXISTS match;
+DROP TABLE IF EXISTS gamematch;
 DROP TABLE IF EXISTS twoplayermatch;
+
+CREATE TABLE IF NOT EXISTS gamematch (
+  id SERIAL,
+  p1_id VARCHAR(255),
+  p2_id VARCHAR(255),
+  p1_name VARCHAR(255),
+  p2_name VARCHAR(255),
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+  board TEXT,
+  p1_game TEXT,
+  p2_game TEXT
+);
+
+CREATE INDEX ON gamematch (p1_id);
+CREATE INDEX ON gamematch (p2_id);
 
 CREATE TABLE IF NOT EXISTS player (
   id SERIAL,
@@ -9,23 +25,4 @@ CREATE TABLE IF NOT EXISTS player (
   name VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS twoplayermatch (
-  id SERIAL,
-  board VARCHAR(255),
-  word_bonus_tile INT,
-  letter_bonus_tile_indexes VARCHAR(255),
-  created_on TIMESTAMP,
-  p1_id VARCHAR(255),
-  p2_id VARCHAR(255),
-  p1_name VARCHAR(255),
-  p2_name VARCHAR(255),
-  p1_words TEXT,
-  p2_words TEXT,
-  p1_score INT,
-  p2_score INT,
-  p1_played TIMESTAMP,
-  p2_played TIMESTAMP
-);
-
-CREATE INDEX ON twoplayermatch (p1_id);
-CREATE INDEX ON twoplayermatch (p2_id);
+INSERT INTO player (gplus_id, name) VALUES ('100399120809275930649', 'Kathy Walrath');

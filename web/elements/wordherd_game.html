@@ -1,0 +1,49 @@
+<link rel="import" href="wordherd_board.html">
+
+<polymer-element name="wordherd-game">
+  <template>
+    <style>
+      table {
+        width: 70%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      td {
+        text-align: left;
+      }
+    </style>
+    <template if="{{boardReady}}">
+      <template if="{{!game.isDone}}">
+        <wordherd-board board="{{board}}"
+                        game="{{game}}"
+                        letterAtlas="{{letterAtlas}}"
+                        selectedLetterAtlas="{{selectedLetterAtlas}}"
+                        doubleLetterAtlas="{{doubleLetterAtlas}}"
+                        tripleLetterAtlas="{{tripleLetterAtlas}}"
+                        doubleWordAtlas="{{doubleWordAtlas}}"
+                        tripleWordAtlas="{{tripleWordAtlas}}"></wordherd-board>
+      </template>
+      
+      <template if="{{game.isDone}}">
+        <content select=".header"></content>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Word</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr template repeat="{{ word in game.justWords }}">
+              <td>{{word}}</td>
+              <td>{{game.words[word]}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
+    </template>
+  </template>
+  
+  <script type="application/dart" src="wordherd_game.dart"></script>
+</polymer-element>

@@ -1,92 +1,85 @@
-library persistable_html;
+library persistable;
 
-import 'dart:async';
-import 'package:lawndart/lawndart.dart';
-import 'package:logging/logging.dart';
+import 'dart:async' show Future, Stream;
+import 'package:lawndart/lawndart.dart' show Store;
+import 'package:logging/logging.dart' show Logger;
+import 'package:serialization/serialization.dart' show Serialization;
+import 'dart:convert' show JSON;
 
 final Logger log = new Logger("persistence");
 
-final Map<Type, Store> _stores = new Map<Type, Store>();
+const String serialized = "__SERIALIZED";
 
-Future init(String dbName, Type type) {
-  log.fine('Attemping to open db $dbName and store $type');
-  Store store = new Store(dbName, type.toString());
-  _stores[type] = store;
-  return store.open();
+// TODO: one store per type
+Store _store;
+
+Future init(String dbName, String storeName) {
+  _store = new Store(dbName, storeName);
+  return _store.open();
 }
+
+bool get isInitialized => _store == null ? false : _store.isOpen;
 
 int _counter = 0;
 final String _idOffset = new DateTime.now().millisecondsSinceEpoch.toString();
+String _nextId() => _idOffset + '-' + (_counter++).toString();
 
-typedef Persistable Constructor(String id, Map data);
+final Serialization _serializer = new Serialization();
 
-/**
- * See also the mirror-based implementation at persistable_html_mirrors.dart
- */
 abstract class Persistable {
-  
-  String _id;
-  
-  /**
-   * 
-   */
-  static Future load(String id, Type type, Constructor constructor) {
-    Store store = _getStore(type);
-    
-    return store.getByKey(id).then((Map data) {
-      if (data == null) {
+
+  String id;
+
+  static Future load(String id, Type type) {
+    if (_store == null) throw new StateError('Store is not initialized');
+
+    return _store.getByKey(id).then((String serialized) {
+      if (serialized == null) {
         return null;
       } else {
-        return _createAndPopulate(constructor, id, data);
+        return _deserialize(serialized);
       }
     });
   }
-  
-  static Stream all(Type type, Constructor constructor) {
-    Store store = _getStore(type);
-    
-    return store.all().map((Map data) {
-      return _createAndPopulate(constructor, data['id'], data);
-    });
+
+  // TODO currently we assume all items in the store are of the same
+  // type, so this doesn't so what you think it does. This selects
+  // everything from the store and assumes its of type Type.
+  static Stream all(Type type) {
+    return _store.all().map((String serialized) => _deserialize(serialized));
   }
-  
-  static Store _getStore(Type type) {
-    Store store = _stores[type];
-    if (store == null) {
-      throw new StateError('No store for $type found. You have to init() first');
+
+  static dynamic _deserialize(String serialized) {
+    Map data = JSON.decode(serialized);
+    return _serializer.read(data);
+  }
+
+  /**
+   * Completes with the ID of the object just stored into persistence.
+   */
+  Future<String> store() {
+    if (_store == null) throw new StateError('Store is not initialized');
+
+    if (id == null) {
+      id = _nextId();
     }
-    return store;
+
+    // TODO do I need to encode to JSON? Can we store maps and lists of
+    // core types?
+
+    return _store.save(JSON.encode(_serializer.write(this)), id);
   }
-  
-  Future store() {
-    Store store = _getStore(runtimeType);
-    return store.save(toJson(), id);
-  }
-  
+
   Future delete() {
-    Store store = _getStore(runtimeType);
-    return store.removeByKey(id);
+    if (_store == null) throw new StateError('Store is not initialized');
+
+    return _store.removeByKey(id);
   }
-  
+
   static Future clear() {
-    Store store = _getStore(runtimeType);
-    return store.nuke();
+    if (_store == null) throw new StateError('Store is not initialized');
+
+    return _store.nuke();
   }
-  
-  static _createAndPopulate(Constructor constructor, String id, Map data) {
-    Persistable object = constructor(id, data);
-    return object;
-  }
-  
-  // This assumes there's no reason for code to change an ID.
-  String get id {
-    if (_id == null) {
-      _id = _idOffset + '-' + (_counter++).toString();
-    }
-    return _id;
-  }
-  
-  void set id(String id) { _id = id; }
-  
-  Map toJson();
+
 }
