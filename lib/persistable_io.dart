@@ -64,7 +64,6 @@ abstract class Persistable {
     _validateParams(type, params);
     Map conditionValues = new Map.from(params);
 
-    ClassMirror classMirror = reflectClass(type);
     String conditions = params.keys.map((k) {
       String condition = '$k ';
       if (params[k] is List) {
@@ -88,6 +87,8 @@ abstract class Persistable {
     String query = 'SELECT * FROM ${_getTableName(type)} WHERE $conditions';
 
     //_log.fine('Query $query ; conditions $conditionValues');
+
+    ClassMirror classMirror = reflectClass(type);
 
     return _conn.query(query, conditionValues).map((row) {
       return _createAndPopulate(classMirror, row.id.toString(), _rowToMap(row));

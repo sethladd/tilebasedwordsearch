@@ -3,13 +3,13 @@ part of wordherd_shared;
 /// Represents a game, with a score and other
 /// data that indicates a play session.
 class Game extends Object with Observable {
-  Map<String, int> words = toObservable(new LinkedHashMap());
+  Map<String, int> words = new ObservableMap();
   @observable int score = 0;
   @observable bool isStarted = false;
   @observable bool isDone = false;
   @observable int timeRemaining = DEFAULT_GAME_LENGTH;
 
-  static const int scoreMultiplier = 3;
+  static const int SCORE_MULTIPLIER = 3;
   static const int DEFAULT_GAME_LENGTH = 70;
 
   void scoreWord(String word, int wordScore) {

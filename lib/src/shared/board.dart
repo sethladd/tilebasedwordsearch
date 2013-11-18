@@ -25,7 +25,7 @@ class Board {
     }
     return true;
   }
-  
+
   String stringFromPath(List<int> path) {
     String s = '';
     for (int i = 0; i < path.length; i++) {
@@ -68,7 +68,7 @@ class Board {
       String tileCharacter = getChar(row, column);
       int letterScore = GameConstants.letterScores[tileCharacter];
       if (letterBonusTileIndexes.contains(index)) {
-        letterScore *= Game.scoreMultiplier;
+        letterScore *= Game.SCORE_MULTIPLIER;
       }
       if (wordBonusTileIndex == index) {
         wordMultiplier = true;
@@ -96,16 +96,16 @@ class Board {
     }
     // Word bonus.
     if (wordMultiplier) {
-      score *= Game.scoreMultiplier;
+      score *= Game.SCORE_MULTIPLIER;
     }
     return score;
   }
-  
+
   String getChar(int i, int j) {
     int index = i * 4 + j;
     return tiles[index];
   }
-  
+
   bool stringInGrid(String search, Set<List<int>> paths) {
     List<String> tileStrings = GameConstants.convertStringToTileList(search);
     // Not there.
@@ -124,7 +124,7 @@ class Board {
     }
     return r;
   }
-  
+
   bool _findInGridWorker(List<String> tiles, int index, int i, int j,
                          List<List<bool>> visited, List<int> path,
                          Set<List<int>> paths) {

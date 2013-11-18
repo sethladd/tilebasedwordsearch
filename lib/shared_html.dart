@@ -1,6 +1,5 @@
 library wordherd_shared;
 
-import 'dart:collection' show LinkedHashMap;
 import 'package:observe/observe.dart';
 import 'dart:math' show Random;
 import 'persistable_html.dart' show Persistable, serialized;

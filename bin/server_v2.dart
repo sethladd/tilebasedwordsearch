@@ -25,8 +25,9 @@ final Logger log = new Logger('Server');
 final Serialization serializer = new Serialization();
 
 configureLogger() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen(onLogRecord);
+  Logger.root
+    ..level = Level.ALL
+    ..onRecord.listen(onLogRecord);
 }
 
 final UrlPattern getMatchUrl = new UrlPattern(r'/matches/(\d+)');
@@ -136,13 +137,15 @@ Future loadData() {
 
 Future<bool> addCorsHeaders(HttpRequest req) {
   log.fine('Adding CORS headers for ${req.method} ${req.uri}');
-  req.response.headers.add('Access-Control-Allow-Origin', 'http://127.0.0.1:3030');
-  req.response.headers.add('Access-Control-Allow-Headers', 'Content-Type');
-  req.response.headers.add('Access-Control-Expose-Headers', 'Location');
-  req.response.headers.add('Access-Control-Allow-Credentials', 'true');
+  req.response.headers
+      ..add('Access-Control-Allow-Origin', 'http://127.0.0.1:3030')
+      ..add('Access-Control-Allow-Headers', 'Content-Type')
+      ..add('Access-Control-Expose-Headers', 'Location')
+      ..add('Access-Control-Allow-Credentials', 'true');
   if (req.method == 'OPTIONS') {
-    req.response.statusCode = 200;
-    req.response.close(); // TODO: wait for this?
+    req.response
+        ..statusCode = 200
+        ..close(); // TODO: wait for this?
     return new Future.sync(() => false);
   } else {
     return new Future.sync(() => true);
@@ -154,8 +157,9 @@ void adminUpdateMatch(HttpRequestBody request) {
   Map body = request.body;
   GameMatch theMatch = serializer.read(body);
   theMatch.store().then((_) {
-    request.request.response.statusCode = 200;
-    request.request.response.close();
+    request.request.response
+        ..statusCode = 200
+        ..close();
   })
   .catchError((e, stackTrace) => _handleError(request.request.response, e, stackTrace));
 }
@@ -236,8 +240,8 @@ void registerPlayer(HttpRequestBody body) {
   db.Persistable.findOneBy(Player, {'gplus_id':gplusId}).then((Player p) {
     if (p == null) {
       Player player = new Player()
-      ..gplus_id = data['gplus_id']
-      ..name = data['name'];
+        ..gplus_id = data['gplus_id']
+        ..name = data['name'];
       return player.store().then((_) => body.request.response.statusCode = 201);
     } else {
       body.request.response.statusCode = 200;
