@@ -50,8 +50,6 @@ class WordherdBoard extends PolymerElement {
 
   WordherdBoard.created() : super.created();
 
-  bool get applyAuthorStyles => true;
-
   @override
   void enteredView() {
     super.enteredView();

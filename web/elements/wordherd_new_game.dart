@@ -1,12 +1,12 @@
-import 'package:polymer/polymer.dart';
-import 'dart:async';
-import 'dart:html';
+import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, toObservable;
+import 'dart:async' show Future;
+import 'dart:html' show Element, Event, HttpRequest, Node, document, window;
 import 'dart:convert' show JSON;
-import 'package:logging/logging.dart';
-import 'package:wordherd/shared_html.dart';
-import 'package:serialization/serialization.dart';
+import 'package:logging/logging.dart' show Logger;
+import 'package:wordherd/shared_html.dart' show Player;
+import 'package:serialization/serialization.dart' show Serialization;
 import 'package:google_plus_v1_api/plus_v1_api_client.dart' show Person;
-import 'wordherd_app.dart';
+import 'wordherd_app.dart' show WordherdApp;
 
 final Logger log = new Logger('WordherdNewGame');
 final Serialization _serializer = new Serialization();
@@ -17,8 +17,6 @@ class WordherdNewGame extends PolymerElement {
   @observable bool loadDataComplete = false;
 
   WordherdNewGame.created() : super.created();
-
-  bool get applyAuthorStyles => true;
 
   // Looks like inserted is when all attributes are ready (??)
   void enteredView() {

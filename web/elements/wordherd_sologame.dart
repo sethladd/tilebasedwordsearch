@@ -40,8 +40,6 @@ class WordherdSoloGame extends PolymerElement {
     _syncGameToStore();
   }
 
-  bool get applyAuthorStyles => true;
-
   _syncGameToStore() {
     soloGame.store()
     .then((_) => log.fine('Stored solo game ${soloGame.id} into store'))

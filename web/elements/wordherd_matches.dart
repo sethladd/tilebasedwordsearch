@@ -18,8 +18,6 @@ class WordherdMatches extends PolymerElement {
 
   WordherdMatches.created() : super.created();
 
-  bool get applyAuthorStyles => true;
-
   @override
   void enteredView() {
     super.enteredView();
@@ -45,6 +43,8 @@ class WordherdMatches extends PolymerElement {
       return 'Ya Won';
     } else if (gameMatch.winningId != playerId) {
       return 'Ya Lost';
+    } else {
+      return 'Unknown state';
     }
   }
 

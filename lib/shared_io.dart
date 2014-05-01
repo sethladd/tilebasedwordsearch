@@ -1,6 +1,5 @@
 library wordherd_shared;
 
-import 'dart:collection';
 import 'package:observe/observe.dart';
 import 'persistable_io.dart';
 import 'dart:math';

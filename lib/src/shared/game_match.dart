@@ -1,6 +1,5 @@
 part of wordherd_shared;
 
-@reflectable
 class GameMatch extends Object with Persistable {
   String p1_id;
   String p1_name;

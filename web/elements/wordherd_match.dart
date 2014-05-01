@@ -20,8 +20,6 @@ class WordherdMatch extends PolymerElement {
 
   WordherdMatch.created() : super.created();
 
-  bool get applyAuthorStyles => true;
-
   void ready() {
     super.ready();
 
