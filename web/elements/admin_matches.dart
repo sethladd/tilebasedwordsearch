@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, toObservable;
+import 'package:polymer/polymer.dart'; // XXX DO NOT USE SHOW HERE
 import 'package:serialization/serialization.dart' show Serialization;
 import 'package:wordherd/shared_html.dart' show GameMatch;
 import 'dart:html' show DocumentFragment, Element, Event, HttpRequest, Node;
@@ -13,9 +13,9 @@ final Logger log = new Logger('AdminMatches');
 @CustomTag('admin-matches')
 class AdminMatches extends PolymerElement {
   final List<GameMatch> gameMatches = toObservable([]);
-  
+
   AdminMatches.created() : super.created();
-  
+
   void enteredView() {
     super.enteredView();
     HttpRequest.request('/matches').then((HttpRequest req) {
@@ -26,7 +26,7 @@ class AdminMatches extends PolymerElement {
       log.severe('Error pulling all matches: $e');
     });
   }
-  
+
   void saveMatch(Event e, var detail, Node target) {
     log.fine('Saving match');
     String matchId = (target as Element).dataset['id'];
@@ -41,6 +41,6 @@ class AdminMatches extends PolymerElement {
         })
         .catchError((e) => log.severe('Error updating match: $e'));
   }
-  
+
   final Transformer asInteger = new StringToInt();
 }

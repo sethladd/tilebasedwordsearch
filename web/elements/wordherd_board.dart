@@ -1,6 +1,6 @@
 library wordherd_board;
 
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'dart:html' show BodyElement, CanvasElement, Event, KeyCode, KeyboardEvent, Node, querySelector, window;
 import 'package:logging/logging.dart' show Logger;
 import 'package:game_loop/game_loop_html.dart' show GameLoop, GameLoopHtml, GameLoopTouch;

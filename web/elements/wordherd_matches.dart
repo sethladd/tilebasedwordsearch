@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'package:wordherd/shared_html.dart' show Game, GameMatch;
 import 'dart:html' show HttpRequest, document;
 import 'package:logging/logging.dart' show Logger;

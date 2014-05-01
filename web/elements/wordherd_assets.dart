@@ -1,6 +1,6 @@
 library wordherd.elements.assets;
 
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'package:asset_pack/asset_pack.dart';
 import 'package:logging/logging.dart';
 import 'package:wordherd/shared_html.dart';

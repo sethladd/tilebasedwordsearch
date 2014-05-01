@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, toObservable;
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'package:route/client.dart' show Router, UrlPattern;
 import 'dart:html' show CustomEvent, HttpRequest, Node, document;
 import 'dart:async' show Future;

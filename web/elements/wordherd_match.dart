@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'dart:html';
 import 'dart:convert' show JSON;
 import 'package:serialization/serialization.dart';

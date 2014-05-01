@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart' show CustomTag, PolymerElement, observable, toObservable;
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'dart:async' show Future;
 import 'dart:html' show Element, Event, HttpRequest, Node, document, window;
 import 'dart:convert' show JSON;
