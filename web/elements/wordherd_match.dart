@@ -23,7 +23,7 @@ class WordherdMatch extends PolymerElement {
   void ready() {
     super.ready();
 
-    new PathObserver(this, 'game.isDone').changes.listen((_) {
+    new PathObserver(this, 'game.isDone').open((_) {
       log.fine('Notified that game.isDone has changed');
       if (game.isDone) {
         syncGameToServer();

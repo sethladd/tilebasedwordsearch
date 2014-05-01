@@ -34,7 +34,7 @@ class WordherdGameElement extends PolymerElement {
 
     // game might be null because it is set via binding,
     // so wait for game and then wait for isDone
-    new PathObserver(this, 'game.isDone').changes.listen((_) {
+    new PathObserver(this, 'game.isDone').open((_) {
       if (game.isDone) {
         dispatchEvent(new CustomEvent('gameover'));
       }

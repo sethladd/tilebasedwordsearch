@@ -26,7 +26,7 @@ class WordherdSoloGame extends PolymerElement {
     }
 
     // Game can be null at created(), so use a path
-    new PathObserver(this, 'game.isDone').changes.listen((_) {
+    new PathObserver(this, 'game.isDone').open((_) {
       log.fine('Notified that game.isDone has changed');
       if (game.isDone) {
         _syncGameToStore();
