@@ -132,7 +132,7 @@ packages:
   smoke:
     description: smoke
     source: hosted
-    version: "0.1.0-pre.3"
+    version: "0.1.0-pre.4"
   source_maps:
     description: source_maps
     source: hosted
