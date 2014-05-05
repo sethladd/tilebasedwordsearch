@@ -16,8 +16,6 @@ class WordherdSoloGames extends PolymerElement {
 
   WordherdSoloGames.created() : super.created();
 
-  bool get applyAuthorStyles => true;
-
   @override
   void enteredView() {
     super.enteredView();

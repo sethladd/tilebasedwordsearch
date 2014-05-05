@@ -1,12 +1,12 @@
-import 'package:polymer/polymer.dart';
-import 'package:route/client.dart';
-import 'dart:html';
-import 'dart:async';
-import 'google_signin.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
+import 'package:route/client.dart' show Router, UrlPattern;
+import 'dart:html' show CustomEvent, HttpRequest, Node, document;
+import 'dart:async' show Future;
+import 'google_signin.dart' show GoogleSignin;
 import "package:google_plus_v1_api/plus_v1_api_client.dart" show Person;
 import "package:google_plus_v1_api/plus_v1_api_browser.dart" show Plus;
-import 'package:logging/logging.dart';
-import 'package:wordherd/shared_html.dart';
+import 'package:logging/logging.dart' show Logger;
+import 'package:wordherd/shared_html.dart' show Player;
 
 final Logger log = new Logger('WordherdApp');
 
@@ -60,8 +60,6 @@ class WordherdApp extends PolymerElement {
       _registerPlayer(plus);
     });
   }
-
-  bool get applyAuthorStyles => true;
 
   Future _registerPlayer(Plus plus) {
     return plus.people.get('me').then((Person p) {

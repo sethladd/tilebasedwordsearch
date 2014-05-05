@@ -1,13 +1,10 @@
 name: wordherd
-version: 0.2.0
+version: 0.3.0
 author: Dart Developer Relations
 description: A tile-based word forming game.
 homepage: https://github.com/johnmccutchan/tilebasedwordsearch
-environment:
-  sdk: '>= 0.8.10'
 dependencies:
   asset_pack: any
-  benchmark_harness: any
   browser: any
   crypto: any
   http_server: any
@@ -23,10 +20,13 @@ dependencies:
   logging: any
   postgresql: any
 #  unittest: any
-  polymer: any
+  polymer: 0.10.0-pre.10
   route: any
   path: any
   serialization: any
+
+dev_dependencies:
+  benchmark_harness: any
 
 transformers:
 - polymer:

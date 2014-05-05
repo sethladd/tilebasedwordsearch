@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'package:wordherd/shared_html.dart' show Board, Game, GameSolo;
 import 'package:wordherd/persistable_html.dart' show Persistable;
 import 'package:logging/logging.dart' show Logger;
@@ -26,7 +26,7 @@ class WordherdSoloGame extends PolymerElement {
     }
 
     // Game can be null at created(), so use a path
-    new PathObserver(this, 'game.isDone').changes.listen((_) {
+    new PathObserver(this, 'game.isDone').open((_) {
       log.fine('Notified that game.isDone has changed');
       if (game.isDone) {
         _syncGameToStore();
@@ -39,8 +39,6 @@ class WordherdSoloGame extends PolymerElement {
     super.leftView();
     _syncGameToStore();
   }
-
-  bool get applyAuthorStyles => true;
 
   _syncGameToStore() {
     soloGame.store()

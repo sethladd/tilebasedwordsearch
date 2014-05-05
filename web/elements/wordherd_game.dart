@@ -1,6 +1,6 @@
 library wordherd_game;
 
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'package:asset_pack/asset_pack.dart';
 import 'package:logging/logging.dart';
 import 'package:wordherd/image_atlas.dart';
@@ -29,14 +29,12 @@ class WordherdGameElement extends PolymerElement {
 
   WordherdGameElement.created() : super.created();
 
-  bool get applyAuthorStyles => true;
-
   void ready() {
     super.ready();
 
     // game might be null because it is set via binding,
     // so wait for game and then wait for isDone
-    new PathObserver(this, 'game.isDone').changes.listen((_) {
+    new PathObserver(this, 'game.isDone').open((_) {
       if (game.isDone) {
         dispatchEvent(new CustomEvent('gameover'));
       }

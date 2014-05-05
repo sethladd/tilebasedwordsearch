@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'dart:html';
 import 'dart:convert' show JSON;
 import 'package:serialization/serialization.dart';
@@ -20,12 +20,10 @@ class WordherdMatch extends PolymerElement {
 
   WordherdMatch.created() : super.created();
 
-  bool get applyAuthorStyles => true;
-
   void ready() {
     super.ready();
 
-    new PathObserver(this, 'game.isDone').changes.listen((_) {
+    new PathObserver(this, 'game.isDone').open((_) {
       log.fine('Notified that game.isDone has changed');
       if (game.isDone) {
         syncGameToServer();

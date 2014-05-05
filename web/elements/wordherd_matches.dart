@@ -1,4 +1,4 @@
-import 'package:polymer/polymer.dart';
+import 'package:polymer/polymer.dart';  // XXX DO NOT USE SHOW HERE
 import 'package:wordherd/shared_html.dart' show Game, GameMatch;
 import 'dart:html' show HttpRequest, document;
 import 'package:logging/logging.dart' show Logger;
@@ -17,8 +17,6 @@ class WordherdMatches extends PolymerElement {
   @observable bool isReady = false;
 
   WordherdMatches.created() : super.created();
-
-  bool get applyAuthorStyles => true;
 
   @override
   void enteredView() {
@@ -45,6 +43,8 @@ class WordherdMatches extends PolymerElement {
       return 'Ya Won';
     } else if (gameMatch.winningId != playerId) {
       return 'Ya Lost';
+    } else {
+      return 'Unknown state';
     }
   }
 

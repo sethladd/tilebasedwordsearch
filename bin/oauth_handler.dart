@@ -14,7 +14,7 @@ final String TOKEN_REVOKE_ENDPOINT = 'https://accounts.google.com/o/oauth2/revok
  */
 void oauthConnect(HttpRequest request) {
   log.fine("Inside oauthConnect");
-  
+
   _confirmOauthSignin(request)
   .then((_) {
     request.response.statusCode = 200;
@@ -31,28 +31,28 @@ void oauthConnect(HttpRequest request) {
  * Expects an "authResult" object encoded as JSON in the request body.
  */
 Future<String> _confirmOauthSignin(HttpRequest request) {
-  
+
   log.fine('Oauth2 signin with ${new Map.from(request.uri.queryParameters)}');
   log.fine('Session is ${new Map.from(request.session)}');
-  
+
   final String tokenData = request.session["access_token"]; // TODO: handle missing token
   final String stateToken = request.session["state_token"];
   final String queryStateToken = request.uri.queryParameters["state_token"];
   final String gPlusId = request.uri.queryParameters["gplus_id"];
-  
+
   // Check if the token already exists for this session.
   if (tokenData != null) {
     return new Future.value(request.uri.queryParameters["gplus_id"]);
   }
-  
+
   // Check if any of the needed token values are null or mismatched.
   if (stateToken == null || queryStateToken == null || stateToken != queryStateToken) {
     return new Future.error('Invalid state parameter: $stateToken $queryStateToken');
   }
-  
+
   // TODO: remove need for completer by chaining futures below
   Completer completer = new Completer();
-  
+
   // Normally the state would be a one-time use token, however in our
   // simple case, we want a user to be able to connect and disconnect
   // without reloading the page.  Thus, for demonstration, we don't
@@ -62,7 +62,7 @@ Future<String> _confirmOauthSignin(HttpRequest request) {
   HttpBodyHandler.processRequest(request)
   .then((HttpRequestBody body) {
     Map requestData = body.body as Map;
-  
+
     Map fields = {
       "grant_type": "authorization_code",
       "code": requestData["code"],
@@ -71,19 +71,19 @@ Future<String> _confirmOauthSignin(HttpRequest request) {
       "client_id": CLIENT_ID,
       "client_secret": CLIENT_SECRET
     };
-  
+
     http.Client _httpClient = new http.Client();
-    _httpClient.post(TOKEN_ENDPOINT, fields: fields).then((http.Response response) {
+    _httpClient.post(TOKEN_ENDPOINT, body: fields).then((http.Response response) {
       // At this point we have the token and refresh token.
       Map credentials = JSON.decode(response.body);
       log.fine("credentials = ${response.body}");
       _httpClient.close();
-  
+
       var verifyTokenUrl = '${TOKENINFO_URL}?access_token=${credentials["access_token"]}';
       new http.Client()
       ..get(verifyTokenUrl).then((http.Response response)  {
         log.fine("response = ${response.body}");
-  
+
         var verifyResponse = JSON.decode(response.body);
         String userGplusId = verifyResponse["user_id"];
         String accessToken = credentials["access_token"];
@@ -91,9 +91,9 @@ Future<String> _confirmOauthSignin(HttpRequest request) {
           request.session["access_token"] = accessToken;
           request.session['userGplusId'] = userGplusId;
           request.session['userName'] = request.uri.queryParameters['name'];
-          
+
           log.info('The user is logged in. Set the access token to $accessToken');
-          
+
           completer.complete(userGplusId);
         } else {
           request.response.statusCode = 401;
@@ -107,7 +107,7 @@ Future<String> _confirmOauthSignin(HttpRequest request) {
       completer.completeError(e, stackTrace);
     });
   });
-  
+
   return completer.future;
 }
 
@@ -116,7 +116,7 @@ Future<String> _confirmOauthSignin(HttpRequest request) {
  */
 void oauthSession(HttpRequest request) {
   log.fine('Inside oauthSession');
-  
+
   String stateToken = _createStateToken();
   request.session["state_token"] = stateToken;
   Map data = { "state_token": request.session["state_token"],
@@ -125,7 +125,7 @@ void oauthSession(HttpRequest request) {
   request.response.headers.add('Content-Type', 'application/json');
   request.response.write(JSON.encode(data));
   request.response.close();
-  
+
   log.fine('Put $stateToken into session: ${request.session['state_token']}');
 }
 
